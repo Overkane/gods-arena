@@ -1,0 +1,80 @@
+---
+projectName: Gods' Arena
+dependencies:
+  - https://github.com/wurstscript/wurstStdlib2
+  - https://github.com/Frotty/Frentity.git
+buildMapData:
+  name: Gods' Arena v0.0.1
+  fileName: Gods' Arena v0.0.1
+  author: Overkane&Frotty
+scenarioData:
+  description: WurstScript powered! # The map's description
+  suggestedPlayers: 4-8 # Hint text displayed in lobby
+  loadingScreen:
+    model: Generic.mdx
+    title: DefaultTitle
+    subTitle: DefaultSubtitle
+    text: DefaultText
+optionsFlags:
+  hideMinimapPreview: false
+  forcesFixed: false
+  maskedAreasPartiallyVisible: false
+  showWavesOnCliffShores: false
+  showWavesOnRollingShores: false
+  useItemClassificationSystem: false
+players:
+  - id: 0
+    name: DefaultPlayer
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: false
+  - id: 1
+    name: DefaultPlayer
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: false
+  - id: 2
+    name: DefaultPlayer
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: false
+  - id: 3
+    name: DefaultPlayer
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: false
+  - id: 4
+    name: DefaultPlayer
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: false
+  - id: 5
+    name: DefaultPlayer
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: false
+  - id: 6
+    name: DefaultPlayer
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: false
+  - id: 7
+    name: DefaultPlayer
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: false
+  - id: 8
+    name: DefaultPlayer
+    race: HUMAN
+    controller: COMPUTER
+    fixedStartLoc: false
+forces:
+  - name: DefaultForce
+    playerIds:
+      - 0
+    flags:
+      allied: true
+      alliedVictory: true
+      sharedVision: true
+      sharedControl: false
+      sharedControlAdvanced: false
