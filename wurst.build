@@ -24,57 +24,52 @@ optionsFlags:
   useItemClassificationSystem: false
 players:
   - id: 0
-    name: DefaultPlayer
     race: HUMAN
     controller: USER
     fixedStartLoc: false
   - id: 1
-    name: DefaultPlayer
     race: HUMAN
     controller: USER
     fixedStartLoc: false
   - id: 2
-    name: DefaultPlayer
     race: HUMAN
     controller: USER
     fixedStartLoc: false
   - id: 3
-    name: DefaultPlayer
     race: HUMAN
     controller: USER
     fixedStartLoc: false
   - id: 4
-    name: DefaultPlayer
     race: HUMAN
     controller: USER
     fixedStartLoc: false
   - id: 5
-    name: DefaultPlayer
     race: HUMAN
     controller: USER
     fixedStartLoc: false
   - id: 6
-    name: DefaultPlayer
     race: HUMAN
     controller: USER
     fixedStartLoc: false
   - id: 7
-    name: DefaultPlayer
     race: HUMAN
     controller: USER
     fixedStartLoc: false
   - id: 8
-    name: DefaultPlayer
-    race: HUMAN
+    race: UNDEAD
     controller: COMPUTER
     fixedStartLoc: false
 forces:
-  - name: DefaultForce
+  - name: Players
     playerIds:
       - 0
-    flags:
-      allied: true
-      alliedVictory: true
-      sharedVision: true
-      sharedControl: false
-      sharedControlAdvanced: false
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+  - name: Gods
+    playerIds:
+      - 8
