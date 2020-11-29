@@ -1,4 +1,9 @@
 globals
+    // Generated
+rect gg_rct_Arena1= null
+rect gg_rct_HeroPickArea= null
+rect gg_rct_Arena1SpawnPoint= null
+trigger gg_trg_rect_vars= null
 
 
 //JASSHelper struct globals:
@@ -66,6 +71,46 @@ endfunction
 
 //***************************************************************************
 //*
+//*  Regions
+//*
+//***************************************************************************
+
+function CreateRegions takes nothing returns nothing
+    local weathereffect we
+
+    set gg_rct_Arena1=Rect(- 2272.0, - 1760.0, 2560.0, 1760.0)
+    set gg_rct_HeroPickArea=Rect(- 288.0, - 416.0, 288.0, 64.0)
+    set gg_rct_Arena1SpawnPoint=Rect(- 448.0, 608.0, 352.0, 960.0)
+endfunction
+
+//***************************************************************************
+//*
+//*  Triggers
+//*
+//***************************************************************************
+
+//===========================================================================
+// Trigger: rect vars
+//===========================================================================
+function Trig_rect_vars_Actions takes nothing returns nothing
+    call MoveRectToLoc(gg_rct_Arena1, GetRectCenter(GetPlayableMapRect()))
+    call MoveRectToLoc(gg_rct_Arena1SpawnPoint, GetRectCenter(GetPlayableMapRect()))
+    call MoveRectToLoc(gg_rct_HeroPickArea, GetRectCenter(GetPlayableMapRect()))
+endfunction
+
+//===========================================================================
+function InitTrig_rect_vars takes nothing returns nothing
+    set gg_trg_rect_vars=CreateTrigger()
+    call TriggerAddAction(gg_trg_rect_vars, function Trig_rect_vars_Actions)
+endfunction
+
+//===========================================================================
+function InitCustomTriggers takes nothing returns nothing
+    call InitTrig_rect_vars()
+endfunction
+
+//***************************************************************************
+//*
 //*  Players
 //*
 //***************************************************************************
@@ -101,11 +146,13 @@ function main takes nothing returns nothing
     call SetAmbientDaySound("LordaeronSummerDay")
     call SetAmbientNightSound("LordaeronSummerNight")
     call SetMapMusic("Music", true, 0)
+    call CreateRegions()
     call CreateAllUnits()
     call InitBlizzard()
 
 
     call InitGlobals()
+    call InitTrig_rect_vars() // INLINED!!
 
 endfunction
 
@@ -116,7 +163,7 @@ endfunction
 //***************************************************************************
 
 function config takes nothing returns nothing
-    call SetMapName("TRIGSTR_011")
+    call SetMapName("Gods' Arena v0.0.1")
     call SetMapDescription("")
     call SetPlayers(1)
     call SetTeams(1)

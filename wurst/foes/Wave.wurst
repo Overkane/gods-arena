@@ -1,0 +1,38 @@
+package Wave
+import public ClosureTimers
+import public LinkedList
+import ClosureEvents
+import ClosureForGroups
+
+public class Wave
+  private int foeId
+  private int foeCount
+  private int goldBounty
+  private int expBounty
+  var foeGroup = CreateGroup()
+
+  construct(int foeId, int foeCount, int goldBounty, int expBounty)
+    this.foeId = foeId
+    this.foeCount = foeCount
+    this.goldBounty = goldBounty
+    this.expBounty = expBounty
+
+  function spawn()
+    for i = 0 to foeCount-1
+      let spoint = gg_rct_Arena1SpawnPoint.randomPoint().toVec3()
+      var u = createUnit(players[9], foeId, spoint, angle(90))
+      foeGroup.addUnit(u)
+
+  ondestroy
+    givePlayersGold(goldBounty)
+    givePlayersHeroesExp(expBounty)
+      
+function givePlayersGold(int gold)
+  for i = 0 to bj_MAX_PLAYER_SLOTS-1
+    players[i].addGold(gold)
+
+function givePlayersHeroesExp(int exp)
+  for i = 0 to bj_MAX_PLAYER_SLOTS-1
+    forUnitsOfPlayer(players[i]) (unit u) ->
+      if u.isType(UNIT_TYPE_HERO)
+        u.addXp(exp, true)

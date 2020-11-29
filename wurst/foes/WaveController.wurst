@@ -1,0 +1,49 @@
+package WaveController
+import public Wave
+import ClosureEvents
+
+public class WaveController
+  static EventListener foeGroupListener
+  static constant waves = new LinkedList<Wave>
+  static constant waveTimer = CreateTimer()
+  static constant waveTimerDialog = waveTimer.createTimerDialog()
+  static constant SPAWN_TIME = 5.0
+
+  static function addWave(Wave wave)
+    waves.add(wave)
+
+  static function startWaveSpawn()
+    waveSpawn()
+      
+  static function waveSpawn()
+    waveTimer.start(SPAWN_TIME, () -> waveSpawnCallback())
+    waveTimerDialog
+      ..setTitle("Time until next wave:")
+      ..display(true)
+
+  static function waveSpawnCallback()
+    waveTimerDialog.display(false)
+
+    var currentWave = waves.dequeue()
+    currentWave.spawn()
+    
+    foeGroupListener = EventListener.add(EVENT_PLAYER_UNIT_DEATH) -> 
+      var u = GetTriggerUnit()
+
+      if currentWave.foeGroup.contains(u)
+        currentWave.foeGroup.removeUnit(u)
+
+        if currentWave.foeGroup.isEmpty()
+          waveSpawn()
+          destroy foeGroupListener
+          destroy currentWave
+      
+
+init 
+  WaveController.addWave(new Wave('nsty', 1, 100, 100))
+  WaveController.addWave(new Wave('nsty', 2, 200, 200))
+  WaveController.addWave(new Wave('nsty', 3, 300, 300))
+  WaveController.addWave(new Wave('nsty', 4, 400, 400))
+  WaveController.addWave(new Wave('nsty', 5, 500, 500))
+  doAfter(0.1) -> 
+    WaveController.startWaveSpawn()
