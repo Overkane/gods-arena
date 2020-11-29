@@ -1,0 +1,8 @@
+package GameInit
+
+function setArenaVision(rect arenaRect)
+  for i = 0 to bj_MAX_PLAYER_SLOTS-1
+    createVision(players[i], arenaRect, false).start()
+    
+init
+  setArenaVision(gg_rct_Arena1)
