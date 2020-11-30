@@ -1,8 +1,19 @@
 package GameInit
+import Players
+import ClosureTimers
+import GameConstants
 
 function setArenaVision(rect arenaRect)
-  for i = 0 to bj_MAX_PLAYER_SLOTS-1
-    createVision(players[i], arenaRect, false).start()
+  for p in PLAYERS
+    createVision(p, arenaRect, false).start()
+    
+function initPlayers()
+  PLAYERS = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
+
+  onPlayerLeave() p ->
+    PLAYERS.remove(p)
     
 init
-  setArenaVision(gg_rct_Arena1)
+  nullTimer() -> 
+    initPlayers()
+    setArenaVision(gg_rct_Arena1)

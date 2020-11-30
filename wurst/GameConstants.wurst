@@ -1,0 +1,6 @@
+package GameConstants
+import LinkedList
+
+public var PLAYERS = new LinkedList<player>
+public constant ENEMY_PLAYER = players[8]
+
