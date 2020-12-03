@@ -1,19 +1,24 @@
 package GameInit
 import Players
 import ClosureTimers
-import GameConstants
+import GameProperties
+import EntityManagement
 
-function setArenaVision(rect arenaRect)
-  for p in PLAYERS
-    createVision(p, arenaRect, false).start()
-    
 function initPlayers()
   PLAYERS = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
 
   onPlayerLeave() p ->
     PLAYERS.remove(p)
+
+function initVision()
+  createVision(ENEMY_PLAYER, playableMapRect, false).start()
+
+  for p in PLAYERS
+    createVision(p, gg_rct_Arena1, false).start()
     
 init
   nullTimer() -> 
     initPlayers()
-    setArenaVision(gg_rct_Arena1)
+    initVision()
+    startEntityLoop()
+    

@@ -2,7 +2,8 @@ package Wave
 import public ClosureTimers
 import public LinkedList
 import ClosureForGroups
-import GameConstants
+import GameProperties
+import Creep
 
 public class Wave
   private int foeId
@@ -20,8 +21,8 @@ public class Wave
   function spawn()
     for i = 0 to foeCount-1
       let spoint = gg_rct_Arena1SpawnPoint.randomPoint().toVec3()
-      var u = createUnit(ENEMY_PLAYER, foeId, spoint, angle(90))
-      foeGroup.addUnit(u)
+      let creep = new Creep(foeId, spoint, angle(90))
+      foeGroup.addUnit(creep.actor)
 
   ondestroy
     givePlayersGold(goldBounty)

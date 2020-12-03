@@ -1,0 +1,24 @@
+package Arena1Creeps
+import CreepObjEditing
+import ObjectIdGenerator
+
+public constant WAVE1_CREEP_ID = compiletime(UNIT_ID_GEN.next())
+public constant WAVE3_CREEP_ID = compiletime(UNIT_ID_GEN.next())
+public constant WAVE4_CREEP_ID = compiletime(UNIT_ID_GEN.next())
+public constant WAVE5_CREEP_ID = compiletime(UNIT_ID_GEN.next())
+public constant WAVE2_CREEP_ID = compiletime(UNIT_ID_GEN.next())
+public constant WAVE6_CREEP_ID = compiletime(UNIT_ID_GEN.next())
+public constant WAVE7_CREEP_ID = compiletime(UNIT_ID_GEN.next())
+public constant WAVE8_CREEP_ID = compiletime(UNIT_ID_GEN.next())
+
+@compiletime function genUnits()
+  new CreepDefinition(WAVE1_CREEP_ID, 'ngno')
+  new CreepDefinition(WAVE2_CREEP_ID, 'nwlt')
+  new CreepDefinition(WAVE3_CREEP_ID, 'nsty')
+  new CreepDefinition(WAVE4_CREEP_ID, 'nftr')
+  new CreepDefinition(WAVE5_CREEP_ID, 'nfrl')
+  new CreepDefinition(WAVE6_CREEP_ID, 'nowb')
+  new CreepDefinition(WAVE7_CREEP_ID, 'nsqt')
+  new CreepDefinition(WAVE8_CREEP_ID, 'ngrw')
+    ..setMovementType(MovementType.Foot)
+    ..setMovementHeight(100)

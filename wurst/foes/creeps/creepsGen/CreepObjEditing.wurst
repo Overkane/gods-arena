@@ -1,0 +1,10 @@
+package CreepObjEditing
+import public UnitObjEditing
+
+public class CreepDefinition extends UnitDefinition
+  construct(int newId, int origId)
+    super(newId, origId)
+    setDefaults()
+
+  function setDefaults()
+    this.setAcquisitionRange(9000)

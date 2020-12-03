@@ -1,4 +1,4 @@
-package GameConstants
+package GameProperties
 import LinkedList
 
 public var PLAYERS = new LinkedList<player>
