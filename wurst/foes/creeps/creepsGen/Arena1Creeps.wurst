@@ -1,6 +1,7 @@
 package Arena1Creeps
 import CreepObjEditing
 import ObjectIdGenerator
+import UnitIds
 
 public constant WAVE1_CREEP_ID = compiletime(UNIT_ID_GEN.next())
 public constant WAVE3_CREEP_ID = compiletime(UNIT_ID_GEN.next())
@@ -12,13 +13,13 @@ public constant WAVE7_CREEP_ID = compiletime(UNIT_ID_GEN.next())
 public constant WAVE8_CREEP_ID = compiletime(UNIT_ID_GEN.next())
 
 @compiletime function genUnits()
-  new CreepDefinition(WAVE1_CREEP_ID, 'ngno')
-  new CreepDefinition(WAVE2_CREEP_ID, 'nwlt')
-  new CreepDefinition(WAVE3_CREEP_ID, 'nsty')
-  new CreepDefinition(WAVE4_CREEP_ID, 'nftr')
-  new CreepDefinition(WAVE5_CREEP_ID, 'nfrl')
-  new CreepDefinition(WAVE6_CREEP_ID, 'nowb')
-  new CreepDefinition(WAVE7_CREEP_ID, 'nsqt')
-  new CreepDefinition(WAVE8_CREEP_ID, 'ngrw')
+  new CreepDefinition(WAVE1_CREEP_ID, UnitIds.gnoll1)
+  new CreepDefinition(WAVE2_CREEP_ID, UnitIds.timberwolf)
+  new CreepDefinition(WAVE3_CREEP_ID, UnitIds.satyr)
+  new CreepDefinition(WAVE4_CREEP_ID, UnitIds.foresttroll)
+  new CreepDefinition(WAVE5_CREEP_ID, UnitIds.furbolg)
+  new CreepDefinition(WAVE6_CREEP_ID, UnitIds.owlbear)
+  new CreepDefinition(WAVE7_CREEP_ID, UnitIds.sasquatch)
+  new CreepDefinition(WAVE8_CREEP_ID, UnitIds.greendragonwhelp)
     ..setMovementType(MovementType.Foot)
     ..setMovementHeight(100)

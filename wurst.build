@@ -1,8 +1,9 @@
 ---
 projectName: Gods' Arena
 dependencies:
-  - https://github.com/wurstscript/wurstStdlib2
-  - https://github.com/Frotty/Frentity.git
+- https://github.com/wurstscript/wurstStdlib2
+- https://github.com/Frotty/Frentity.git
+- https://github.com/Frotty/Ability-Tooltip-Generator
 buildMapData:
   name: Gods' Arena v0.0.1
   fileName: Gods' Arena v0.0.1

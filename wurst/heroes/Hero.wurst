@@ -1,0 +1,9 @@
+package Hero
+import Entity
+
+public class Hero extends UnitEntity 
+  construct(player p, int typId, vec3 pos, angle ang)
+    super(createUnit(p, typId, pos.toVec2(), ang))
+
+  function addXp(int toAdd, boolean showEyeCandy)
+    AddHeroXP(this.actor, toAdd, showEyeCandy)

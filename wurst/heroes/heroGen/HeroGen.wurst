@@ -1,0 +1,18 @@
+package HeroGen
+import ObjectIdGenerator
+import UnitIds
+import HeroPreset
+import HeroAbilitiesGen
+
+public constant PALADIN_ID = compiletime(HERO_ID_GEN.next())
+public constant ASSASIN_ID = compiletime(HERO_ID_GEN.next())
+public constant ARCHMAGE_ID = compiletime(HERO_ID_GEN.next())
+
+@compiletime function genHeroes()
+  new HeroPreset(PALADIN_ID, UnitIds.paladin, "Paladin")
+    ..addHeroAbility(PALADIN_Q_ID)
+    ..buildHero()
+  new HeroPreset(ASSASIN_ID, UnitIds.warden, "Assasin")
+    ..buildHero()
+  new HeroPreset(ARCHMAGE_ID, UnitIds.archmage, "Archmage")
+    ..buildHero()

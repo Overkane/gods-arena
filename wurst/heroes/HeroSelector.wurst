@@ -1,0 +1,30 @@
+package HeroSelector
+import Selector
+import HeroGen
+import Hero
+import GameProperties
+import Icons
+
+@compiletime public function heroSelector() returns SelectorBuilder
+  return new SelectorBuilder()
+    ..btn("Paladin")
+    ..tooltip("Very cool dude")
+    ..pos(0, 0)
+    ..icon(Icons.bTNHeroPaladin)
+    ..onClick((selector) -> pickHero(selector, PALADIN_ID))
+    ..btn("Assasin")
+    ..tooltip("Very cool dude")
+    ..pos(1, 0)
+    ..icon(Icons.bTNHeroWarden)
+    ..onClick((selector) -> pickHero(selector, ASSASIN_ID))
+    ..btn("Archmage")
+    ..tooltip("Very cool dude")
+    ..pos(2, 0)
+    ..icon(Icons.bTNHeroArchMage)
+    ..onClick((selector) -> pickHero(selector, ARCHMAGE_ID))
+    ..build()
+
+function pickHero(Selector selector, int heroId)
+  let h = new Hero(selector.owner, heroId, gg_rct_HeroPickArea.randomPoint().toVec3(), angle(0))
+  HEROES.add(h)
+  destroy selector

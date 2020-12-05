@@ -1,7 +1,6 @@
 package Wave
 import public ClosureTimers
 import public LinkedList
-import ClosureForGroups
 import GameProperties
 import Creep
 
@@ -33,7 +32,5 @@ function givePlayersGold(int gold)
     p.addGold(gold)
 
 function givePlayersHeroesExp(int exp)
-  for p in PLAYERS
-    forUnitsOfPlayer(p) (unit u) ->
-      if u.isType(UNIT_TYPE_HERO)
-        u.addXp(exp, true)
+  for h in HEROES
+    h.addXp(exp, true)

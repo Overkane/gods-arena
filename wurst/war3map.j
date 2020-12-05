@@ -39,38 +39,6 @@ endfunction
 
 //***************************************************************************
 //*
-//*  Unit Creation
-//*
-//***************************************************************************
-
-//===========================================================================
-function CreateUnitsForPlayer0 takes nothing returns nothing
-    local player p= Player(0)
-    local unit u
-    local integer unitID
-    local trigger t
-    local real life
-
-    set u=BlzCreateUnitWithSkin(p, 'Hblm', 112.0, - 134.8, 228.600, 'Hblm')
-endfunction
-
-//===========================================================================
-function CreatePlayerBuildings takes nothing returns nothing
-endfunction
-
-//===========================================================================
-function CreatePlayerUnits takes nothing returns nothing
-    call CreateUnitsForPlayer0()
-endfunction
-
-//===========================================================================
-function CreateAllUnits takes nothing returns nothing
-    call CreatePlayerBuildings()
-    call CreateUnitsForPlayer0() // INLINED!!
-endfunction
-
-//***************************************************************************
-//*
 //*  Regions
 //*
 //***************************************************************************
@@ -423,7 +391,6 @@ function main takes nothing returns nothing
     call SetAmbientNightSound("LordaeronSummerNight")
     call SetMapMusic("Music", true, 0)
     call CreateRegions()
-    call CreateAllUnits()
     call InitBlizzard()
 
 

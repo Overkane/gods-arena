@@ -3,6 +3,7 @@ import Players
 import ClosureTimers
 import GameProperties
 import EntityManagement
+import HeroSelector
 
 function initPlayers()
   PLAYERS = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
@@ -16,9 +17,14 @@ function initVision()
   for p in PLAYERS
     createVision(p, gg_rct_Arena1, false).start()
     
+function initHeroSelectors()
+  let heroSelector = heroSelector()
+  for p in PLAYERS
+    heroSelector.display(p, gg_rct_HeroPickArea.getCenter())
+    
 init
   nullTimer() -> 
     initPlayers()
     initVision()
+    initHeroSelectors()
     startEntityLoop()
-    

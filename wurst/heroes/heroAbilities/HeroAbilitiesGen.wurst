@@ -1,0 +1,15 @@
+package HeroAbilitiesGen
+import AbilityTooltipGenerator
+
+public constant PALADIN_Q_ID = compiletime(ABIL_ID_GEN.next())
+public constant PALADIN_E_ID = compiletime(ABIL_ID_GEN.next())
+public constant PALADIN_W_ID = compiletime(ABIL_ID_GEN.next())
+public constant PALADIN_R_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genHeroAbilities()
+  let tooltip = new AbilityTooltipGenerator("Nice ability")
+  new ChannelAbilityPreset(PALADIN_Q_ID, 5, true, tooltip)
+  // new AbilityDefinition(PALADIN_Q_ID, baseId)
+  // new AbilityDefinition(PALADIN_E_ID, baseId)
+  // new AbilityDefinition(PALADIN_W_ID, baseId)
+  // new AbilityDefinition(PALADIN_R_ID, baseId)

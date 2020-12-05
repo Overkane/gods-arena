@@ -1,6 +1,8 @@
 package GameProperties
 import LinkedList
+import Hero
 
 public var PLAYERS = new LinkedList<player>
+public var HEROES = new LinkedList<Hero>
 public constant ENEMY_PLAYER = players[8]
 
