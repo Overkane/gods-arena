@@ -2,9 +2,13 @@ package CreepObjEditing
 import public UnitObjEditing
 
 public class CreepDefinition extends UnitDefinition
+  int exp = 10
+
   construct(int newId, int origId)
     super(newId, origId)
     setDefaults()
 
   function setDefaults()
-    this.setAcquisitionRange(9000)
+    setAcquisitionRange(9000)
+    setGoldBountyAwardedBase(0)
+    setLevel(1)

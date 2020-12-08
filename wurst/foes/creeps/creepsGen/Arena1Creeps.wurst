@@ -1,25 +1,64 @@
 package Arena1Creeps
-import CreepObjEditing
-import ObjectIdGenerator
 import UnitIds
+import Wave
 
-public constant WAVE1_CREEP_ID = compiletime(UNIT_ID_GEN.next())
-public constant WAVE3_CREEP_ID = compiletime(UNIT_ID_GEN.next())
-public constant WAVE4_CREEP_ID = compiletime(UNIT_ID_GEN.next())
-public constant WAVE5_CREEP_ID = compiletime(UNIT_ID_GEN.next())
-public constant WAVE2_CREEP_ID = compiletime(UNIT_ID_GEN.next())
-public constant WAVE6_CREEP_ID = compiletime(UNIT_ID_GEN.next())
-public constant WAVE7_CREEP_ID = compiletime(UNIT_ID_GEN.next())
-public constant WAVE8_CREEP_ID = compiletime(UNIT_ID_GEN.next())
 
-@compiletime function genUnits()
-  new CreepDefinition(WAVE1_CREEP_ID, UnitIds.gnoll1)
-  new CreepDefinition(WAVE2_CREEP_ID, UnitIds.timberwolf)
-  new CreepDefinition(WAVE3_CREEP_ID, UnitIds.satyr)
-  new CreepDefinition(WAVE4_CREEP_ID, UnitIds.foresttroll)
-  new CreepDefinition(WAVE5_CREEP_ID, UnitIds.furbolg)
-  new CreepDefinition(WAVE6_CREEP_ID, UnitIds.owlbear)
-  new CreepDefinition(WAVE7_CREEP_ID, UnitIds.sasquatch)
-  new CreepDefinition(WAVE8_CREEP_ID, UnitIds.greendragonwhelp)
-    ..setMovementType(MovementType.Foot)
-    ..setMovementHeight(100)
+public constant WAVE_1 = compiletime(wave_1())
+public constant WAVE_2 = compiletime(wave_2())
+
+constant ARENA_INDEX = 0
+
+function wave_1() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(100)
+  ..goldBounty(100)
+
+  ..creep(UnitIds.gnoll1)
+  ..hp(25)
+  ..damage(10)
+  ..amount(6)
+
+  ..wait(10)
+
+  ..creep(UnitIds.timberwolf)
+  ..hp(50)
+  ..damage(8)
+  ..amount(4)
+
+  ..wait(15)
+  
+  ..creep(UnitIds.foresttroll)
+  ..scale(2.0)
+  ..hp(200)
+  ..damage(15)
+  ..amount(1)
+
+  .build()
+
+
+function wave_2() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(100)
+  ..goldBounty(200)
+
+  ..creep(UnitIds.gnoll1)
+  ..hp(45)
+  ..damage(10)
+  ..amount(8)
+
+  ..creep(UnitIds.satyr)
+  ..hp(90)
+  ..damage(18)
+  ..amount(6)
+
+  ..wait(20)
+  
+  ..creep(UnitIds.foresttroll)
+  ..scale(2.0)
+  ..hp(300)
+  ..damage(20)
+  ..amount(1)
+
+  .build()

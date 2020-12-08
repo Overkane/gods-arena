@@ -1,0 +1,9 @@
+package Arenas
+import LinkedList
+import ClosureTimers
+
+public constant ARENA_SPAWNS = new LinkedList<rect>
+
+init
+    nullTimer() -> 
+    ARENA_SPAWNS.add(gg_rct_Arena1SpawnPoint)

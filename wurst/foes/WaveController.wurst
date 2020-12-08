@@ -1,52 +1,46 @@
 package WaveController
 import public Wave
-import ClosureEvents
 import Arena1Creeps
+import TimerUtils
+import Creep
 
-public class WaveController
-  static EventListener foeGroupListener
-  static constant waves = new LinkedList<Wave>
-  static constant waveTimer = CreateTimer()
-  static constant waveTimerDialog = waveTimer.createTimerDialog()
-  static constant SPAWN_TIME = 5.0
+public constant waveController = new WaveController()
 
-  static function addWave(Wave wave)
+constant SPAWN_TIME = 5.
+
+class WaveController
+  constant waves = new LinkedList<Wave>
+
+  Wave currentWave = null
+
+  function addWave(Wave wave)
     waves.add(wave)
 
-  static function startWaveSpawn()
+  function startWaveSpawn()
     waveSpawn()
       
-  static function waveSpawn()
-    waveTimer.start(SPAWN_TIME, () -> waveSpawnCallback())
-    waveTimerDialog
-      ..setTitle("Time until next wave:")
-      ..display(true)
+  function waveSpawn()
+    let tim = getTimer()
+    let tdialog = tim.createTimerDialog()
+    ..setTitle("Time until next wave:")
+    ..display(true)
+    tim.doAfter(SPAWN_TIME) ->
+      tdialog.destr()
 
-  static function waveSpawnCallback()
-    waveTimerDialog.display(false)
-
-    let currentWave = waves.dequeue()
-    currentWave.spawn()
+      currentWave = waves.dequeue()
+      currentWave.spawn()
     
-    foeGroupListener = EventListener.add(EVENT_PLAYER_UNIT_DEATH) -> 
-      let u = GetTriggerUnit()
-
-      if currentWave.foeGroup.contains(u)
-        currentWave.foeGroup.removeUnit(u)
-
-        if currentWave.foeGroup.isEmpty()
-          waveSpawn()
-          destroy foeGroupListener
-          destroy currentWave
+  function checkIfCurrentWaveDone()
+    if currentWave != null and currentWave.isDone
+      currentWave.finish()
+      currentWave = null
+      waveSpawn()
 
 init 
-  WaveController.addWave(new Wave(WAVE1_CREEP_ID, 1, 100, 100))
-  WaveController.addWave(new Wave(WAVE2_CREEP_ID, 1, 200, 200))
-  WaveController.addWave(new Wave(WAVE3_CREEP_ID, 1, 300, 300))
-  WaveController.addWave(new Wave(WAVE4_CREEP_ID, 1, 400, 400))
-  WaveController.addWave(new Wave(WAVE5_CREEP_ID, 1, 500, 500))
-  WaveController.addWave(new Wave(WAVE6_CREEP_ID, 1, 600, 600))
-  WaveController.addWave(new Wave(WAVE7_CREEP_ID, 1, 700, 700))
-  WaveController.addWave(new Wave(WAVE8_CREEP_ID, 1, 800, 800))
-  nullTimer() -> 
-    WaveController.startWaveSpawn()
+  nullTimer() ->
+    onAllCreepsDead = () -> waveController.checkIfCurrentWaveDone()
+
+    waveController.addWave(WAVE_1)
+    waveController.addWave(WAVE_2)
+
+    waveController.startWaveSpawn()

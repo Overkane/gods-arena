@@ -3,34 +3,138 @@ import public ClosureTimers
 import public LinkedList
 import GameProperties
 import Creep
+import CreepObjEditing
+import ObjectIdGenerator
+import SoundUtils
+import Arenas
+
+interface NextStepListener
+  abstract function execute()
+
+interface WaveStep
+  abstract function execute(NextStepListener next)
+
+class WaitStep implements WaveStep
+  var duration = 0.
+
+  construct(real duration)
+    this.duration = duration
+
+  override function execute(NextStepListener next)
+    doAfter(duration) -> 
+      next.execute()
+
+
+class CreepStep implements WaveStep
+  let unitId = UNIT_ID_GEN.next()
+  CreepDefinition creepDef
+  var arenaIndex = 0
+
+  var amount = 1
+
+  construct(int origUnitId)
+    creepDef = new CreepDefinition(unitId, origUnitId)
+
+  override function execute(NextStepListener next)
+    doPeriodicallyCounted(0.05, amount) cb ->
+      new Creep(unitId, ARENA_SPAWNS.get(arenaIndex).randomPoint().toVec3(), GetRandomReal(0, 360).fromDeg())
+      if cb.isLast()
+        next.execute()
+      
+
+public class WaveBuilder
+  let steps = new LinkedList<WaveStep>
+  var currentUnitId = '0000'
+  WaveStep currentStep = null
+  CreepStep creepStep = null
+  var goldBounty = 100
+  var expBounty = 100
+  var arenaIndex = 0
+
+  function wait(real duration)
+    if currentStep != null
+      steps.add(currentStep)
+      currentStep = null
+
+      steps.add(new WaitStep(duration))
+
+  function creep(int origUnitId)
+    if currentStep != null
+      steps.add(currentStep)
+      currentStep = null
+
+    creepStep = new CreepStep(origUnitId)
+    creepStep.arenaIndex = arenaIndex
+    currentStep = creepStep
+
+  function arena(int index)
+    arenaIndex = index
+
+  function amount(int amount)
+    creepStep.amount = amount
+
+  function hp(int hp)
+    creepStep.creepDef.setHitPointsMaximumBase(hp)
+
+  function damage(int dmg)
+    creepStep.creepDef.setAttack1DamageBase(dmg)
+
+  function armor(int armor)
+    creepStep.creepDef.setDefenseBase(armor)
+
+  function model(string path)
+    creepStep.creepDef.setModelFile(path)
+
+  function scale(real scale)
+    creepStep.creepDef.setScalingValue(scale)
+
+  function rgb(int red, int green, int blue)
+    creepStep.creepDef.setTintingColorRed(red)
+    creepStep.creepDef.setTintingColorGreen(green)
+    creepStep.creepDef.setTintingColorBlue(blue)
+
+  function goldBounty(int bounty)
+    this.goldBounty = bounty
+
+  function expBounty(int bounty)
+    this.expBounty = bounty
+
+  function build() returns Wave
+    if currentStep != null
+      steps.add(currentStep)
+      currentStep = null
+    return new Wave(goldBounty, expBounty, steps)
+
+constant NEXT_WAVE = new SoundDefinition(Sounds.questNew)
+constant WAVE_FINISHED = new SoundDefinition(Sounds.questCompleted)
 
 public class Wave
-  private int foeId
-  private int foeCount
+  LinkedList<WaveStep> steps
   private int goldBounty
   private int expBounty
-  var foeGroup = CreateGroup()
+  var isDone = false
 
-  construct(int foeId, int foeCount, int goldBounty, int expBounty)
-    this.foeId = foeId
-    this.foeCount = foeCount
+  construct(int goldBounty, int expBounty, LinkedList<WaveStep> steps)
     this.goldBounty = goldBounty
     this.expBounty = expBounty
+    this.steps = steps
 
   function spawn()
-    for i = 0 to foeCount-1
-      let spoint = gg_rct_Arena1SpawnPoint.randomPoint().toVec3()
-      let creep = new Creep(foeId, spoint, angle(90))
-      foeGroup.addUnit(creep.actor)
-
-  ondestroy
-    givePlayersGold(goldBounty)
-    givePlayersHeroesExp(expBounty)
+    printTimed("The next Wave Begins", 10.)
+    NEXT_WAVE.play()
+    nextStep()
       
-function givePlayersGold(int gold)
-  for p in PLAYERS
-    p.addGold(gold)
+  function nextStep()
+    if steps.isEmpty()
+      isDone = true
+    else
+      steps.dequeue().execute() -> 
+        nextStep()
+      
 
-function givePlayersHeroesExp(int exp)
-  for h in HEROES
-    h.addXp(exp, true)
+  function finish()
+    printTimed("Wave finished!", 10.)
+    WAVE_FINISHED.play()
+    HEROES.forEach(hero -> hero.addXp(expBounty, true))
+    PLAYERS.forEach(_player -> _player.addGold(goldBounty))
+    

@@ -48,7 +48,7 @@ function CreateRegions takes nothing returns nothing
 
     set gg_rct_Arena1=Rect(- 2272.0, - 1760.0, 2560.0, 1760.0)
     set gg_rct_HeroPickArea=Rect(- 288.0, - 416.0, 288.0, 64.0)
-    set gg_rct_Arena1SpawnPoint=Rect(- 448.0, 608.0, 352.0, 960.0)
+    set gg_rct_Arena1SpawnPoint=Rect(- 480.0, 608.0, 416.0, 1024.0)
 endfunction
 
 //***************************************************************************

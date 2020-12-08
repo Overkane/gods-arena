@@ -2,6 +2,21 @@ package Creep
 import Entity
 import GameProperties
 
+interface AllCreepsDead
+  abstract function execute()
+
+public AllCreepsDead onAllCreepsDead
+
+public constant activeCreeps = new LinkedList<Creep>
+
 public class Creep extends UnitEntity
   construct(int typId, vec3 pos, angle ang)
     super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
+    activeCreeps.add(this)
+
+    EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH, () -> begin
+      activeCreeps.remove(this)
+      if activeCreeps.isEmpty()
+        onAllCreepsDead.execute()
+    end)
+    
