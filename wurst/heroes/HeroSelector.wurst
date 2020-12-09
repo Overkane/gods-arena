@@ -1,5 +1,6 @@
 package HeroSelector
 import public Selector
+import ClosureTimers
 import LinkedList
 import HeroGen
 import Hero
@@ -7,6 +8,7 @@ import GameProperties
 import Icons
   
 public constant heroSelectorList = new LinkedList<Selector>
+constant heroPickRect = Rect(-288, -416, 288, 64)
 
 @compiletime public function heroSelector() returns SelectorBuilder
   return new SelectorBuilder()
@@ -28,8 +30,18 @@ public constant heroSelectorList = new LinkedList<Selector>
     ..build()
 
 function pickHero(Selector selector, int heroId)
-  let h = new Hero(selector.owner, heroId, gg_rct_HeroPickArea.randomPoint().toVec3(), angle(0))
+  let h = new Hero(selector.owner, heroId, heroPickRect.randomPoint().toVec3(), angle(0))
   HEROES.add(h)
   selector.owner.select(h.actor)
   heroSelectorList.remove(selector)
   destroy selector
+
+function initHeroSelectors()
+  let heroSelector = heroSelector()
+  for p in PLAYERS
+    let selector = heroSelector.display(p, heroPickRect.getCenter())
+    heroSelectorList.add(selector)
+
+init
+  nullTimer() -> 
+    initHeroSelectors()

@@ -2,8 +2,10 @@ package GameInit
 import Players
 import GameProperties
 import EntityManagement
-import HeroSelector
+import initlater HeroSelector
 import WaveController
+
+constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
 function initPlayers()
   PLAYERS = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
@@ -15,13 +17,7 @@ function initVision()
   createVision(ENEMY_PLAYER, playableMapRect, false).start()
 
   for p in PLAYERS
-    createVision(p, gg_rct_Arena1, false).start()
-    
-function initHeroSelectors()
-  let heroSelector = heroSelector()
-  for p in PLAYERS
-    let selector = heroSelector.display(p, gg_rct_HeroPickArea.getCenter())
-    heroSelectorList.add(selector)
+    createVision(p, arena1Rect, false).start()
 
 function initPickTimer()
   let heroPickTimer = getTimer()
@@ -41,6 +37,5 @@ init
   nullTimer() -> 
     initPlayers()
     initVision()
-    initHeroSelectors()
     startEntityLoop()
     initPickTimer()

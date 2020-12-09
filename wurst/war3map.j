@@ -61,9 +61,7 @@ endfunction
 // Trigger: rect vars
 //===========================================================================
 function Trig_rect_vars_Actions takes nothing returns nothing
-    call MoveRectToLoc(gg_rct_Arena1, GetRectCenter(GetPlayableMapRect()))
     call MoveRectToLoc(gg_rct_Arena1SpawnPoint, GetRectCenter(GetPlayableMapRect()))
-    call MoveRectToLoc(gg_rct_HeroPickArea, GetRectCenter(GetPlayableMapRect()))
 endfunction
 
 //===========================================================================

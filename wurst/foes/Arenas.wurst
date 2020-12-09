@@ -5,5 +5,5 @@ import ClosureTimers
 public constant ARENA_SPAWNS = new LinkedList<rect>
 
 init
-    nullTimer() -> 
+  nullTimer() -> 
     ARENA_SPAWNS.add(gg_rct_Arena1SpawnPoint)
