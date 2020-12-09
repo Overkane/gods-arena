@@ -39,6 +39,68 @@ endfunction
 
 //***************************************************************************
 //*
+//*  Unit Creation
+//*
+//***************************************************************************
+
+//===========================================================================
+function CreateBuildingsForPlayer0 takes nothing returns nothing
+    local player p= Player(0)
+    local unit u
+    local integer unitID
+    local trigger t
+    local real life
+
+    set u=BlzCreateUnitWithSkin(p, 'hvlt', 64.0, - 640.0, 270.000, 'hvlt')
+endfunction
+
+//===========================================================================
+function CreateNeutralPassiveBuildings takes nothing returns nothing
+    local player p= Player(PLAYER_NEUTRAL_PASSIVE)
+    local unit u
+    local integer unitID
+    local trigger t
+    local real life
+
+    set u=BlzCreateUnitWithSkin(p, 'ngme', - 448.0, - 64.0, 270.000, 'ngme')
+endfunction
+
+//===========================================================================
+function CreateNeutralPassive takes nothing returns nothing
+    local player p= Player(PLAYER_NEUTRAL_PASSIVE)
+    local unit u
+    local integer unitID
+    local trigger t
+    local real life
+
+    set u=BlzCreateUnitWithSkin(p, 'necr', - 1345.8, - 746.2, 155.494, 'necr')
+    set u=BlzCreateUnitWithSkin(p, 'necr', 1800.4, 942.3, 298.299, 'necr')
+    set u=BlzCreateUnitWithSkin(p, 'necr', 1672.6, 105.7, 357.473, 'necr')
+    set u=BlzCreateUnitWithSkin(p, 'necr', 1052.9, - 974.9, 155.912, 'necr')
+    set u=BlzCreateUnitWithSkin(p, 'nrac', 536.0, - 292.3, 259.153, 'nrac')
+    set u=BlzCreateUnitWithSkin(p, 'npig', - 849.3, - 211.9, 197.771, 'npig')
+    set u=BlzCreateUnitWithSkin(p, 'npig', 475.1, 1244.3, 259.098, 'npig')
+endfunction
+
+//===========================================================================
+function CreatePlayerBuildings takes nothing returns nothing
+    call CreateBuildingsForPlayer0()
+endfunction
+
+//===========================================================================
+function CreatePlayerUnits takes nothing returns nothing
+endfunction
+
+//===========================================================================
+function CreateAllUnits takes nothing returns nothing
+    call CreateNeutralPassiveBuildings()
+    call CreateBuildingsForPlayer0() // INLINED!!
+    call CreateNeutralPassive()
+    call CreatePlayerUnits()
+endfunction
+
+//***************************************************************************
+//*
 //*  Regions
 //*
 //***************************************************************************
@@ -389,6 +451,7 @@ function main takes nothing returns nothing
     call SetAmbientNightSound("LordaeronSummerNight")
     call SetMapMusic("Music", true, 0)
     call CreateRegions()
+    call CreateAllUnits()
     call InitBlizzard()
 
 

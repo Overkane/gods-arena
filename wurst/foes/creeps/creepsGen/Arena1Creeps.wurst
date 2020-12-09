@@ -14,51 +14,313 @@ function wave_1() returns Wave
   ..expBounty(100)
   ..goldBounty(100)
 
-  ..creep(UnitIds.gnoll1)
-  ..hp(25)
-  ..damage(10)
-  ..amount(6)
+  ..creep(UnitIds.timberwolf)
+  ..hp(50)
+  ..damage(7)
+  ..amount(10)
 
   ..wait(10)
 
-  ..creep(UnitIds.timberwolf)
-  ..hp(50)
-  ..damage(8)
-  ..amount(4)
+  ..creep(UnitIds.giantwolf)
+  ..hp(75)
+  ..damage(10)
+  ..amount(2)
 
-  ..wait(15)
-  
-  ..creep(UnitIds.foresttroll)
-  ..scale(2.0)
-  ..hp(200)
+  ..creep(UnitIds.direwolf)
+  ..hp(100)
   ..damage(15)
   ..amount(1)
+  ..scale(1.5)
 
   .build()
-
 
 function wave_2() returns Wave
   return new WaveBuilder()
   ..arena(ARENA_INDEX)
-  ..expBounty(100)
-  ..goldBounty(200)
+  ..expBounty(150)
+  ..goldBounty(125)
 
-  ..creep(UnitIds.gnoll1)
-  ..hp(45)
-  ..damage(10)
-  ..amount(8)
+  ..creep(UnitIds.foresttroll)
+  ..hp(35)
+  ..damage(4)
+  ..amount(10)
 
-  ..creep(UnitIds.satyr)
-  ..hp(90)
-  ..damage(18)
-  ..amount(6)
+  ..creep(UnitIds.foresttrolltrapper)
+  ..hp(50)
+  ..damage(6)
+  ..amount(4)
 
   ..wait(20)
-  
-  ..creep(UnitIds.foresttroll)
-  ..scale(2.0)
-  ..hp(300)
-  ..damage(20)
+
+  ..creep(UnitIds.foresttrollberserker)
+  ..hp(70)
+  ..damage(10)
+  ..amount(4)
+
+  ..creep(UnitIds.foresttrollhighpriest)
+  ..hp(65)
+  ..damage(5)
+  ..amount(3)
+
+  ..creep(UnitIds.foresttrollking)
+  ..hp(100)
+  ..damage(15)
   ..amount(1)
+  ..scale(1.5)
+
+  .build()
+
+function wave_3() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(200)
+  ..goldBounty(150)
+
+  ..creep(UnitIds.furbolg)
+  ..hp(80)
+  ..damage(8)
+  ..amount(8)
+
+  ..creep(UnitIds.furbolgtracker)
+  ..hp(70)
+  ..damage(12)
+  ..amount(6)
+
+  ..creep(UnitIds.furbolgshaman)
+  ..hp(65)
+  ..damage(10)
+  ..amount(2)
+
+  ..wait(10)
+
+  ..creep(UnitIds.furbolgancient)
+  ..hp(150)
+  ..damage(15)
+  ..amount(4)
+
+  ..creep(UnitIds.furbolgeldershaman)
+  ..hp(100)
+  ..damage(10)
+  ..amount(2)
+
+  ..creep(UnitIds.furbolgchampion)
+  ..hp(225)
+  ..damage(25)
+  ..amount(1)
+  ..scale(1.5)
+
+  .build()
+
+function wave_4() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(250)
+  ..goldBounty(175)
+
+  ..creep(UnitIds.gnoll1)
+  ..hp(70)
+  ..damage(10)
+  ..amount(12)
+
+  ..creep(UnitIds.gnoll3)
+  ..hp(100)
+  ..damage(15)
+  ..amount(2)
+  ..scale(1.25)
+
+  ..creep(UnitIds.gnollpoacher)
+  ..hp(100)
+  ..damage(8)
+  ..amount(8)
+
+  ..wait(10)
+
+  ..creep(UnitIds.gnollbrute)
+  ..hp(150)
+  ..damage(20)
+  ..amount(4)
+
+  ..creep(UnitIds.gnollassassin)
+  ..hp(90)
+  ..damage(15)
+  ..amount(3)
+
+  ..creep(UnitIds.gnollking)
+  ..hp(300)
+  ..damage(35)
+  ..amount(1)
+  ..scale(1.5)
+
+  .build()
+
+function wave_5() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(300)
+  ..goldBounty(200)
+
+  ..creep(UnitIds.spider)
+  ..hp(50)
+  ..damage(20)
+  ..amount(10)
+
+  ..creep(UnitIds.forestspider)
+  ..hp(100)
+  ..damage(10)
+  ..amount(10)
+
+  ..creep(UnitIds.spiderblack)
+  ..hp(75)
+  ..damage(15)
+  ..amount(10)
+
+  ..wait(10)
+
+  ..creep(UnitIds.spittingspider)
+  ..hp(125)
+  ..damage(18)
+  ..amount(4)
+
+  ..creep(UnitIds.giantspider)
+  ..hp(200)
+  ..damage(25)
+  ..amount(4)
+
+  ..creep(UnitIds.broodmother)
+  ..hp(350)
+  ..damage(40)
+  ..amount(1)
+  ..scale(1.5)
+
+  .build()
+
+function wave_6() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(350)
+  ..goldBounty(225)
+
+  ..creep(UnitIds.owlbear)
+  ..hp(150)
+  ..damage(20)
+  ..amount(4)
+
+  ..creep(UnitIds.enragedowlbear)
+  ..hp(200)
+  ..damage(30)
+  ..amount(2)
+
+  ..creep(UnitIds.berserkowlbear)
+  ..hp(500)
+  ..damage(50)
+  ..amount(1)
+  ..scale(1.5)
+
+  .build()
+
+function wave_7() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(400)
+  ..goldBounty(250)
+
+  ..creep(UnitIds.sasquatch)
+  ..hp(150)
+  ..damage(15)
+  ..amount(10)
+
+  ..creep(UnitIds.eldersasquatch)
+  ..hp(250)
+  ..damage(35)
+  ..amount(2)
+
+  ..wait(10)
+
+  ..creep(UnitIds.sasquatchoracle)
+  ..hp(300)
+  ..damage(25)
+  ..amount(2)
+
+  ..creep(UnitIds.ancientsasquatch)
+  ..hp(600)
+  ..damage(50)
+  ..amount(1)
+  ..scale(1.5)
+
+  .build()
+
+function wave_8() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(450)
+  ..goldBounty(275)
+
+  ..creep(UnitIds.greendragonwhelp)
+  ..hp(250)
+  ..damage(20)
+  ..amount(10)
+
+  ..creep(UnitIds.greendragon)
+  ..hp(500)
+  ..damage(40)
+  ..amount(2)
+
+  ..wait(10)
+
+  ..creep(UnitIds.greendrake)
+  ..hp(1000)
+  ..damage(65)
+  ..amount(1)
+  ..scale(1.5)
+
+  .build()
+
+function wave_9() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(500)
+  ..goldBounty(300)
+
+  ..creep(UnitIds.druidoftheclaw)
+  ..hp(300)
+  ..damage(40)
+  ..amount(4)
+
+  ..creep(UnitIds.mountaingiant)
+  ..hp(1000)
+  ..damage(100)
+  ..amount(2)
+
+  ..creep(UnitIds.archer)
+  ..hp(150)
+  ..damage(25)
+  ..amount(10)
+
+  ..creep(UnitIds.dryad)
+  ..hp(250)
+  ..damage(50)
+  ..amount(2)
+
+  ..wait(10)
+
+  ..creep(UnitIds.huntress)
+  ..hp(800)
+  ..damage(100)
+  ..amount(2)
+  ..scale(2)
+
+  .build()
+
+function boss_wave_10() returns Wave
+  return new WaveBuilder()
+  ..arena(ARENA_INDEX)
+  ..expBounty(550)
+  ..goldBounty(325)
+
+  ..creep(UnitIds.keeperofthegrove)
+  ..hp(5000)
+  ..damage(100)
+  ..amount(1)
+  ..scale(3)
 
   .build()
