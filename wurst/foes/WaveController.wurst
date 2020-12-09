@@ -42,5 +42,3 @@ init
 
     waveController.addWave(WAVE_1)
     waveController.addWave(WAVE_2)
-
-    waveController.startWaveSpawn()

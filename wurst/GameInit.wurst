@@ -1,9 +1,9 @@
 package GameInit
 import Players
-import ClosureTimers
 import GameProperties
 import EntityManagement
 import HeroSelector
+import WaveController
 
 function initPlayers()
   PLAYERS = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
@@ -20,11 +20,27 @@ function initVision()
 function initHeroSelectors()
   let heroSelector = heroSelector()
   for p in PLAYERS
-    heroSelector.display(p, gg_rct_HeroPickArea.getCenter())
-    
+    let selector = heroSelector.display(p, gg_rct_HeroPickArea.getCenter())
+    heroSelectorList.add(selector)
+
+function initPickTimer()
+  let heroPickTimer = getTimer()
+  let heroPickTimerDialog = heroPickTimer.createTimerDialog()
+  heroPickTimerDialog
+    ..setTitle("Hero pick phase ends in:")
+    ..display(true)
+
+  heroPickTimer.doAfter(HERO_PICK_TIME) ->
+    for selector in heroSelectorList
+      destroy selector
+    destroy heroSelectorList
+    heroPickTimerDialog.destr()
+    waveController.startWaveSpawn()
+        
 init
   nullTimer() -> 
     initPlayers()
     initVision()
     initHeroSelectors()
     startEntityLoop()
+    initPickTimer()

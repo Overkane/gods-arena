@@ -1,9 +1,12 @@
 package HeroSelector
-import Selector
+import public Selector
+import LinkedList
 import HeroGen
 import Hero
 import GameProperties
 import Icons
+  
+public constant heroSelectorList = new LinkedList<Selector>
 
 @compiletime public function heroSelector() returns SelectorBuilder
   return new SelectorBuilder()
@@ -27,4 +30,6 @@ import Icons
 function pickHero(Selector selector, int heroId)
   let h = new Hero(selector.owner, heroId, gg_rct_HeroPickArea.randomPoint().toVec3(), angle(0))
   HEROES.add(h)
+  selector.owner.select(h.actor)
+  heroSelectorList.remove(selector)
   destroy selector
