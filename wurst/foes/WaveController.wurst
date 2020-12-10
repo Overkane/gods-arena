@@ -6,7 +6,7 @@ import Creep
 
 public constant waveController = new WaveController()
 
-constant SPAWN_TIME = 5.
+constant SPAWN_TIME = 20.
 
 class WaveController
   constant waves = new LinkedList<Wave>

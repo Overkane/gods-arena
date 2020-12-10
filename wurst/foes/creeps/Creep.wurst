@@ -12,6 +12,7 @@ public constant activeCreeps = new LinkedList<Creep>
 public class Creep extends UnitEntity
   construct(int typId, vec3 pos, angle ang)
     super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
+    actor.setAnimation("birth")
     activeCreeps.add(this)
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH, () -> begin

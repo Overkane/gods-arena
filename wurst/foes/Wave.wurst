@@ -120,7 +120,7 @@ public class Wave
     this.steps = steps
 
   function spawn()
-    printTimed("The next Wave Begins", 10.)
+    printTimed("|cffceac15>> The wave begins!", 10.)
     NEXT_WAVE.play()
     nextStep()
       
@@ -133,7 +133,7 @@ public class Wave
       
 
   function finish()
-    printTimed("Wave finished!", 10.)
+    printTimed("|cff1f9913>> Wave cleared!", 10.)
     WAVE_FINISHED.play()
     //+ TODO - temporary decision - One active player gets 50% additional gold and exp.
     //  And for each additional player additional bounty decreased by 1/7.
