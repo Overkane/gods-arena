@@ -2,7 +2,7 @@ package HeroSelector
 import public Selector
 import ClosureTimers
 import LinkedList
-import HeroGen
+import Heroes
 import Hero
 import GameProperties
 import Icons

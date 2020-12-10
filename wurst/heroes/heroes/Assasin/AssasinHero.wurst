@@ -1,0 +1,10 @@
+package AssasinHero
+import ObjectIdGenerator
+import UnitIds
+import HeroPreset
+
+public constant ASSASIN_ID = compiletime(HERO_ID_GEN.next())
+
+@compiletime function genHero()
+  new HeroPreset(ASSASIN_ID, UnitIds.warden, "Assasin")
+    ..buildHero()

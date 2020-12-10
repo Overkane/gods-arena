@@ -1,0 +1,49 @@
+package HealingSeal
+import ClosureEvents
+import Icons
+import Abilities
+import ClosureForGroups
+import AbilityTooltipGenerator
+
+public constant HEALING_SEAL_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure HEALING_SEAL_DAMAGE = lvl -> 100. * lvl
+RealLevelClosure HEALING_SEAL_RADIUS = lvl -> 350.
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero heals an ally and deals damage to all enemies around it or deals damage to the enemy and heals allies around it.")
+  new ChannelAbilityPreset(HEALING_SEAL_ID, 5, true, tooltip)
+    ..presetButtonPosNormal(0, 2)
+    ..presetTargetTypes(Targettype.UNIT)
+    ..tooltipStartListen()
+    ..presetHotkey("Q")
+    ..setName("Healing Seal")
+    ..presetIcon(Icons.bTNHolyBolt)
+    ..addTooltipProperty("Damage/Heal", HEALING_SEAL_DAMAGE)
+    ..addTooltipProperty("Damage/Heal Radius", HEALING_SEAL_RADIUS)
+    ..presetManaCost(lvl -> 50 + 10 * lvl)
+    ..presetCastRange(lvl -> 600)
+    ..presetCooldown(lvl -> 8)
+    ..setLevelSkipRequirement(0)
+    ..tooltipStopListen()
+
+init 
+  EventListener.onTargetCast(HEALING_SEAL_ID) (caster, tunit) ->
+    let lvl = caster.getAbilityLevel(HEALING_SEAL_ID)
+    let spellDamage = HEALING_SEAL_DAMAGE.run(lvl)
+    let spellRadius = HEALING_SEAL_RADIUS.run(lvl)
+
+    flashEffect(Abilities.holyBoltSpecialArt, tunit.getPos())
+
+    if tunit.isAllyOf(caster)
+      tunit.setHP(tunit.getHP()+spellDamage)
+      forUnitsInRange(caster.getPos(), spellRadius) (unit u) ->
+        if u.isEnemyOf(caster) and u.isAlive()
+          flashEffect(Abilities.holyBoltSpecialArt, u.getPos())
+          caster.damageTarget(u, spellDamage)
+    else
+      caster.damageTarget(tunit, spellDamage)
+      forUnitsInRange(caster.getPos(), spellRadius) (unit u) ->
+        if u.isAllyOf(caster)
+          flashEffect(Abilities.holyBoltSpecialArt, u.getPos())
+          tunit.setHP(u.getHP()+spellDamage)
