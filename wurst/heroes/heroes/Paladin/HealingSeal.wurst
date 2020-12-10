@@ -19,7 +19,7 @@ init
     flashEffect(Abilities.holyBoltSpecialArt, tunit.getPos())
 
     if tunit.isAllyOf(caster)
-      tunit.setHP(tunit.getHP()+spellDamage)
+      tunit.setHP(tunit.getHP() + spellDamage)
       forUnitsInRange(caster.getPos(), spellRadius) target ->
         if target.isEnemyOf(caster) and target.isAlive()
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
