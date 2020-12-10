@@ -42,3 +42,11 @@ init
 
     waveController.addWave(WAVE_1)
     waveController.addWave(WAVE_2)
+    waveController.addWave(WAVE_3)
+    waveController.addWave(WAVE_4)
+    waveController.addWave(WAVE_5)
+    waveController.addWave(WAVE_6)
+    waveController.addWave(WAVE_7)
+    waveController.addWave(WAVE_8)
+    waveController.addWave(WAVE_9)
+    waveController.addWave(WAVE_10)

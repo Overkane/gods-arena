@@ -5,6 +5,14 @@ import Wave
 
 public constant WAVE_1 = compiletime(wave_1())
 public constant WAVE_2 = compiletime(wave_2())
+public constant WAVE_3 = compiletime(wave_3())
+public constant WAVE_4 = compiletime(wave_4())
+public constant WAVE_5 = compiletime(wave_5())
+public constant WAVE_6 = compiletime(wave_6())
+public constant WAVE_7 = compiletime(wave_7())
+public constant WAVE_8 = compiletime(wave_8())
+public constant WAVE_9 = compiletime(wave_9())
+public constant WAVE_10 = compiletime(boss_wave_10())
 
 constant ARENA_INDEX = 0
 
