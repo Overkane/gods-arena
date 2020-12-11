@@ -1,0 +1,46 @@
+package HolyInspiration
+import Icons
+import ClosureForGroups
+import AbilityTooltipGenerator
+import HolyInspirationBuff
+import Entity
+
+public constant HOLY_INSPIRATION_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure HOLY_INSPIRATION_BONUS_ARMOR = lvl -> 2. * lvl
+RealLevelClosure HOLY_INSPIRATION_BONUS_HP_REG = lvl -> 0.5 * lvl
+RealLevelClosure HOLY_INSPIRATION_DURATION = lvl -> 10.
+RealLevelClosure HOLY_INSPIRATION_RADIUS = lvl -> 1200.
+
+init 
+  EventListener.onCast(HOLY_INSPIRATION_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(HOLY_INSPIRATION_ID)
+    let bonusArmor = HOLY_INSPIRATION_BONUS_ARMOR.run(lvl)
+    let bonusHpReg = HOLY_INSPIRATION_BONUS_HP_REG.run(lvl)
+    let spellDuration = HOLY_INSPIRATION_DURATION.run(lvl)
+    let spellRadius = HOLY_INSPIRATION_RADIUS.run(lvl)
+
+    new HolyInspirationBuff(spellDuration, bonusArmor.toInt()*2, bonusHpReg.toInt()*2).apply(caster.getEntity())
+    forUnitsInRange(caster.getPos(), spellRadius) (unit u) ->
+      if u.isAllyOf(caster)
+        new HolyInspirationBuff(spellDuration, bonusArmor.toInt(), bonusHpReg.toInt()).apply(u.getEntity())
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Holy inspiration increases armor and hp regeneration of nearby allies. Works two times effective for the caster.")
+  new ChannelAbilityPreset(HOLY_INSPIRATION_ID, 5, true, tooltip)
+    ..setLevelSkipRequirement(0)
+    ..presetButtonPosNormal(2, 2)
+    ..presetButtonPosResearch(2, 0)
+    ..presetIcon(Icons.bTNResurrection)
+
+    ..tooltipStartListen()
+    ..presetTargetTypes(Targettype.NONE)
+    ..presetHotkey("E")
+    ..setName("Holy Inspiration")
+    ..addTooltipProperty("Bonus Armor", HOLY_INSPIRATION_BONUS_ARMOR)
+    ..addTooltipProperty("Bonus HP Reg", HOLY_INSPIRATION_BONUS_HP_REG)
+    ..addTooltipProperty("Aura Radius", HOLY_INSPIRATION_RADIUS)
+    ..addTooltipProperty("Aura Duration", HOLY_INSPIRATION_DURATION)
+    ..presetManaCost(lvl -> 10 + 5 * lvl)
+    ..presetCooldown(lvl -> 30)
+    ..tooltipStopListen()

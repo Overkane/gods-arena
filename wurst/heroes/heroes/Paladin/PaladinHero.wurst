@@ -1,13 +1,15 @@
 package PaladinHero
 import UnitIds
 import HeroPreset
-import HealingSeal
 import ObjectIdGenerator
+import HealingSeal
+import HolyInspiration
 
 public constant PALADIN_ID = compiletime(HERO_ID_GEN.next())
 
 @compiletime function genHero()
   new HeroPreset(PALADIN_ID, UnitIds.paladin, "Paladin")
     ..addHeroAbility(HEALING_SEAL_ID)
-    ..setStartingStrength(100) // TODO remove
+    ..addHeroAbility(HOLY_INSPIRATION_ID)
+    ..setStartingStrength(50) // TODO remove
     ..buildHero()

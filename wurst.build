@@ -4,6 +4,7 @@ dependencies:
 - https://github.com/wurstscript/wurstStdlib2
 - https://github.com/Frotty/Frentity.git
 - https://github.com/Frotty/Ability-Tooltip-Generator
+- https://github.com/Frotty/wurst-bonus-handler.git
 buildMapData:
   name: Gods' Arena v0.0.1
   fileName: Gods' Arena v0.0.1
