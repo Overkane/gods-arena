@@ -20,13 +20,13 @@ init
 
     if tunit.isAllyOf(caster)
       tunit.setHP(tunit.getHP() + spellDamage)
-      forUnitsInRange(caster.getPos(), spellRadius) target ->
+      forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isEnemyOf(caster) and target.isAlive()
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
           caster.damageTarget(target, spellDamage)
     else
       caster.damageTarget(tunit, spellDamage)
-      forUnitsInRange(caster.getPos(), spellRadius) target ->
+      forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isAllyOf(caster)
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
           tunit.setHP(target.getHP() + spellDamage)
@@ -36,12 +36,13 @@ init
   new ChannelAbilityPreset(HEALING_SEAL_ID, 5, true, tooltip)
     ..setLevelSkipRequirement(0)
     ..presetButtonPosNormal(0, 2)
+    ..presetButtonPosResearch(0, 0)
+    ..presetIcon(Icons.bTNHolyBolt)
 
     ..tooltipStartListen()
     ..presetTargetTypes(Targettype.UNIT)
     ..presetHotkey("Q")
     ..setName("Healing Seal")
-    ..presetIcon(Icons.bTNHolyBolt)
     ..addTooltipProperty("Damage/Heal", HEALING_SEAL_DAMAGE)
     ..addTooltipProperty("Damage/Heal Radius", HEALING_SEAL_RADIUS)
     ..presetManaCost(lvl -> 50 + 10 * lvl)
