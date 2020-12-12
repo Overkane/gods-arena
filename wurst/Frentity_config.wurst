@@ -1,0 +1,4 @@
+package Frentity_config
+
+@config public constant KILL_ACTORS = true
+@config public constant DISABLE_TEAMATTACK = true
