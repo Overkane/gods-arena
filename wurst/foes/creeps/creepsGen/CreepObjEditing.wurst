@@ -12,3 +12,6 @@ public class CreepDefinition extends UnitDefinition
     setAcquisitionRange(9000)
     setGoldBountyAwardedBase(0)
     setLevel(1)
+    setMovementType(MovementType.Foot)
+    setAttack1DamageSidesperDie(1)
+    setAttack1DamageNumberofDice(1)
