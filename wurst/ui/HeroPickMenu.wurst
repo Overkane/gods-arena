@@ -1,0 +1,137 @@
+package HeroPickMenu
+import Icons
+import FramehandleNames
+import ClosureFrames
+import ClosureTimers
+import HashMap
+import Heroes
+import GameProperties
+import Hero
+import UnitIds
+
+constant heroPickFrame = createFrame("FRAME", "heroPickFrame", GAME_UI, "", 0)
+constant playerSelection = new IterableMap<player, HeroIcon>
+constant heroPickRect = Rect(-288, -416, 288, 64)
+
+init 
+  nullTimer() -> 
+    initFrames()
+    createHeroPickMenu()
+    addHeroIcons()
+
+class HeroIcon
+  static private var globalIconContext = 0
+  static private var iconPosition = vec2(0.03, -0.03)
+
+  var heroId = 0
+  private var iconContext = 0
+  private var activeIcon = ""
+  private var disabledIcon = ""
+
+  private framehandle pickIconButton = null
+  private framehandle pickIcon = null
+
+  construct(int heroId, string activeIcon, string disabledIcon)
+    this.heroId = heroId
+    this.activeIcon = activeIcon
+    this.disabledIcon = disabledIcon
+    this.iconContext = globalIconContext
+    globalIconContext++
+
+    pickIconButton = createFrame(FramehandleTypeNames.gluebutton, "PickIconButton", heroPickFrame, FramehandleNames.iconButtonTemplate, iconContext)
+    pickIcon = createFrame(FramehandleTypeNames.backdrop, "pickIcon", pickIconButton, "", iconContext)
+  
+  function addTooltip(string tooltipTitle, string tooltipDescription)
+    let tooltip = createFrame("BoxedText", pickIconButton, 0, iconContext)
+    pickIconButton.setTooltip(tooltip)
+
+    tooltip..setSize(0.15, 0.08)
+      ..setPoint(FRAMEPOINT_LEFT, pickIconButton, FRAMEPOINT_RIGHT)
+    getFrame("BoxedTextTitle", iconContext).setText(tooltipTitle)
+    getFrame("BoxedTextValue", iconContext).setText(tooltipDescription)
+
+  function disable()
+    pickIcon.setTexture(disabledIcon, 0, true)
+    pickIconButton.disable()
+
+  function build()
+    pickIconButton
+      ..setSize(0.05, 0.05)
+      ..setPoint(FRAMEPOINT_TOPLEFT, heroPickFrame, FRAMEPOINT_TOPLEFT, iconPosition)
+      ..onClick() -> 
+      let p = GetTriggerPlayer()
+      playerSelection.put(p, this)
+
+    pickIcon
+      ..setAllPoints(pickIconButton)
+      ..setTexture(activeIcon, 0, true)
+
+    iconPosition = iconPosition.add(0.08, 0)
+
+function initFrames()
+  let loadingResult = BlzLoadTOCFile("MyFiles.toc")
+  if loadingResult == false
+    print("SOMETHING WENT WRONG WITH MyFiles.toc")
+
+function createHeroPickMenu()
+  let heroPickBackdrop = createFrame("HeroPickMenuBackdrop", heroPickFrame, 0, 0)
+  let heroPickButton = createFrame("GeneralButton", heroPickFrame, 0, 0)
+
+  heroPickBackdrop.setAllPoints(heroPickFrame)
+
+  heroPickFrame
+    ..setSize(0.8, 0.35)
+    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.4, 0.52))
+
+  heroPickButton
+    ..setPoint(FRAMEPOINT_BOTTOM, heroPickFrame, FRAMEPOINT_BOTTOM, vec2(0, 0.02))
+    ..setText("Pick hero")
+    ..onClick() ->
+    let p = GetTriggerPlayer()
+    
+    if playerSelection.has(p)
+      let pickedIcon = playerSelection.getAndRemove(p)
+      let h = new Hero(p, pickedIcon.heroId, heroPickRect.randomPoint().toVec3(), angle(0))
+      HEROES.add(h)
+      p.selectSingle(h.actor)
+      pickedIcon.disable()
+      heroPickFrame.hide(p)
+
+      playerSelection.forEach() (player key, HeroIcon value) ->
+        if value == pickedIcon
+          playerSelection.remove(key)
+    else 
+      p.print("Choose hero first!")
+
+function addHeroIcons()
+  new HeroIcon(PALADIN_ID, Icons.bTNHeroPaladin, Icons.dISBTNHeroPaladin)
+    ..addTooltip("Paladin", "Paladin description")
+    ..build()
+
+  new HeroIcon(ASSASIN_ID, Icons.bTNHeroWarden, Icons.dISBTNHeroWarden)
+    ..addTooltip("Assasin", "Assasin description")
+    ..build()
+
+  new HeroIcon(ARCHMAGE_ID, Icons.bTNHeroArchMage, Icons.dISBTNHeroArchMage)
+    ..addTooltip("Archmage", "Archmage description")
+    ..build()
+
+  new HeroIcon(UnitIds.blademaster, Icons.bTNHeroBlademaster, Icons.dISBTNHeroBlademaster)
+    ..addTooltip("Blademaster", "Blademaster description")
+    ..build()
+
+  new HeroIcon(UnitIds.demonhunter, Icons.bTNHeroDemonHunter, Icons.dISBTNHeroDemonHunter)
+    ..addTooltip("Demon Hunter", "Demon Hunter description")
+    ..build()
+
+  new HeroIcon(UnitIds.priestessofthemoon, Icons.bTNPriestessOfTheMoon, Icons.dISBTNPriestessOfTheMoon)
+    ..addTooltip("PotM", "PotM description")
+    ..build()
+
+  new HeroIcon(UnitIds.taurenchieftain, Icons.bTNHeroTaurenChieftain, Icons.dISBTNHeroTaurenChieftain)
+    ..addTooltip("Tauren", "Tauren description")
+    ..build()
+
+  new HeroIcon(UnitIds.dreadlord, Icons.bTNHeroDreadLord, Icons.dISBTNHeroDreadLord)
+    ..addTooltip("Dreadlord", "Dreadlord description")
+    ..build()
