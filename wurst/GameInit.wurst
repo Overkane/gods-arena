@@ -2,7 +2,6 @@ package GameInit
 import Players
 import GameProperties
 import EntityManagement
-import initlater HeroSelector
 import WaveController
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
@@ -28,9 +27,6 @@ function initPickTimer()
     ..display(true)
 
   heroPickTimer.doAfter(HERO_PICK_TIME) ->
-    for selector in heroSelectorList
-      destroy selector
-    destroy heroSelectorList
     heroPickTimerDialog.destr()
     waveController.startWaveSpawn()
         
