@@ -12,8 +12,10 @@ function initPlayers()
   onPlayerLeave() p ->
     printTimed(p.getNameColored() + " has left the game", 15.)
     PLAYERS.remove(p)
+    SetPlayerHandicap(ENEMY_PLAYER, PLAYERS.size() / 8.)
 
 function initVision()
+  SetPlayerHandicap(ENEMY_PLAYER, PLAYERS.size() / 8.)
   createVision(ENEMY_PLAYER, playableMapRect, false).start()
 
   for p in PLAYERS
