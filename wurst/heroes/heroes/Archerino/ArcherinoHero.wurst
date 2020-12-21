@@ -3,9 +3,9 @@ import ObjectIdGenerator
 import UnitIds
 import HeroPreset
 import PierceShot
+import Tagwalk
 
 public constant ARCHER_ID = compiletime(HERO_ID_GEN.next())
-
 
 
 @compiletime function genHero()
@@ -13,4 +13,5 @@ public constant ARCHER_ID = compiletime(HERO_ID_GEN.next())
   ..setStartingAgility(100)
   ..setStartingStrength(100)
   ..addHeroAbility(PIERCESHOT_ID)
+  ..addHeroAbility(TAGWALK_ID)
   ..buildHero()

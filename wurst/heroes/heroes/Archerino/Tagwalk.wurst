@@ -1,0 +1,79 @@
+package Tagwalk
+import AbilityTooltipGenerator
+import Icons
+import PresetBuffs
+import Abilities
+import AttachmentPoints
+import ClosureForGroups
+
+public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure WALK_DURATION = lvl -> 5. + 1. * lvl
+
+constant stabBuffObj = compiletime(createDummyBuffObject("|cff1cd134Tag Walk", "Increases speed and reduces damage taken. Touched enemies are tagged.", Icons.bTNTheBlackArrow))
+constant tagBuffObj = compiletime(createDummyBuffObject("Tagged", "This unit has been tagged.", Icons.bTNTheBlackArrow, Abilities.roarTarget, AttachmentPoints.overhead))
+
+class TagBuff extends NormalBuff
+
+    construct(real duration)
+        super(duration, tagBuffObj)
+
+class TagwalkBuff extends NormalBuff
+    effect windEff = null
+
+    construct(real duration)
+        super(duration, stabBuffObj)
+
+    override function apply(UnitEntity target)
+        super.apply(target)
+        target.actor
+        ..setMoveSpeed(target.actor.getMoveSpeed() + 200.)
+        windEff = target.actor.addEffect(Abilities.tornadoElementalSmall, AttachmentPoints.chest)..setScale(0.25)
+        
+
+    override function defenseModifier()
+        DamageEvent.setAmount(DamageEvent.getAmount() * 0.25)
+
+    override function onEnd()
+        super.onEnd()
+        target.actor
+        ..setMoveSpeed(target.actor.getMoveSpeed() - 200.)
+        windEff.destr()
+
+    override function update()
+        forUnitsInRange(target.getPos().toVec2(), 72.) target ->
+            if not target.hasAbility(tagBuffObj.abilId)
+                new TagBuff(10.)
+                ..apply(target.getEntity())
+
+        super.update()
+
+
+init
+    EventListener.onCast(TAGWALK_ID) caster ->
+        let casterEntity = caster.getEntity()
+        let lvl = caster.getAbilityLevel(TAGWALK_ID)
+
+        new TagwalkBuff(WALK_DURATION.run(lvl))
+        ..apply(casterEntity)
+
+
+@compiletime function genAbility()
+    let tooltip = new AbilityTooltipGenerator("Reduces incoming damage and boosts speed. Enemies touched during the effect are tagged.")
+    new AbilityDefinitionBladeMasterWindWalk(TAGWALK_ID)
+    ..registerTooltipGenerator(tooltip)
+    ..presetButtonPosNormal(1, 2)
+    ..presetButtonPosResearch(1, 0)
+    ..presetIcon(Icons.bTNTheBlackArrow)
+    ..presetDurationHero(WALK_DURATION)
+
+    ..tooltipStartListen()
+    ..setLevels(5)
+    ..presetHotkey("W")
+    ..setName("Tag Walk")
+    ..addTooltipProperty("Walk Duration", WALK_DURATION)
+    ..addTooltipProperty("Damage Reduction", lvl -> 0.75)
+        
+    ..presetManaCost(lvl -> 50 - 10 * lvl)
+    ..presetCooldown(lvl -> 21. - 1. * lvl)
+    ..tooltipStopListen()

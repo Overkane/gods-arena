@@ -22,15 +22,14 @@ init
         projectile.onHit() hitTarget ->
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
-                flashEffect(Abilities.bloodImpact, hitTarget.getPos())
+                // flashEffect(Abilities.bloodImpact, hitTarget.getPos())
                 caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
                 Knockback3.add(hitTarget, 450., projectile.getXYAngle(), 45 .fromDeg())
 
 
 @compiletime function genAbility()
-    let tooltip = new AbilityTooltipGenerator("Shoots an arrow to the target, damaging units in its path.")
+    let tooltip = new AbilityTooltipGenerator("Shoots an arrow towards the target position, damaging enemies in its path. If hit enemies are currently tagged, they become wounded.")
     new ChannelAbilityPreset(PIERCESHOT_ID, 5, true, tooltip)
-    ..setLevelSkipRequirement(0)
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNGlaiveThrower)
