@@ -77,8 +77,6 @@ function CreateNeutralPassive takes nothing returns nothing
     set u=BlzCreateUnitWithSkin(p, 'necr', 1800.4, 942.3, 298.299, 'necr')
     set u=BlzCreateUnitWithSkin(p, 'necr', 1672.6, 105.7, 357.473, 'necr')
     set u=BlzCreateUnitWithSkin(p, 'necr', 1052.9, - 974.9, 155.912, 'necr')
-    set u=BlzCreateUnitWithSkin(p, 'nrac', 536.0, - 292.3, 259.153, 'nrac')
-    set u=BlzCreateUnitWithSkin(p, 'npig', - 849.3, - 211.9, 197.771, 'npig')
     set u=BlzCreateUnitWithSkin(p, 'npig', 475.1, 1244.3, 259.098, 'npig')
 endfunction
 

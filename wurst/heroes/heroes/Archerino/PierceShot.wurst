@@ -3,6 +3,8 @@ import Assets
 import Projectile
 import Knockback3
 import AbilityTooltipGenerator
+import Tagwalk
+import BuffObjEditing
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -22,9 +24,12 @@ init
         projectile.onHit() hitTarget ->
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
-                // flashEffect(Abilities.bloodImpact, hitTarget.getPos())
                 caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
                 Knockback3.add(hitTarget, 450., projectile.getXYAngle(), 45 .fromDeg())
+
+                if hitTarget.hasAbility(tagBuffObj.abilId)
+                    flashEffect(Objects.critterBloodAlbatross, hitTarget.getPos())
+                    caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
 
 
 @compiletime function genAbility()
