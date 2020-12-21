@@ -1,24 +1,21 @@
 package GameInit
-import Players
 import GameProperties
 import EntityManagement
 import WaveController
+import PlayerData
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
-function initPlayers()
-  PLAYERS = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
-
-  onPlayerLeave() p ->
-    printTimed(p.getNameColored() + " has left the game", 15.)
-    PLAYERS.remove(p)
-    SetPlayerHandicap(ENEMY_PLAYER, PLAYERS.size() / 8.)
+function initFrames()
+  let loadingResult = BlzLoadTOCFile("MyFiles.toc")
+  if loadingResult == false
+    print("SOMETHING WENT WRONG WITH MyFiles.toc")
 
 function initVision()
-  SetPlayerHandicap(ENEMY_PLAYER, PLAYERS.size() / 8.)
+  SetPlayerHandicap(ENEMY_PLAYER, pData.size() / 8.)
   createVision(ENEMY_PLAYER, playableMapRect, false).start()
 
-  for p in PLAYERS
+  pData.forEach() (player p, PlayerData playerData) ->
     createVision(p, arena1Rect, false).start()
 
 function initPickTimer()
@@ -34,6 +31,7 @@ function initPickTimer()
         
 init
   nullTimer() -> 
+    initFrames()
     initPlayers()
     initVision()
     startEntityLoop()

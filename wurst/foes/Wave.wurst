@@ -1,7 +1,7 @@
 package Wave
 import public ClosureTimers
 import public LinkedList
-import GameProperties
+import PlayerData
 import Creep
 import CreepObjEditing
 import ObjectIdGenerator
@@ -138,9 +138,10 @@ public class Wave
     //+ TODO - temporary decision - One active player gets 50% additional gold and exp.
     //  And for each additional player additional bounty decreased by 1/7.
     //  So at 8 players there won't be any additional bounty, just wave based values.
-    let additionalExpBounty = (expBounty * 0.5 * (8-PLAYERS.size())/7).round()
-    let additionalGoldBounty = (goldBounty * 0.5 * (8-PLAYERS.size())/7).round()
+    let additionalExpBounty = (expBounty * 0.5 * (8-pData.size())/7).round()
+    let additionalGoldBounty = (goldBounty * 0.5 * (8-pData.size())/7).round()
     //-
-    HEROES.forEach(hero -> hero.addXp(expBounty + additionalExpBounty, true))
-    PLAYERS.forEach(_player -> _player.addGold(goldBounty + additionalGoldBounty))
+    pData.forEach() (player p, PlayerData playerData) -> 
+      p.addGold(goldBounty + additionalGoldBounty)
+      playerData.getHero().addXp(expBounty + additionalExpBounty, true)
 

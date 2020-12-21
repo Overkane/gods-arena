@@ -1,0 +1,38 @@
+package PlayerData
+import GameProperties
+import Hero
+import Players
+import HashMap
+
+public constant pData = new IterableMap<player, PlayerData>
+
+public function player.getData() returns PlayerData
+  return pData.get(this)
+
+public class PlayerData
+  private player p
+  private Hero hero
+  
+  construct (player p)
+    this.p = p
+    pData.put(p, this)  
+
+  function setHero(Hero h)
+    this.hero = h
+
+  function getHero() returns Hero
+    return hero
+
+  ondestroy
+    pData.remove(p)
+
+public function initPlayers()
+  let humanPlayers = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
+  humanPlayers.forEach() p ->
+    new PlayerData(p)
+
+  onPlayerLeave() p ->
+    destroy p.getData()
+    printTimed(p.getNameColored() + " has left the game", 15.)
+    SetPlayerHandicap(ENEMY_PLAYER, humanPlayers.size() / 8.)
+

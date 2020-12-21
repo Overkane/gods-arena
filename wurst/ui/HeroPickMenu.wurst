@@ -5,7 +5,7 @@ import ClosureFrames
 import ClosureTimers
 import HashMap
 import Heroes
-import GameProperties
+import PlayerData
 import Hero
 import UnitIds
 
@@ -15,7 +15,6 @@ constant heroPickRect = Rect(-288, -416, 288, 64)
 
 init 
   nullTimer() -> 
-    initFrames()
     createHeroPickMenu()
     addHeroIcons()
 
@@ -68,11 +67,6 @@ class HeroIcon
 
     iconPosition = iconPosition.add(0.08, 0)
 
-function initFrames()
-  let loadingResult = BlzLoadTOCFile("MyFiles.toc")
-  if loadingResult == false
-    print("SOMETHING WENT WRONG WITH MyFiles.toc")
-
 function createHeroPickMenu()
   let heroPickBackdrop = createFrame("HeroPickMenuBackdrop", heroPickFrame, 0, 0)
   let heroPickButton = createFrame("GeneralButton", heroPickFrame, 0, 0)
@@ -92,7 +86,7 @@ function createHeroPickMenu()
     if playerSelection.has(p)
       let pickedIcon = playerSelection.getAndRemove(p)
       let h = new Hero(p, pickedIcon.heroId, heroPickRect.randomPoint().toVec3(), angle(0))
-      HEROES.add(h)
+      pData.get(p).setHero(h)
       p.selectSingle(h.actor)
       pickedIcon.disable()
       heroPickFrame.hide(p)
