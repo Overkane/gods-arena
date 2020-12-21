@@ -1,0 +1,46 @@
+package PierceShot
+import Assets
+import Projectile
+import Knockback3
+import AbilityTooltipGenerator
+
+public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure SPELL_DAMAGE = lvl -> 60. * lvl
+
+
+init
+    EventListener.onPointCast(PIERCESHOT_ID) (caster, target) ->
+        let casterEntity = caster.getEntity()
+        let projectile = new Projectile(casterEntity.getPos(), 78, caster.getOwner(), casterEntity.getPos().angleTo2d(target), Abilities.ballistaMissile)
+        let lvl = caster.getAbilityLevel(PIERCESHOT_ID)
+        projectile
+            ..setRanged(1200)
+            ..setAcc(0.997)
+            ..setTarget(target.withTerrainZ(), 50.)
+
+        projectile.onHit() hitTarget ->
+            if hitTarget.getOwner().isEnemyOf(caster.getOwner())
+                flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
+                flashEffect(Abilities.bloodImpact, hitTarget.getPos())
+                caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
+                Knockback3.add(hitTarget, 450., projectile.getXYAngle(), 45 .fromDeg())
+
+
+@compiletime function genAbility()
+    let tooltip = new AbilityTooltipGenerator("Shoots an arrow to the target, damaging units in its path.")
+    new ChannelAbilityPreset(PIERCESHOT_ID, 5, true, tooltip)
+    ..setLevelSkipRequirement(0)
+    ..presetButtonPosNormal(0, 2)
+    ..presetButtonPosResearch(0, 0)
+    ..presetIcon(Icons.bTNGlaiveThrower)
+
+    ..tooltipStartListen()
+    ..presetTargetTypes(Targettype.POINT)
+    ..presetHotkey("Q")
+    ..setName("Piercing Shot")
+    ..addTooltipProperty("Damage", SPELL_DAMAGE)
+    ..presetManaCost(lvl -> 50 - 10 * lvl)
+    ..presetCastRange(lvl -> 1000)
+    ..presetCooldown(lvl -> 16)
+    ..tooltipStopListen()
