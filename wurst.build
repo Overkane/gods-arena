@@ -9,3 +9,10 @@ buildMapData:
   name: Gods' Arena v0.0.1
   fileName: Gods' Arena v0.0.1
   author: Overkane & Frotty
+  scenarioData:
+    description: WurstScript powered!
+    suggestedPlayers: 4-8
+    loadingScreen:
+      title: by Overkane and Frotty
+      subTitle: Gods' Arena v0.0.1
+      text: The coolest map description you have ever seen.
