@@ -20,10 +20,10 @@ init
     let spellDuration = HOLY_INSPIRATION_DURATION.run(lvl)
     let spellRadius = HOLY_INSPIRATION_RADIUS.run(lvl)
 
-    new HolyInspirationBuff(spellDuration, bonusArmor.toInt()*2, bonusHpReg.toInt()*2).apply(caster.getEntity())
+    new HolyInspirationBuff(spellDuration, bonusArmor*2, bonusHpReg*2).apply(caster.getEntity())
     forUnitsInRange(caster.getPos(), spellRadius) (unit u) ->
       if u.isAllyOf(caster)
-        new HolyInspirationBuff(spellDuration, bonusArmor.toInt(), bonusHpReg.toInt()).apply(u.getEntity())
+        new HolyInspirationBuff(spellDuration, bonusArmor, bonusHpReg).apply(u.getEntity())
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Holy inspiration increases armor and hp regeneration of nearby allies. Works two times effective for the caster.")

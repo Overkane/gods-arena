@@ -6,10 +6,10 @@ import BonusHandler
 constant buffTuple = compiletime(createDummyBuffObject("Holy Inspiration", "Increases armor and hp regen",  Icons.bTNResurrection, Abilities.innerFireTarget, AttachmentPoints.overhead))
 
 public class HolyInspirationBuff extends NormalBuff
-  private int bonusArmor = 0
-  private int bonusHpReg = 0 
+  private real bonusArmor
+  private real bonusHpReg 
 
-  construct(real dur, int bonusArmor, int bonusHpReg)
+  construct(real dur, real bonusArmor, real bonusHpReg)
     super(dur, buffTuple)
     this.bonusArmor = bonusArmor
     this.bonusHpReg = bonusHpReg
