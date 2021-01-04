@@ -1,0 +1,188 @@
+package ItemShopMenu
+import FramehandleNames
+import ClosureFrames
+import HashMap
+import HashSet
+import Hero
+import Assets
+import PlayerData
+import SoundUtils
+
+public ItemShop itemShop
+
+constant playerVisibleFrames = new HashMap<player, HashSet<framehandle>>
+
+public function initItemShopMenu()
+  itemShop = new ItemShop()
+  addItemIcons()
+
+function framehandle.removeFocus()
+  this.disable()
+  this.enable()
+
+function addItemIcons()
+ 
+  itemShop
+  ..addItemIcon(
+    new ItemIcon('pman', 40, Icons.bTNPotionBlueSmall)
+      ..addTooltip("Potion of Mana", "Restores mana a bit")
+  )
+  ..addItemIcon(
+    new ItemIcon('tint', 250, Icons.bTNTome)
+      ..addTooltip("Book of Intelligence", "Gives 1 int permamently")
+  )
+  ..addItemIcon(
+    new ItemIcon('tdex', 250, Icons.bTNTome)
+      ..addTooltip("Book of Agility", "Gives 1 agi permamently")
+  )
+  ..addItemIcon(
+    new ItemIcon('tstr', 250, Icons.bTNTome)
+      ..addTooltip("Book of Strength", "Gives 1 str permamently")
+  )
+  ..addItemIcon(
+    new ItemIcon('hslv', 250, Icons.bTNHealingWard)
+      ..addTooltip("Healing Ward", "AOE healing")
+  )
+  ..addItemIcon(
+    new ItemIcon('mnst', 150, Icons.bTNManaStone)
+      ..addTooltip("Mana Stone", "Restores mana")
+  )
+  ..addItemIcon(
+    new ItemIcon('hlst', 180, Icons.bTNHealthStone)
+      ..addTooltip("Health Stone", "Restores health")
+  )
+  ..addItemIcon(
+    new ItemIcon('bspd', 120, Icons.bTNBootsOfSpeed)
+      ..addTooltip("Boots of Speed", "Gives movespeed")
+  )
+  ..addItemIcon(
+    new ItemIcon('phea', 50, Icons.bTNPotionGreenSmall)
+      ..addTooltip("Healing Potion", "Heals a bit")
+  )
+
+class ItemShop
+  private var itemIconCounter = 0
+
+  private constant PADDING = 0.02
+  private constant HORIZONTAL_SPACING = 0.03
+  private constant VERTICAL_SPACING = -0.04
+  private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDING, -PADDING)
+  private constant MAX_ICONS_PER_ROW = 7
+  
+  private var iconPosition = ITEM_ICON_INITIAL_POSITION
+
+  constant itemShopFrame = createFrame("FRAME", "itemShopFrame", GAME_UI, "", 0)
+  private constant itemShopBackdrop = createFrame("HeroPickMenuBackdrop", itemShopFrame, 0, 1) // Context is 1 cuz same name uses hero pick menu.
+  private constant itemShopButton = createFrame("GeneralButton", GAME_UI, 0, 0)
+
+  construct()
+    itemShopFrame
+    ..setSize(0.25, 0.315)
+    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.68, 0.52))
+
+    itemShopBackdrop.setAllPoints(itemShopFrame)
+
+    itemShopButton
+    ..setSize(0.095, 0.035)
+    ..setAbsPoint(FRAMEPOINT_BOTTOM, vec2(0.4, 0.142))
+    ..setText("Shop (G)")
+    ..onClick() ->
+      let p = GetTriggerPlayer()
+      let currentPlayerVisibleFrames = playerVisibleFrames.get(p)
+
+      this.itemShopButton.removeFocus()
+
+      if currentPlayerVisibleFrames.has(itemShopFrame)
+        itemShopFrame.hide(p)
+        currentPlayerVisibleFrames.remove(itemShopFrame)
+      else
+        itemShopFrame.show(p)
+        currentPlayerVisibleFrames.add(itemShopFrame) 
+    
+    // Hiding shop screen and button, since shop screen will be accesible through button,
+    // and button will be shown after hero was selected. 
+    pData.forEach() (player p, PlayerData playerData) ->
+      itemShopFrame.hide(p)
+      itemShopButton.hide(p)
+      playerVisibleFrames.put(p, new HashSet<framehandle>)
+
+  function addItemIcon(ItemIcon itemIcon)
+    itemIconCounter++
+    if itemIconCounter % (MAX_ICONS_PER_ROW + 1) == 0
+      iconPosition = iconPosition.add(-HORIZONTAL_SPACING * (MAX_ICONS_PER_ROW - 1), VERTICAL_SPACING)
+    else if itemIconCounter == 1
+      skip
+    else
+      iconPosition = iconPosition.add(HORIZONTAL_SPACING, 0)
+
+    itemIcon.setIconPosition(iconPosition)
+
+  function showShopButtonForPlayer(player p)
+    itemShopButton.show(p)
+
+class ItemIcon
+  static private var globalIconContext = 0
+
+  // Sounds
+  static constant notEnoughGoldSound = new SoundDefinition(Sounds.necromancerNoGold1)
+  static constant itemBoughtSound = new SoundDefinition(Sounds.itemReceived)
+  static constant cantBuyItemSound = new SoundDefinition(Sounds.error)
+
+  var itemId = 0
+  var itemCost = 0
+  private var iconContext = 0
+  private var activeIcon = ""
+
+  private framehandle itemIconButton = null
+  private framehandle itemIcon = null
+  private framehandle itemText = null
+
+  construct(int itemId, int itemCost, string activeIcon)
+    this.itemId = itemId
+    this.itemCost = itemCost
+    this.activeIcon = activeIcon
+    this.iconContext = globalIconContext
+    globalIconContext++
+
+    itemIconButton = createFrame(FramehandleTypeNames.gluebutton, "ItemIconButton", itemShop.itemShopFrame, FramehandleNames.iconButtonTemplate, iconContext)
+    itemIcon = createFrame(FramehandleTypeNames.backdrop, "itemIcon", itemIconButton, "", iconContext)
+    itemText = createFrame(FramehandleTypeNames.text, "itemText", itemIconButton, "", iconContext)
+  
+    itemIconButton
+      ..setSize(0.025, 0.025)
+      ..onClick() -> 
+      let p = GetTriggerPlayer()
+      let hero = p.getData().getHero().actor
+
+      itemIconButton.removeFocus()
+
+      if hero.isAlive()
+        if p.getGold() >= itemCost
+          p.setGold(p.getGold() - itemCost)
+          p.getData().getHero().actor.addItemById(itemId)
+          itemBoughtSound.playForPlayer(p)
+        else 
+          notEnoughGoldSound.playForPlayer(p)
+      else
+        cantBuyItemSound.playForPlayer(p)
+
+    itemIcon
+      ..setAllPoints(itemIconButton)
+      ..setTexture(activeIcon, 0, true)
+
+    itemText
+      ..setText(itemCost.toString())
+      ..setTextColor(colorA(255, 215, 0, 1))
+      ..setPoint(FRAMEPOINT_TOPLEFT, itemIconButton, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.001))
+
+  function addTooltip(string tooltipTitle, string tooltipDescription)
+    let tooltip = createFrame("BoxedText", itemIconButton, 0, iconContext)
+    itemIconButton.setTooltip(tooltip)
+
+    tooltip..setSize(0.14, 0.08)
+      ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
+    getFrame("BoxedTextTitle", iconContext).setText(tooltipTitle)
+    getFrame("BoxedTextValue", iconContext).setText(tooltipDescription)
+
+  function setIconPosition(vec2 iconPosition)
+    itemIconButton.setPoint(FRAMEPOINT_TOPLEFT, itemShop.itemShopFrame, FRAMEPOINT_TOPLEFT, iconPosition)

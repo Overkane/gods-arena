@@ -3,6 +3,8 @@ import GameProperties
 import EntityManagement
 import WaveController
 import PlayerData
+import ItemShopMenu
+import HeroPickMenu
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
@@ -10,6 +12,10 @@ function initFrames()
   let loadingResult = BlzLoadTOCFile("MyFiles.toc")
   if loadingResult == false
     print("SOMETHING WENT WRONG WITH MyFiles.toc")
+
+function initPlayersGold()
+  pData.forEach() (player p, PlayerData playerData) ->
+    p.setGold(150)
 
 function initVision()
   SetPlayerHandicap(ENEMY_PLAYER, pData.size() / 8.)
@@ -33,6 +39,9 @@ init
   nullTimer() -> 
     initFrames()
     initPlayers()
+    initPlayersGold()
     initVision()
     startEntityLoop()
     initPickTimer()
+    initHeroPickMenu()
+    initItemShopMenu()

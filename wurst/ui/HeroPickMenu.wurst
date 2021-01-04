@@ -2,22 +2,17 @@ package HeroPickMenu
 import Icons
 import FramehandleNames
 import ClosureFrames
-import ClosureTimers
 import HashMap
 import Heroes
 import PlayerData
 import Hero
 import UnitIds
 import ArcherinoHero
+import ItemShopMenu
 
 constant heroPickFrame = createFrame("FRAME", "heroPickFrame", GAME_UI, "", 0)
 constant playerSelection = new IterableMap<player, HeroIcon>
 constant heroPickRect = Rect(-288, -416, 288, 64)
-
-init 
-  nullTimer() -> 
-    createHeroPickMenu()
-    addHeroIcons()
 
 class HeroIcon
   static private var globalIconContext = 0
@@ -68,6 +63,10 @@ class HeroIcon
 
     iconPosition = iconPosition.add(0.08, 0)
 
+public function initHeroPickMenu()
+  createHeroPickMenu()
+  addHeroIcons()
+  
 function createHeroPickMenu()
   let heroPickBackdrop = createFrame("HeroPickMenuBackdrop", heroPickFrame, 0, 0)
   let heroPickButton = createFrame("GeneralButton", heroPickFrame, 0, 0)
@@ -91,6 +90,7 @@ function createHeroPickMenu()
       p.selectSingle(h.actor)
       pickedIcon.disable()
       heroPickFrame.hide(p)
+      itemShop.showShopButtonForPlayer(p)
 
       playerSelection.forEach() (player key, HeroIcon value) ->
         if value == pickedIcon
