@@ -44,17 +44,6 @@ endfunction
 //***************************************************************************
 
 //===========================================================================
-function CreateUnitsForPlayer1 takes nothing returns nothing
-    local player p= Player(1)
-    local unit u
-    local integer unitID
-    local trigger t
-    local real life
-
-    set u=BlzCreateUnitWithSkin(p, 'Hamg', 130.2, - 381.4, 298.607, 'Hamg')
-endfunction
-
-//===========================================================================
 function CreateNeutralPassive takes nothing returns nothing
     local player p= Player(PLAYER_NEUTRAL_PASSIVE)
     local unit u
@@ -75,14 +64,13 @@ endfunction
 
 //===========================================================================
 function CreatePlayerUnits takes nothing returns nothing
-    call CreateUnitsForPlayer1()
 endfunction
 
 //===========================================================================
 function CreateAllUnits takes nothing returns nothing
     call CreatePlayerBuildings()
     call CreateNeutralPassive()
-    call CreateUnitsForPlayer1() // INLINED!!
+    call CreatePlayerUnits()
 endfunction
 
 //***************************************************************************

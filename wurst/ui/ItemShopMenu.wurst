@@ -12,6 +12,8 @@ public ItemShop itemShop
 
 constant playerVisibleFrames = new HashMap<player, HashSet<framehandle>>
 
+constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
+
 public function initItemShopMenu()
   itemShop = new ItemShop()
   addItemIcons()
@@ -59,6 +61,23 @@ function addItemIcons()
     new ItemIcon('phea', 50, Icons.bTNPotionGreenSmall)
       ..addTooltip("Healing Potion", "Heals a bit")
   )
+
+function addShopHotkeyForPlayer(player p)
+  let trig = CreateTrigger()
+  ..addAction() ->
+    let p2 = GetTriggerPlayer()
+    let currentPlayerVisibleFrames = playerVisibleFrames.get(p2)
+    
+    itemShopOpenSound.playForPlayer(p2)
+
+    if currentPlayerVisibleFrames.has(itemShop.itemShopFrame)
+      itemShop.itemShopFrame.hide(p2)
+      currentPlayerVisibleFrames.remove(itemShop.itemShopFrame)
+    else
+      itemShop.itemShopFrame.show(p2)
+      currentPlayerVisibleFrames.add(itemShop.itemShopFrame) 
+
+  BlzTriggerRegisterPlayerKeyEvent(trig, p, OSKEY_G, 0, false)
 
 class ItemShop
   private var itemIconCounter = 0
@@ -111,7 +130,7 @@ class ItemShop
     if itemIconCounter % (MAX_ICONS_PER_ROW + 1) == 0
       iconPosition = iconPosition.add(-HORIZONTAL_SPACING * (MAX_ICONS_PER_ROW - 1), VERTICAL_SPACING)
     else if itemIconCounter == 1
-      skip
+      skip 
     else
       iconPosition = iconPosition.add(HORIZONTAL_SPACING, 0)
 
@@ -119,6 +138,7 @@ class ItemShop
 
   function showShopButtonForPlayer(player p)
     itemShopButton.show(p)
+    addShopHotkeyForPlayer(p)
 
 class ItemIcon
   static private var globalIconContext = 0
@@ -128,8 +148,8 @@ class ItemIcon
   static constant itemBoughtSound = new SoundDefinition(Sounds.itemReceived)
   static constant cantBuyItemSound = new SoundDefinition(Sounds.error)
 
-  var itemId = 0
-  var itemCost = 0
+  private var itemId = 0
+  private var itemCost = 0
   private var iconContext = 0
   private var activeIcon = ""
 
