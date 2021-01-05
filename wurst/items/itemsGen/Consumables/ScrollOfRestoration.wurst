@@ -1,0 +1,12 @@
+package ScrollOfRestoration
+import ItemObjEditing
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+
+public constant SCROLL_OF_RESTORATION_ID = compiletime(ITEM_ID_GEN.next())
+constant SCROLL_OF_RESTORATION_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genItems()
+  new ItemDefinition(SCROLL_OF_RESTORATION_ID, 'sres')
+  ..setAbilities(SCROLL_OF_RESTORATION_ABIL_ID.toRawCode())

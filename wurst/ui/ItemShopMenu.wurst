@@ -4,9 +4,9 @@ import ClosureFrames
 import HashMap
 import HashSet
 import Hero
-import Assets
 import PlayerData
 import SoundUtils
+import Items
 
 public ItemShop itemShop
 
@@ -23,44 +23,21 @@ function framehandle.removeFocus()
   this.enable()
 
 function addItemIcons()
- 
   itemShop
-  ..addItemIcon(
-    new ItemIcon('pman', 40, Icons.bTNPotionBlueSmall)
-      ..addTooltip("Potion of Mana", "Restores mana a bit")
-  )
-  ..addItemIcon(
-    new ItemIcon('tint', 250, Icons.bTNTome)
-      ..addTooltip("Book of Intelligence", "Gives 1 int permamently")
-  )
-  ..addItemIcon(
-    new ItemIcon('tdex', 250, Icons.bTNTome)
-      ..addTooltip("Book of Agility", "Gives 1 agi permamently")
-  )
-  ..addItemIcon(
-    new ItemIcon('tstr', 250, Icons.bTNTome)
-      ..addTooltip("Book of Strength", "Gives 1 str permamently")
-  )
-  ..addItemIcon(
-    new ItemIcon('hslv', 250, Icons.bTNHealingWard)
-      ..addTooltip("Healing Ward", "AOE healing")
-  )
-  ..addItemIcon(
-    new ItemIcon('mnst', 150, Icons.bTNManaStone)
-      ..addTooltip("Mana Stone", "Restores mana")
-  )
-  ..addItemIcon(
-    new ItemIcon('hlst', 180, Icons.bTNHealthStone)
-      ..addTooltip("Health Stone", "Restores health")
-  )
-  ..addItemIcon(
-    new ItemIcon('bspd', 120, Icons.bTNBootsOfSpeed)
-      ..addTooltip("Boots of Speed", "Gives movespeed")
-  )
-  ..addItemIcon(
-    new ItemIcon('phea', 50, Icons.bTNPotionGreenSmall)
-      ..addTooltip("Healing Potion", "Heals a bit")
-  )
+  ..addItemIcon(new ItemIcon(HEALING_POTION_ID, 50))
+  ..addItemIcon(new ItemIcon(BIG_HEALING_POTION_ID, 125))
+  ..addItemIcon(new ItemIcon(MANA_POTION_ID, 40))
+  ..addItemIcon(new ItemIcon(BIG_MANA_POTION_ID, 90))
+  ..addItemIcon(new ItemIcon(VAMPIRIC_POTION_ID, 500))
+  ..addItemIcon(new ItemIcon(HEALING_WARD_ID, 500))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_HEALING_ID, 180))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_MANA_ID, 130))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_RESTORATION_ID, 600))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_PROTECTION_ID, 300))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_BEAST_ID, 500))
+  ..addItemIcon(new ItemIcon(TOME_OF_STRENGTH_ID, 250))
+  ..addItemIcon(new ItemIcon(TOME_OF_AGILITY_ID, 250))
+  ..addItemIcon(new ItemIcon(TOME_OF_INTELLIGENCE_ID, 250))
 
 function addShopHotkeyForPlayer(player p)
   let trig = CreateTrigger()
@@ -145,22 +122,20 @@ class ItemIcon
 
   // Sounds
   static constant notEnoughGoldSound = new SoundDefinition(Sounds.necromancerNoGold1)
-  static constant itemBoughtSound = new SoundDefinition(Sounds.itemReceived)
+  static constant itemBoughtSound = new SoundDefinition(Sounds.pickUpItem)
   static constant cantBuyItemSound = new SoundDefinition(Sounds.error)
 
   private var itemId = 0
   private var itemCost = 0
   private var iconContext = 0
-  private var activeIcon = ""
 
   private framehandle itemIconButton = null
   private framehandle itemIcon = null
   private framehandle itemText = null
 
-  construct(int itemId, int itemCost, string activeIcon)
+  construct(int itemId, int itemCost)
     this.itemId = itemId
     this.itemCost = itemCost
-    this.activeIcon = activeIcon
     this.iconContext = globalIconContext
     globalIconContext++
 
@@ -175,7 +150,7 @@ class ItemIcon
       let hero = p.getData().getHero().actor
 
       itemIconButton.removeFocus()
-
+      
       if hero.isAlive()
         if p.getGold() >= itemCost
           p.setGold(p.getGold() - itemCost)
@@ -186,23 +161,34 @@ class ItemIcon
       else
         cantBuyItemSound.playForPlayer(p)
 
+    let tempItem = createItem(itemId, vec2(0, 0))
+    let iconPath = tempItem.getIconPath()
+    tempItem.remove()    
+
     itemIcon
       ..setAllPoints(itemIconButton)
-      ..setTexture(activeIcon, 0, true)
+      ..setTexture(iconPath, 0, true)
 
     itemText
       ..setText(itemCost.toString())
       ..setTextColor(colorA(255, 215, 0, 1))
       ..setPoint(FRAMEPOINT_TOPLEFT, itemIconButton, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.001))
 
-  function addTooltip(string tooltipTitle, string tooltipDescription)
+    createTooltip()
+
+  private function createTooltip()
     let tooltip = createFrame("BoxedText", itemIconButton, 0, iconContext)
     itemIconButton.setTooltip(tooltip)
 
-    tooltip..setSize(0.14, 0.08)
+    tooltip..setSize(0.28, 0.08)
       ..setPoint(FRAMEPOINT_RIGHT, itemIconButton, FRAMEPOINT_LEFT)
-    getFrame("BoxedTextTitle", iconContext).setText(tooltipTitle)
-    getFrame("BoxedTextValue", iconContext).setText(tooltipDescription)
+
+    let tempItem = createItem(itemId, vec2(0, 0))
+    
+    getFrame("BoxedTextTitle", iconContext).setText(tempItem.getTooltip())
+    getFrame("BoxedTextValue", iconContext).setText(tempItem.getExtendedTooltip())
+
+    tempItem.remove()
 
   function setIconPosition(vec2 iconPosition)
     itemIconButton.setPoint(FRAMEPOINT_TOPLEFT, itemShop.itemShopFrame, FRAMEPOINT_TOPLEFT, iconPosition)
