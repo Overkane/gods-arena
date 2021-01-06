@@ -38,6 +38,19 @@ function addItemIcons()
   ..addItemIcon(new ItemIcon(TOME_OF_STRENGTH_ID, 250))
   ..addItemIcon(new ItemIcon(TOME_OF_AGILITY_ID, 250))
   ..addItemIcon(new ItemIcon(TOME_OF_INTELLIGENCE_ID, 250))
+  ..addItemIcon(new ItemIcon(GAUNTLETS_OF_OGRE_STRENGTH_ID, 115))
+  ..addItemIcon(new ItemIcon(SLIPPERS_OF_AGILITY_ID, 100))
+  ..addItemIcon(new ItemIcon(MANTLE_OF_INTELLIGENCE_ID, 90))
+  ..addItemIcon(new ItemIcon(CIRCLET_OF_NOBILITY_ID, 155))
+  ..addItemIcon(new ItemIcon(GLOVES_OF_HASTE_ID, 180))
+  ..addItemIcon(new ItemIcon(RING_OF_PROTECTION_ID, 200))
+  ..addItemIcon(new ItemIcon(RING_OF_REGENERATION_ID, 180))
+  ..addItemIcon(new ItemIcon(SOBI_MASK_ID, 170))
+  ..addItemIcon(new ItemIcon(PENDANT_OF_MANA_ID, 140))
+  ..addItemIcon(new ItemIcon(WARSONG_BATTLE_DRUMS_ID, 600))
+  ..addItemIcon(new ItemIcon(LEGION_DOOM_HORN_ID, 600))
+  ..addItemIcon(new ItemIcon(KHADGARD_PIPE_OF_INSIGHT_ID, 600))
+
 
 function addShopHotkeyForPlayer(player p)
   let trig = CreateTrigger()
@@ -79,9 +92,10 @@ class ItemShop
     itemShopBackdrop.setAllPoints(itemShopFrame)
 
     itemShopButton
-    ..setSize(0.095, 0.035)
-    ..setAbsPoint(FRAMEPOINT_BOTTOM, vec2(0.4, 0.142))
+    ..setSize(0.09, 0.032)
+    ..setAbsPoint(FRAMEPOINT_BOTTOM, vec2(0.55, 0.138))
     ..setText("Shop (G)")
+    ..setScale(0.9)
     ..onClick() ->
       let p = GetTriggerPlayer()
       let currentPlayerVisibleFrames = playerVisibleFrames.get(p)
@@ -104,10 +118,10 @@ class ItemShop
 
   function addItemIcon(ItemIcon itemIcon)
     itemIconCounter++
-    if itemIconCounter % (MAX_ICONS_PER_ROW + 1) == 0
-      iconPosition = iconPosition.add(-HORIZONTAL_SPACING * (MAX_ICONS_PER_ROW - 1), VERTICAL_SPACING)
-    else if itemIconCounter == 1
+    if itemIconCounter == 1
       skip 
+    else if (itemIconCounter - 1) % MAX_ICONS_PER_ROW == 0
+      iconPosition = iconPosition.add(-HORIZONTAL_SPACING * (MAX_ICONS_PER_ROW - 1), VERTICAL_SPACING)
     else
       iconPosition = iconPosition.add(HORIZONTAL_SPACING, 0)
 

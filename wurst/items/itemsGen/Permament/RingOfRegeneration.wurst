@@ -1,0 +1,12 @@
+package RingOfRegeneration
+import ItemObjEditing
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+
+public constant RING_OF_REGENERATION_ID = compiletime(ITEM_ID_GEN.next())
+constant RING_OF_REGENERATION_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genItems()
+  new ItemDefinition(RING_OF_REGENERATION_ID, 'rlif')
+  // ..setAbilities(RING_OF_REGENERATION_ABIL_ID.toRawCode())

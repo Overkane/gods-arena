@@ -9,4 +9,4 @@ constant HEALING_WARD_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 
 @compiletime function genItems()
   new ItemDefinition(HEALING_WARD_ID, 'whwd')
-  ..setAbilities(HEALING_WARD_ABIL_ID.toRawCode())
+  // ..setAbilities(HEALING_WARD_ABIL_ID.toRawCode())

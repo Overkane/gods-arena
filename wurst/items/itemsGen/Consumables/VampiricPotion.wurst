@@ -9,4 +9,4 @@ constant VAMPIRIC_POTION_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 
 @compiletime function genItems()
   new ItemDefinition(VAMPIRIC_POTION_ID, 'vamp')
-  ..setAbilities(VAMPIRIC_POTION_ABIL_ID.toRawCode())
+  // ..setAbilities(VAMPIRIC_POTION_ABIL_ID.toRawCode())

@@ -9,4 +9,4 @@ constant SCROLL_OF_HEALING_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 
 @compiletime function genItems()
   new ItemDefinition(SCROLL_OF_HEALING_ID, 'shea')
-  ..setAbilities(SCROLL_OF_HEALING_ABIL_ID.toRawCode())
+  // ..setAbilities(SCROLL_OF_HEALING_ABIL_ID.toRawCode())

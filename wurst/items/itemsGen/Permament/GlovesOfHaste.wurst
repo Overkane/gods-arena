@@ -1,0 +1,12 @@
+package GlovesOfHaste
+import ItemObjEditing
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+
+public constant GLOVES_OF_HASTE_ID = compiletime(ITEM_ID_GEN.next())
+constant GLOVES_OF_HASTE_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genItems()
+  new ItemDefinition(GLOVES_OF_HASTE_ID, 'gcel')
+  // ..setAbilities(GLOVES_OF_HASTE_ABIL_ID.toRawCode())

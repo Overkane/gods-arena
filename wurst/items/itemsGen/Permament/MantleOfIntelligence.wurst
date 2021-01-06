@@ -1,0 +1,12 @@
+package MantleOfIntelligence
+import ItemObjEditing
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+
+public constant MANTLE_OF_INTELLIGENCE_ID = compiletime(ITEM_ID_GEN.next())
+constant MANTLE_OF_INTELLIGENCE_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genItems()
+  new ItemDefinition(MANTLE_OF_INTELLIGENCE_ID, 'rin1')
+  // ..setAbilities(MANTLE_OF_INTELLIGENCE_ABIL_ID.toRawCode())

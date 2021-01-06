@@ -1,0 +1,12 @@
+package LegionDoomHorn
+import ItemObjEditing
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+
+public constant LEGION_DOOM_HORN_ID = compiletime(ITEM_ID_GEN.next())
+constant LEGION_DOOM_HORN_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genItems()
+  new ItemDefinition(LEGION_DOOM_HORN_ID, 'lgdh')
+  // ..setAbilities(LEGION_DOOM_HORN_ABIL_ID.toRawCode())

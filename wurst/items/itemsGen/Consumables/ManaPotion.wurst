@@ -9,4 +9,4 @@ constant MANA_POTION_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 
 @compiletime function genItems()
   new ItemDefinition(MANA_POTION_ID, 'pman')
-  ..setAbilities(MANA_POTION_ABIL_ID.toRawCode())
+  // ..setAbilities(MANA_POTION_ABIL_ID.toRawCode())

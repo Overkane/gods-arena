@@ -9,4 +9,4 @@ constant SCROLL_OF_RESTORATION_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 
 @compiletime function genItems()
   new ItemDefinition(SCROLL_OF_RESTORATION_ID, 'sres')
-  ..setAbilities(SCROLL_OF_RESTORATION_ABIL_ID.toRawCode())
+  // ..setAbilities(SCROLL_OF_RESTORATION_ABIL_ID.toRawCode())
