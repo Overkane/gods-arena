@@ -19,10 +19,10 @@ function initPlayersGold()
 
 function initVision()
   SetPlayerHandicap(ENEMY_PLAYER, pData.size() / 8.)
-  createVision(ENEMY_PLAYER, playableMapRect, false).start()
+  createVision(ENEMY_PLAYER, playableMapRect, true).start()
 
   pData.forEach() (player p, PlayerData playerData) ->
-    createVision(p, arena1Rect, false).start()
+    createVision(p, arena1Rect, true).start()
 
 function initPickTimer()
   let heroPickTimer = getTimer()
@@ -38,10 +38,10 @@ function initPickTimer()
 init
   nullTimer() -> 
     initFrames()
+    startEntityLoop()
     initPlayers()
     initPlayersGold()
     initVision()
-    startEntityLoop()
     initPickTimer()
     initHeroPickMenu()
     initItemShopMenu()
