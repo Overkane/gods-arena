@@ -46,11 +46,10 @@ function addItemIcons()
   ..addItemIcon(new ItemIcon(RING_OF_PROTECTION_ID, 200))
   ..addItemIcon(new ItemIcon(RING_OF_REGENERATION_ID, 180))
   ..addItemIcon(new ItemIcon(SOBI_MASK_ID, 170))
-  ..addItemIcon(new ItemIcon(PENDANT_OF_MANA_ID, 140))
+  ..addItemIcon(new ItemIcon(PENDANT_OF_MANA_ID, 250))
   ..addItemIcon(new ItemIcon(WARSONG_BATTLE_DRUMS_ID, 600))
   ..addItemIcon(new ItemIcon(LEGION_DOOM_HORN_ID, 600))
-  ..addItemIcon(new ItemIcon(KHADGARD_PIPE_OF_INSIGHT_ID, 600))
-
+  ..addItemIcon(new ItemIcon(KHADGARS_PIPE_OF_INSIGHT_ID, 600))
 
 function addShopHotkeyForPlayer(player p)
   let trig = CreateTrigger()

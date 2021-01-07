@@ -11,5 +11,4 @@ public constant PALADIN_ID = compiletime(HERO_ID_GEN.next())
   new HeroPreset(PALADIN_ID, UnitIds.paladin, "Paladin")
     ..addHeroAbility(HEALING_SEAL_ID)
     ..addHeroAbility(HOLY_INSPIRATION_ID)
-    ..setStartingStrength(50) // TODO remove
     ..buildHero()

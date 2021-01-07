@@ -19,23 +19,23 @@ constant ARENA_INDEX = 0
 function wave_1() returns Wave
   return new WaveBuilder()
   ..arena(ARENA_INDEX)
-  ..expBounty(100)
+  ..expBounty(200)
   ..goldBounty(100)
 
   ..creep(UnitIds.timberwolf)
-  ..hp(100)
+  ..hp(550)
   ..damage(8)
   ..amount(10)
 
   ..wait(10)
 
   ..creep(UnitIds.giantwolf)
-  ..hp(250)
+  ..hp(650)
   ..damage(12)
   ..amount(2)
 
   ..creep(UnitIds.direwolf)
-  ..hp(400)
+  ..hp(800)
   ..damage(25)
   ..amount(1)
   ..scale(1.5)
@@ -49,29 +49,29 @@ function wave_2() returns Wave
   ..goldBounty(125)
 
   ..creep(UnitIds.foresttroll)
-  ..hp(100)
+  ..hp(450)
   ..damage(6)
   ..amount(10)
 
   ..creep(UnitIds.foresttrolltrapper)
-  ..hp(120)
+  ..hp(500)
   ..damage(12)
   ..amount(4)
 
   ..wait(20)
 
   ..creep(UnitIds.foresttrollberserker)
-  ..hp(140)
+  ..hp(600)
   ..damage(10)
   ..amount(4)
 
   ..creep(UnitIds.foresttrollhighpriest)
-  ..hp(125)
+  ..hp(550)
   ..damage(5)
   ..amount(3)
 
   ..creep(UnitIds.foresttrollking)
-  ..hp(600)
+  ..hp(850)
   ..damage(35)
   ..amount(1)
   ..scale(1.5)
@@ -85,34 +85,34 @@ function wave_3() returns Wave
   ..goldBounty(150)
 
   ..creep(UnitIds.furbolg)
-  ..hp(160)
+  ..hp(750)
   ..damage(12)
   ..amount(8)
 
   ..creep(UnitIds.furbolgtracker)
-  ..hp(140)
+  ..hp(800)
   ..damage(18)
   ..amount(6)
 
   ..creep(UnitIds.furbolgshaman)
-  ..hp(125)
+  ..hp(650)
   ..damage(18)
   ..amount(2)
 
   ..wait(10)
 
   ..creep(UnitIds.furbolgancient)
-  ..hp(300)
+  ..hp(1000)
   ..damage(25)
   ..amount(4)
 
   ..creep(UnitIds.furbolgeldershaman)
-  ..hp(200)
+  ..hp(950)
   ..damage(20)
   ..amount(2)
 
   ..creep(UnitIds.furbolgchampion)
-  ..hp(425)
+  ..hp(1500)
   ..damage(35)
   ..amount(1)
   ..scale(1.5)
@@ -126,35 +126,35 @@ function wave_4() returns Wave
   ..goldBounty(175)
 
   ..creep(UnitIds.gnoll1)
-  ..hp(140)
+  ..hp(700)
   ..damage(20)
   ..amount(12)
 
   ..creep(UnitIds.gnoll3)
-  ..hp(200)
+  ..hp(800)
   ..damage(25)
   ..amount(2)
   ..scale(1.25)
 
   ..creep(UnitIds.gnollpoacher)
-  ..hp(200)
+  ..hp(650)
   ..damage(12)
   ..amount(8)
 
   ..wait(10)
 
   ..creep(UnitIds.gnollbrute)
-  ..hp(300)
+  ..hp(900)
   ..damage(30)
   ..amount(4)
 
   ..creep(UnitIds.gnollassassin)
-  ..hp(180)
+  ..hp(850)
   ..damage(25)
   ..amount(3)
 
   ..creep(UnitIds.gnollking)
-  ..hp(750)
+  ..hp(1250)
   ..damage(45)
   ..amount(1)
   ..scale(1.5)
@@ -168,34 +168,34 @@ function wave_5() returns Wave
   ..goldBounty(200)
 
   ..creep(UnitIds.spider)
-  ..hp(120)
+  ..hp(500)
   ..damage(20)
   ..amount(10)
 
   ..creep(UnitIds.forestspider)
-  ..hp(200)
+  ..hp(700)
   ..damage(10)
   ..amount(10)
 
   ..creep(UnitIds.spiderblack)
-  ..hp(150)
+  ..hp(600)
   ..damage(15)
   ..amount(10)
 
   ..wait(10)
 
   ..creep(UnitIds.spittingspider)
-  ..hp(255)
+  ..hp(750)
   ..damage(18)
   ..amount(4)
 
   ..creep(UnitIds.giantspider)
-  ..hp(400)
+  ..hp(900)
   ..damage(25)
   ..amount(4)
 
   ..creep(UnitIds.broodmother)
-  ..hp(850)
+  ..hp(1750)
   ..damage(40)
   ..amount(1)
   ..scale(1.5)
@@ -209,17 +209,17 @@ function wave_6() returns Wave
   ..goldBounty(225)
 
   ..creep(UnitIds.owlbear)
-  ..hp(250)
+  ..hp(1500)
   ..damage(40)
   ..amount(4)
 
   ..creep(UnitIds.enragedowlbear)
-  ..hp(300)
+  ..hp(2000)
   ..damage(45)
   ..amount(2)
 
   ..creep(UnitIds.berserkowlbear)
-  ..hp(500)
+  ..hp(2500)
   ..damage(55)
   ..amount(1)
   ..scale(1.5)
@@ -233,24 +233,24 @@ function wave_7() returns Wave
   ..goldBounty(250)
 
   ..creep(UnitIds.sasquatch)
-  ..hp(300)
+  ..hp(1250)
   ..damage(15)
   ..amount(10)
 
   ..creep(UnitIds.eldersasquatch)
-  ..hp(450)
+  ..hp(2500)
   ..damage(35)
   ..amount(2)
 
   ..wait(10)
 
   ..creep(UnitIds.sasquatchoracle)
-  ..hp(500)
+  ..hp(2500)
   ..damage(25)
   ..amount(2)
 
   ..creep(UnitIds.ancientsasquatch)
-  ..hp(900)
+  ..hp(3000)
   ..damage(50)
   ..amount(1)
   ..scale(1.5)
@@ -264,22 +264,30 @@ function wave_8() returns Wave
   ..goldBounty(275)
 
   ..creep(UnitIds.stonemaulogre)
-  ..hp(550)
+  ..hp(1500)
   ..damage(20)
   ..amount(10)
 
   ..creep(UnitIds.stonemaulmagi)
-  ..hp(1000)
+  ..hp(1250)
   ..damage(40)
-  ..amount(2)
+  ..amount(3)
 
   ..wait(10)
 
   ..creep(UnitIds.stonemaulwarchief)
-  ..hp(1500)
-  ..damage(65)
+  ..hp(2000)
+  ..damage(100)
   ..amount(1)
-  ..scale(1.5)
+  ..scale(0.8)
+  ..rgb(0, 0, 255)
+
+  ..creep(UnitIds.stonemaulwarchief)
+  ..hp(3500)
+  ..damage(50)
+  ..amount(1)
+  ..scale(2)
+  ..rgb(255, 0, 0)
 
   .build()
 
@@ -290,29 +298,29 @@ function wave_9() returns Wave
   ..goldBounty(300)
 
   ..creep(UnitIds.druidoftheclaw)
-  ..hp(500)
+  ..hp(1250)
   ..damage(40)
   ..amount(4)
 
   ..creep(UnitIds.mountaingiant)
-  ..hp(1500)
-  ..damage(100)
+  ..hp(3000)
+  ..damage(80)
   ..amount(2)
 
   ..creep(UnitIds.archer)
-  ..hp(350)
+  ..hp(900)
   ..damage(25)
   ..amount(10)
 
   ..creep(UnitIds.dryad)
-  ..hp(450)
+  ..hp(1000)
   ..damage(50)
   ..amount(2)
 
   ..wait(10)
 
   ..creep(UnitIds.huntress)
-  ..hp(1500)
+  ..hp(3750)
   ..damage(100)
   ..amount(2)
   ..scale(2)
@@ -326,8 +334,8 @@ function boss_wave_10() returns Wave
   ..goldBounty(325)
 
   ..creep(UnitIds.keeperofthegrove)
-  ..hp(7500)
-  ..damage(150)
+  ..hp(10000)
+  ..damage(250)
   ..amount(1)
   ..scale(3)
 

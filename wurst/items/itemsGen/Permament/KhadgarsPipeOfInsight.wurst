@@ -4,9 +4,9 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 
-public constant KHADGARD_PIPE_OF_INSIGHT_ID = compiletime(ITEM_ID_GEN.next())
-constant KHADGARD_PIPE_OF_INSIGHT_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+public constant KHADGARS_PIPE_OF_INSIGHT_ID = compiletime(ITEM_ID_GEN.next())
+constant KHADGARS_PIPE_OF_INSIGHT_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 
 @compiletime function genItems()
-  new ItemDefinition(KHADGARD_PIPE_OF_INSIGHT_ID, 'kpin')
+  new ItemDefinition(KHADGARS_PIPE_OF_INSIGHT_ID, 'kpin')
   // ..setAbilities(KHADGARD_PIPE_OF_INSIGHT_ABIL_ID.toRawCode())
