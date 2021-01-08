@@ -9,10 +9,10 @@ import Hero
 import UnitIds
 import ArcherinoHero
 import ItemShopMenu
+import GameProperties
 
 constant heroPickFrame = createFrame("FRAME", "heroPickFrame", GAME_UI, "", 0)
 constant playerSelection = new IterableMap<player, HeroIcon>
-constant heroPickRect = Rect(-288, -416, 288, 64)
 
 class HeroIcon
   static private var globalIconContext = 0
@@ -85,7 +85,7 @@ function createHeroPickMenu()
     
     if playerSelection.has(p)
       let pickedIcon = playerSelection.getAndRemove(p)
-      let h = new Hero(p, pickedIcon.heroId, heroPickRect.randomPoint().toVec3(), angle(0))
+      let h = new Hero(p, pickedIcon.heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
       pData.get(p).setHero(h)
       p.selectSingle(h.actor)
       pickedIcon.disable()
@@ -99,34 +99,42 @@ function createHeroPickMenu()
       p.print("Choose hero first!")
 
 function addHeroIcons()
-  new HeroIcon(PALADIN_ID, Icons.bTNHeroPaladin, Icons.dISBTNHeroPaladin)
-    ..addTooltip("Paladin", "Paladin description")
+  new HeroIcon(UnitIds.alchemist, Icons.bTNHeroAlchemist, Icons.dISBTNHeroAlchemist)
+    ..addTooltip("Alchemist", "Soon")
     ..build()
 
-  new HeroIcon(ASSASIN_ID, Icons.bTNHeroWarden, Icons.dISBTNHeroWarden)
-    ..addTooltip("Assasin", "Assasin description")
+  new HeroIcon(UnitIds.keeperofthegrove, Icons.bTNKeeperOfTheGrove, Icons.dISBTNKeeperOfTheGrove)
+    ..addTooltip("Keeper of the Grove", "Soon")
     ..build()
 
-  new HeroIcon(ARCHMAGE_ID, Icons.bTNHeroArchMage, Icons.dISBTNHeroArchMage)
-    ..addTooltip("Archmage", "Archmage description")
+  new HeroIcon(UnitIds.mountainking, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
+    ..addTooltip("Mountain King", "Soon")
     ..build()
 
   new HeroIcon(UnitIds.blademaster, Icons.bTNHeroBlademaster, Icons.dISBTNHeroBlademaster)
-    ..addTooltip("Blademaster", "Blademaster description")
+    ..addTooltip("Blademaster", "Soon")
     ..build()
 
   new HeroIcon(UnitIds.demonhunter, Icons.bTNHeroDemonHunter, Icons.dISBTNHeroDemonHunter)
-    ..addTooltip("Demon Hunter", "Demon Hunter description")
-    ..build()
-
-  new HeroIcon(ARCHER_ID, Icons.bTNSylvanusWindRunner, Icons.dISBTNSylvanusWindRunner)
-    ..addTooltip("Archerino", "Shoots pointy sticks.")
+    ..addTooltip("Demon Hunter", "Soon")
     ..build()
 
   new HeroIcon(UnitIds.taurenchieftain, Icons.bTNHeroTaurenChieftain, Icons.dISBTNHeroTaurenChieftain)
-    ..addTooltip("Tauren", "Tauren description")
+    ..addTooltip("Tauren", "Soon")
     ..build()
 
   new HeroIcon(UnitIds.dreadlord, Icons.bTNHeroDreadLord, Icons.dISBTNHeroDreadLord)
-    ..addTooltip("Dreadlord", "Dreadlord description")
+    ..addTooltip("Dreadlord", "Soon")
     ..build()
+
+  new HeroIcon(UnitIds.tinker, Icons.bTNHeroTinker, Icons.dISBTNHeroTinker)
+    ..addTooltip("Tinker", "Soon")
+    ..build()
+
+  // new HeroIcon(PALADIN_ID, Icons.bTNHeroPaladin, Icons.dISBTNHeroPaladin)
+  //   ..addTooltip("Paladin", "Under construction.")
+  //   ..build()
+
+  // new HeroIcon(ARCHER_ID, Icons.bTNSylvanusWindRunner, Icons.dISBTNSylvanusWindRunner)
+  //   ..addTooltip("Archerino", "Shoots pointy sticks.")
+  //   ..build()

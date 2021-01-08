@@ -7,6 +7,10 @@ import CreepObjEditing
 import ObjectIdGenerator
 import SoundUtils
 import Arenas
+import GameProperties
+import Abilities
+
+constant AFTER_WAVE_RESTORATION_SOUND = new SoundDefinition(Sounds.restorationPotion)
 
 interface NextStepListener
   abstract function execute()
@@ -141,7 +145,20 @@ public class Wave
     let additionalExpBounty = (expBounty * 0.5 * (8-pData.size())/7).round()
     let additionalGoldBounty = (goldBounty * 0.5 * (8-pData.size())/7).round()
     //-
+
     pData.forEach() (player p, PlayerData playerData) -> 
+      let heroUnit = playerData.getHero().actor
+      
       p.addGold(goldBounty + additionalGoldBounty)
       playerData.getHero().addXp(expBounty + additionalExpBounty, true)
-
+    
+      if not heroUnit.isAlive()
+        heroUnit.revive(HERO_PICK_RECT.randomPoint(), true)
+        heroUnit.setHP(heroUnit.getMaxHP() * 0.5)
+        heroUnit.setMana(heroUnit.getMaxMana() * 0.2)
+      else 
+        AFTER_WAVE_RESTORATION_SOUND.play(1, 30)
+        flashEffect(Abilities.replenishHealthCasterOverhead, heroUnit.getPos())
+        heroUnit.setHP(heroUnit.getMaxHP())
+        heroUnit.setMana(heroUnit.getMaxMana())
+    
