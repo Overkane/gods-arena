@@ -18,7 +18,7 @@ function initPlayersGold()
     p.setGold(150)
 
 function initVision()
-  SetPlayerHandicap(ENEMY_PLAYER, pData.size() / 8.)
+  SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (pData.size() / 8.))
   createVision(ENEMY_PLAYER, playableMapRect, true).start()
 
   pData.forEach() (player p, PlayerData playerData) ->

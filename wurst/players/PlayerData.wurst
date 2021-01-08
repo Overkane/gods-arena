@@ -34,5 +34,5 @@ public function initPlayers()
   onPlayerLeave() p ->
     destroy p.getData()
     printTimed(p.getNameColored() + " has left the game", 15.)
-    SetPlayerHandicap(ENEMY_PLAYER, humanPlayers.size() / 8.)
+    SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (humanPlayers.size() / 8.))
 
