@@ -5,6 +5,7 @@ import public PaladinHero
 
 // Agi heroes
 import public AssasinHero
+import public ArcherinoHero
 
 // Int heroes
 import public ArchmageHero
