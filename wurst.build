@@ -1,18 +1,19 @@
 ---
 projectName: Gods' Arena
 dependencies:
-- https://github.com/wurstscript/wurstStdlib2
-- https://github.com/Frotty/Frentity.git
-- https://github.com/Frotty/Ability-Tooltip-Generator
-- https://github.com/Frotty/wurst-bonus-handler.git
+  - https://github.com/wurstscript/wurstStdlib2
+  - https://github.com/Frotty/Frentity.git
+  - https://github.com/Frotty/Ability-Tooltip-Generator
+  - https://github.com/Frotty/wurst-bonus-handler.git
+  - https://github.com/crojewsk/wurstExtLibs.git
 buildMapData:
-  name: Gods' Arena v0.0.1
-  fileName: Gods' Arena v0.0.1
+  name: Gods' Arena v0.0.2
+  fileName: Gods' Arena v0.0.2
   author: Overkane & Frotty
   scenarioData:
     description: WurstScript powered!
     suggestedPlayers: 4-8
     loadingScreen:
       title: by Overkane and Frotty
-      subTitle: Gods' Arena v0.0.1
-      text: The coolest map description you have ever seen.
+      subTitle: Gods' Arena v0.0.2
+      text: Try to survive.
