@@ -9,7 +9,7 @@ public constant waveController = new WaveController()
 
 constant LAST_WAVE_COMPLETED = new SoundDefinition(Sounds.humanVictory)
 
-constant SPAWN_TIME = 20.
+constant SPAWN_TIME = 15.
 
 class WaveController
   constant waves = new LinkedList<Wave>
