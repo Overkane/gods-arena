@@ -1,0 +1,3 @@
+package AbilityTooltipGenerator_config
+
+@config public constant DESCRIPTION_PATTERN = "|cffffffff$description$|r"
