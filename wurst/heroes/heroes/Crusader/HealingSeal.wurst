@@ -1,20 +1,30 @@
 package HealingSeal
-import ClosureEvents
 import Icons
 import Abilities
 import ClosureForGroups
 import AbilityTooltipGenerator
+import TheEmpyreanBuff
 
 public constant HEALING_SEAL_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure HEALING_SEAL_DAMAGE = lvl -> 100. * lvl
-RealLevelClosure HEALING_SEAL_RADIUS = lvl -> 350.
+RealLevelClosure DAMAGE = lvl -> 100. + 80. * (lvl-1)
+RealLevelClosure RADIUS = lvl -> 350.
 
 init 
   EventListener.onTargetCast(HEALING_SEAL_ID) (caster, tunit) ->
     let lvl = caster.getAbilityLevel(HEALING_SEAL_ID)
-    let spellDamage = HEALING_SEAL_DAMAGE.run(lvl)
-    let spellRadius = HEALING_SEAL_RADIUS.run(lvl)
+    
+    var healSealAddAOE = 0.
+
+    let bEmpyreanBuff = caster.getEntity().getBuff(TheEmpyreanBuff.typeId)
+    let hasEmpyreanBuff = bEmpyreanBuff != null
+
+    if hasEmpyreanBuff
+      let EmpyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
+      healSealAddAOE = EmpyreanBuff.healSealAddAOE
+
+    let spellDamage = DAMAGE.run(lvl)
+    let spellRadius = RADIUS.run(lvl) + healSealAddAOE
 
     flashEffect(Abilities.holyBoltSpecialArt, tunit.getPos())
 
@@ -23,8 +33,10 @@ init
       forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isEnemyOf(caster) and target.isAlive()
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
+          DamageEvent.setNextDamageFromCode()
           caster.damageTarget(target, spellDamage)
     else
+      DamageEvent.setNextDamageFromCode()
       caster.damageTarget(tunit, spellDamage)
       forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isAllyOf(caster)
@@ -34,18 +46,18 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero heals an ally and deals damage to all enemies around it or deals damage to the enemy and heals allies around it.")
   new ChannelAbilityPreset(HEALING_SEAL_ID, 5, true, tooltip)
-    ..setLevelSkipRequirement(0)
-    ..presetButtonPosNormal(0, 2)
-    ..presetButtonPosResearch(0, 0)
-    ..presetIcon(Icons.bTNHolyBolt)
+  ..setLevelSkipRequirement(0)
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetIcon(Icons.bTNHolyBolt)
 
-    ..tooltipStartListen()
-    ..presetTargetTypes(Targettype.UNIT)
-    ..presetHotkey("Q")
-    ..setName("Healing Seal")
-    ..addTooltipProperty("Damage/Heal", HEALING_SEAL_DAMAGE)
-    ..addTooltipProperty("Damage/Heal Radius", HEALING_SEAL_RADIUS)
-    ..presetManaCost(lvl -> 50 + 10 * lvl)
-    ..presetCastRange(lvl -> 600)
-    ..presetCooldown(lvl -> 8)
-    ..tooltipStopListen()
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.UNIT)
+  ..presetHotkey("Q")
+  ..setName("Healing Seal")
+  ..addTooltipProperty("Damage/Heal", DAMAGE)
+  ..addTooltipProperty("Damage/Heal Radius", RADIUS)
+  ..presetManaCost(lvl -> 50 + 10 * lvl)
+  ..presetCastRange(lvl -> 600)
+  ..presetCooldown(lvl -> 8)
+  ..tooltipStopListen()

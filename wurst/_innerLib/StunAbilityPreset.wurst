@@ -1,0 +1,14 @@
+package StunAbilityPreset
+import AbilityObjEditing
+
+public class StunAbilityPreset extends AbilityDefinitionMountainKingThunderBolt
+  construct(int newAbilityId)
+    super(newAbilityId)
+    this.setDummyAbility()
+    setArtEffect("")
+    setArtCaster("")
+    setArtTarget("")
+    setMissileArt("")
+    setAnimationNames("spell")
+    setMissileSpeed(99999)
+    presetDamage(lvl -> 0.)

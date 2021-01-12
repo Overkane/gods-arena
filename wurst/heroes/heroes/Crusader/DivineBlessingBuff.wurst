@@ -1,11 +1,11 @@
-package HolyInspirationBuff
+package DivineBlessingBuff
 import PresetBuffs
 import Assets
 import BonusHandler
 
-constant buffTuple = compiletime(createDummyBuffObject("Holy Inspiration", "Increases armor and hp regen",  Icons.bTNResurrection, Abilities.innerFireTarget, AttachmentPoints.overhead))
+constant buffTuple = compiletime(createDummyBuffObject("Divine Blessing", "Increases armor and hp regen",  Icons.bTNResurrection, Abilities.innerFireTarget, AttachmentPoints.overhead))
 
-public class HolyInspirationBuff extends NormalBuff
+public class DivineBlessingBuff extends NormalBuff
   private real bonusArmor
   private real bonusHpReg 
 
@@ -16,8 +16,8 @@ public class HolyInspirationBuff extends NormalBuff
     
   override function onApply()
     target.actor..addBonus(Bonus.ARMOR, bonusArmor)
-      ..addBonus(Bonus.LIFEREGEN, bonusHpReg)
+    ..addBonus(Bonus.LIFEREGEN, bonusHpReg)
 
   override function onEnd()
     target.actor..addBonus(Bonus.ARMOR, -bonusArmor)
-      ..addBonus(Bonus.LIFEREGEN, -bonusHpReg)
+    ..addBonus(Bonus.LIFEREGEN, -bonusHpReg)

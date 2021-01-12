@@ -1,0 +1,68 @@
+package HolySmite
+import Icons
+import Abilities
+import ClosureForGroups
+import AbilityTooltipGenerator
+import InstantDummyCaster
+import StunAbilityPreset
+import TheEmpyreanBuff
+
+public constant HOLY_SMITE = compiletime(ABIL_ID_GEN.next())
+public constant HOLY_SMITE_STUN = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure CHANCE = lvl -> 18.
+RealLevelClosure DAMAGE = lvl -> 80. + 40 * (lvl-1)
+RealLevelClosure RADIUS = lvl -> 225
+RealLevelClosure STUN_DURATION = lvl -> 0.4
+
+init 
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(HOLY_SMITE)
+      let lvl = sunit.getAbilityLevel(HOLY_SMITE)
+
+      let bEmpyreanBuff = sunit.getEntity().getBuff(TheEmpyreanBuff.typeId)
+      let hasEmpyreanBuff = bEmpyreanBuff != null
+
+      var spellChance = 0.
+
+      if hasEmpyreanBuff
+        let EmpyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
+        spellChance = EmpyreanBuff.holySmiteProcChance
+      else
+        spellChance = CHANCE.run(lvl)
+
+      if spellChance >= GetRandomInt(1, 100)
+        let tunit = DamageEvent.getTarget()
+        let spellDamage = DAMAGE.run(lvl)
+        let spellRadius = RADIUS.run(lvl)
+
+        flashEffect(Abilities.thunderclapCaster, tunit.getPos())
+
+        forUnitsInRange(tunit.getPos(), spellRadius) target ->
+          if target.isEnemyOf(sunit) and target.isAlive()
+            DamageEvent.setNextDamageFromCode()
+            sunit.damageTarget(target, spellDamage)
+            InstantDummyCaster.castTarget(DUMMY_PLAYER, HOLY_SMITE_STUN, lvl, "thunderbolt", target) 
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
+  new ChannelAbilityPreset(HOLY_SMITE, 5, true, tooltip)
+  ..setLevelSkipRequirement(0)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetIcon(Icons.pASBTNFeedBack)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.PASSIVE)
+  ..setName("Holy Smite")
+  ..addTooltipProperty("Chance", CHANCE)
+  ..addTooltipProperty("Damage", DAMAGE)
+  ..presetAreaofEffect(RADIUS)
+  ..addTooltipProperty("Stun Duration", STUN_DURATION)
+  ..tooltipStopListen()
+
+  new StunAbilityPreset(HOLY_SMITE_STUN)
+  ..presetDurationHero(STUN_DURATION)
+  ..presetDurationNormal(STUN_DURATION)

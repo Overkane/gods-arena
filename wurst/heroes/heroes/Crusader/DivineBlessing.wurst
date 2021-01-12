@@ -1,0 +1,56 @@
+package DivineBlessing
+import Icons
+import ClosureForGroups
+import AbilityTooltipGenerator
+import DivineBlessingBuff
+import TheEmpyreanBuff
+
+public constant DIVINE_BLESSING_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure BONUS_ARMOR = lvl -> 2. * lvl
+RealLevelClosure BONUS_HP_REG = lvl -> 0.5 * lvl
+RealLevelClosure DURATION = lvl -> 15.
+RealLevelClosure RADIUS = lvl -> 1200.
+
+init 
+  EventListener.onCast(DIVINE_BLESSING_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(DIVINE_BLESSING_ID)
+
+    var EmpyreanMult = 1.
+
+    let bEmpyreanBuff = caster.getEntity().getBuff(TheEmpyreanBuff.typeId)
+    let hasEmpyreanBuff = bEmpyreanBuff != null
+
+    if hasEmpyreanBuff
+      let EmpyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
+      EmpyreanMult = EmpyreanBuff.divineBlessingMult
+
+    let bonusArmor = BONUS_ARMOR.run(lvl) * EmpyreanMult
+    let bonusHpReg = BONUS_HP_REG.run(lvl) * EmpyreanMult
+    let spellDuration = DURATION.run(lvl)
+    let spellRadius = RADIUS.run(lvl)
+
+    new DivineBlessingBuff(spellDuration, bonusArmor*2, bonusHpReg*2).apply(caster.getEntity())
+    forUnitsInRange(caster.getPos(), spellRadius) (unit u) ->
+      if u.isAllyOf(caster)
+        new DivineBlessingBuff(spellDuration, bonusArmor, bonusHpReg).apply(u.getEntity())
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Increases armor and hp regeneration of nearby allies. Works two times effective for the caster.")
+  new ChannelAbilityPreset(DIVINE_BLESSING_ID, 5, true, tooltip)
+  ..setLevelSkipRequirement(0)
+  ..presetButtonPosNormal(2, 2)
+  ..presetButtonPosResearch(2, 0)
+  ..presetIcon(Icons.bTNResurrection)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..presetHotkey("E")
+  ..setName("Divine Blessing")
+  ..addTooltipProperty("Bonus Armor", BONUS_ARMOR)
+  ..addTooltipProperty("Bonus HP Reg", BONUS_HP_REG)
+  ..presetAreaofEffect(RADIUS)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 10 + 5 * lvl)
+  ..presetCooldown(lvl -> 30)
+  ..tooltipStopListen()
