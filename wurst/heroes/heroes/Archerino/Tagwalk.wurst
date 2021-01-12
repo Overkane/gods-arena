@@ -4,7 +4,6 @@ import Icons
 import PresetBuffs
 import Abilities
 import AttachmentPoints
-import ClosureForGroups
 
 public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -19,6 +18,7 @@ class TagBuff extends NormalBuff
         super(duration, tagBuffObj)
 
 class TagwalkBuff extends NormalBuff
+    let trig = CreateTrigger()
     effect windEff = null
 
     construct(real duration)
@@ -29,6 +29,12 @@ class TagwalkBuff extends NormalBuff
         target.actor
         ..setMoveSpeed(target.actor.getMoveSpeed() + 200.)
         windEff = target.actor.addEffect(Abilities.tornadoElementalSmall, AttachmentPoints.chest)..setScale(0.25)
+        trig..registerUnitInRange(target.actor, 72., null)
+        ..addAction() ->
+            let inRange = GetTriggerUnit()
+            if inRange.getEntity() != null and not inRange.hasAbility(tagBuffObj.abilId)
+                new TagBuff(10.)
+                ..apply(inRange.getEntity())
         
 
     override function defenseModifier()
@@ -39,14 +45,7 @@ class TagwalkBuff extends NormalBuff
         target.actor
         ..setMoveSpeed(target.actor.getMoveSpeed() - 200.)
         windEff.destr()
-
-    override function update()
-        forUnitsInRange(target.getPos().toVec2(), 72.) target ->
-            if not target.hasAbility(tagBuffObj.abilId)
-                new TagBuff(10.)
-                ..apply(target.getEntity())
-
-        super.update()
+        trig.destr()
 
 
 init

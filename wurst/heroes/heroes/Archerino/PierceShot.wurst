@@ -5,10 +5,20 @@ import Knockback3
 import AbilityTooltipGenerator
 import Tagwalk
 import BuffObjEditing
+import Orders
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
+constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
+
 constant RealLevelClosure SPELL_DAMAGE = lvl -> 60. * lvl
+
+class TreantEntity extends UnitEntity
+
+    construct(player owner, unit target)
+        super(createUnit(owner, TREANT_ID, target.getPos(), angle(0))
+        ..setTimedLife(10.)
+        ..issueTargetOrderById(OrderIds.attack, target))
 
 
 init
@@ -28,8 +38,7 @@ init
                 Knockback3.add(hitTarget, 450., projectile.getXYAngle(), 45 .fromDeg())
 
                 if hitTarget.hasAbility(tagBuffObj.abilId)
-                    flashEffect(Objects.critterBloodAlbatross, hitTarget.getPos())
-                    caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
+                    new TreantEntity(projectile.owner, hitTarget)
 
 
 @compiletime function genAbility()
