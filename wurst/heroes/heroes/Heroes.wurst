@@ -8,4 +8,4 @@ import public AssasinHero
 import public ArcherinoHero
 
 // Int heroes
-import public ArchmageHero
+import public StormbearerHero

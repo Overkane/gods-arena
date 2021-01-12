@@ -1,0 +1,58 @@
+package StormHammer
+import Icons
+import AbilityTooltipGenerator
+import StormHammerBuff
+import DummyCaster
+import Buff
+import OrderIds
+
+public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())
+public constant STORM_HAMMER_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure CHAIN_LIGHTNING_DAMAGE = lvl -> 60. + 30. * (lvl-1)
+IntLevelClosure CHAIN_LIGHTNING_NUMBER_OF_TARGETS = lvl -> 5 + 1 * (lvl-1)
+RealLevelClosure CHARGE_DURATION = lvl -> 5.
+
+init 
+  EventListener.onCast(STORM_HAMMER_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(STORM_HAMMER_ID)
+    let spellDuration = CHARGE_DURATION.run(lvl)
+
+    new StormHammerBuff(spellDuration).apply(caster.getEntity())
+
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.getEntity().getBuff(StormHammerBuff.typeId) != null
+      let lvl = sunit.getAbilityLevel(STORM_HAMMER_ID)
+      let tunit = DamageEvent.getTarget()
+
+      new DummyCaster()..origin(sunit.getPos())
+      ..owner(sunit.getOwner())
+      .castTarget(STORM_HAMMER_CHAIN_LIGHTNING_ID, lvl, OrderIds.chainlightning, tunit)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero charges his hammer for a short duration. While hammer charged, each hero attack calls chain lightning.")
+  new ChannelAbilityPreset(STORM_HAMMER_ID, 5, true, tooltip)
+  ..setLevelSkipRequirement(0)
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetIcon(Icons.bTNStormHammer)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..presetHotkey("Q")
+  ..setName("Storm Hammer")
+  ..addTooltipProperty("Chain Lightning Damage", CHAIN_LIGHTNING_DAMAGE)
+  ..addTooltipProperty("Chain Lightning Number of Targets", CHAIN_LIGHTNING_NUMBER_OF_TARGETS)
+  ..addTooltipProperty("Charge Duration", CHARGE_DURATION)
+  ..presetManaCost(lvl -> 50 + 5 * lvl)
+  ..presetCooldown(lvl -> 21. - lvl)
+  ..tooltipStopListen()
+
+  new AbilityDefinitionFarseerChainLightning(STORM_HAMMER_CHAIN_LIGHTNING_ID)
+  ..setDummyAbility()
+  ..presetDamageperTarget(CHAIN_LIGHTNING_DAMAGE)
+  ..presetNumberofTargetsHit(CHAIN_LIGHTNING_NUMBER_OF_TARGETS)
+  ..presetDamageReductionperTarget(lvl -> 0)
+    

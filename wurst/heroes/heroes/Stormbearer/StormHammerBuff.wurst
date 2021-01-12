@@ -1,0 +1,19 @@
+package StormHammerBuff
+import PresetBuffs
+import Assets
+import SoundUtils
+
+constant buffTuple = compiletime(createDummyBuffObject("The Storm Hammer", "Hero attacks call chain lightining",  Icons.bTNStormHammer))
+
+public class StormHammerBuff extends NormalBuff
+  constant ON_APPLY_SOUND = new SoundDefinition(Sounds.lightningShieldTarget1)
+  // constant ON_END_SOUND = new SoundDefinition(Sounds.paladinDivineShieldDeath1)
+
+  construct(real dur)
+    super(dur, buffTuple)
+    
+  override function onApply()
+    ON_APPLY_SOUND.play()
+
+  override function onEnd()
+    // ON_END_SOUND.play()

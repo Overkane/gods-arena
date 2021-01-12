@@ -28,8 +28,8 @@ function addHeroIcons()
     new HeroIcon(UnitIds.pandarenbrewmaster, Icons.bTNPandarenBrewmaster, Icons.dISBTNPandarenBrewmaster)
     ..addTooltip("Keeper of the Grove", "Soon"))
   ..addHeroIcon(
-    new HeroIcon(UnitIds.mountainking, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
-    ..addTooltip("Mountain King", "Soon"))
+    new HeroIcon(STORMBEARER_ID, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
+    ..addTooltip("Stormbearer", "Mighty lord of storms, good at cleaning groups of weak enemies, but lacks reliable single target damage."))
   ..addHeroIcon(
     new HeroIcon(UnitIds.blademaster, Icons.bTNHeroBlademaster, Icons.dISBTNHeroBlademaster)
     ..addTooltip("Blademaster", "Soon"))

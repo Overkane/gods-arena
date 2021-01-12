@@ -1,0 +1,26 @@
+package StormbearerHero
+import UnitIds
+import HeroPreset
+import ObjectIdGenerator
+import StormHammer
+import ForkedLightning
+import ThunderStrike
+import Tempest
+
+public constant STORMBEARER_ID = compiletime(HERO_ID_GEN.next())
+
+@compiletime function genHero()
+  new HeroPreset(STORMBEARER_ID, UnitIds.mountainking, "Stormbearer")
+  ..addProperName("Thor")
+  ..addHeroAbility(STORM_HAMMER_ID)
+  ..addHeroAbility(FORKED_LIGHTNING_ID)
+  ..addHeroAbility(THUNDER_STRIKE_ID)
+  ..addHeroAbility(TEMPEST_ID)
+  ..setNormalAbilities("Ane2, Asud, AInv, Alit")
+  ..setPrimaryAttribute("Intelligence")
+  ..setStartingStrength(17)
+  ..setStartingIntelligence(23)
+  ..setAttack1Range(350)
+  ..setAttack1WeaponSound(WeaponSound.Nothing)
+  ..buildProperNames()
+  ..buildHeroAbilities()
