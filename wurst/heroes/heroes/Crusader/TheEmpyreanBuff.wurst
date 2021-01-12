@@ -1,0 +1,37 @@
+package TheEmpyreanBuff
+import public PresetBuffs
+import Assets
+import BonusHandler
+import SoundUtils
+
+constant buffTuple = compiletime(createDummyBuffObject("The Empyrean", "Enchance hero",  Icons.bTNCharm))
+
+public class TheEmpyreanBuff extends NormalBuff
+  private real bonusDamage
+  private real attackSpeedSlow 
+  real healSealAddAOE
+  real holySmiteProcChance 
+  real divineBlessingMult 
+
+  constant ON_APPLY_SOUND = new SoundDefinition(Sounds.divineShield)
+  constant ON_END_SOUND = new SoundDefinition(Sounds.paladinDivineShieldDeath1)
+
+  construct(real dur, real bonusDamage, real attackSpeedSlow, real healSealAddAOE, real holySmiteProcChance, real divineBlessingMult)
+    super(dur, buffTuple)
+    this.bonusDamage = bonusDamage
+    this.attackSpeedSlow = attackSpeedSlow
+    this.healSealAddAOE = healSealAddAOE
+    this.holySmiteProcChance = holySmiteProcChance
+    this.divineBlessingMult = divineBlessingMult
+    
+  override function onApply()
+    ON_APPLY_SOUND.play()
+    target.actor..addBonus(Bonus.DAMAGE, bonusDamage)
+    ..addBonus(Bonus.ATTACKSPEED, -attackSpeedSlow)
+    ..setScale(2)
+
+  override function onEnd()
+    ON_END_SOUND.play()
+    target.actor..addBonus(Bonus.DAMAGE, -bonusDamage)
+    ..addBonus(Bonus.ATTACKSPEED, attackSpeedSlow)
+    ..setScale(1)

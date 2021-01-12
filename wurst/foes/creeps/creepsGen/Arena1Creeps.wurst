@@ -122,7 +122,7 @@ function wave_3() returns Wave
 function wave_4() returns Wave
   return new WaveBuilder()
   ..arena(ARENA_INDEX)
-  ..expBounty(250)
+  ..expBounty(300)
   ..goldBounty(175)
 
   ..creep(UnitIds.gnoll1)
@@ -164,7 +164,7 @@ function wave_4() returns Wave
 function wave_5() returns Wave
   return new WaveBuilder()
   ..arena(ARENA_INDEX)
-  ..expBounty(300)
+  ..expBounty(350)
   ..goldBounty(200)
 
   ..creep(UnitIds.spider)
@@ -205,7 +205,7 @@ function wave_5() returns Wave
 function wave_6() returns Wave
   return new WaveBuilder()
   ..arena(ARENA_INDEX)
-  ..expBounty(350)
+  ..expBounty(450)
   ..goldBounty(225)
 
   ..creep(UnitIds.owlbear)
@@ -229,7 +229,7 @@ function wave_6() returns Wave
 function wave_7() returns Wave
   return new WaveBuilder()
   ..arena(ARENA_INDEX)
-  ..expBounty(400)
+  ..expBounty(450)
   ..goldBounty(250)
 
   ..creep(UnitIds.sasquatch)

@@ -1,0 +1,48 @@
+package TheEmpyrean
+import Icons
+import AbilityTooltipGenerator
+import TheEmpyreanBuff
+import Entity
+
+public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure DAMAGE = lvl -> 50. + 50. * (lvl-1)
+RealLevelClosure ATTACK_SPEED_SLOW = lvl -> 80
+RealLevelClosure HEAL_SEAL_ADDITIONAL_RADIUS = lvl -> 100. + 50. * (lvl-1)
+RealLevelClosure HOLY_SMITE_PROC_CHANCE = lvl -> 80. + 10. * (lvl-1)
+RealLevelClosure DIVINE_BLESSING_MULT = lvl -> 1.25 + lvl * 0.25
+RealLevelClosure DURATION = lvl -> 30.
+
+init 
+  EventListener.onCast(THE_EMPYREAN_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(THE_EMPYREAN_ID)
+    let bonusDamage = DAMAGE.run(lvl)
+    let attackSpeedSlow = ATTACK_SPEED_SLOW.run(lvl)
+    let healSealAddAOE = HEAL_SEAL_ADDITIONAL_RADIUS.run(lvl)
+    let holySmiteProcChance = HOLY_SMITE_PROC_CHANCE.run(lvl)
+    let divineBlessingMult = DIVINE_BLESSING_MULT.run(lvl)
+    let spellDuration = DURATION.run(lvl)
+
+    new TheEmpyreanBuff(spellDuration, bonusDamage, attackSpeedSlow, healSealAddAOE, holySmiteProcChance, divineBlessingMult).apply(caster.getEntity())
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero enhance himself and all his abilities, but his attack speed becomes slower.")
+  new ChannelAbilityPreset(THE_EMPYREAN_ID, 3, true, tooltip)
+  ..setRequiredLevel(6)
+  ..presetButtonPosNormal(3, 2)
+  ..presetButtonPosResearch(3, 0)
+  ..presetIcon(Icons.bTNCharm)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..presetHotkey("R")
+  ..setName("The Empyrean")
+  ..addTooltipProperty("Additional Damage", DAMAGE)
+  ..addTooltipProperty("Attack Speed Slow", ATTACK_SPEED_SLOW)
+  ..addTooltipProperty("Healing Seal Additional Radius", DAMAGE)
+  ..addTooltipProperty("Holy Smite Proc Chance", HOLY_SMITE_PROC_CHANCE)
+  ..addTooltipProperty("Divine Blessing Multiplayer", DIVINE_BLESSING_MULT)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 150 + 50 * lvl)
+  ..presetCooldown(lvl -> 90)
+  ..tooltipStopListen()
