@@ -1,0 +1,47 @@
+package ExplosiveArrow
+import AbilityTooltipGenerator
+import Icons
+import Projectile
+import Abilities
+import ClosureForGroups
+
+public constant EXPLOSIVE_ARROW_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure DAMAGE = lvl -> 75. + 50 * lvl
+
+init
+    EventListener.onPointCast(EXPLOSIVE_ARROW_ID) (caster, target) ->
+        let lvl = caster.getAbilityLevel(EXPLOSIVE_ARROW_ID)
+        let projectile = new Projectile(caster.getPos().withTerrainZ(64), 16., caster.getOwner(), caster.getPos().angleTo(target), Abilities.volcanoMissile)
+        projectile.gravity = defaultGravity
+        projectile
+        ..setTarget(target.withTerrainZ(), 12.)
+        ..setRanged(caster.getPos().distanceTo(target))
+        ..onEnd() ->
+            forUnitsInRange(target, 256.) u ->
+                if u.isEnemyOf(caster)
+                    caster.damageTarget(u, DAMAGE.run(lvl))
+
+            
+
+
+@compiletime function genAbility()
+    let tooltip = new AbilityTooltipGenerator("Huge area damage.")
+    new ChannelAbilityPreset(EXPLOSIVE_ARROW_ID, 3, true, tooltip)
+    ..presetButtonPosNormal(0, 2)
+    ..presetButtonPosResearch(0, 0)
+    ..presetIcon(Icons.bTNVolcano)
+    ..presetOption(Option.TARGETIMAGE, true)
+    ..setLevelSkipRequirement(6)
+
+    ..tooltipStartListen()
+    ..presetTargetTypes(Targettype.POINT)
+    ..presetAreaofEffect(lvl -> 256)
+    ..presetHotkey("Q")
+    ..setName("Piercing Shot")
+    ..addTooltipProperty("Damage", DAMAGE)
+    ..presetManaCost(lvl -> 100 + 25 * lvl)
+    ..presetCastRange(lvl -> 1000)
+    ..presetCooldown(lvl -> 16)
+    ..tooltipStopListen()
+        

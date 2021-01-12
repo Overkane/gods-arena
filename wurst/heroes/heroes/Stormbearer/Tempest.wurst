@@ -13,7 +13,7 @@ RealLevelClosure DURATION = lvl -> 10.
   let tooltip = new AbilityTooltipGenerator("Calls down a storm of lightning to strike enemy units.")
   new AbilityDefinitionMonsoon(TEMPEST_ID)
   ..registerTooltipGenerator(tooltip)
-  ..setRequiredLevel(6)
+  ..setLevelSkipRequirement(6)
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetIcon(Icons.bTNPurge)
