@@ -26,6 +26,7 @@ class WaveController
     if waves.isEmpty()
       LAST_WAVE_COMPLETED.play()
       printTimed("|cffceac15>> Congratulations! You finished the last wave!", 10.)
+      return
 
     let tim = getTimer()
     let tdialog = tim.createTimerDialog()
