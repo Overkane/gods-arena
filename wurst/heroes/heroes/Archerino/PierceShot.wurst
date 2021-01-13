@@ -62,5 +62,5 @@ init
     ..tooltipStopListen()
 
     new UnitDefinition(TREANT_ID, UnitIds.forceofnature)
-    ..setHitPointsMaximumBase(50)
-    ..setAttack1DamageBase(10)
+    ..setHitPointsMaximumBase(150)
+    ..setAttack1DamageBase(15)
