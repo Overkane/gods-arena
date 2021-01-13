@@ -12,8 +12,6 @@ public constant ARCHER_ID = compiletime(HERO_ID_GEN.next())
 
 @compiletime function genHero()
   new HeroPreset(ARCHER_ID, UnitIds.sylvanuswindrunner, "Archerino")
-  ..setStartingAgility(100)
-  ..setStartingStrength(100)
   ..addHeroAbility(PIERCESHOT_ID)
   ..addHeroAbility(TAGWALK_ID)
   ..addHeroAbility(CRIT_ARROW_ID)

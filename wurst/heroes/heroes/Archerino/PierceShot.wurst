@@ -6,6 +6,7 @@ import AbilityTooltipGenerator
 import Tagwalk
 import BuffObjEditing
 import Orders
+import BonusHandler
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -15,10 +16,12 @@ constant RealLevelClosure SPELL_DAMAGE = lvl -> 60. * lvl
 
 class TreantEntity extends UnitEntity
 
-    construct(player owner, unit target)
+    construct(player owner, unit target, int lvl)
         super(createUnit(owner, TREANT_ID, target.getPos(), angle(0))
         ..setTimedLife(10.)
-        ..issueTargetOrderById(OrderIds.attack, target))
+        ..issueTargetOrderById(OrderIds.attack, target)
+        ..addBonus(Bonus.DAMAGE, lvl * 15.)
+        ..addBonus(Bonus.LIFE, 50. * lvl))
 
 
 init
@@ -38,7 +41,7 @@ init
                 Knockback3.add(hitTarget, 450., projectile.getXYAngle(), 45 .fromDeg())
 
                 if hitTarget.hasAbility(tagBuffObj.abilId)
-                    new TreantEntity(projectile.owner, hitTarget)
+                    new TreantEntity(projectile.owner, hitTarget, lvl)
 
 
 @compiletime function genAbility()
@@ -57,3 +60,7 @@ init
     ..presetCastRange(lvl -> 1000)
     ..presetCooldown(lvl -> 16)
     ..tooltipStopListen()
+
+    new UnitDefinition(TREANT_ID, UnitIds.forceofnature)
+    ..setHitPointsMaximumBase(50)
+    ..setAttack1DamageBase(10)

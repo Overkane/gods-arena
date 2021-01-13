@@ -29,6 +29,7 @@ init
   let tooltip = new AbilityTooltipGenerator("Hero enhance himself and all his abilities, but his attack speed becomes slower.")
   new ChannelAbilityPreset(THE_EMPYREAN_ID, 3, true, tooltip)
   ..setLevelSkipRequirement(6)
+  ..setRequiredLevel(6)
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetIcon(Icons.bTNCharm)

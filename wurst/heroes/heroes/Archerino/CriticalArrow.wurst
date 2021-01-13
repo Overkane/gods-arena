@@ -31,7 +31,7 @@ init
 @compiletime function genAbility()
     let tooltip = new AbilityTooltipGenerator("Has a chance to deal extra damage.\nIf the target is tagged, it will always crit and also become entangled.")
     new ChannelAbilityPreset(CRIT_ARROW_ID, 5, true, tooltip)
-    ..presetButtonPosNormal(0, 2)
+    ..presetButtonPosNormal(0, 3)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.pASBTNCriticalStrike)
 
