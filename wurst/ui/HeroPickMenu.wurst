@@ -37,16 +37,13 @@ function addHeroIcons()
     new HeroIcon(CRUSADER_ID, Icons.bTNArthas, Icons.dISBTNArthas)
     ..addTooltip("Crusader", "Holy warrior, which can heal and buff allies, but also has strong buff for himself and his attacks are quite hard."))
   ..addHeroIcon(
-    new HeroIcon(UnitIds.taurenchieftain, Icons.bTNHeroTaurenChieftain, Icons.dISBTNHeroTaurenChieftain)
-    ..addTooltip("Tauren", "Soon"))
-  // ..addHeroIcon(
-  //   new HeroIcon(UnitIds.firelord, Icons.bTNHeroAvatarOfFlame, Icons.dISBTNHeroAvatarOfFlame)
-  //   ..addTooltip("Dreadlord", "Soon"))
+    new HeroIcon(ASSASSIN_ID, Icons.bTNHeroWarden, Icons.dISBTNHeroWarden)
+    ..addTooltip("Assassin", "Stealthy killer, which good vs single targets."))
   ..addHeroIcon(
     new HeroIcon(UnitIds.tinker, Icons.bTNHeroTinker, Icons.dISBTNHeroTinker)
     ..addTooltip("Tinker", "Soon"))
   ..addHeroIcon(
-  new HeroIcon(ARCHER_ID, Icons.bTNSylvanusWindRunner, Icons.dISBTNSylvanusWindRunner)
+    new HeroIcon(ARCHER_ID, Icons.bTNSylvanusWindRunner, Icons.dISBTNSylvanusWindRunner)
     ..addTooltip("Archerino", "Shoots pointy sticks."))
 
 class HeroPickUI
