@@ -226,6 +226,19 @@ function wave_6() returns Wave
   ..amount(1)
   ..scale(1.5)
 
+  ..wait(45)
+
+  ..creep(UnitIds.owlbear)
+  ..hp(1800)
+  ..damage(50)
+  ..amount(3)
+  ..scale(1.25)
+
+  ..creep(UnitIds.misha1)
+  ..hp(400)
+  ..damage(25)
+  ..amount(6)
+
   .build()
 
 function wave_7() returns Wave
