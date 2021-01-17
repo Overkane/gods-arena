@@ -27,7 +27,7 @@ class TreantEntity extends UnitEntity
 init
     EventListener.onPointCast(PIERCESHOT_ID) (caster, target) ->
         let casterEntity = caster.getEntity()
-        let projectile = new Projectile(casterEntity.getPos(), 78, caster.getOwner(), casterEntity.getPos().angleTo2d(target), Abilities.ballistaMissile)
+        let projectile = new Projectile(casterEntity.getPos(), 86, caster.getOwner(), casterEntity.getPos().angleTo2d(target), Abilities.ballistaMissile)
         let lvl = caster.getAbilityLevel(PIERCESHOT_ID)
         projectile
             ..setRanged(1200)
