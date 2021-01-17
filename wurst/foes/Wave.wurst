@@ -71,6 +71,9 @@ public class WaveBuilder
     creepStep.arenaIndex = arenaIndex
     currentStep = creepStep
 
+  function abilities(string abilities)
+    creepStep.creepDef.setNormalAbilities(abilities)
+
   function arena(int index)
     arenaIndex = index
 
