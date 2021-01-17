@@ -133,7 +133,6 @@ class ItemShop
 
   function checkBuyability(player p)
     let gold = p.getGold()
-    print("check1")
     items.forEach(icon -> icon.checkBuyability(p, gold))
 
   function showShopButtonForPlayer(player p)
