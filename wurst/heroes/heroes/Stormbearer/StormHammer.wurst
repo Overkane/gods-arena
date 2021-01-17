@@ -6,6 +6,7 @@ import DummyCaster
 import Buff
 import OrderIds
 import ClosureEvents
+import HeroSpellConstants
 
 public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())
 public constant STORM_HAMMER_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
@@ -34,7 +35,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero charges his hammer for a short duration. While hammer charged, each hero attack calls chain lightning.")
-  new ChannelAbilityPreset(STORM_HAMMER_ID, 5, true, tooltip)
+  new ChannelAbilityPreset(STORM_HAMMER_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(0)
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)

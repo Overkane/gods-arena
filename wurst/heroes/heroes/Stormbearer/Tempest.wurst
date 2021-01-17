@@ -1,6 +1,7 @@
 package Tempest
 import Icons
 import AbilityTooltipGenerator
+import HeroSpellConstants
 
 public constant TEMPEST_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -13,8 +14,8 @@ RealLevelClosure DURATION = lvl -> 10.
   let tooltip = new AbilityTooltipGenerator("Calls down a storm of lightning to strike enemy units.")
   new AbilityDefinitionMonsoon(TEMPEST_ID)
   ..registerTooltipGenerator(tooltip)
-  ..setRequiredLevel(3)
-  ..setLevelSkipRequirement(6)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetIcon(Icons.bTNPurge)

@@ -1,6 +1,7 @@
 package Stealth
 import AbilityTooltipGenerator
 import Icons
+import HeroSpellConstants
 
 public constant STEALTH_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -18,7 +19,7 @@ RealLevelClosure DURATION = lvl -> 3.
   ..presetDurationHero(DURATION)
 
   ..tooltipStartListen()
-  ..setLevels(5)
+  ..setLevels(NORMAL_SPELL_LEVELS)
   ..presetHotkey("W")
   ..setName("Stealth")
   ..presetBackstabDamage1(BACKSTAB_DAMAGE)

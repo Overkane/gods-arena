@@ -1,5 +1,6 @@
 package ThunderStrike
 import AbilityTooltipGenerator
+import HeroSpellConstants
 
 public constant THUNDER_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -19,7 +20,7 @@ RealLevelClosure STUN_DURATION = lvl -> 0.3
   ..presetBuffs(lvl -> "ANmd")
 
   ..tooltipStartListen()
-  ..setLevels(5)
+  ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Thunder Strike")
   ..presetChancetoBash(CHANCE_TO_BASH)
   ..presetDamageBonus(DAMAGE_BONUS)

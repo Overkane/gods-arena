@@ -7,6 +7,7 @@ import Tagwalk
 import BuffObjEditing
 import Orders
 import BonusHandler
+import HeroSpellConstants
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -46,7 +47,7 @@ init
 
 @compiletime function genAbility()
     let tooltip = new AbilityTooltipGenerator("Shoots an arrow towards the target position, damaging enemies in its path. If hit enemies are currently |cffd803bctagged|r, they become wounded.")
-    new ChannelAbilityPreset(PIERCESHOT_ID, 5, true, tooltip)
+    new ChannelAbilityPreset(PIERCESHOT_ID, NORMAL_SPELL_LEVELS, true, tooltip)
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNGlaiveThrower)

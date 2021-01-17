@@ -6,6 +6,7 @@ import AbilityTooltipGenerator
 import InstantDummyCaster
 import StunAbilityPreset
 import TheEmpyreanBuff
+import HeroSpellConstants
 
 public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
 public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
@@ -46,7 +47,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
-  new ChannelAbilityPreset(HOLY_SMITE_ID, 5, true, tooltip)
+  new ChannelAbilityPreset(HOLY_SMITE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(0)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)

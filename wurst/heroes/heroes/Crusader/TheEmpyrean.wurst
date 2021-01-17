@@ -3,6 +3,7 @@ import Icons
 import AbilityTooltipGenerator
 import TheEmpyreanBuff
 import Entity
+import HeroSpellConstants
 
 public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -27,9 +28,9 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero enhance himself and all his abilities, but his attack speed becomes slower.")
-  new ChannelAbilityPreset(THE_EMPYREAN_ID, 3, true, tooltip)
-  ..setLevelSkipRequirement(3)
-  ..setRequiredLevel(6)
+  new ChannelAbilityPreset(THE_EMPYREAN_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetIcon(Icons.bTNCharm)

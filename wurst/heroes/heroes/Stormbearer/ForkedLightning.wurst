@@ -1,5 +1,6 @@
 package ForkedLightning
 import AbilityTooltipGenerator
+import HeroSpellConstants
 
 public constant FORKED_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -14,7 +15,7 @@ IntLevelClosure NUMBER_OF_TARGETS = lvl -> 5 + 2 * (lvl-1)
   ..presetButtonPosResearch(1, 0)
 
   ..tooltipStartListen()
-  ..setLevels(5)
+  ..setLevels(NORMAL_SPELL_LEVELS)
   ..presetHotkey("W")
   ..setName("Forked Lightning")
   ..presetNumberofTargetsHit(NUMBER_OF_TARGETS)

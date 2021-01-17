@@ -3,6 +3,7 @@ import AbilityTooltipGenerator
 import Icons
 import DamageEvent
 import StandardTextTags
+import HeroSpellConstants
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -42,9 +43,9 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero gains chance to deal critical strike. Chance to deal critical strike is doubled if target is attacked from behind.")
-  new ChannelAbilityPreset(COUP_DE_GRACE_ID, 3, true, tooltip)
-  ..setRequiredLevel(6)
-  ..setLevelSkipRequirement(3)
+  new ChannelAbilityPreset(COUP_DE_GRACE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetHotkey("")

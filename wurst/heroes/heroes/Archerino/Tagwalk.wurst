@@ -5,6 +5,7 @@ import PresetBuffs
 import Abilities
 import AttachmentPoints
 import ClosureEvents
+import HeroSpellConstants
 
 public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -68,7 +69,7 @@ init
     ..presetDurationHero(WALK_DURATION)
 
     ..tooltipStartListen()
-    ..setLevels(5)
+    ..setLevels(NORMAL_SPELL_LEVELS)
     ..presetHotkey("W")
     ..setName("Tag Walk")
     ..addTooltipProperty("Walk Duration", WALK_DURATION)

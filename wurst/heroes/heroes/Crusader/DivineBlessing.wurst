@@ -5,6 +5,7 @@ import AbilityTooltipGenerator
 import DivineBlessingBuff
 import TheEmpyreanBuff
 import ClosureEvents
+import HeroSpellConstants
 
 public constant DIVINE_BLESSING_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -38,7 +39,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Increases armor and hp regeneration of nearby allies. Works two times effective for the caster.")
-  new ChannelAbilityPreset(DIVINE_BLESSING_ID, 5, true, tooltip)
+  new ChannelAbilityPreset(DIVINE_BLESSING_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(0)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)

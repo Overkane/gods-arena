@@ -6,6 +6,7 @@ import Tagwalk
 import InstantDummyCaster
 import Orders
 import Buff
+import HeroSpellConstants
 
 public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -30,7 +31,7 @@ init
 
 @compiletime function genAbility()
     let tooltip = new AbilityTooltipGenerator("Has a chance to deal extra damage.\nIf the target is |cffd803bctagged|r, it will always crit and also become entangled.")
-    new ChannelAbilityPreset(CRIT_ARROW_ID, 5, true, tooltip)
+    new ChannelAbilityPreset(CRIT_ARROW_ID, NORMAL_SPELL_LEVELS, true, tooltip)
     ..presetButtonPosNormal(0, 3)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.pASBTNCriticalStrike)

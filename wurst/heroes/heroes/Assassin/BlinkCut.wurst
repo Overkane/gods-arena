@@ -8,6 +8,7 @@ import AttachmentPoints
 import ClosureTimers
 import ClosureEvents
 import LinkedList
+import HeroSpellConstants
 
 public constant BLINK_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -57,7 +58,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero blinks and strikes several enemies.")
-  new ChannelAbilityPreset(BLINK_CUT_ID, 5, true, tooltip)
+  new ChannelAbilityPreset(BLINK_CUT_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
   ..presetIcon(Icons.bTNBlink)
