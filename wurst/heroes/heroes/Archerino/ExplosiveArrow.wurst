@@ -32,7 +32,7 @@ init
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNVolcano)
     ..presetOption(Option.TARGETIMAGE, true)
-    ..setLevelSkipRequirement(6)
+    ..setLevelSkipRequirement(3)
     ..setRequiredLevel(6)
 
     ..tooltipStartListen()
