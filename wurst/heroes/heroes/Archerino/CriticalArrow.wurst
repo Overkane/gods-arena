@@ -18,12 +18,12 @@ init
     DamageEvent.addListener() -> 
         let attacker = DamageEvent.getSource()
         let lvl = attacker.getAbilityLevel(CRIT_ARROW_ID)
-        if lvl > 0 and GetRandomReal(0, 1) < CHANCE.run(lvl)
+        if DamageEvent.getType() == DamageType.ATTACK and lvl > 0 and GetRandomReal(0, 1) < CHANCE.run(lvl)
             let damage = DAMAGE.run(lvl)
             DamageEvent.addAmount(damage)
             createCriticalStrikeTextTag(attacker, damage.toInt())
 
-            if DamageEvent.getTarget().hasAbility(tagBuffObj.abilId)
+            if DamageEvent.getTarget().hasAbility(tagBuffObj.buffId)
                 InstantDummyCaster.castTarget(attacker.getOwner(), ENTANGLE_ID, lvl, OrderIds.entanglingroots, DamageEvent.getTarget())
 
 

@@ -7,6 +7,8 @@ import Hero
 import PlayerData
 import SoundUtils
 import Items
+import ClosureTimers
+import Players
 
 public ItemShop itemShop
 
@@ -17,6 +19,10 @@ constant itemShopOpenSound = new SoundDefinition(Sounds.bigButtonClick)
 public function initItemShopMenu()
   itemShop = new ItemShop()
   addItemIcons()
+  doPeriodically(0.5) cb ->
+    ALL_PLAYERS.forEach() p ->
+      itemShop.checkBuyability(p)
+
 
 function framehandle.removeFocus()
   this.disable()
@@ -69,7 +75,7 @@ function addShopHotkeyForPlayer(player p)
   BlzTriggerRegisterPlayerKeyEvent(trig, p, OSKEY_G, 0, false)
 
 class ItemShop
-  private var itemIconCounter = 0
+  private var items = new LinkedList<ItemIcon>
 
   private constant PADDING = 0.02
   private constant HORIZONTAL_SPACING = 0.03
@@ -116,15 +122,19 @@ class ItemShop
       playerVisibleFrames.put(p, new HashSet<framehandle>)
 
   function addItemIcon(ItemIcon itemIcon)
-    itemIconCounter++
-    if itemIconCounter == 1
-      skip 
-    else if (itemIconCounter - 1) % MAX_ICONS_PER_ROW == 0
-      iconPosition = iconPosition.add(-HORIZONTAL_SPACING * (MAX_ICONS_PER_ROW - 1), VERTICAL_SPACING)
-    else
-      iconPosition = iconPosition.add(HORIZONTAL_SPACING, 0)
+    items.add(itemIcon)
+    if items.size() > 1
+      if (items.size() - 1) % MAX_ICONS_PER_ROW == 0
+        iconPosition = iconPosition.add(-HORIZONTAL_SPACING * (MAX_ICONS_PER_ROW - 1), VERTICAL_SPACING)
+      else
+        iconPosition = iconPosition.add(HORIZONTAL_SPACING, 0)
 
     itemIcon.setIconPosition(iconPosition)
+
+  function checkBuyability(player p)
+    let gold = p.getGold()
+    print("check1")
+    items.forEach(icon -> icon.checkBuyability(p, gold))
 
   function showShopButtonForPlayer(player p)
     itemShopButton.show(p)
@@ -141,6 +151,8 @@ class ItemIcon
   private var itemId = 0
   private var itemCost = 0
   private var iconContext = 0
+  private var iconPath = ""
+  private var iconPathDisabled = ""
 
   private framehandle itemIconButton = null
   private framehandle itemIcon = null
@@ -155,7 +167,7 @@ class ItemIcon
     itemIconButton = createFrame(FramehandleTypeNames.gluebutton, "ItemIconButton", itemShop.itemShopFrame, FramehandleNames.iconButtonTemplate, iconContext)
     itemIcon = createFrame(FramehandleTypeNames.backdrop, "itemIcon", itemIconButton, "", iconContext)
     itemText = createFrame(FramehandleTypeNames.text, "itemText", itemIconButton, "", iconContext)
-  
+
     itemIconButton
       ..setSize(0.025, 0.025)
       ..onClick() -> 
@@ -175,7 +187,8 @@ class ItemIcon
         cantBuyItemSound.playForPlayer(p)
 
     let tempItem = createItem(itemId, vec2(0, 0))
-    let iconPath = tempItem.getIconPath()
+    iconPath = tempItem.getIconPath()
+    iconPathDisabled = iconPath.replace("BTN", "DISBTN").replace("CommandButtons", "CommandButtonsDisabled")
     tempItem.remove()    
 
     itemIcon
@@ -188,6 +201,15 @@ class ItemIcon
       ..setPoint(FRAMEPOINT_TOPLEFT, itemIconButton, FRAMEPOINT_BOTTOMLEFT, vec2(0, -0.001))
 
     createTooltip()
+
+  function checkBuyability(player p, int gold)
+    if p == localPlayer
+      if this.itemCost <= gold
+        itemIcon.setTexture(iconPath, 0, true)
+        itemText.setTextColor(colorA(255, 215, 0, 1))
+      else
+        itemIcon.setTexture(iconPathDisabled, 0, true)
+        itemText.setTextColor(colorA(200, 155, 0, 1))
 
   private function createTooltip()
     let tooltip = createFrame("BoxedText", itemIconButton, 0, iconContext)

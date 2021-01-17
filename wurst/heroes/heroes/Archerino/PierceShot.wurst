@@ -40,7 +40,7 @@ init
                 caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
                 Knockback3.add(hitTarget, 450., projectile.getXYAngle(), 45 .fromDeg())
 
-                if hitTarget.hasAbility(tagBuffObj.abilId)
+                if hitTarget.hasAbility(tagBuffObj.buffId)
                     new TreantEntity(projectile.owner, hitTarget, lvl)
 
 
