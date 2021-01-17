@@ -7,13 +7,13 @@ dependencies:
   - https://github.com/Frotty/wurst-bonus-handler.git
   - https://github.com/crojewsk/wurstExtLibs.git
 buildMapData:
-  name: Gods' Arena v0.0.3
-  fileName: Gods' Arena v0.0.3
+  name: Gods' Arena v0.0.4
+  fileName: Gods' Arena v0.0.4
   author: Overkane & Frotty
   scenarioData:
     description: WurstScript powered!
     suggestedPlayers: 4-8
     loadingScreen:
       title: by Overkane and Frotty
-      subTitle: Gods' Arena v0.0.3
+      subTitle: Gods' Arena v0.0.4
       text: Try to survive the arena of the gods.
