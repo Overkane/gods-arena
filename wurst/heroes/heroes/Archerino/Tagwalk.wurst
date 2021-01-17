@@ -4,7 +4,6 @@ import Icons
 import PresetBuffs
 import Abilities
 import AttachmentPoints
-import BonusHandler
 import ClosureEvents
 
 public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
