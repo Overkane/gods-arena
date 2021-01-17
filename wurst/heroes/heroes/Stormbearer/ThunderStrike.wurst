@@ -8,7 +8,7 @@ RealLevelClosure DAMAGE_BONUS = lvl -> 25. + 25. * (lvl-1)
 RealLevelClosure STUN_DURATION = lvl -> 0.3
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Gives a chance that an attack will do bonus damage and stun the target.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives a chance that an attack will do bonus damage and stun the target.")
   new AbilityDefinitionMountainKingBash(THUNDER_STRIKE_ID)
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(2, 2)
