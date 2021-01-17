@@ -1,0 +1,13 @@
+package Credits
+import Quest
+import Icons
+
+init
+  let credits = new Quest(false)
+  credits
+  ..setIcon(Icons.bTNTome)
+  ..setTitle("Credits")
+  ..setDescription(
+    "Hiveworkshop guys:\n" + 
+    "Mythic - spell effects"
+  )
