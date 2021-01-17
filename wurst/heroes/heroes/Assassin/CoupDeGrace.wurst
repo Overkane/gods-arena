@@ -1,0 +1,49 @@
+package CoupDeGrace
+import AbilityTooltipGenerator
+import Icons
+import DamageEvent
+import StandardTextTags
+
+public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure CRITICAL_CHANCE = lvl -> 10. + 5. * (lvl-1)
+RealLevelClosure CRITICAL_MULT = lvl -> 2. + 0.5 * (lvl-1)
+RealLevelClosure BACKSTAB_MULT = lvl -> 2.
+
+init
+  DamageEvent.addUnreducedListener() -> 
+    let sunit = DamageEvent.getSource()
+
+    if sunit.hasAbility(COUP_DE_GRACE_ID) and DamageEvent.getType() == DamageType.ATTACK 
+      let lvl = sunit.getAbilityLevel(COUP_DE_GRACE_ID)
+      let chance = CRITICAL_CHANCE.run(lvl)
+
+      let tunit = DamageEvent.getTarget()
+
+      if chance >= GetRandomInt(1, 100)
+        let multiplayer = CRITICAL_MULT.run(lvl)
+        let currentDamage = DamageEvent.getUnreducedAmount()
+        let damageToAdd = currentDamage * (multiplayer-1)
+        let resultDamage = currentDamage * multiplayer
+      
+        DamageEvent.addAmount(damageToAdd)
+        createCriticalStrikeTextTag(sunit, resultDamage.toInt())
+        flashEffect("Coup de Grace.mdx", tunit.getPos(), 1, sunit.getFacingAngle())
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero gains chance to deal critical strike. Chance to deal critical strike is doubled if target is attacked from behind.")
+  new ChannelAbilityPreset(COUP_DE_GRACE_ID, 3, true, tooltip)
+  ..setRequiredLevel(6)
+  ..setLevelSkipRequirement(3)
+  ..presetButtonPosNormal(3, 2)
+  ..presetButtonPosResearch(3, 0)
+  ..presetHotkey("")
+  ..presetIcon(Icons.bTNSacrifice)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.PASSIVE)
+  ..setName("Coup De Grace")
+  ..addTooltipProperty("Critical Strike Chance", CRITICAL_CHANCE)
+  ..addTooltipProperty("Damage Multiplayer", CRITICAL_MULT)
+  ..addTooltipProperty("Backstab Chance Multiplayer", BACKSTAB_MULT)
+  ..tooltipStopListen()

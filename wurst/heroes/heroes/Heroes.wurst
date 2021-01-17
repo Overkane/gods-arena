@@ -4,7 +4,7 @@ package Heroes
 import public CrusaderHero
 
 // Agi heroes
-import public AssasinHero
+import public AssassinHero
 import public ArcherinoHero
 
 // Int heroes

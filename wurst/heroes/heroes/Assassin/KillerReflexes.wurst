@@ -1,0 +1,24 @@
+package KillerReflexes
+import AbilityTooltipGenerator
+import Icons
+
+public constant KILLER_REFLEXES = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure EVASION_CHANCE = lvl -> 0.2 + 0.05 * (lvl-1)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Gives hero chance to evade the incoming attack.")
+  new AbilityDefinitionEvasion(KILLER_REFLEXES)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(2, 2)
+  ..presetButtonPosResearch(2, 0)
+  ..presetIcon(Icons.bTNEvasion)
+  ..presetChancetoEvade(EVASION_CHANCE)
+
+  ..tooltipStartListen()
+  ..setLevels(5)
+  ..setName("Killer Reflexes")
+  ..addTooltipProperty("Target Type", lvl -> (Targettype.PASSIVE castTo int).toString())
+  ..addTooltipProperty("Evasion chance", lvl -> (EVASION_CHANCE.run(lvl) * 100).round())
+  ..tooltipStopListen()
+

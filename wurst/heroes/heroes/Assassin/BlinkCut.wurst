@@ -1,0 +1,78 @@
+package BlinkCut
+import Icons
+import Abilities
+import ClosureForGroups
+import AbilityTooltipGenerator
+import UnitAnimations
+import AttachmentPoints
+import ClosureTimers
+import ClosureEvents
+import TimerUtils
+import LinkedList
+
+public constant BLINK_CUT_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure NUMBER_OF_STRIKES = lvl -> 5. + 1. * (lvl-1)
+RealLevelClosure DAMAGE_PER_STRIKE = lvl -> 60. + 10. * (lvl-1)
+RealLevelClosure BLINK_DISTANCE = lvl -> 600.
+
+init 
+  EventListener.onTargetCast(BLINK_CUT_ID) (unit caster, unit target) ->
+    let lvl = caster.getAbilityLevel(BLINK_CUT_ID)
+    var numberOfStrikes = NUMBER_OF_STRIKES.run(lvl).toInt() - 1 
+    let damagePerStrike = DAMAGE_PER_STRIKE.run(lvl)
+    let blinkDistance = BLINK_DISTANCE.run(lvl)
+
+    caster.setInvulnerable(true)
+    caster.getOwner().clearSelection()
+
+    caster.setPos(target.getPos())
+    caster.setAnimation(UnitAnimations.HeroWarden.attack1.idx)
+    caster.damageTarget(target, damagePerStrike)
+    flashEffect(Abilities.blinkCaster, caster.getPos())
+    flashEffect("Ephemeral Cut Midnight.mdx", target, AttachmentPoints.chest)
+
+    let myTimer = getTimer()
+
+    myTimer.doPeriodicallyCounted(0.3, numberOfStrikes) (CallbackCounted cb) ->
+      let unitList = new LinkedList<unit>
+      forUnitsInRange(caster.getPos(), blinkDistance) (unit u) ->
+        if u.isAlive() and u.getOwner().isEnemyOf(caster.getOwner())
+          unitList.add(u)  
+      
+      if not unitList.isEmpty()
+        caster.getOwner().clearSelection()
+        caster.setPos(unitList.getFirst().getPos())
+        caster.setAnimation(UnitAnimations.HeroWarden.attack1.idx)
+        caster.damageTarget(unitList.getFirst(), damagePerStrike)
+        flashEffect(Abilities.blinkCaster, caster.getPos())
+        flashEffect("Ephemeral Cut Midnight.mdx", unitList.getFirst(), AttachmentPoints.chest)
+        numberOfStrikes -= 1
+
+        if numberOfStrikes == 0
+          caster.setInvulnerable(false)
+          caster.getOwner().select(caster)
+      else 
+        myTimer.destr()
+        caster.setInvulnerable(false)
+        caster.getOwner().select(caster)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero blinks and strikes several enemies.")
+  new ChannelAbilityPreset(BLINK_CUT_ID, 5, true, tooltip)
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetIcon(Icons.bTNBlink)
+  ..presetHotkey("Q")
+  ..presetTargetsAllowed(lvl -> TargetsAllowed.enemies)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.UNIT)
+  ..setName("Blink Cut")
+  ..addTooltipProperty("Number of Strikes", NUMBER_OF_STRIKES)
+  ..addTooltipProperty("Damage per Strike", DAMAGE_PER_STRIKE)
+  ..addTooltipProperty("Blink Distance", BLINK_DISTANCE)
+  ..presetCastRange(BLINK_DISTANCE)
+  ..presetManaCost(lvl -> 75)
+  ..presetCooldown(lvl -> 12)
+  ..tooltipStopListen()

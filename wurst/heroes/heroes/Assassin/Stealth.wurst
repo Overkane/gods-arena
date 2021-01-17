@@ -1,0 +1,29 @@
+package Stealth
+import AbilityTooltipGenerator
+import Icons
+
+public constant STEALTH_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure BACKSTAB_DAMAGE = lvl -> 50. + 30. * (lvl-1)
+RealLevelClosure BONUS_MOVESPEED = lvl -> 10. + 5. * (lvl-1)
+RealLevelClosure DURATION = lvl -> 3.
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero becomes invisible for a short time and increases his movespeed. First attack while in stealth deals bonus damage.")
+  new AbilityDefinitionBladeMasterWindWalk(STEALTH_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetIcon(Icons.bTNShadowMeld)
+  ..presetDurationHero(DURATION)
+
+  ..tooltipStartListen()
+  ..setLevels(5)
+  ..presetHotkey("W")
+  ..setName("Stealth")
+  ..presetBackstabDamage1(BACKSTAB_DAMAGE)
+  ..presetMovementSpeedIncrease(BONUS_MOVESPEED) 
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 50 + 5 * (lvl-1))
+  ..presetCooldown(lvl -> 7)
+  ..tooltipStopListen()
