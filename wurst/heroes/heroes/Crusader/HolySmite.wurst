@@ -7,8 +7,8 @@ import InstantDummyCaster
 import StunAbilityPreset
 import TheEmpyreanBuff
 
-public constant HOLY_SMITE = compiletime(ABIL_ID_GEN.next())
-public constant HOLY_SMITE_STUN = compiletime(ABIL_ID_GEN.next())
+public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
+public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure CHANCE = lvl -> 18.
 RealLevelClosure DAMAGE = lvl -> 80. + 40 * (lvl-1)
@@ -19,8 +19,8 @@ init
   DamageEvent.addListener() -> 
     let sunit = DamageEvent.getSource()
 
-    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(HOLY_SMITE)
-      let lvl = sunit.getAbilityLevel(HOLY_SMITE)
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(HOLY_SMITE_ID)
+      let lvl = sunit.getAbilityLevel(HOLY_SMITE_ID)
 
       let bEmpyreanBuff = sunit.getBuff(TheEmpyreanBuff.typeId)
       let hasEmpyreanBuff = bEmpyreanBuff != null
@@ -44,11 +44,11 @@ init
           if target.isEnemyOf(sunit) and target.isAlive()
             DamageEvent.setNextDamageFromCode()
             sunit.damageTarget(target, spellDamage)
-            InstantDummyCaster.castTarget(DUMMY_PLAYER, HOLY_SMITE_STUN, lvl, "thunderbolt", target) 
+            InstantDummyCaster.castTarget(DUMMY_PLAYER, HOLY_SMITE_STUN_ID, lvl, "thunderbolt", target) 
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
-  new ChannelAbilityPreset(HOLY_SMITE, 5, true, tooltip)
+  new ChannelAbilityPreset(HOLY_SMITE_ID, 5, true, tooltip)
   ..setLevelSkipRequirement(0)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)
@@ -63,6 +63,6 @@ init
   ..addTooltipProperty("Stun Duration", STUN_DURATION)
   ..tooltipStopListen()
 
-  new StunAbilityPreset(HOLY_SMITE_STUN)
+  new StunAbilityPreset(HOLY_SMITE_STUN_ID)
   ..presetDurationHero(STUN_DURATION)
   ..presetDurationNormal(STUN_DURATION)
