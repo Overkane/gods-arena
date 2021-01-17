@@ -1,8 +1,6 @@
 package PendantOfMana
 import ItemObjEditing
-import AbilityObjEditing
 import ObjectIdGenerator
-import ObjectIds
 
 public constant PENDANT_OF_MANA_ID = compiletime(ITEM_ID_GEN.next())
 constant PENDANT_OF_MANA_ABIL_ID = compiletime(ABIL_ID_GEN.next())

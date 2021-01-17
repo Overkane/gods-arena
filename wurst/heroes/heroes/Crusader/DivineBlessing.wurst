@@ -17,17 +17,17 @@ init
   EventListener.onCast(DIVINE_BLESSING_ID) (unit caster) ->
     let lvl = caster.getAbilityLevel(DIVINE_BLESSING_ID)
 
-    var EmpyreanMult = 1.
+    var empyreanMult = 1.
 
     let bEmpyreanBuff = caster.getBuff(TheEmpyreanBuff.typeId)
     let hasEmpyreanBuff = bEmpyreanBuff != null
 
     if hasEmpyreanBuff
-      let EmpyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
-      EmpyreanMult = EmpyreanBuff.divineBlessingMult
+      let empyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
+      empyreanMult = empyreanBuff.divineBlessingMult
 
-    let bonusArmor = BONUS_ARMOR.run(lvl) * EmpyreanMult
-    let bonusHpReg = BONUS_HP_REG.run(lvl) * EmpyreanMult
+    let bonusArmor = BONUS_ARMOR.run(lvl) * empyreanMult
+    let bonusHpReg = BONUS_HP_REG.run(lvl) * empyreanMult
     let spellDuration = DURATION.run(lvl)
     let spellRadius = RADIUS.run(lvl)
 

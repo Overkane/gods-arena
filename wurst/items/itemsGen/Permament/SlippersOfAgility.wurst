@@ -1,8 +1,6 @@
 package SlippersOfAgility
 import ItemObjEditing
-import AbilityObjEditing
 import ObjectIdGenerator
-import ObjectIds
 
 public constant SLIPPERS_OF_AGILITY_ID = compiletime(ITEM_ID_GEN.next())
 constant SLIPPERS_OF_AGILITY_ABIL_ID = compiletime(ABIL_ID_GEN.next())

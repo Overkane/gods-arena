@@ -21,8 +21,8 @@ init
     let hasEmpyreanBuff = bEmpyreanBuff != null
 
     if hasEmpyreanBuff
-      let EmpyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
-      healSealAddAOE = EmpyreanBuff.healSealAddAOE
+      let empyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
+      healSealAddAOE = empyreanBuff.healSealAddAOE
 
     let spellDamage = DAMAGE.run(lvl)
     let spellRadius = RADIUS.run(lvl) + healSealAddAOE

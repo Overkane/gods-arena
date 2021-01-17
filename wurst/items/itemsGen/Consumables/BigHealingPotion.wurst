@@ -1,8 +1,6 @@
 package BigHealingPotion
 import ItemObjEditing
-import AbilityObjEditing
 import ObjectIdGenerator
-import ObjectIds
 
 public constant BIG_HEALING_POTION_ID = compiletime(ITEM_ID_GEN.next())
 constant BIG_HEALING_POTION_ABIL_ID = compiletime(ABIL_ID_GEN.next())

@@ -25,13 +25,11 @@ init
       let bEmpyreanBuff = sunit.getBuff(TheEmpyreanBuff.typeId)
       let hasEmpyreanBuff = bEmpyreanBuff != null
 
-      var spellChance = 0.
+      var spellChance = CHANCE.run(lvl)
 
       if hasEmpyreanBuff
-        let EmpyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
-        spellChance = EmpyreanBuff.holySmiteProcChance
-      else
-        spellChance = CHANCE.run(lvl)
+        let empyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
+        spellChance = empyreanBuff.holySmiteProcChance
 
       if spellChance >= GetRandomInt(1, 100)
         let tunit = DamageEvent.getTarget()

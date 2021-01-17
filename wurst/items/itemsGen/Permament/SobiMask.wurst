@@ -1,8 +1,6 @@
 package SobiMask
 import ItemObjEditing
-import AbilityObjEditing
 import ObjectIdGenerator
-import ObjectIds
 
 public constant SOBI_MASK_ID = compiletime(ITEM_ID_GEN.next())
 constant SOBI_MASK_ABIL_ID = compiletime(ABIL_ID_GEN.next())

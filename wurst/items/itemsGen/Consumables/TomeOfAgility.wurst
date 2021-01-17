@@ -1,8 +1,6 @@
 package TomeOfAgility
 import ItemObjEditing
-import AbilityObjEditing
 import ObjectIdGenerator
-import ObjectIds
 
 public constant TOME_OF_AGILITY_ID = compiletime(ITEM_ID_GEN.next())
 constant TOME_OF_AGILITY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
