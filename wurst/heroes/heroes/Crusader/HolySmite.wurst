@@ -22,7 +22,7 @@ init
     if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(HOLY_SMITE)
       let lvl = sunit.getAbilityLevel(HOLY_SMITE)
 
-      let bEmpyreanBuff = sunit.getEntity().getBuff(TheEmpyreanBuff.typeId)
+      let bEmpyreanBuff = sunit.getBuff(TheEmpyreanBuff.typeId)
       let hasEmpyreanBuff = bEmpyreanBuff != null
 
       var spellChance = 0.

@@ -4,6 +4,7 @@ import Abilities
 import ClosureForGroups
 import AbilityTooltipGenerator
 import TheEmpyreanBuff
+import ClosureEvents
 
 public constant HEALING_SEAL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -16,7 +17,7 @@ init
     
     var healSealAddAOE = 0.
 
-    let bEmpyreanBuff = caster.getEntity().getBuff(TheEmpyreanBuff.typeId)
+    let bEmpyreanBuff = caster.getBuff(TheEmpyreanBuff.typeId)
     let hasEmpyreanBuff = bEmpyreanBuff != null
 
     if hasEmpyreanBuff

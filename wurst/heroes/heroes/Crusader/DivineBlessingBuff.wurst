@@ -15,9 +15,9 @@ public class DivineBlessingBuff extends NormalBuff
     this.bonusHpReg = bonusHpReg
     
   override function onApply()
-    target.actor..addBonus(Bonus.ARMOR, bonusArmor)
+    target..addBonus(Bonus.ARMOR, bonusArmor)
     ..addBonus(Bonus.LIFEREGEN, bonusHpReg)
 
   override function onEnd()
-    target.actor..addBonus(Bonus.ARMOR, -bonusArmor)
+    target..addBonus(Bonus.ARMOR, -bonusArmor)
     ..addBonus(Bonus.LIFEREGEN, -bonusHpReg)

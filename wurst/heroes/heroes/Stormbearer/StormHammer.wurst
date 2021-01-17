@@ -5,6 +5,7 @@ import StormHammerBuff
 import DummyCaster
 import Buff
 import OrderIds
+import ClosureEvents
 
 public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())
 public constant STORM_HAMMER_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
@@ -18,12 +19,12 @@ init
     let lvl = caster.getAbilityLevel(STORM_HAMMER_ID)
     let spellDuration = CHARGE_DURATION.run(lvl)
 
-    new StormHammerBuff(spellDuration).apply(caster.getEntity())
+    new StormHammerBuff(spellDuration).apply(caster)
 
   DamageEvent.addListener() -> 
     let sunit = DamageEvent.getSource()
 
-    if DamageEvent.getType() == DamageType.ATTACK and sunit.getEntity().getBuff(StormHammerBuff.typeId) != null
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.getBuff(StormHammerBuff.typeId) != null
       let lvl = sunit.getAbilityLevel(STORM_HAMMER_ID)
       let tunit = DamageEvent.getTarget()
 

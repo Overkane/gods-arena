@@ -4,6 +4,7 @@ import ClosureForGroups
 import AbilityTooltipGenerator
 import DivineBlessingBuff
 import TheEmpyreanBuff
+import ClosureEvents
 
 public constant DIVINE_BLESSING_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -18,7 +19,7 @@ init
 
     var EmpyreanMult = 1.
 
-    let bEmpyreanBuff = caster.getEntity().getBuff(TheEmpyreanBuff.typeId)
+    let bEmpyreanBuff = caster.getBuff(TheEmpyreanBuff.typeId)
     let hasEmpyreanBuff = bEmpyreanBuff != null
 
     if hasEmpyreanBuff
@@ -30,10 +31,10 @@ init
     let spellDuration = DURATION.run(lvl)
     let spellRadius = RADIUS.run(lvl)
 
-    new DivineBlessingBuff(spellDuration, bonusArmor*2, bonusHpReg*2).apply(caster.getEntity())
+    new DivineBlessingBuff(spellDuration, bonusArmor*2, bonusHpReg*2).apply(caster)
     forUnitsInRange(caster.getPos(), spellRadius) (unit u) ->
       if u.isAllyOf(caster)
-        new DivineBlessingBuff(spellDuration, bonusArmor, bonusHpReg).apply(u.getEntity())
+        new DivineBlessingBuff(spellDuration, bonusArmor, bonusHpReg).apply(u)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Increases armor and hp regeneration of nearby allies. Works two times effective for the caster.")

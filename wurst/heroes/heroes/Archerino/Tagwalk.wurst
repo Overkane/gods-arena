@@ -4,6 +4,8 @@ import Icons
 import PresetBuffs
 import Abilities
 import AttachmentPoints
+import BonusHandler
+import ClosureEvents
 
 public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -24,17 +26,17 @@ class TagwalkBuff extends NormalBuff
     construct(real duration)
         super(duration, stabBuffObj)
 
-    override function apply(UnitEntity target)
+    override function apply(unit target)
         super.apply(target)
-        target.actor
-        ..setMoveSpeed(target.actor.getMoveSpeed() + 200.)
-        windEff = target.actor.addEffect(Abilities.tornadoElementalSmall, AttachmentPoints.chest)..setScale(0.25)
-        trig..registerUnitInRange(target.actor, 72., null)
+        target
+        ..setMoveSpeed(target.getMoveSpeed() + 200.)
+        windEff = target.addEffect(Abilities.tornadoElementalSmall, AttachmentPoints.chest)..setScale(0.25)
+        trig..registerUnitInRange(target, 72., null)
         ..addAction() ->
             let inRange = GetTriggerUnit()
-            if inRange.getEntity() != null and not inRange.hasAbility(tagBuffObj.abilId)
+            if not inRange.hasAbility(tagBuffObj.abilId)
                 new TagBuff(10.)
-                ..apply(inRange.getEntity())
+                ..apply(inRange)
         
 
     override function defenseModifier()
@@ -42,19 +44,17 @@ class TagwalkBuff extends NormalBuff
 
     override function onEnd()
         super.onEnd()
-        target.actor
-        ..setMoveSpeed(target.actor.getMoveSpeed() - 200.)
+        target.setMoveSpeed(target.getMoveSpeed() - 200.)
         windEff.destr()
         trig.destr()
 
 
 init
     EventListener.onCast(TAGWALK_ID) caster ->
-        let casterEntity = caster.getEntity()
         let lvl = caster.getAbilityLevel(TAGWALK_ID)
 
         new TagwalkBuff(WALK_DURATION.run(lvl))
-        ..apply(casterEntity)
+        ..apply(caster)
 
 
 @compiletime function genAbility()
