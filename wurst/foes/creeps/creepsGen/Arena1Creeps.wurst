@@ -279,29 +279,30 @@ function wave_8() returns Wave
   ..goldBounty(275)
 
   ..creep(UnitIds.stonemaulogre)
-  ..hp(800)
-  ..damage(20)
+  ..hp(1200)
+  ..damage(25)
   ..amount(10)
 
   ..creep(UnitIds.stonemaulmagi)
-  ..hp(850)
+  ..hp(950)
   ..damage(40)
-  ..amount(3)
+  ..amount(4)
 
   ..wait(20)
 
   ..creep(UnitIds.stonemaulwarchief)
-  ..hp(1500)
-  ..damage(100)
+  ..hp(1750)
+  ..damage(120)
+  ..armor(8)
   ..amount(1)
-  ..scale(0.6)
+  ..scale(0.8)
   ..rgb(0, 0, 255)
 
   ..creep(UnitIds.stonemaulwarchief)
-  ..hp(2500)
+  ..hp(3500)
   ..damage(50)
   ..amount(1)
-  ..scale(2)
+  ..scale(1.8)
   ..rgb(255, 0, 0)
 
   .build()
@@ -350,8 +351,8 @@ function boss_wave_10() returns Wave
 
   ..creep(UnitIds.keeperofthegrove)
   ..abilities(commaList(AbilityIds.entanglingRoots, AbilityIds.cripple))
-  ..hp(5000)
-  ..damage(200)
+  ..hp(5500)
+  ..damage(250)
   ..amount(1)
   ..scale(3)
 
