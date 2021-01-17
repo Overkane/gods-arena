@@ -7,7 +7,7 @@ import ClosureForGroups
 
 public constant EXPLOSIVE_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DAMAGE = lvl -> 75. + 50 * lvl
+constant RealLevelClosure DAMAGE = lvl -> 250. + 250 * lvl
 
 init
     EventListener.onPointCast(EXPLOSIVE_ARROW_ID) (caster, target) ->
@@ -21,6 +21,7 @@ init
             forUnitsInRange(target, 256.) u ->
                 if u.isEnemyOf(caster)
                     caster.damageTarget(u, DAMAGE.run(lvl))
+                    flashEffect(Abilities.breathOfFireTarget, u.getPos())
 
             
 
@@ -43,6 +44,6 @@ init
     ..addTooltipProperty("Damage", DAMAGE)
     ..presetManaCost(lvl -> 100 + 25 * lvl)
     ..presetCastRange(lvl -> 1000)
-    ..presetCooldown(lvl -> 16)
+    ..presetCooldown(lvl -> 28)
     ..tooltipStopListen()
         

@@ -10,7 +10,7 @@ public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure WALK_DURATION = lvl -> 5. + 1. * lvl
 
-public constant tagBuffObj = compiletime(createDummyBuffObject("Tagged", "This unit has been tagged.", Icons.bTNTheBlackArrow, Abilities.roarTarget, AttachmentPoints.overhead))
+public constant tagBuffObj = compiletime(createDummyBuffObject("Tagged", "This unit has been tagged.", Icons.bTNTheBlackArrow, Abilities.parasiteTarget, AttachmentPoints.overhead))
 constant stabBuffObj = compiletime(createDummyBuffObject("|cff1cd134Tag Walk", "Increases speed and reduces damage taken. Touched enemies are tagged.", Icons.bTNTheBlackArrow))
 
 class TagBuff extends NormalBuff
@@ -30,11 +30,12 @@ class TagwalkBuff extends NormalBuff
         target
         ..setMoveSpeed(target.getMoveSpeed() + 200.)
         windEff = target.addEffect(Abilities.tornadoElementalSmall, AttachmentPoints.chest)..setScale(0.25)
-        trig..registerUnitInRange(target, 72., null)
+        trig..registerUnitInRangeSource(target, 72., null)
         ..addAction() ->
             let inRange = GetTriggerUnit()
-            if not inRange.hasAbility(tagBuffObj.abilId)
-                new TagBuff(10.)
+            let source = GetTriggeringTrigger().getSource()
+            if inRange.isEnemyOf(source.getOwner())
+                new TagBuff(15.)
                 ..apply(inRange)
         
 
@@ -45,6 +46,7 @@ class TagwalkBuff extends NormalBuff
         super.onEnd()
         target.setMoveSpeed(target.getMoveSpeed() - 200.)
         windEff.destr()
+        target.clearRegister()
         trig.destr()
 
 

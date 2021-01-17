@@ -1,35 +1,35 @@
 package CriticalArrow
 import AbilityTooltipGenerator
 import Icons
-import DamageEvent
 import StandardTextTags
 import Tagwalk
-import BuffObjEditing
 import InstantDummyCaster
 import Orders
+import Buff
 
 public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
 constant ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure DAMAGE = lvl -> 25. + 15 * lvl
-constant RealLevelClosure CHANCE = lvl -> 0.1 + 0.1 * lvl
+constant IntLevelClosure CHANCE = lvl -> 10 + 10 * lvl
 
 init
     DamageEvent.addListener() -> 
         let attacker = DamageEvent.getSource()
         let lvl = attacker.getAbilityLevel(CRIT_ARROW_ID)
-        if DamageEvent.getType() == DamageType.ATTACK and lvl > 0 and GetRandomReal(0, 1) < CHANCE.run(lvl)
+        let isTagged = DamageEvent.getTarget().hasBuff(TagBuff.typeId)
+        if DamageEvent.getType() == DamageType.ATTACK and lvl > 0 and (isTagged or GetRandomReal(0, 1) < CHANCE.run(lvl))
             let damage = DAMAGE.run(lvl)
             DamageEvent.addAmount(damage)
             createCriticalStrikeTextTag(attacker, damage.toInt())
 
-            if DamageEvent.getTarget().hasAbility(tagBuffObj.buffId)
+            if isTagged
                 InstantDummyCaster.castTarget(attacker.getOwner(), ENTANGLE_ID, lvl, OrderIds.entanglingroots, DamageEvent.getTarget())
 
 
 
 @compiletime function genAbility()
-    let tooltip = new AbilityTooltipGenerator("Has a chance to deal extra damage.\nIf the target is tagged, it will always crit and also become entangled.")
+    let tooltip = new AbilityTooltipGenerator("Has a chance to deal extra damage.\nIf the target is |cffd803bctagged|r, it will always crit and also become entangled.")
     new ChannelAbilityPreset(CRIT_ARROW_ID, 5, true, tooltip)
     ..presetButtonPosNormal(0, 3)
     ..presetButtonPosResearch(0, 0)
@@ -38,7 +38,7 @@ init
     ..tooltipStartListen()
     ..presetTargetTypes(Targettype.PASSIVE)
     ..addTooltipProperty("Extra Damage", DAMAGE)
-    ..addTooltipProperty("Chance", CHANCE)
+    ..addTooltipProperty("Chance",  lvl -> CHANCE.run(lvl).toString() + "%")
     ..presetHotkey("E")
     ..setName("Critical Arrow")
     ..tooltipStopListen()
@@ -46,5 +46,7 @@ init
     new AbilityDefinitionEntanglingRootscreep(ENTANGLE_ID)
     ..setDummyAbility()
     ..setLevels(5)
-    ..presetDamageperSecond(lvl -> 10. * lvl)
+    ..presetDamageperSecond(lvl -> 15. * lvl)
+    ..presetDurationHero(lvl -> 10.)
+    ..presetDurationNormal(lvl -> 10.)
         
