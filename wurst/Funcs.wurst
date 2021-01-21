@@ -1,0 +1,8 @@
+package Funcs
+
+
+public interface Function
+  function execute()
+  
+public interface Vec2Function
+  function execute() returns vec2

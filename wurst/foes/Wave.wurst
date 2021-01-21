@@ -6,22 +6,29 @@ import Creep
 import CreepObjEditing
 import ObjectIdGenerator
 import SoundUtils
-import Arenas
 import GameProperties
 import Abilities
+import Funcs
 
 constant AFTER_WAVE_RESTORATION_SOUND = new SoundDefinition(Sounds.restorationPotion)
 
 interface NextStepListener
   abstract function execute()
 
-interface WaveStep
+abstract class WaveStep
+  Wave wave
+
+  construct (Wave wave)
+    this.wave = wave
+
   abstract function execute(NextStepListener next)
 
-class WaitStep implements WaveStep
+class WaitStep extends WaveStep
   var duration = 0.
+ 
 
-  construct(real duration)
+  construct(Wave wave, real duration)
+    super(wave)
     this.duration = duration
 
   override function execute(NextStepListener next)
@@ -29,53 +36,47 @@ class WaitStep implements WaveStep
       next.execute()
 
 
-class CreepStep implements WaveStep
+class CreepStep extends WaveStep
   let unitId = UNIT_ID_GEN.next()
   CreepDefinition creepDef
-  var arenaIndex = 0
 
   var amount = 1
 
-  construct(int origUnitId)
+  construct(Wave wave, int origUnitId)
+    super(wave)
     creepDef = new CreepDefinition(unitId, origUnitId)
 
   override function execute(NextStepListener next)
     doPeriodicallyCounted(0.05, amount) cb ->
-      new Creep(unitId, ARENA_SPAWNS.get(arenaIndex).randomPoint().toVec3(), GetRandomReal(0, 360).fromDeg())
+      new Creep(unitId, wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
       if cb.isLast()
         next.execute()
       
 
 public class WaveBuilder
+  let result = new Wave()
   let steps = new LinkedList<WaveStep>
   var currentUnitId = '0000'
   WaveStep currentStep = null
   CreepStep creepStep = null
-  var goldBounty = 100
-  var expBounty = 100
-  var arenaIndex = 0
 
   function wait(real duration)
     if currentStep != null
       steps.add(currentStep)
       currentStep = null
 
-      steps.add(new WaitStep(duration))
+      steps.add(new WaitStep(result, duration))
 
   function creep(int origUnitId)
     if currentStep != null
       steps.add(currentStep)
       currentStep = null
 
-    creepStep = new CreepStep(origUnitId)
-    creepStep.arenaIndex = arenaIndex
+    creepStep = new CreepStep(result, origUnitId)
     currentStep = creepStep
 
   function abilities(string abilities)
     creepStep.creepDef.setNormalAbilities(abilities)
-
-  function arena(int index)
-    arenaIndex = index
 
   function amount(int amount)
     creepStep.amount = amount
@@ -101,30 +102,29 @@ public class WaveBuilder
     creepStep.creepDef.setTintingColorBlue(blue)
 
   function goldBounty(int bounty)
-    this.goldBounty = bounty
-
+    this.result.goldBounty = bounty
+    
   function expBounty(int bounty)
-    this.expBounty = bounty
+    this.result.expBounty = bounty
 
   function build() returns Wave
     if currentStep != null
       steps.add(currentStep)
       currentStep = null
-    return new Wave(goldBounty, expBounty, steps)
+    result.steps = steps
+    return result
 
 constant NEXT_WAVE = new SoundDefinition(Sounds.questNew)
 constant WAVE_FINISHED = new SoundDefinition(Sounds.questCompleted)
 
 public class Wave
   LinkedList<WaveStep> steps
-  private int goldBounty
-  private int expBounty
-  var isDone = false
+  Vec2Function spawnPoint
+  
+  var goldBounty = 100
+  var expBounty = 100
 
-  construct(int goldBounty, int expBounty, LinkedList<WaveStep> steps)
-    this.goldBounty = goldBounty
-    this.expBounty = expBounty
-    this.steps = steps
+  var isDone = false
 
   function spawn()
     printTimed("|cffceac15>> The wave begins!", 10.)
@@ -150,8 +150,9 @@ public class Wave
     //-
 
     pData.forEach() (player p, PlayerData playerData) -> 
+      print("pdata")
       let heroUnit = playerData.getHero().actor
-      
+      print("heroUnit: " + heroUnit.getName())
       p.addGold(goldBounty + additionalGoldBounty)
       playerData.getHero().addXp(expBounty + additionalExpBounty, true)
     

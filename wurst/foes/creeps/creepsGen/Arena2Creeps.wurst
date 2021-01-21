@@ -1,0 +1,134 @@
+package Arena2Creeps
+import UnitIds
+import Wave
+
+public constant ARENA2_WAVE_1 = compiletime(wave_1())
+public constant ARENA2_WAVE_2 = compiletime(wave_2())
+public constant ARENA2_WAVE_3 = compiletime(wave_3())
+public constant ARENA2_WAVE_4 = compiletime(wave_4())
+// public constant ARENA2_WAVE_5 = compiletime(wave_5())
+// public constant ARENA2_WAVE_6 = compiletime(wave_6())
+// public constant ARENA2_WAVE_7 = compiletime(wave_7())
+// public constant ARENA2_WAVE_8 = compiletime(wave_8())
+// public constant ARENA2_WAVE_9 = compiletime(wave_9())
+// public constant ARENA2_WAVE_10 = compiletime(boss_wave_10())
+
+function wave_1() returns Wave
+  return new WaveBuilder()
+  ..expBounty(600)
+  ..goldBounty(300)
+
+  ..creep(UnitIds.murlochuntsman)
+  ..hp(2250)
+  ..damage(65)
+  ..amount(4)
+
+  ..creep(UnitIds.murlocflesheater)
+  ..hp(1850)
+  ..damage(60)
+  ..amount(8)
+
+  ..creep(UnitIds.murlocnightcrawler)
+  ..hp(2750)
+  ..damage(105)
+  ..amount(2)
+
+  ..wait(30)
+
+  ..creep(UnitIds.murgulbloodgill)
+  ..hp(3500)
+  ..damage(120)
+  ..amount(3)
+  ..scale(1.5)
+
+  ..creep(UnitIds.murgulcliffrunner)
+  ..hp(850)
+  ..damage(140)
+  ..amount(12)
+  ..scale(1.5)
+
+  .build()
+
+function wave_2() returns Wave
+  return new WaveBuilder()
+  ..expBounty(800)
+  ..goldBounty(300)
+
+  ..creep(UnitIds.nagamyrmidon)
+  ..hp(2000)
+  ..damage(75)
+  ..amount(8)
+
+  ..wait(10)
+
+  ..creep(UnitIds.siren)
+  ..hp(1500)
+  ..damage(90)
+  ..amount(5)
+  ..scale(1.15)
+
+  ..creep(UnitIds.murgulsnarecaster)
+  ..hp(850)
+  ..damage(80)
+  ..amount(5)
+  ..scale(1.1)
+
+  ..wait(10)
+
+  ..creep(UnitIds.nagaroyalguard)
+  ..hp(7850)
+  ..damage(120)
+  ..amount(1)
+
+  .build()
+
+function wave_3() returns Wave
+  return new WaveBuilder()
+  ..expBounty(900)
+  ..goldBounty(300)
+
+  ..creep(UnitIds.dragonturtle)
+  ..hp(2000)
+  ..damage(75)
+  ..amount(8)
+
+  ..wait(10)
+
+  ..creep(UnitIds.seaturtle)
+  ..hp(2500)
+  ..damage(120)
+  ..amount(5)
+  ..scale(1.15)
+
+  ..wait(10)
+
+  ..creep(UnitIds.seaelemental)
+  ..hp(2850)
+  ..damage(90)
+  ..amount(3)
+  ..scale(1.1)
+
+  .build()
+
+function wave_4() returns Wave
+  return new WaveBuilder()
+  ..expBounty(900)
+  ..goldBounty(300)
+
+  ..creep(UnitIds.seagiant)
+  ..hp(3550)
+  ..damage(125)
+  ..amount(1)
+
+  ..creep(UnitIds.seawitch)
+  ..hp(3600)
+  ..damage(128)
+  ..amount(1)
+  ..scale(1.25)
+
+  ..creep(UnitIds.seagiantbehemoth)
+  ..hp(3450)
+  ..damage(118)
+  ..amount(1)
+
+  .build()

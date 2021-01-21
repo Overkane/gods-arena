@@ -5,22 +5,19 @@ import ObjectIds
 import AbilityIds
 
 
-public constant WAVE_1 = compiletime(wave_1())
-public constant WAVE_2 = compiletime(wave_2())
-public constant WAVE_3 = compiletime(wave_3())
-public constant WAVE_4 = compiletime(wave_4())
-public constant WAVE_5 = compiletime(wave_5())
-public constant WAVE_6 = compiletime(wave_6())
-public constant WAVE_7 = compiletime(wave_7())
-public constant WAVE_8 = compiletime(wave_8())
-public constant WAVE_9 = compiletime(wave_9())
-public constant WAVE_10 = compiletime(boss_wave_10())
-
-constant ARENA_INDEX = 0
+public constant ARENA1_WAVE_1 = compiletime(wave_1())
+public constant ARENA1_WAVE_2 = compiletime(wave_2())
+public constant ARENA1_WAVE_3 = compiletime(wave_3())
+public constant ARENA1_WAVE_4 = compiletime(wave_4())
+public constant ARENA1_WAVE_5 = compiletime(wave_5())
+public constant ARENA1_WAVE_6 = compiletime(wave_6())
+public constant ARENA1_WAVE_7 = compiletime(wave_7())
+public constant ARENA1_WAVE_8 = compiletime(wave_8())
+public constant ARENA1_WAVE_9 = compiletime(wave_9())
+public constant ARENA1_WAVE_10 = compiletime(boss_wave_10())
 
 function wave_1() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(200)
   ..goldBounty(100)
 
@@ -46,7 +43,6 @@ function wave_1() returns Wave
 
 function wave_2() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(250)
   ..goldBounty(125)
 
@@ -82,7 +78,6 @@ function wave_2() returns Wave
 
 function wave_3() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(250)
   ..goldBounty(150)
 
@@ -123,7 +118,6 @@ function wave_3() returns Wave
 
 function wave_4() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(300)
   ..goldBounty(175)
 
@@ -165,7 +159,6 @@ function wave_4() returns Wave
 
 function wave_5() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(350)
   ..goldBounty(200)
 
@@ -206,12 +199,11 @@ function wave_5() returns Wave
 
 function wave_6() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(450)
   ..goldBounty(225)
 
   ..creep(UnitIds.owlbear)
-  ..hp(1800)
+  ..hp(1900)
   ..damage(30)
   ..amount(4)
 
@@ -236,14 +228,13 @@ function wave_6() returns Wave
 
   ..creep(UnitIds.misha1)
   ..hp(1400)
-  ..damage(76)
+  ..damage(66)
   ..amount(6)
 
   .build()
 
 function wave_7() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(450)
   ..goldBounty(250)
 
@@ -274,7 +265,6 @@ function wave_7() returns Wave
 
 function wave_8() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(450)
   ..goldBounty(275)
 
@@ -292,15 +282,15 @@ function wave_8() returns Wave
 
   ..creep(UnitIds.stonemaulwarchief)
   ..hp(2750)
-  ..damage(160)
+  ..damage(110)
   ..armor(8)
   ..amount(1)
   ..scale(0.9)
   ..rgb(0, 0, 255)
 
   ..creep(UnitIds.stonemaulwarchief)
-  ..hp(6500)
-  ..damage(90)
+  ..hp(5500)
+  ..damage(80)
   ..amount(1)
   ..scale(1.8)
   ..rgb(255, 0, 0)
@@ -309,7 +299,6 @@ function wave_8() returns Wave
 
 function wave_9() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
   ..expBounty(500)
   ..goldBounty(300)
 
@@ -319,7 +308,7 @@ function wave_9() returns Wave
   ..amount(4)
 
   ..creep(UnitIds.mountaingiant)
-  ..hp(5000)
+  ..hp(4000)
   ..damage(60)
   ..amount(2)
 
@@ -345,9 +334,8 @@ function wave_9() returns Wave
 
 function boss_wave_10() returns Wave
   return new WaveBuilder()
-  ..arena(ARENA_INDEX)
-  ..expBounty(550)
-  ..goldBounty(325)
+  ..expBounty(650)
+  ..goldBounty(725)
 
   ..creep(UnitIds.dryad)
   ..hp(2800)

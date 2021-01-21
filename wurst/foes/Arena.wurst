@@ -1,0 +1,53 @@
+package Arena
+import WaveController
+import Funcs
+import LinkedListModule
+import SoundUtils
+import PlayerData
+import Abilities
+import AttachmentPoints
+
+constant LAST_WAVE_COMPLETED = new SoundDefinition(Sounds.humanVictory)
+
+public class Arena
+  use LinkedListModule
+
+  var name = ""
+  Vec2Function spawnPoint
+  var waves = new LinkedList<Wave>
+  rect arenaRect
+  rect heroSpawn
+  fogmodifier modifier
+
+  construct(string name, rect arenaRect, rect heroSpawn)
+    this.name = name
+    this.heroSpawn = heroSpawn
+    this.arenaRect = arenaRect
+
+  function setSpawnPoint(Vec2Function f)
+    this.spawnPoint = f
+
+  function setWaves(vararg Wave waves)
+    for wave in waves
+      wave.spawnPoint = this.spawnPoint
+      this.waves.add(wave)
+
+  function start(boolean isNext)
+    pData.forEach() (player p, PlayerData playerData) ->
+      modifier = createVision(p, arenaRect, true)..start()
+      if isNext
+        let heroUnit = playerData.getHero().actor
+        heroUnit..setPos(heroSpawn.randomPoint()).addEffect(Abilities.massTeleportTarget, AttachmentPoints.origin).destr()
+
+    waveController.addWaves(waves)
+    waveController.startWaveSpawn()
+    waveController.onAllWavesFinished = () -> begin
+      if this.next != null
+        printTimed("|cffceac15>> Congratulations! You finished this arena! The next one will start shortly..", 10.)
+        doAfter(5.) -> 
+          modifier..stop()..destr()
+          this.next.start(true)
+      else
+        LAST_WAVE_COMPLETED.play()
+        printTimed("|cffceac15>> Congratulations! You finished the last arena!", 10.)
+    end

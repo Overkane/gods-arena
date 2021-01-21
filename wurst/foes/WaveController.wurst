@@ -1,31 +1,29 @@
 package WaveController
 import public Wave
-import Arena1Creeps
 import TimerUtils
 import Creep
-import SoundUtils
+import Funcs
 
 public constant waveController = new WaveController()
-
-constant LAST_WAVE_COMPLETED = new SoundDefinition(Sounds.humanVictory)
 
 constant SPAWN_TIME = 15.
 
 class WaveController
   constant waves = new LinkedList<Wave>
 
+  Function onAllWavesFinished
+
   Wave currentWave = null
 
-  function addWave(Wave wave)
-    waves.add(wave)
+  function addWaves(LinkedList<Wave> waves)
+    this.waves.addAll(waves.copy())
 
   function startWaveSpawn()
     waveSpawn()
       
   function waveSpawn()
     if waves.isEmpty()
-      LAST_WAVE_COMPLETED.play()
-      printTimed("|cffceac15>> Congratulations! You finished the last wave!", 10.)
+      onAllWavesFinished.execute()
       return
 
     let tim = getTimer()
@@ -47,14 +45,3 @@ class WaveController
 init 
   nullTimer() ->
     onAllCreepsDead = () -> waveController.checkIfCurrentWaveDone()
-
-    waveController.addWave(WAVE_1)
-    waveController.addWave(WAVE_2)
-    waveController.addWave(WAVE_3)
-    waveController.addWave(WAVE_4)
-    waveController.addWave(WAVE_5)
-    waveController.addWave(WAVE_6)
-    waveController.addWave(WAVE_7)
-    waveController.addWave(WAVE_8)
-    waveController.addWave(WAVE_9)
-    waveController.addWave(WAVE_10)

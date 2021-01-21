@@ -1,10 +1,11 @@
 package GameInit
 import GameProperties
 import EntityManagement
-import WaveController
 import PlayerData
 import ItemShopMenu
 import HeroPickMenu
+import Arenas
+import ClosureTimers
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
@@ -21,8 +22,6 @@ function initVision()
   SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (pData.size() / 8.))
   createVision(ENEMY_PLAYER, playableMapRect, true).start()
 
-  pData.forEach() (player p, PlayerData playerData) ->
-    createVision(p, arena1Rect, true).start()
 
 function initPickTimer()
   let heroPickTimer = getTimer()
@@ -33,7 +32,7 @@ function initPickTimer()
 
   heroPickTimer.doAfter(HERO_PICK_TIME) ->
     heroPickTimerDialog.destr()
-    waveController.startWaveSpawn()
+    startArenas()
         
 init
   nullTimer() -> 
