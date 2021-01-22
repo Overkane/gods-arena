@@ -1,0 +1,21 @@
+package Hydromancer
+import UnitIds
+import HeroPreset
+import ObjectIdGenerator
+import WaterBlast
+import WaterElemental
+import SeaAura
+import CrushingWave
+import Abilities
+
+public constant HYDROMANCER_ID = compiletime(HERO_ID_GEN.next())
+
+@compiletime function genHero()
+  new HeroPreset(HYDROMANCER_ID, UnitIds.jaina, "Hydromancer")
+  ..addProperName("Ran")
+  ..addHeroAbility(WATER_BLAST_ID)
+  ..addHeroAbility(WATER_ELEMENTAL_ID)
+  ..addHeroAbility(SEA_AURA_ID)
+  ..addHeroAbility(CRUSHING_WAVE_ID)
+  ..setAttack1ProjectileArt(Abilities.waterElementalMissile)
+  ..buildHero()

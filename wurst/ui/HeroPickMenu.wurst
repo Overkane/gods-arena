@@ -22,8 +22,8 @@ public function initHeroPickMenu()
 function addHeroIcons()
   heroPickUI
   ..addHeroIcon(
-    new HeroIcon(UnitIds.alchemist, Icons.bTNHeroAlchemist, Icons.dISBTNHeroAlchemist)
-    ..addTooltip("Alchemist", "Soon"))
+    new HeroIcon(HYDROMANCER_ID, Icons.bTNJaina, Icons.dISBTNJaina)
+    ..addTooltip("Hydromancer", "Loves cool water."))
   ..addHeroIcon(
     new HeroIcon(UnitIds.pandarenbrewmaster, Icons.bTNPandarenBrewmaster, Icons.dISBTNPandarenBrewmaster)
     ..addTooltip("Keeper of the Grove", "Soon"))

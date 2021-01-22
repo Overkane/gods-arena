@@ -1,0 +1,22 @@
+package SeaAura
+import AbilityTooltipGenerator
+import HeroSpellConstants
+
+public constant SEA_AURA_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure MANA_REGENERATION = lvl -> 0.5 * lvl
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives additional mana regeneration to nearby friendly units.")
+  new AbilityDefinitionArchMageBrillianceAura(SEA_AURA_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(2, 2)
+  ..presetButtonPosResearch(2, 0)
+  ..presetHotkey("")
+
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Sea Aura")
+  ..presetManaRegenerationIncrease(MANA_REGENERATION)
+  ..tooltipStopListen()
+

@@ -9,5 +9,6 @@ init
   ..setTitle("Credits")
   ..setDescription(
     "Hiveworkshop guys:\n" + 
-    "Mythic - spell effects"
+    "Mythic - spell effects" +
+    "JesusHipster - spell effects"
   )
