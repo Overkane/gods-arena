@@ -6,6 +6,7 @@ public constant ARENA2_WAVE_1 = compiletime(wave_1())
 public constant ARENA2_WAVE_2 = compiletime(wave_2())
 public constant ARENA2_WAVE_3 = compiletime(wave_3())
 public constant ARENA2_WAVE_4 = compiletime(wave_4())
+public constant ARENA2_WAVE_5 = compiletime(wave_5())
 // public constant ARENA2_WAVE_5 = compiletime(wave_5())
 // public constant ARENA2_WAVE_6 = compiletime(wave_6())
 // public constant ARENA2_WAVE_7 = compiletime(wave_7())
@@ -129,6 +130,18 @@ function wave_4() returns Wave
   ..creep(UnitIds.seagiantbehemoth)
   ..hp(3450)
   ..damage(118)
+  ..amount(1)
+
+  .build()
+
+function wave_5() returns Wave
+  return new WaveBuilder()
+  ..expBounty(900)
+  ..goldBounty(300)
+
+  ..creep(UnitIds.malfurion)
+  ..hp(7550)
+  ..damage(225)
   ..amount(1)
 
   .build()
