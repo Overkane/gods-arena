@@ -32,7 +32,7 @@ function addItemIcons()
   itemShop
   ..addItemIcon(new ItemIcon(HEALING_POTION_ID, 50, true))
   ..addItemIcon(new ItemIcon(BIG_HEALING_POTION_ID, 125, true))
-  ..addItemIcon(new ItemIcon(MANA_POTION_ID, 4, true))
+  ..addItemIcon(new ItemIcon(MANA_POTION_ID, 40, true))
   ..addItemIcon(new ItemIcon(BIG_MANA_POTION_ID, 90, true))
   ..addItemIcon(new ItemIcon(VAMPIRIC_POTION_ID, 500, false))
   ..addItemIcon(new ItemIcon(HEALING_WARD_ID, 500, false))

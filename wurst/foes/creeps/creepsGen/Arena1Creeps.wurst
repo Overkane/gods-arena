@@ -190,7 +190,7 @@ function wave_5() returns Wave
   ..amount(2)
 
   ..creep(UnitIds.broodmother)
-  ..hp(2500)
+  ..hp(2000)
   ..damage(60)
   ..amount(1)
   ..scale(2.6)
