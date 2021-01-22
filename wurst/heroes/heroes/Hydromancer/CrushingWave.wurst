@@ -1,0 +1,28 @@
+package CrushingWave
+import AbilityTooltipGenerator
+import HeroSpellConstants
+
+public constant CRUSHING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure DAMAGE = lvl -> 300. + 200. * (lvl-1)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Sends a gigantic wave which deals damage to each enemy in a line.")
+  new AbilityDefinitionCrushingWave(CRUSHING_WAVE_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(3, 2)
+  ..presetButtonPosResearch(3, 0)
+  ..presetMaxDamage(DAMAGE)
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  
+  ..tooltipStartListen()
+  ..presetHotkey("R")
+  ..setName("Crushing Wave")
+  ..setLevels(ULTIMATE_SPELL_LEVELS)
+  ..presetDamage(DAMAGE)
+  ..presetDistance(lvl -> 800)
+  ..presetManaCost(lvl -> 125 + 75 * lvl)
+  ..presetCooldown(lvl -> 30)
+  ..tooltipStopListen()
+
