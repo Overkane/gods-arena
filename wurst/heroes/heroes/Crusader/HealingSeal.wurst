@@ -43,7 +43,7 @@ init
       forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isAllyOf(caster)
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
-          tunit.setHP(target.getHP() + spellDamage)
+          target.setHP(target.getHP() + spellDamage)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero heals an ally and deals damage to all enemies around it or deals damage to the enemy and heals allies around it.")
