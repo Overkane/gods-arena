@@ -1,0 +1,55 @@
+package WaterElemental
+import AbilityTooltipGenerator
+import UnitObjEditing
+import UnitIds
+import HeroSpellConstants
+
+public constant WATER_ELEMENTAL_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant WATER_ELEMENTAL_1 = compiletime(UNIT_ID_GEN.next())
+public constant WATER_ELEMENTAL_2 = compiletime(UNIT_ID_GEN.next())
+public constant WATER_ELEMENTAL_3 = compiletime(UNIT_ID_GEN.next())
+public constant WATER_ELEMENTAL_4 = compiletime(UNIT_ID_GEN.next())
+public constant WATER_ELEMENTAL_5 = compiletime(UNIT_ID_GEN.next())
+
+constant RealLevelClosure DURATION = lvl -> 30
+constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 5 + 2 * (lvl-1)
+
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Summons a water elemental to attack hero enemies.")
+  new AbilityDefinitionArchMageSummonWaterElemental(WATER_ELEMENTAL_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetDurationNormal(DURATION)
+
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..presetHotkey("W")
+  ..setName("Water Elemental")
+  ..setSummonedUnitType(1, WATER_ELEMENTAL_1.toRawCode())
+  ..setSummonedUnitType(2, WATER_ELEMENTAL_2.toRawCode())
+  ..setSummonedUnitType(3, WATER_ELEMENTAL_3.toRawCode())
+  ..setSummonedUnitType(4, WATER_ELEMENTAL_4.toRawCode())
+  ..setSummonedUnitType(5, WATER_ELEMENTAL_5.toRawCode())
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 125)
+  ..presetCooldown(lvl -> 15)
+  ..tooltipStopListen()
+
+  new UnitDefinition(WATER_ELEMENTAL_1, UnitIds.waterelemental1)
+  ..setAttack1DamageBase(30)
+  ..setHitPointsMaximumBase(500)
+  new UnitDefinition(WATER_ELEMENTAL_2, UnitIds.waterelemental1)
+  ..setAttack1DamageBase(40)
+  ..setHitPointsMaximumBase(700)
+  new UnitDefinition(WATER_ELEMENTAL_3, UnitIds.waterelemental1)
+  ..setAttack1DamageBase(50)
+  ..setHitPointsMaximumBase(900)
+  new UnitDefinition(WATER_ELEMENTAL_4, UnitIds.waterelemental1)
+  ..setAttack1DamageBase(60)
+  ..setHitPointsMaximumBase(1100)
+  new UnitDefinition(WATER_ELEMENTAL_5, UnitIds.waterelemental1)
+  ..setAttack1DamageBase(70)
+  ..setHitPointsMaximumBase(1300)
