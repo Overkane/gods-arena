@@ -120,6 +120,7 @@ constant WAVE_FINISHED = new SoundDefinition(Sounds.questCompleted)
 public class Wave
   LinkedList<WaveStep> steps
   Vec2Function spawnPoint
+  Vec2Function revivePoint
   
   var goldBounty = 100
   var expBounty = 100
@@ -150,14 +151,12 @@ public class Wave
     //-
 
     pData.forEach() (player p, PlayerData playerData) -> 
-      print("pdata")
       let heroUnit = playerData.getHero().actor
-      print("heroUnit: " + heroUnit.getName())
       p.addGold(goldBounty + additionalGoldBounty)
       playerData.getHero().addXp(expBounty + additionalExpBounty, true)
     
       if not heroUnit.isAlive()
-        heroUnit.revive(HERO_PICK_RECT.randomPoint(), true)
+        heroUnit.revive(revivePoint.execute(), true)
         heroUnit.setHP(heroUnit.getMaxHP() * 0.5)
         heroUnit.setMana(heroUnit.getMaxMana() * 0.2)
       else 

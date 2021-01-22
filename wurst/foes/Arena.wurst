@@ -30,6 +30,7 @@ public class Arena
   function setWaves(vararg Wave waves)
     for wave in waves
       wave.spawnPoint = this.spawnPoint
+      wave.revivePoint = () -> heroSpawn.getCenter()
       this.waves.add(wave)
 
   function start(boolean isNext)
