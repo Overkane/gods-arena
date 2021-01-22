@@ -47,7 +47,7 @@ init
     new AbilityDefinitionEntanglingRootscreep(ENTANGLE_ID)
     ..setDummyAbility()
     ..setLevels(5)
-    ..presetDamageperSecond(lvl -> 15. * lvl)
+    ..presetDamageperSecond(lvl -> 10 + 15. * lvl)
     ..presetDurationHero(lvl -> 10.)
     ..presetDurationNormal(lvl -> 10.)
         

@@ -30,32 +30,32 @@ function framehandle.removeFocus()
 
 function addItemIcons()
   itemShop
-  ..addItemIcon(new ItemIcon(HEALING_POTION_ID, 50))
-  ..addItemIcon(new ItemIcon(BIG_HEALING_POTION_ID, 125))
-  ..addItemIcon(new ItemIcon(MANA_POTION_ID, 40))
-  ..addItemIcon(new ItemIcon(BIG_MANA_POTION_ID, 90))
-  ..addItemIcon(new ItemIcon(VAMPIRIC_POTION_ID, 500))
-  ..addItemIcon(new ItemIcon(HEALING_WARD_ID, 500))
-  ..addItemIcon(new ItemIcon(SCROLL_OF_HEALING_ID, 180))
-  ..addItemIcon(new ItemIcon(SCROLL_OF_MANA_ID, 130))
-  ..addItemIcon(new ItemIcon(SCROLL_OF_RESTORATION_ID, 600))
-  ..addItemIcon(new ItemIcon(SCROLL_OF_PROTECTION_ID, 300))
-  ..addItemIcon(new ItemIcon(SCROLL_OF_BEAST_ID, 500))
-  ..addItemIcon(new ItemIcon(TOME_OF_STRENGTH_ID, 250))
-  ..addItemIcon(new ItemIcon(TOME_OF_AGILITY_ID, 250))
-  ..addItemIcon(new ItemIcon(TOME_OF_INTELLIGENCE_ID, 250))
-  ..addItemIcon(new ItemIcon(GAUNTLETS_OF_OGRE_STRENGTH_ID, 115))
-  ..addItemIcon(new ItemIcon(SLIPPERS_OF_AGILITY_ID, 100))
-  ..addItemIcon(new ItemIcon(MANTLE_OF_INTELLIGENCE_ID, 90))
-  ..addItemIcon(new ItemIcon(CIRCLET_OF_NOBILITY_ID, 155))
-  ..addItemIcon(new ItemIcon(GLOVES_OF_HASTE_ID, 180))
-  ..addItemIcon(new ItemIcon(RING_OF_PROTECTION_ID, 200))
-  ..addItemIcon(new ItemIcon(RING_OF_REGENERATION_ID, 180))
-  ..addItemIcon(new ItemIcon(SOBI_MASK_ID, 170))
-  ..addItemIcon(new ItemIcon(PENDANT_OF_MANA_ID, 250))
-  ..addItemIcon(new ItemIcon(WARSONG_BATTLE_DRUMS_ID, 600))
-  ..addItemIcon(new ItemIcon(LEGION_DOOM_HORN_ID, 600))
-  ..addItemIcon(new ItemIcon(KHADGARS_PIPE_OF_INSIGHT_ID, 600))
+  ..addItemIcon(new ItemIcon(HEALING_POTION_ID, 50, true))
+  ..addItemIcon(new ItemIcon(BIG_HEALING_POTION_ID, 125, true))
+  ..addItemIcon(new ItemIcon(MANA_POTION_ID, 4, true))
+  ..addItemIcon(new ItemIcon(BIG_MANA_POTION_ID, 90, true))
+  ..addItemIcon(new ItemIcon(VAMPIRIC_POTION_ID, 500, false))
+  ..addItemIcon(new ItemIcon(HEALING_WARD_ID, 500, false))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_HEALING_ID, 180, false))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_MANA_ID, 130, false))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_RESTORATION_ID, 600, false))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_PROTECTION_ID, 300, false))
+  ..addItemIcon(new ItemIcon(SCROLL_OF_BEAST_ID, 500, false))
+  ..addItemIcon(new ItemIcon(TOME_OF_STRENGTH_ID, 250, false))
+  ..addItemIcon(new ItemIcon(TOME_OF_AGILITY_ID, 250, false))
+  ..addItemIcon(new ItemIcon(TOME_OF_INTELLIGENCE_ID, 250, false))
+  ..addItemIcon(new ItemIcon(GAUNTLETS_OF_OGRE_STRENGTH_ID, 115, false))
+  ..addItemIcon(new ItemIcon(SLIPPERS_OF_AGILITY_ID, 100, false))
+  ..addItemIcon(new ItemIcon(MANTLE_OF_INTELLIGENCE_ID, 90, false))
+  ..addItemIcon(new ItemIcon(CIRCLET_OF_NOBILITY_ID, 155, false))
+  ..addItemIcon(new ItemIcon(GLOVES_OF_HASTE_ID, 180, false))
+  ..addItemIcon(new ItemIcon(RING_OF_PROTECTION_ID, 200, false))
+  ..addItemIcon(new ItemIcon(RING_OF_REGENERATION_ID, 180, false))
+  ..addItemIcon(new ItemIcon(SOBI_MASK_ID, 170, false))
+  ..addItemIcon(new ItemIcon(PENDANT_OF_MANA_ID, 250, false))
+  ..addItemIcon(new ItemIcon(WARSONG_BATTLE_DRUMS_ID, 600, false))
+  ..addItemIcon(new ItemIcon(LEGION_DOOM_HORN_ID, 600, false))
+  ..addItemIcon(new ItemIcon(KHADGARS_PIPE_OF_INSIGHT_ID, 600, false))
 
 function addShopHotkeyForPlayer(player p)
   let trig = CreateTrigger()
@@ -152,15 +152,17 @@ class ItemIcon
   private var iconContext = 0
   private var iconPath = ""
   private var iconPathDisabled = ""
+  private var stackable = false
 
   private framehandle itemIconButton = null
   private framehandle itemIcon = null
   private framehandle itemText = null
 
-  construct(int itemId, int itemCost)
+  construct(int itemId, int itemCost, boolean stackable)
     this.itemId = itemId
     this.itemCost = itemCost
     this.iconContext = globalIconContext
+    this.stackable = stackable
     globalIconContext++
 
     itemIconButton = createFrame(FramehandleTypeNames.gluebutton, "ItemIconButton", itemShop.itemShopFrame, FramehandleNames.iconButtonTemplate, iconContext)
@@ -178,7 +180,11 @@ class ItemIcon
       if hero.isAlive()
         if p.getGold() >= itemCost
           p.setGold(p.getGold() - itemCost)
-          p.getData().getHero().actor.addItemById(itemId)
+          let itm = hero.getItemById(itemId)
+          if stackable and itm != null
+            hero.getItemById(itemId).setCharges(itm.getCharges() + 1)
+          else
+            hero.addItemById(itemId)
           itemBoughtSound.playForPlayer(p)
         else 
           notEnoughGoldSound.playForPlayer(p)

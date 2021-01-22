@@ -13,16 +13,16 @@ public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
 constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
 
-constant RealLevelClosure SPELL_DAMAGE = lvl -> 60. * lvl
+constant RealLevelClosure SPELL_DAMAGE = lvl -> 75. * lvl - 15
 
 class TreantEntity extends UnitEntity
 
     construct(player owner, unit target, int lvl)
         super(createUnit(owner, TREANT_ID, target.getPos(), angle(0))
-        ..setTimedLife(10.)
+        ..setTimedLife(12.)
         ..issueTargetOrderById(OrderIds.attack, target)
-        ..addBonus(Bonus.DAMAGE, lvl * 15.)
-        ..addBonus(Bonus.LIFE, 50. * lvl))
+        ..addBonus(Bonus.DAMAGE, lvl * 20.)
+        ..addBonus(Bonus.LIFE, 75. * lvl))
 
 
 init
