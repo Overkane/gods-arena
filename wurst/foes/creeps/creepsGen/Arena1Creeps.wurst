@@ -338,15 +338,16 @@ function boss_wave_10() returns Wave
   ..goldBounty(725)
 
   ..creep(UnitIds.dryad)
-  ..hp(2800)
+  ..hp(3200)
   ..damage(75)
-  ..amount(4)
+  ..amount(5)
 
   ..creep(UnitIds.keeperofthegrove)
   ..abilities(commaList(AbilityIds.entanglingRoots, AbilityIds.cripple))
   ..hp(15000)
-  ..armor(12)
-  ..damage(350)
+  ..armor(14)
+  ..damage(250)
+  ..attackrate(0.5)
   ..amount(1)
   ..scale(3)
 

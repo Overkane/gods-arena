@@ -21,25 +21,25 @@ function wave_1() returns Wave
 
   ..creep(UnitIds.murlochuntsman)
   ..hp(2250)
-  ..damage(65)
+  ..damage(75)
   ..amount(4)
 
   ..creep(UnitIds.murlocflesheater)
-  ..hp(1850)
-  ..damage(60)
+  ..hp(1950)
+  ..damage(70)
   ..amount(8)
 
   ..creep(UnitIds.murlocnightcrawler)
   ..hp(2750)
-  ..damage(105)
+  ..damage(115)
   ..amount(2)
 
-  ..wait(30)
+  ..wait(20)
 
   ..creep(UnitIds.murgulbloodgill)
   ..hp(3500)
   ..damage(120)
-  ..amount(3)
+  ..amount(6)
   ..scale(1.5)
 
   ..creep(UnitIds.murgulcliffrunner)
@@ -56,20 +56,20 @@ function wave_2() returns Wave
   ..goldBounty(300)
 
   ..creep(UnitIds.nagamyrmidon)
-  ..hp(2000)
+  ..hp(3500)
   ..damage(75)
-  ..amount(8)
+  ..amount(9)
 
-  ..wait(10)
+  ..wait(5)
 
   ..creep(UnitIds.siren)
-  ..hp(1500)
+  ..hp(2000)
   ..damage(90)
-  ..amount(5)
+  ..amount(7)
   ..scale(1.15)
 
   ..creep(UnitIds.murgulsnarecaster)
-  ..hp(850)
+  ..hp(1550)
   ..damage(80)
   ..amount(5)
   ..scale(1.1)
@@ -77,8 +77,9 @@ function wave_2() returns Wave
   ..wait(10)
 
   ..creep(UnitIds.nagaroyalguard)
-  ..hp(7850)
-  ..damage(120)
+  ..hp(12500)
+  ..mana(5000)
+  ..damage(220)
   ..amount(1)
 
   .build()
@@ -89,23 +90,24 @@ function wave_3() returns Wave
   ..goldBounty(300)
 
   ..creep(UnitIds.dragonturtle)
-  ..hp(2000)
-  ..damage(75)
+  ..hp(5000)
+  ..damage(95)
   ..amount(8)
 
   ..wait(10)
 
   ..creep(UnitIds.seaturtle)
-  ..hp(2500)
-  ..damage(120)
+  ..hp(7500)
+  ..damage(150)
   ..amount(5)
   ..scale(1.15)
 
   ..wait(10)
 
   ..creep(UnitIds.seaelemental)
-  ..hp(2850)
-  ..damage(90)
+  ..hp(4850)
+  ..damage(220)
+  ..armor(10)
   ..amount(3)
   ..scale(1.1)
 
@@ -117,19 +119,19 @@ function wave_4() returns Wave
   ..goldBounty(300)
 
   ..creep(UnitIds.seagiant)
-  ..hp(3550)
-  ..damage(125)
+  ..hp(13550)
+  ..damage(225)
   ..amount(1)
 
   ..creep(UnitIds.seawitch)
-  ..hp(3600)
-  ..damage(128)
+  ..hp(13600)
+  ..damage(228)
   ..amount(1)
   ..scale(1.25)
 
   ..creep(UnitIds.seagiantbehemoth)
-  ..hp(3450)
-  ..damage(118)
+  ..hp(13450)
+  ..damage(218)
   ..amount(1)
 
   .build()
@@ -140,8 +142,9 @@ function wave_5() returns Wave
   ..goldBounty(300)
 
   ..creep(UnitIds.malfurion)
-  ..hp(7550)
-  ..damage(225)
+  ..hp(17550)
+  ..damage(725)
+  ..attackrate(0.25)
   ..amount(1)
 
   .build()

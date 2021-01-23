@@ -83,8 +83,15 @@ public class WaveBuilder
   function hp(int hp)
     creepStep.creepDef.setHitPointsMaximumBase(hp)
 
+  function mana(int mana)
+    creepStep.creepDef.setManaMaximum(mana)
+    creepStep.creepDef.setManaInitialAmount(mana)
+
   function damage(int dmg)
     creepStep.creepDef.setAttack1DamageBase(dmg)
+
+  function attackrate(real rate)
+    creepStep.creepDef.setAttack1CooldownTime(rate)
 
   function armor(int armor)
     creepStep.creepDef.setDefenseBase(armor)
