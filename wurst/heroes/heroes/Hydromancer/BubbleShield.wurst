@@ -28,6 +28,7 @@ init
   ..presetIcon(Icons.bTNNeutralManaShield)
   ..presetDurationHero(DURATION)
   ..presetDurationNormal(DURATION)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self))
   ..presetHotkey("E")
   
   ..tooltipStartListen()
