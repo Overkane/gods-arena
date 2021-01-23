@@ -6,7 +6,6 @@ import Creep
 import CreepObjEditing
 import ObjectIdGenerator
 import SoundUtils
-import GameProperties
 import Abilities
 import Funcs
 
