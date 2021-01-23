@@ -177,7 +177,7 @@ function wave_5() returns Wave
   ..damage(19)
   ..amount(10)
 
-  ..wait(35)
+  ..wait(25)
 
   ..creep(UnitIds.spittingspider)
   ..hp(750)
@@ -204,21 +204,21 @@ function wave_6() returns Wave
 
   ..creep(UnitIds.owlbear)
   ..hp(1900)
-  ..damage(30)
+  ..damage(50)
   ..amount(4)
 
   ..creep(UnitIds.enragedowlbear)
   ..hp(2000)
-  ..damage(40)
+  ..damage(55)
   ..amount(2)
 
   ..creep(UnitIds.berserkowlbear)
   ..hp(3550)
-  ..damage(55)
+  ..damage(75)
   ..amount(1)
   ..scale(1.5)
 
-  ..wait(35)
+  ..wait(25)
 
   ..creep(UnitIds.owlbear)
   ..hp(2800)
