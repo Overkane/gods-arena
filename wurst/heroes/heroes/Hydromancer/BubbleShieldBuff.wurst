@@ -1,0 +1,23 @@
+package BubbleShieldBuff
+import PresetBuffs
+import Assets
+import BonusHandler
+import SoundUtils
+
+constant buffTuple = compiletime(createDummyBuffObject("Bubble Shield", "Increases unit's hp regeneration and can block small amount of damage",  Icons.bTNNeutralManaShield, Abilities.manaShieldCaster))
+
+public class BubbleShieldBuff extends ShieldBuff
+  real hpRegen
+
+  private constant ON_APPLY_SOUND = new SoundDefinition(Sounds.manaShieldCaster1)
+  
+  construct(real dur, real shieldDurabiblity, real hpRegen)
+    super(dur, buffTuple, shieldDurabiblity)
+    this.hpRegen = hpRegen
+
+  override function onApply()
+    ON_APPLY_SOUND.play()
+    target.addBonus(Bonus.LIFEREGEN, hpRegen)
+
+  override function onEnd()
+    target.addBonus(Bonus.LIFEREGEN, -hpRegen)

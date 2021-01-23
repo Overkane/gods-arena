@@ -4,7 +4,7 @@ import HeroSpellConstants
 
 public constant CRUSHING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DAMAGE = lvl -> 300. + 200. * (lvl-1)
+constant RealLevelClosure DAMAGE = lvl -> 400. + 300. * (lvl-1)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Sends a gigantic wave which deals damage to each enemy in a line.")
@@ -21,7 +21,8 @@ constant RealLevelClosure DAMAGE = lvl -> 300. + 200. * (lvl-1)
   ..setName("Crushing Wave")
   ..setLevels(ULTIMATE_SPELL_LEVELS)
   ..presetDamage(DAMAGE)
-  ..presetDistance(lvl -> 800)
+  ..presetDistance(lvl -> 1200)
+  ..presetCastRange(lvl -> 800)
   ..presetManaCost(lvl -> 125 + 75 * lvl)
   ..presetCooldown(lvl -> 30)
   ..tooltipStopListen()

@@ -1,4 +1,4 @@
-package SeaAura
+package _SeaAura
 import AbilityTooltipGenerator
 import HeroSpellConstants
 

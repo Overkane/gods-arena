@@ -5,40 +5,50 @@ import HeroSpellConstants
 import ClosureEvents
 import ClosureForGroups
 import SoundUtils
+import WaterBlastBuff
 
 public constant WATER_BLAST_ID = compiletime(ABIL_ID_GEN.next())
 
 constant SOUND = new SoundDefinition(Sounds.crushingWaveTarget1)
 
-constant RealLevelClosure DAMAGE = lvl -> 125. + 75. * (lvl-1)
-constant RealLevelClosure AOE = lvl -> 256.
+constant RealLevelClosure DAMAGE = lvl -> 125. + 50. * (lvl-1)
+constant RealLevelClosure SLOW = lvl -> 30. + 5. * (lvl-1)
+constant RealLevelClosure SLOW_DURATION = lvl -> 4.
+constant RealLevelClosure AOE = lvl -> 200.
 
 init 
   EventListener.onPointCast(WATER_BLAST_ID) (unit caster, vec2 target) ->
     let lvl = caster.getAbilityLevel(WATER_BLAST_ID)
     let spellDamage = DAMAGE.run(lvl)
     let spellAOE = AOE.run(lvl)
+    let buffSlow = SLOW.run(lvl)
+    let buffDuration = SLOW_DURATION.run(lvl)
 
-    SOUND.play()
+    SOUND.play(1, 40)
     forUnitsInRange(target, spellAOE) (unit u) ->
       if u.isAlive() and not u.isAllyOf(caster.getOwner())
         caster.damageTarget(u, spellDamage)
+        new WaterBlastBuff(buffDuration, buffSlow).apply(u)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius.")
+  let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius and slows them.")
   new ChannelAbilityPreset(WATER_BLAST_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
   ..presetIcon(Icons.bTNOrbOfFrost)
   ..setArtEffect("WaterBlast.mdx")
   ..setEffectSound(Sounds.crushingWaveTarget1)
+  ..presetOption(Option.TARGETIMAGE, true)
 
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.POINT)
   ..presetHotkey("Q")
   ..setName("Water Blast")
   ..addTooltipProperty("Damage", DAMAGE)
+  ..addTooltipProperty("Slow", lvl -> SLOW.run(lvl).toString())
+  ..addTooltipProperty("Duration", SLOW_DURATION)
   ..presetAreaofEffect(AOE)
-  ..presetManaCost(lvl -> 75 + 10 * lvl)
+  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..presetCooldown(lvl -> 12.)
   ..tooltipStopListen()

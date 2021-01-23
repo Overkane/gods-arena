@@ -1,0 +1,40 @@
+package BubbleShield
+import AbilityTooltipGenerator
+import HeroSpellConstants
+import Icons
+import ClosureEvents
+import BubbleShieldBuff
+
+public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure HP_REGEN = lvl -> 10. + 5. * (lvl-1)
+constant RealLevelClosure SHIELD_DURABILITY = lvl -> 100. + 50. * (lvl-1)
+constant RealLevelClosure DURATION = lvl -> 8
+
+init
+  EventListener.onTargetCast(BUBBLE_SHIELD_ID) (unit caster, unit target) ->
+    let lvl = caster.getAbilityLevel(BUBBLE_SHIELD_ID)
+    let spellHPRegen = HP_REGEN.run(lvl)
+    let shieldDurability = SHIELD_DURABILITY.run(lvl)
+    let spellDuration = DURATION.run(lvl)
+
+    new BubbleShieldBuff(spellDuration, shieldDurability, spellHPRegen).apply(target)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Applies bubble shield to the target, which increases its hp regeneration. Bubble shield can block small amount of damage and brokes if block limit was exceeded.")
+  new ChannelAbilityPreset(BUBBLE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(2, 2)
+  ..presetButtonPosResearch(2, 0)
+  ..presetIcon(Icons.bTNNeutralManaShield)
+  ..presetDurationHero(DURATION)
+  ..presetDurationNormal(DURATION)
+  ..presetHotkey("E")
+  
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.UNIT)
+  ..setName("Bubble Shield")
+  ..addTooltipProperty("Bonus HP Regeneration", HP_REGEN)
+  ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
+  ..presetManaCost(lvl -> 90)
+  ..presetCooldown(lvl -> 15)
+  ..tooltipStopListen()

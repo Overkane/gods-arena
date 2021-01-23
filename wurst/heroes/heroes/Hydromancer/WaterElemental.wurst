@@ -1,55 +1,81 @@
 package WaterElemental
 import AbilityTooltipGenerator
-import UnitObjEditing
 import UnitIds
 import HeroSpellConstants
+import ClosureEvents
+import LinkedList
+import ClosureTimers
 
 public constant WATER_ELEMENTAL_ID = compiletime(ABIL_ID_GEN.next())
 
-public constant WATER_ELEMENTAL_1 = compiletime(UNIT_ID_GEN.next())
-public constant WATER_ELEMENTAL_2 = compiletime(UNIT_ID_GEN.next())
-public constant WATER_ELEMENTAL_3 = compiletime(UNIT_ID_GEN.next())
-public constant WATER_ELEMENTAL_4 = compiletime(UNIT_ID_GEN.next())
-public constant WATER_ELEMENTAL_5 = compiletime(UNIT_ID_GEN.next())
+constant WATER_ELEMENTAL_1 = compiletime(UNIT_ID_GEN.next())
+constant WATER_ELEMENTAL_2 = compiletime(UNIT_ID_GEN.next())
+constant WATER_ELEMENTAL_3 = compiletime(UNIT_ID_GEN.next())
+constant WATER_ELEMENTAL_4 = compiletime(UNIT_ID_GEN.next())
+constant WATER_ELEMENTAL_5 = compiletime(UNIT_ID_GEN.next())
 
-constant RealLevelClosure DURATION = lvl -> 30
-constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 5 + 2 * (lvl-1)
+constant SUMMON_GROUP = new LinkedList<unit>
 
+constant RealLevelClosure DURATION = lvl -> 0
+constant IntLevelClosure MAX_SUMMON_COUNT = lvl -> 2 + (lvl/3).round()
+
+init 
+  nullTimer() ->
+    EventListener.add(EVENT_PLAYER_UNIT_SUMMON) ->
+      if GetSummoningUnit().hasAbility(WATER_ELEMENTAL_ID)
+        SUMMON_GROUP.add(GetSummonedUnit())
+    
+    EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+      SUMMON_GROUP.remove(GetTriggerUnit())
+
+    EventListener.onCast(WATER_ELEMENTAL_ID) (unit caster) ->
+      let lvl = caster.getAbilityLevel(WATER_ELEMENTAL_ID)
+      let maxSummonCount = MAX_SUMMON_COUNT.run(lvl)
+
+      if SUMMON_GROUP.size() >= maxSummonCount
+        SUMMON_GROUP.dequeue().kill()
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Summons a water elemental to attack hero enemies.")
+  let tooltip = new AbilityTooltipGenerator("Summons a water elemental to attack hero enemies. Max amount of elementals depends on ability level. If max amount is reached, then on spell cast the oldest one will be killed.")
   new AbilityDefinitionArchMageSummonWaterElemental(WATER_ELEMENTAL_ID)
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)
   ..presetDurationNormal(DURATION)
-
-  ..tooltipStartListen()
-  ..setLevels(NORMAL_SPELL_LEVELS)
-  ..presetHotkey("W")
-  ..setName("Water Elemental")
+  ..presetDurationNormal(DURATION)
+  ..presetCooldown(lvl -> 2)
   ..setSummonedUnitType(1, WATER_ELEMENTAL_1.toRawCode())
   ..setSummonedUnitType(2, WATER_ELEMENTAL_2.toRawCode())
   ..setSummonedUnitType(3, WATER_ELEMENTAL_3.toRawCode())
   ..setSummonedUnitType(4, WATER_ELEMENTAL_4.toRawCode())
   ..setSummonedUnitType(5, WATER_ELEMENTAL_5.toRawCode())
-  ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 125)
-  ..presetCooldown(lvl -> 15)
+
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..presetHotkey("W")
+  ..setName("Water Elemental")
+  ..addTooltipProperty("Max Summon Count", MAX_SUMMON_COUNT)
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..tooltipStopListen()
 
   new UnitDefinition(WATER_ELEMENTAL_1, UnitIds.waterelemental1)
   ..setAttack1DamageBase(30)
   ..setHitPointsMaximumBase(500)
-  new UnitDefinition(WATER_ELEMENTAL_2, UnitIds.waterelemental1)
+  new UnitDefinition(WATER_ELEMENTAL_2, UnitIds.waterelemental2)
   ..setAttack1DamageBase(40)
-  ..setHitPointsMaximumBase(700)
-  new UnitDefinition(WATER_ELEMENTAL_3, UnitIds.waterelemental1)
+  ..setHitPointsMaximumBase(600)
+  new UnitDefinition(WATER_ELEMENTAL_3, UnitIds.waterelemental3)
   ..setAttack1DamageBase(50)
-  ..setHitPointsMaximumBase(900)
-  new UnitDefinition(WATER_ELEMENTAL_4, UnitIds.waterelemental1)
+  ..setHitPointsMaximumBase(700)
+  ..setDefenseBase(1)
+  new UnitDefinition(WATER_ELEMENTAL_4, UnitIds.seaelemental)
+  ..setAttack1DamageBase(55)
+  ..setHitPointsMaximumBase(1000)
+  ..setDefenseBase(1)
+  ..setAttack1AttackType(AttackType.Chaos)
+  new UnitDefinition(WATER_ELEMENTAL_5, UnitIds.seaelemental)
   ..setAttack1DamageBase(60)
-  ..setHitPointsMaximumBase(1100)
-  new UnitDefinition(WATER_ELEMENTAL_5, UnitIds.waterelemental1)
-  ..setAttack1DamageBase(70)
-  ..setHitPointsMaximumBase(1300)
+  ..setHitPointsMaximumBase(1200)
+  ..setDefenseBase(1)
+  ..setScalingValue(1.2)
+  ..setAttack1AttackType(AttackType.Chaos)
