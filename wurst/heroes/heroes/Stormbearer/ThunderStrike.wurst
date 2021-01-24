@@ -15,10 +15,7 @@ RealLevelClosure STUN_DURATION = lvl -> 0.3
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
   ..presetHotkey("")
-  ..presetDurationHero(STUN_DURATION)
-  ..presetDurationNormal(STUN_DURATION)
-  ..presetBuffs(lvl -> "ANmd")
-
+  
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Thunder Strike")
@@ -26,3 +23,7 @@ RealLevelClosure STUN_DURATION = lvl -> 0.3
   ..presetDamageBonus(DAMAGE_BONUS)
   ..addTooltipProperty("Stun Duration", STUN_DURATION)
   ..tooltipStopListen()
+  
+  ..presetDurationHero(STUN_DURATION)
+  ..presetDurationNormal(STUN_DURATION)
+  ..presetBuffs(lvl -> "ANmd")

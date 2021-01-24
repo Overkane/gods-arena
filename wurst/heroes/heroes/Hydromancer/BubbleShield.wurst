@@ -8,7 +8,7 @@ import BubbleShieldBuff
 public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure HP_REGEN = lvl -> 10. + 5. * (lvl-1)
-constant RealLevelClosure SHIELD_DURABILITY = lvl -> 100. + 50. * (lvl-1)
+constant RealLevelClosure SHIELD_DURABILITY = lvl -> 150. + 50. * (lvl-1)
 constant RealLevelClosure DURATION = lvl -> 8
 
 init
@@ -23,13 +23,13 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Applies bubble shield to the target, which increases its hp regeneration. Bubble shield can block small amount of damage and brokes if block limit was exceeded.")
   new ChannelAbilityPreset(BUBBLE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..presetIcon(Icons.bTNNeutralManaShield)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
-  ..presetIcon(Icons.bTNNeutralManaShield)
+  ..presetHotkey("E")
   ..presetDurationHero(DURATION)
   ..presetDurationNormal(DURATION)
   ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self))
-  ..presetHotkey("E")
   
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.UNIT)

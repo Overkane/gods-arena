@@ -49,9 +49,9 @@ init
   let tooltip = new AbilityTooltipGenerator("Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
   new ChannelAbilityPreset(HOLY_SMITE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(0)
+  ..presetIcon(Icons.pASBTNFeedBack)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)
-  ..presetIcon(Icons.pASBTNFeedBack)
 
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.PASSIVE)

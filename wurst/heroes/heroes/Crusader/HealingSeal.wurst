@@ -49,9 +49,9 @@ init
   let tooltip = new AbilityTooltipGenerator("Hero heals an ally and deals damage to all enemies around it or deals damage to the enemy and heals allies around it.")
   new ChannelAbilityPreset(HEALING_SEAL_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(0)
+  ..presetIcon(Icons.bTNHolyBolt)
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
-  ..presetIcon(Icons.bTNHolyBolt)
 
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.UNIT)

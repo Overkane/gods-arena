@@ -11,14 +11,14 @@ RealLevelClosure EVASION_CHANCE = lvl -> 0.2 + 0.05 * (lvl-1)
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives hero chance to evade the incoming attack.")
   new AbilityDefinitionEvasion(KILLER_REFLEXES)
   ..registerTooltipGenerator(tooltip)
+  ..presetIcon(Icons.bTNEvasion)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
-  ..presetIcon(Icons.bTNEvasion)
-  ..presetChancetoEvade(EVASION_CHANCE)
-
+  
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Killer Reflexes")
   ..addTooltipProperty("Evasion chance", lvl -> (EVASION_CHANCE.run(lvl) * 100).round())
   ..tooltipStopListen()
-
+  
+  ..presetChancetoEvade(EVASION_CHANCE)

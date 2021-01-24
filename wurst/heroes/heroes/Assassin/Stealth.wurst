@@ -13,11 +13,10 @@ RealLevelClosure DURATION = lvl -> 3.
   let tooltip = new AbilityTooltipGenerator("Hero becomes invisible for a short time and increases his movespeed. First attack while in stealth deals bonus damage.")
   new AbilityDefinitionBladeMasterWindWalk(STEALTH_ID)
   ..registerTooltipGenerator(tooltip)
+  ..presetIcon(Icons.bTNShadowMeld)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)
-  ..presetIcon(Icons.bTNShadowMeld)
-  ..presetDurationHero(DURATION)
-
+  
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..presetHotkey("W")
@@ -28,3 +27,6 @@ RealLevelClosure DURATION = lvl -> 3.
   ..presetManaCost(lvl -> 50 + 5 * (lvl-1))
   ..presetCooldown(lvl -> 7)
   ..tooltipStopListen()
+
+  ..presetDurationHero(DURATION)
+  ..presetDurationNormal(DURATION)

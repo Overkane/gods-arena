@@ -31,9 +31,9 @@ init
   new ChannelAbilityPreset(THE_EMPYREAN_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  ..presetIcon(Icons.bTNCharm)
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
-  ..presetIcon(Icons.bTNCharm)
 
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.NONE)
