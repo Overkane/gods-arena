@@ -1,0 +1,19 @@
+package DemonLord
+import UnitIds
+import HeroPreset
+import ObjectIdGenerator
+import FireStorm
+import HellFlame
+import DemonicPower
+import Cataclysm
+
+public constant DEMON_LORD_ID = compiletime(HERO_ID_GEN.next())
+
+@compiletime function genHero()
+  new HeroPreset(DEMON_LORD_ID, UnitIds.pitlord, "Demon Lord")
+  ..addProperName("Legion")
+  ..addHeroAbility(FIRE_STORM_ID)
+  ..addHeroAbility(HELL_FLAME_ID)
+  ..addHeroAbility(DEMONIC_POWER_ID)
+  ..addHeroAbility(CATACLYSM_ID)
+  ..buildHero()

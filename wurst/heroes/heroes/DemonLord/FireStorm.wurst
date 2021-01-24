@@ -1,0 +1,34 @@
+package FireStorm
+import AbilityTooltipGenerator
+import HeroSpellConstants
+
+public constant FIRE_STORM_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure DURATION = lvl -> 3
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Calls down waves of fire that damage units in an area. Each wave deals initial damage and then burns enemies.")
+  new AbilityDefinitionRainofFire(FIRE_STORM_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetHotkey("Q")
+
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Fire Storm")
+  ..presetDamage(lvl -> 20. + 30. * lvl)
+  ..presetDamagePerSecond(lvl -> 10. + 5. * lvl)
+  ..presetNumberofWaves(lvl -> 5)
+  ..presetNumberofShards(lvl -> 10)
+  ..presetAreaofEffect(lvl -> 250)
+  ..presetCastRange(lvl -> 650)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 75)
+  ..presetCooldown(lvl -> 12)
+  ..tooltipStopListen()
+
+  ..presetMaximumDamageperWave(lvl -> 99999)
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)
+

@@ -26,7 +26,7 @@ function addHeroIcons()
     ..addTooltip("Hydromancer", "Loves cool water."))
   ..addHeroIcon(
     new HeroIcon(UnitIds.pandarenbrewmaster, Icons.bTNPandarenBrewmaster, Icons.dISBTNPandarenBrewmaster)
-    ..addTooltip("Keeper of the Grove", "Soon"))
+    ..addTooltip("Pandaren Brewmaster", "Soon"))
   ..addHeroIcon(
     new HeroIcon(STORMBEARER_ID, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
     ..addTooltip("Stormbearer", "Mighty lord of storms, good at cleaning groups of weak enemies, but lacks reliable single target damage."))
@@ -40,8 +40,8 @@ function addHeroIcons()
     new HeroIcon(ASSASSIN_ID, Icons.bTNHeroWarden, Icons.dISBTNHeroWarden)
     ..addTooltip("Assassin", "Stealthy killer, which good vs single targets."))
   ..addHeroIcon(
-    new HeroIcon(UnitIds.tinker, Icons.bTNHeroTinker, Icons.dISBTNHeroTinker)
-    ..addTooltip("Tinker", "Soon"))
+    new HeroIcon(DEMON_LORD_ID, Icons.bTNPitLord, Icons.dISBTNPitLord)
+    ..addTooltip("Demon Lord", "Loves destruction."))
   ..addHeroIcon(
     new HeroIcon(ARCHER_ID, Icons.bTNSylvanusWindRunner, Icons.dISBTNSylvanusWindRunner)
     ..addTooltip("Archerino", "Shoots pointy sticks."))

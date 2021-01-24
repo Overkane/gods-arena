@@ -1,0 +1,29 @@
+package Cataclysm
+import AbilityTooltipGenerator
+import HeroSpellConstants
+
+public constant CATACLYSM_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure DURATION = lvl -> 0.2
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "Calls down multiple Infernals from the sky.")
+  new AbilityDefinitionRainofChaos(CATACLYSM_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(3, 2)
+  ..presetButtonPosResearch(3, 0)
+  ..presetHotkey("R")
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+
+  ..tooltipStartListen()
+  ..setLevels(ULTIMATE_LEVEL_REQ)
+  ..setName("Cataclysm")
+  ..presetNumberofUnitsCreated(lvl -> 3 * lvl)
+  ..presetAreaofEffect(lvl -> 900)
+  ..presetManaCost(lvl -> 125 + 25 * lvl)
+  ..presetCooldown(lvl -> 120)
+  ..tooltipStopListen()
+
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)

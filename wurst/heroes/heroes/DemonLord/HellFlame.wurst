@@ -1,0 +1,30 @@
+package HellFlame
+import AbilityTooltipGenerator
+import HeroSpellConstants
+import Icons
+
+public constant HELL_FLAME_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure DURATION = lvl -> 1
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation engulfs hero in hell flames, causing damage per second to nearby enemy units. |nDrains mana until deactivated.")
+  new AbilityDefinitionImmolationcreep(HELL_FLAME_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetIcon(Icons.bTNImmolationOn)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("W")
+
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Hell Flame")
+  ..presetDamageperInterval(lvl -> 10. + 10. * lvl)
+  ..presetManaDrainedperSecond(lvl -> 8.)
+  ..presetManaCost(lvl -> 25)
+  ..tooltipStopListen()
+  
+  ..presetAreaofEffect(lvl -> 180)
+  ..presetCooldown(lvl -> 0)
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)
