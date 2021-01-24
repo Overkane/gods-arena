@@ -27,8 +27,8 @@ init
     SOUND.play(1, 40)
     forUnitsInRange(target, spellAOE) (unit u) ->
       if u.isAlive() and not u.isAllyOf(caster.getOwner())
-        caster.damageTarget(u, spellDamage)
         new WaterBlastBuff(buffDuration, buffSlow).apply(u)
+        caster.damageTarget(u, spellDamage)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius and slows them.")
