@@ -7,9 +7,9 @@ import Heroes
 import PlayerData
 import Hero
 import UnitIds
-import ItemShopMenu
 import GameProperties
 import SoundUtils
+import ItemShopUI
 
 public HeroPickUI heroPickUI
 
@@ -83,7 +83,7 @@ class HeroPickUI
         p.selectSingle(h.actor)
         pickedIcon.disable()
         heroPickFrame.hide(p)
-        itemShop.showShopButtonForPlayer(p)
+        toggleShopButton.show(p, pData.get(p).getHero().actor)
 
         playerSelection.forEach() (player key, HeroIcon value) ->
           if value == pickedIcon

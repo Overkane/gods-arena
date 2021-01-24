@@ -2,7 +2,7 @@ package GameInit
 import GameProperties
 import EntityManagement
 import PlayerData
-import ItemShopMenu
+import ItemShopUI
 import HeroPickMenu
 import Arenas
 import ClosureTimers
@@ -43,4 +43,4 @@ init
     initVision()
     initPickTimer()
     initHeroPickMenu()
-    initItemShopMenu()
+    initItemShop()

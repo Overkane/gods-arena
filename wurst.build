@@ -6,6 +6,7 @@ dependencies:
 - https://github.com/Frotty/Ability-Tooltip-Generator
 - https://github.com/Frotty/wurst-bonus-handler.git
 - https://github.com/crojewsk/wurstExtLibs.git
+- https://github.com/Frotty/wurst-item-shop.git:main
 buildMapData:
   name: Gods' Arena v0.1.0
   fileName: Gods' Arena v0.1.0
