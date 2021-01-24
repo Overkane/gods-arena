@@ -14,10 +14,12 @@ constant WATER_ELEMENTAL_3 = compiletime(UNIT_ID_GEN.next())
 constant WATER_ELEMENTAL_4 = compiletime(UNIT_ID_GEN.next())
 constant WATER_ELEMENTAL_5 = compiletime(UNIT_ID_GEN.next())
 
+constant SUMMON_LIST = new LinkedList<int>..add(WATER_ELEMENTAL_1, WATER_ELEMENTAL_2, WATER_ELEMENTAL_3, WATER_ELEMENTAL_4, WATER_ELEMENTAL_5)
 constant SUMMON_GROUP = new LinkedList<unit>
 
 constant RealLevelClosure DURATION = lvl -> 0
 constant IntLevelClosure MAX_SUMMON_COUNT = lvl -> 2 + (lvl/3).round()
+constant StringLevelClosure SUMMON_TYPE = lvl -> SUMMON_LIST.get(lvl-1).toRawCode()
 
 init 
   nullTimer() ->
@@ -43,12 +45,12 @@ init
   ..presetButtonPosResearch(1, 0)
   ..presetDurationNormal(DURATION)
   ..presetDurationNormal(DURATION)
-  ..presetCooldown(lvl -> 2)
-  ..setSummonedUnitType(1, WATER_ELEMENTAL_1.toRawCode())
-  ..setSummonedUnitType(2, WATER_ELEMENTAL_2.toRawCode())
-  ..setSummonedUnitType(3, WATER_ELEMENTAL_3.toRawCode())
-  ..setSummonedUnitType(4, WATER_ELEMENTAL_4.toRawCode())
-  ..setSummonedUnitType(5, WATER_ELEMENTAL_5.toRawCode())
+  ..presetSummonedUnitType(SUMMON_TYPE)
+  ..setCooldown(1, 2)
+  ..setCooldown(2, 2)
+  ..setCooldown(3, 2)
+  ..setCooldown(4, 2)
+  ..setCooldown(5, 2)
 
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
