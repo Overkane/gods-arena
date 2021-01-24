@@ -22,7 +22,6 @@ function initVision()
   SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (pData.size() / 8.))
   createVision(ENEMY_PLAYER, playableMapRect, true).start()
 
-
 function initPickTimer()
   let heroPickTimer = getTimer()
   let heroPickTimerDialog = heroPickTimer.createTimerDialog()
@@ -34,6 +33,24 @@ function initPickTimer()
     heroPickTimerDialog.destr()
     startArenas()
         
+function initCheatCodes()
+  pData.forEach() (player p, PlayerData playerData) ->
+    if p.getName() == "Overkane" or p.getName() == "Frotty" or p.getName() == "Local Player"
+      CreateTrigger()
+      ..registerPlayerChatEvent(p, "!maxLevel", true)
+      ..addAction() ->
+        pData.get(GetTriggerPlayer()).getHero().actor.setLevel(50, false)
+      CreateTrigger()
+      ..registerPlayerChatEvent(p, "!refresh", true)
+      ..addAction() ->
+        pData.get(GetTriggerPlayer()).getHero().actor.setMana(pData.get(GetTriggerPlayer()).getHero().actor.getMaxMana())
+        pData.get(GetTriggerPlayer()).getHero().actor.setHP(pData.get(GetTriggerPlayer()).getHero().actor.getMaxHP())
+        pData.get(GetTriggerPlayer()).getHero().actor.resetCooldown()
+      CreateTrigger()
+      ..registerPlayerChatEvent(p, "!addGold", true)
+      ..addAction() ->
+        GetTriggerPlayer().setGold(99999)
+  
 init
   nullTimer() -> 
     initFrames()
@@ -44,3 +61,4 @@ init
     initPickTimer()
     initHeroPickMenu()
     initItemShop()
+    initCheatCodes()
