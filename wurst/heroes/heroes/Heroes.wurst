@@ -11,4 +11,5 @@ import public ArcherinoHero
 // Int heroes
 import public StormbearerHero
 import public Hydromancer
+import public TrollShaman
 

@@ -23,10 +23,10 @@ function addHeroIcons()
   heroPickUI
   ..addHeroIcon(
     new HeroIcon(HYDROMANCER_ID, Icons.bTNJaina, Icons.dISBTNJaina)
-    ..addTooltip("Hydromancer", "Loves cool water."))
+    ..addTooltip("Hydromancer", "Drinks cool water."))
   ..addHeroIcon(
-    new HeroIcon(UnitIds.pandarenbrewmaster, Icons.bTNPandarenBrewmaster, Icons.dISBTNPandarenBrewmaster)
-    ..addTooltip("Pandaren Brewmaster", "Soon"))
+    new HeroIcon(TROLL_SHAMAN_ID, Icons.bTNShadowHunter, Icons.dISBTNShadowHunter)
+    ..addTooltip("Troll Shaman", "Creates memes."))
   ..addHeroIcon(
     new HeroIcon(STORMBEARER_ID, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
     ..addTooltip("Stormbearer", "Mighty lord of storms, good at cleaning groups of weak enemies, but lacks reliable single target damage."))

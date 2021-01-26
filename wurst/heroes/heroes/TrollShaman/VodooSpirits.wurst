@@ -1,0 +1,34 @@
+package VodooSpirits
+import AbilityTooltipGenerator
+import HeroSpellConstants
+
+public constant VODOO_SPIRITS_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure DAMAGE = lvl -> 40. + 30. * (lvl-1)
+constant RealLevelClosure DURATION = lvl -> 25.
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "Creates a swarm of angry spirits that drain the life energies of nearby enemy units. They store the life energy they drain from their victims and use it to replenish hero's hit points when they return.")
+  new AbilityDefinitionCryptLordLocustSwarm(VODOO_SPIRITS_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(3, 2)
+  ..presetButtonPosResearch(3, 0)
+  ..presetHotkey("R")
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  
+  ..tooltipStartListen()
+  ..setLevels(ULTIMATE_SPELL_LEVELS)
+  ..setName("Vodoo Spirits")
+  ..presetDamageReturnThreshold(lvl -> 50. * lvl)
+  ..presetNumberofSwarmUnits(lvl -> 8 * lvl)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 150 + 50 * lvl)
+  ..presetCooldown(lvl -> 90)
+  ..tooltipStopListen()
+  
+  ..presetDamageReturnFactor(lvl -> 0.75)
+  ..presetUnitReleaseIntervalseconds(lvl -> 0.2)
+  ..presetMaxSwarmUnitsPerTarget(lvl -> 8)
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)

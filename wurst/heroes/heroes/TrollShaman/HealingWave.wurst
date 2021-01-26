@@ -1,0 +1,33 @@
+package HealingWave
+import AbilityTooltipGenerator
+import HeroSpellConstants
+
+public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure HEAL_POWER = lvl -> 200. + 100. * (lvl-1)
+constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.25 - 0.03 * lvl
+constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 2 + lvl
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Calls forth a wave of energy that heals a target and bounces to nearby allies. Each bounce heals less damage.")
+  new AbilityDefinitionShadowHunterHealingWave(HEALING_WAVE_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetHotkey("Q")
+  
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Healing Wave")
+  ..addTooltipProperty("Heal Power", HEAL_POWER)
+  ..addTooltipProperty("Heal Reduction per Bounce", lvl -> (HEAL_REDUCTION.run(lvl) * 100).round().toString() + "%")
+  ..addTooltipProperty("Number of Targets", NUMBER_OF_TARGETS)
+  ..presetAreaofEffect(lvl -> 500)
+  ..presetCastRange(lvl -> 700)
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
+  ..presetCooldown(lvl -> 12)
+  ..tooltipStopListen()
+  
+  ..presetDamageperTarget(HEAL_POWER)
+  ..presetDamageReductionperTarget(HEAL_REDUCTION)
+  ..presetNumberofTargetsHit(NUMBER_OF_TARGETS)

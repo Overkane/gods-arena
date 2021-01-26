@@ -1,0 +1,25 @@
+package TrollShaman
+import UnitIds
+import HeroPreset
+import ObjectIdGenerator
+import HealingWave
+import Bloodlust
+import BouncingChakram
+import VodooSpirits
+import ObjectIds
+
+public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
+
+@compiletime function genHero()
+  new HeroPreset(TROLL_SHAMAN_ID, UnitIds.shadowhunter, "Troll Shaman")
+  ..addProperName("Trall")
+  ..addHeroAbility(HEALING_WAVE_ID)
+  ..addHeroAbility(BLOODLUST_ID)
+  ..addHeroAbility(BOUNCING_CHAKRAM_ID)
+  ..addHeroAbility(VODOO_SPIRITS_ID)
+  ..setAttack1DamageLossFactor(0.15)
+  ..setAttack1AreaofEffectFullDamage(400)
+  ..setAttack1WeaponType(WeaponType.MissileBounce)
+  ..setUpgradesUsed(BOUNCING_CHAKRAM_UPGRADE_ID.toRawCode())
+  ..buildProperNames()
+  ..buildHeroAbilities()
