@@ -1,0 +1,36 @@
+package MirrorImage
+import AbilityTooltipGenerator
+import HeroSpellConstants
+
+public constant MIRROR_IMAGE_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure DAMAGE_DEALT = lvl -> 0.1 + 0.1 * lvl
+RealLevelClosure DAMAGE_TAKEN = lvl -> 2.1 - 0.1 * lvl
+RealLevelClosure DURATION = lvl -> 15. + 5 * lvl
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "Confuses the enemy by creating illusion of the hero. Dispels all magic from the hero.")
+  new AbilityDefinitionBladeMasterMirrorImage(MIRROR_IMAGE_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("W")
+
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Mirror Image")
+  ..presetNumberofImages(lvl -> 3)
+  ..addTooltipProperty("Damage Dealt", lvl -> (DAMAGE_DEALT.run(lvl) * 100).round().toString() + "%")
+  ..addTooltipProperty("Damage Taken", lvl -> (DAMAGE_TAKEN.run(lvl) * 100).round().toString() + "%")
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 90)
+  ..presetCooldown(lvl -> 15)
+  ..tooltipStopListen()
+  
+  ..presetAreaofEffect(lvl -> 1000)
+  ..presetDamageDealt(DAMAGE_DEALT)
+  ..presetDamageTaken(DAMAGE_TAKEN)
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)
+
+

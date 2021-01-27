@@ -1,0 +1,41 @@
+package ArmorCut
+import AbilityTooltipGenerator
+import HeroSpellConstants
+import Icons
+import ClosureEvents
+import ArmorCutBuff
+
+public constant ARMOR_CUT_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure DURATION = lvl -> 8.
+
+init 
+  EventListener.onTargetCast(ARMOR_CUT_ID) (unit caster, unit target) ->
+    let lvl = caster.getAbilityLevel(ARMOR_CUT_ID)
+    let duration = DURATION.run(lvl)
+    new ArmorCutBuff(duration).apply(target)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Reduces a target enemy unit's armor.")
+  new AbilityDefinitionFaerieFire(ARMOR_CUT_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetIcon(Icons.bTNCurse)
+  ..setIconTurnOff(Icons.bTNCurse)
+  ..setIconNormal(Icons.bTNCurse)
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetHotkey("Q")
+  
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Armor Cut")
+  ..presetDefenseReduction(lvl -> 3 + 2 * lvl)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetCastRange(lvl -> 250)
+  ..presetManaCost(lvl -> 30)
+  ..presetCooldown(lvl -> 10)
+  ..tooltipStopListen()
+  
+  ..presetBuffs(lvl -> "none")
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)

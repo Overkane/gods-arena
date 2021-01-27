@@ -31,8 +31,8 @@ function addHeroIcons()
     new HeroIcon(STORMBEARER_ID, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
     ..addTooltip("Stormbearer", "Mighty lord of storms, good at cleaning groups of weak enemies, but lacks reliable single target damage."))
   ..addHeroIcon(
-    new HeroIcon(UnitIds.blademaster, Icons.bTNHeroBlademaster, Icons.dISBTNHeroBlademaster)
-    ..addTooltip("Blademaster", "Soon"))
+    new HeroIcon(BLADEMASTER_ID, Icons.bTNHeroBlademaster, Icons.dISBTNHeroBlademaster)
+    ..addTooltip("Blademaster", "Flesh cutter."))
   ..addHeroIcon(
     new HeroIcon(CRUSADER_ID, Icons.bTNArthas, Icons.dISBTNArthas)
     ..addTooltip("Crusader", "Holy warrior, which can heal and buff allies, but also has strong buff for himself and his attacks are quite hard."))

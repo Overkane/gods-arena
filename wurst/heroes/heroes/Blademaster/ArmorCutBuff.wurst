@@ -1,0 +1,9 @@
+package ArmorCutBuff
+import PresetBuffs
+import Assets
+
+constant buffTuple = compiletime(createDummyBuffObject("Armor Cut", "Unit's armor is decreased.",  Icons.bTNCurse, "Armor Penetration Orange.mdx", AttachmentPoints.overhead))
+
+public class ArmorCutBuff extends NormalBuff
+  construct(real dur)
+    super(dur, buffTuple)

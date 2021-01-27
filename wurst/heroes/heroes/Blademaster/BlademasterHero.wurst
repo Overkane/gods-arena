@@ -1,0 +1,19 @@
+package BlademasterHero
+import UnitIds
+import HeroPreset
+import ObjectIdGenerator
+import ArmorCut
+import MirrorImage
+import EnduranceAura
+import Bladestorm
+
+public constant BLADEMASTER_ID = compiletime(HERO_ID_GEN.next())
+
+@compiletime function genHero()
+  new HeroPreset(BLADEMASTER_ID, UnitIds.blademaster, "Blademaster")
+  ..addProperName("Futsunushi")
+  ..addHeroAbility(ARMOR_CUT_ID)
+  ..addHeroAbility(MIRROR_IMAGE_ID)
+  ..addHeroAbility(ENDURANCE_AURA_ID)
+  ..addHeroAbility(BLADESTORM_ID)
+  ..buildHero()

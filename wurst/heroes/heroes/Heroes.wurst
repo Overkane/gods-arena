@@ -7,6 +7,7 @@ import public DemonLord
 // Agi heroes
 import public AssassinHero
 import public ArcherinoHero
+import public BlademasterHero
 
 // Int heroes
 import public StormbearerHero
