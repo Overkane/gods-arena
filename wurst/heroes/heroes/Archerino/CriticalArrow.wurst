@@ -26,6 +26,7 @@ init
 
             if isTagged
                 InstantDummyCaster.castTarget(attacker.getOwner(), ENTANGLE_ID, lvl, OrderIds.entanglingroots, DamageEvent.getTarget())
+                DamageEvent.getTarget().removeBuff(TagBuff.typeId)
 
 
 
