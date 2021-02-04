@@ -1,4 +1,4 @@
-package MirrorImage
+package _MirrorImage // Bug: on cast duplicates items cuz of illusions?
 import AbilityTooltipGenerator
 import HeroSpellConstants
 
