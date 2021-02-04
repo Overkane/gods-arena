@@ -3,7 +3,7 @@ import UnitIds
 import HeroPreset
 import ObjectIdGenerator
 import ArmorCut
-// import MirrorImage
+import MirrorImage
 import PowerStrike
 import EnduranceAura
 import Bladestorm
@@ -14,7 +14,7 @@ public constant BLADEMASTER_ID = compiletime(HERO_ID_GEN.next())
   new HeroPreset(BLADEMASTER_ID, UnitIds.blademaster, "Blademaster")
   ..addProperName("Futsunushi")
   ..addHeroAbility(ARMOR_CUT_ID)
-  ..addHeroAbility(POWER_STRIKE_ID)
+  ..addHeroAbility(MIRROR_IMAGE_ID)
   ..addHeroAbility(ENDURANCE_AURA_ID)
   ..addHeroAbility(BLADESTORM_ID)
   ..buildHero()
