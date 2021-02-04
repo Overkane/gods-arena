@@ -34,7 +34,7 @@ function wave_1() returns Wave
   ..amount(2)
 
   ..creep(UnitIds.direwolf)
-  ..hp(700)
+  ..hp(800)
   ..damage(20)
   ..amount(1)
   ..scale(1.5)
