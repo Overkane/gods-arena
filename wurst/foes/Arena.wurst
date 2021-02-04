@@ -39,6 +39,7 @@ public class Arena
       if isNext
         let heroUnit = playerData.getHero().actor
         heroUnit..setPos(heroSpawn.randomPoint()).addEffect(Abilities.massTeleportTarget, AttachmentPoints.origin).destr()
+        heroUnit.getOwner().panCamToTimed(heroUnit, 0)
 
     waveController.addWaves(waves)
     waveController.startWaveSpawn()
