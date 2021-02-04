@@ -69,7 +69,7 @@ function wave_2() returns Wave
   ..amount(3)
 
   ..creep(UnitIds.foresttrollking)
-  ..hp(850)
+  ..hp(1050)
   ..damage(25)
   ..amount(1)
   ..scale(1.5)
