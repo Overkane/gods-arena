@@ -40,7 +40,7 @@ init
     ..tooltipStartListen()
     ..presetTargetTypes(Targettype.POINT)
     ..presetAreaofEffect(lvl -> 256)
-    ..presetHotkey("Q")
+    ..presetHotkey("R")
     ..setName("Explosive Arrow")
     ..addTooltipProperty("Damage", DAMAGE)
     ..presetManaCost(lvl -> 100 + 25 * lvl)
