@@ -17,7 +17,7 @@ public constant ARENA2_WAVE_5 = compiletime(wave_5())
 function wave_1() returns Wave
   return new WaveBuilder()
   ..expBounty(600)
-  ..goldBounty(300)
+  ..goldBounty(100)
 
   ..creep(UnitIds.murlochuntsman)
   ..hp(2250)
@@ -53,7 +53,7 @@ function wave_1() returns Wave
 function wave_2() returns Wave
   return new WaveBuilder()
   ..expBounty(800)
-  ..goldBounty(300)
+  ..goldBounty(200)
 
   ..creep(UnitIds.nagamyrmidon)
   ..hp(3500)
@@ -87,7 +87,7 @@ function wave_2() returns Wave
 function wave_3() returns Wave
   return new WaveBuilder()
   ..expBounty(900)
-  ..goldBounty(300)
+  ..goldBounty(200)
 
   ..creep(UnitIds.dragonturtle)
   ..hp(5000)
@@ -116,7 +116,7 @@ function wave_3() returns Wave
 function wave_4() returns Wave
   return new WaveBuilder()
   ..expBounty(900)
-  ..goldBounty(300)
+  ..goldBounty(200)
 
   ..creep(UnitIds.seagiant)
   ..hp(15550)
@@ -142,7 +142,7 @@ function wave_5() returns Wave
   ..goldBounty(300)
 
   ..creep(UnitIds.malfurion)
-  ..hp(21550)
+  ..hp(24550)
   ..damage(725)
   ..attackrate(0.35)
   ..amount(1)

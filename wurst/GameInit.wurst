@@ -63,5 +63,4 @@ init
     initItemShop()
     initCheatCodes()
     doAfter(5) -> 
-      
       BlzChangeMinimapTerrainTex("originalMap.blp")
