@@ -49,6 +49,6 @@ init
     ..setDummyAbility()
     ..setLevels(5)
     ..presetDamageperSecond(lvl -> 10 + 15. * lvl)
-    ..presetDurationHero(lvl -> 10.)
-    ..presetDurationNormal(lvl -> 10.)
+    ..presetDurationHero(lvl -> 6.)
+    ..presetDurationNormal(lvl -> 6.)
         
