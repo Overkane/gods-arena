@@ -119,12 +119,12 @@ function wave_4() returns Wave
   ..goldBounty(300)
 
   ..creep(UnitIds.seagiant)
-  ..hp(13550)
+  ..hp(15550)
   ..damage(225)
   ..amount(1)
 
   ..creep(UnitIds.seawitch)
-  ..hp(13600)
+  ..hp(15600)
   ..damage(228)
   ..amount(1)
   ..scale(1.25)
@@ -142,9 +142,9 @@ function wave_5() returns Wave
   ..goldBounty(300)
 
   ..creep(UnitIds.malfurion)
-  ..hp(17550)
+  ..hp(21550)
   ..damage(725)
-  ..attackrate(0.25)
+  ..attackrate(0.35)
   ..amount(1)
 
   .build()
