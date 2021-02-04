@@ -1,0 +1,55 @@
+package HealingPotions
+import ItemObjEditing
+import ObjectIdGenerator
+import AbilityObjEditing
+import RecipeItem
+import ObjectIds
+
+constant S_HEALING_ID = compiletime(ABIL_ID_GEN.next())
+constant M_HEALING_ID = compiletime(ABIL_ID_GEN.next())
+constant B_HEALING_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionItemHealLesser(S_HEALING_ID)
+  ..presetHitPointsGained(lvl -> 250)
+  new AbilityDefinitionItemHealLesser(M_HEALING_ID)
+  ..presetHitPointsGained(lvl -> 500)
+  new AbilityDefinitionItemHealLesser(B_HEALING_ID)
+  ..presetHitPointsGained(lvl -> 1000)
+
+public constant S_HEALING_POT_ITEM = compiletime(new RecipeItem()
+  ..setName("Small Healing Potion")
+  ..setInterfaceIcon("assets/icons/items/BTNSmallHealingPotion.blp")
+  ..setGoldCost(45)
+  ..setNumberofCharges(1)
+  ..setMaxStack(5)
+  ..setActivelyUsed(true)
+  ..setTooltipBasic("Purchase Small Healing Potion")
+  ..setTooltipExtended("Heals 250 hp.")
+  ..setAbilities(S_HEALING_ID.toRawCode())
+)..register()
+
+public constant M_HEALING_POT_ITEM = compiletime(new RecipeItem()
+  ..setName("Medium Healing Potion")
+  ..setInterfaceIcon("assets/icons/items/BTNMediumHealingPotion.blp")
+  ..setGoldCost(95)
+  ..setNumberofCharges(1)
+  ..setMaxStack(5)
+  ..setActivelyUsed(true)
+  ..setTooltipBasic("Purchase Medium Healing Potion")
+  ..setTooltipExtended("Heals 500 hp.")
+  ..setAbilities(M_HEALING_ID.toRawCode())
+)..register()
+
+public constant B_HEALING_POT_ITEM = compiletime(new RecipeItem()
+  ..setName("Big Healing Potion")
+  ..setInterfaceIcon("assets/icons/items/BTNBigHealingPotion.blp")
+  ..setGoldCost(180)
+  ..setNumberofCharges(1)
+  ..setMaxStack(5)
+  ..setActivelyUsed(true)
+  ..setTooltipBasic("Purchase Big Healing Potion")
+  ..setTooltipExtended("Heals 1000 hp.")
+  ..setAbilities(B_HEALING_ID.toRawCode())
+)..register()
+

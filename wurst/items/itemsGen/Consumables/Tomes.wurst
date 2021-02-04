@@ -1,0 +1,17 @@
+package Tomes
+import RecipeItem
+import Icons
+
+public constant TOME_OF_AGILITY_ITEM = compiletime(new RecipeItem('tdex')
+..setInterfaceIcon(Icons.bTNTome)
+..setGoldCost(150)
+)
+public constant TOME_OF_INTELLIGENCE_ITEM = compiletime(new RecipeItem('tint')
+..setInterfaceIcon(Icons.bTNTome)
+..setGoldCost(150)
+)
+public constant TOME_OF_STRENGTH_ITEM = compiletime(new RecipeItem('tstr')
+..setInterfaceIcon(Icons.bTNTome)
+..setGoldCost(150)
+)
+

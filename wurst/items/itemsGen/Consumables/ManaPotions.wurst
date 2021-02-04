@@ -1,0 +1,54 @@
+package ManaPotions
+import ItemObjEditing
+import ObjectIdGenerator
+import AbilityObjEditing
+import RecipeItem
+import ObjectIds
+
+constant S_MANA_ID = compiletime(ABIL_ID_GEN.next())
+constant M_MANA_ID = compiletime(ABIL_ID_GEN.next())
+constant B_MANA_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionItemManaRestoreLesser(S_MANA_ID)
+  ..presetManaPointsGained(lvl -> 150)
+  new AbilityDefinitionItemManaRestoreLesser(M_MANA_ID)
+  ..presetManaPointsGained(lvl -> 280)
+  new AbilityDefinitionItemManaRestoreLesser(B_MANA_ID)
+  ..presetManaPointsGained(lvl -> 550)
+
+public constant S_MANA_POT_ITEM = compiletime(new RecipeItem()
+  ..setName("Small Mana Potion")
+  ..setInterfaceIcon("assets/icons/items/BTNSmallManaPotion.blp")
+  ..setGoldCost(40)
+  ..setNumberofCharges(1)
+  ..setMaxStack(5)
+  ..setActivelyUsed(true)
+  ..setTooltipBasic("Purchase Small Mana Potion")
+  ..setTooltipExtended("Restore 150 mp.")
+  ..setAbilities(S_MANA_ID.toRawCode())
+)..register()
+
+public constant M_MANA_POT_ITEM = compiletime(new RecipeItem()
+  ..setName("Medium Mana Potion")
+  ..setInterfaceIcon("assets/icons/items/BTNMediumManaPotion.blp")
+  ..setGoldCost(85)
+  ..setNumberofCharges(1)
+  ..setMaxStack(5)
+  ..setActivelyUsed(true)
+  ..setTooltipBasic("Purchase Medium Mana Potion")
+  ..setTooltipExtended("Restore 280 mp.")
+  ..setAbilities(M_MANA_ID.toRawCode())
+)..register()
+
+public constant B_MANA_POT_ITEM = compiletime(new RecipeItem()
+  ..setName("Big Mana Potion")
+  ..setInterfaceIcon("assets/icons/items/BTNBigManaPotion.blp")
+  ..setGoldCost(165)
+  ..setNumberofCharges(1)
+  ..setMaxStack(5)
+  ..setActivelyUsed(true)
+  ..setTooltipBasic("Purchase Big Mana Potion")
+  ..setTooltipExtended("Restore 550 mp.")
+  ..setAbilities(B_MANA_ID.toRawCode())
+)..register()

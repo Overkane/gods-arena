@@ -10,5 +10,6 @@ init
   ..setDescription(
     "Hiveworkshop guys:\n" + 
     "Mythic - spell effects" +
-    "JesusHipster - spell effects"
+    "JesusHipster - spell effects" +
+    "GooS - potion icons"
   )

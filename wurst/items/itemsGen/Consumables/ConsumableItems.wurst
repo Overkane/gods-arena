@@ -1,9 +1,7 @@
 package ConsumableItems
 
-import public HealingPotion
-import public BigHealingPotion
-import public ManaPotion
-import public BigManaPotion
+import public HealingPotions
+import public ManaPotions
 import public VampiricPotion
 
 import public ScrollOfHealing
@@ -12,9 +10,7 @@ import public ScrollOfRestoration
 import public ScrollOfProtection
 import public ScrollOfBeast
 
-import public TomeOfStrength
-import public TomeOfAgility
-import public TomeOfIntelligence
+import public Tomes
 
 
 

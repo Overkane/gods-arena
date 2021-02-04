@@ -4,11 +4,7 @@ import public GauntletsOfOgreStrength
 import public SlippersOfAgility
 import public MantleOfIntelligence
 import public CircletOfNobility
-import public RingOfRegeneration
-import public RingOfProtection
-import public PendantOfMana
-import public SobiMask
-import public GlovesOfHaste
 import public WarsongBattleDrums
 import public KhadgarsPipeOfInsight
-import public LegionDoomHorn
+import public Armor
+import public Weapons
