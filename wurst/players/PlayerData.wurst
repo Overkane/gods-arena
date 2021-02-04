@@ -25,6 +25,7 @@ public class PlayerData
 
   ondestroy
     pData.remove(p)
+    destroy hero
 
 public function initPlayers()
   let humanPlayers = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
