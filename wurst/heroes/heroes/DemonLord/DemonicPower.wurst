@@ -4,7 +4,7 @@ import HeroSpellConstants
 
 public constant DEMONIC_POWER_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure CLEAVE_PERCENT = lvl -> 40. + 10. * (lvl-1)
+RealLevelClosure CLEAVE_PERCENT = lvl -> 0.4 + .1 * (lvl-1)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero attacks deal splash damage.")
@@ -12,11 +12,12 @@ RealLevelClosure CLEAVE_PERCENT = lvl -> 40. + 10. * (lvl-1)
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
-  
+  ..presetHotkey("")
+
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Demonic Power")
-  ..addTooltipProperty("Cleave Percent", lvl -> CLEAVE_PERCENT.run(lvl).toString() + "%")
+  ..addTooltipProperty("Cleave Percent", lvl -> (CLEAVE_PERCENT.run(lvl)*100).round().toString() + "%")
   ..tooltipStopListen()
-  
+
   ..presetDistributedDamageFactor(CLEAVE_PERCENT)

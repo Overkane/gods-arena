@@ -5,8 +5,8 @@ import HeroSpellConstants
 
 public constant STEALTH_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure BACKSTAB_DAMAGE = lvl -> 50. + 30. * (lvl-1)
-RealLevelClosure BONUS_MOVESPEED = lvl -> 10. + 5. * (lvl-1)
+RealLevelClosure BACKSTAB_DAMAGE = lvl -> 45. + 45. * (lvl-1)
+RealLevelClosure BONUS_MOVESPEED = lvl -> 5. + 5. * (lvl-1)
 RealLevelClosure DURATION = lvl -> 3.
 
 @compiletime function genAbility()
@@ -24,7 +24,7 @@ RealLevelClosure DURATION = lvl -> 3.
   ..presetBackstabDamage1(BACKSTAB_DAMAGE)
   ..presetMovementSpeedIncrease(BONUS_MOVESPEED) 
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 50 + 5 * (lvl-1))
+  ..presetManaCost(lvl -> 55)
   ..presetCooldown(lvl -> 7)
   ..tooltipStopListen()
 

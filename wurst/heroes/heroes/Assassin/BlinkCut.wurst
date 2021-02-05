@@ -13,7 +13,7 @@ import HeroSpellConstants
 public constant BLINK_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure NUMBER_OF_STRIKES = lvl -> 5. + 1. * (lvl-1)
-RealLevelClosure DAMAGE_PER_STRIKE = lvl -> 80. + 20. * (lvl-1)
+RealLevelClosure DAMAGE_PER_STRIKE = lvl -> 70. + 50. * (lvl-1)
 RealLevelClosure BLINK_DISTANCE = lvl -> 600.
 
 init 

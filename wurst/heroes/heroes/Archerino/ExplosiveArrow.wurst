@@ -8,7 +8,7 @@ import HeroSpellConstants
 
 public constant EXPLOSIVE_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DAMAGE = lvl -> 250. + 250 * lvl
+constant RealLevelClosure DAMAGE = lvl -> 225. + 225 * lvl
 
 init
     EventListener.onPointCast(EXPLOSIVE_ARROW_ID) (caster, target) ->
@@ -45,6 +45,6 @@ init
     ..addTooltipProperty("Damage", DAMAGE)
     ..presetManaCost(lvl -> 100 + 25 * lvl)
     ..presetCastRange(lvl -> 1000)
-    ..presetCooldown(lvl -> 28)
+    ..presetCooldown(lvl -> 45)
     ..tooltipStopListen()
         

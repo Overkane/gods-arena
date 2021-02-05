@@ -4,7 +4,7 @@ import HeroSpellConstants
 
 public constant FORKED_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE_PER_TARGET = lvl -> 125. + 75. * (lvl-1)
+RealLevelClosure DAMAGE_PER_TARGET = lvl -> 75. + 50. * (lvl-1)
 IntLevelClosure NUMBER_OF_TARGETS = lvl -> 5 + 2 * (lvl-1)
 
 @compiletime function genAbility()
@@ -20,6 +20,7 @@ IntLevelClosure NUMBER_OF_TARGETS = lvl -> 5 + 2 * (lvl-1)
   ..setName("Forked Lightning")
   ..presetNumberofTargetsHit(NUMBER_OF_TARGETS)
   ..presetDamageperTarget(DAMAGE_PER_TARGET)
-  ..presetManaCost(lvl -> 75)
-  ..presetCooldown(lvl -> 15. - lvl)
+  ..presetCastRange(lvl -> 550)
+  ..presetManaCost(lvl -> 80 + 10 * lvl)
+  ..presetCooldown(lvl -> 12)
   ..tooltipStopListen()

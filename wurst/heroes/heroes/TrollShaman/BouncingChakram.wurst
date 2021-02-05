@@ -8,7 +8,7 @@ import UpgradeObjEditing
 public constant BOUNCING_CHAKRAM_ID = compiletime(ABIL_ID_GEN.next())
 public constant BOUNCING_CHAKRAM_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
 
-constant IntLevelClosure NUMBER_OF_BOUNCES = lvl -> 0 + lvl
+constant IntLevelClosure NUMBER_OF_BOUNCES = lvl -> lvl
 
 init
   EventListener.add(EVENT_PLAYER_HERO_SKILL) -> 

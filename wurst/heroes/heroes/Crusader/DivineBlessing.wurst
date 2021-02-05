@@ -10,7 +10,7 @@ import HeroSpellConstants
 public constant DIVINE_BLESSING_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure BONUS_ARMOR = lvl -> 2. * lvl
-RealLevelClosure BONUS_HP_REG = lvl -> 0.5 * lvl
+RealLevelClosure BONUS_HP_REG = lvl -> 1. * lvl
 RealLevelClosure DURATION = lvl -> 15.
 RealLevelClosure RADIUS = lvl -> 1200.
 
@@ -53,6 +53,6 @@ init
   ..addTooltipProperty("Bonus HP Reg", BONUS_HP_REG)
   ..presetAreaofEffect(RADIUS)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 10 + 5 * lvl)
-  ..presetCooldown(lvl -> 30)
+  ..presetManaCost(lvl -> 65)
+  ..presetCooldown(lvl -> 20)
   ..tooltipStopListen()

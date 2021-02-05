@@ -31,9 +31,9 @@ init
   ..setName("Armor Cut")
   ..presetDefenseReduction(lvl -> 3 + 2 * lvl)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetCastRange(lvl -> 250)
-  ..presetManaCost(lvl -> 30)
-  ..presetCooldown(lvl -> 10)
+  ..presetCastRange(lvl -> 300)
+  ..presetManaCost(lvl -> 35)
+  ..presetCooldown(lvl -> 9)
   ..tooltipStopListen()
   
   ..presetBuffs(lvl -> "none")

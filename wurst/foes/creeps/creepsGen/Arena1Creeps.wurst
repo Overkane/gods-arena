@@ -22,19 +22,19 @@ function wave_1() returns Wave
   ..goldBounty(50)
 
   ..creep(UnitIds.timberwolf)
-  ..hp(450)
+  ..hp(550)
   ..damage(8)
   ..amount(10)
 
   ..wait(10)
 
   ..creep(UnitIds.giantwolf)
-  ..hp(550)
+  ..hp(700)
   ..damage(12)
   ..amount(2)
 
   ..creep(UnitIds.direwolf)
-  ..hp(800)
+  ..hp(1000)
   ..damage(20)
   ..amount(1)
   ..scale(1.5)
@@ -47,29 +47,29 @@ function wave_2() returns Wave
   ..goldBounty(75)
 
   ..creep(UnitIds.foresttroll)
-  ..hp(400)
+  ..hp(550)
   ..damage(6)
   ..amount(6)
 
   ..creep(UnitIds.foresttrolltrapper)
-  ..hp(475)
+  ..hp(600)
   ..damage(12)
   ..amount(4)
 
   ..wait(20)
 
   ..creep(UnitIds.foresttrollberserker)
-  ..hp(550)
+  ..hp(700)
   ..damage(10)
   ..amount(4)
 
   ..creep(UnitIds.foresttrollhighpriest)
-  ..hp(550)
+  ..hp(600)
   ..damage(5)
   ..amount(3)
 
   ..creep(UnitIds.foresttrollking)
-  ..hp(1050)
+  ..hp(1250)
   ..damage(25)
   ..amount(1)
   ..scale(1.5)
@@ -82,12 +82,12 @@ function wave_3() returns Wave
   ..goldBounty(75)
 
   ..creep(UnitIds.furbolg)
-  ..hp(550)
+  ..hp(700)
   ..damage(16)
   ..amount(6)
 
   ..creep(UnitIds.furbolgtracker)
-  ..hp(750)
+  ..hp(800)
   ..damage(20)
   ..amount(4)
 
@@ -109,7 +109,7 @@ function wave_3() returns Wave
   ..amount(1)
 
   ..creep(UnitIds.furbolgancient)
-  ..hp(1200)
+  ..hp(1500)
   ..damage(32)
   ..amount(1)
   ..scale(1.5)
@@ -122,36 +122,36 @@ function wave_4() returns Wave
   ..goldBounty(100)
 
   ..creep(UnitIds.gnoll1)
-  ..hp(550)
+  ..hp(800)
   ..damage(25)
   ..amount(10)
 
   ..creep(UnitIds.gnoll3)
-  ..hp(600)
+  ..hp(1000)
   ..damage(28)
   ..amount(2)
   ..scale(1.25)
 
   ..creep(UnitIds.gnollpoacher)
-  ..hp(450)
+  ..hp(700)
   ..damage(18)
   ..amount(6)
 
-  ..wait(20)
+  ..wait(15)
 
   ..creep(UnitIds.gnollbrute)
-  ..hp(800)
+  ..hp(1000)
   ..damage(24)
   ..amount(4)
 
   ..creep(UnitIds.gnollassassin)
-  ..hp(650)
+  ..hp(850)
   ..damage(29)
   ..amount(3)
 
   ..creep(UnitIds.gnollking)
-  ..hp(1550)
-  ..damage(55)
+  ..hp(1600)
+  ..damage(50)
   ..amount(1)
   ..scale(1.5)
 
@@ -180,12 +180,12 @@ function wave_5() returns Wave
   ..wait(25)
 
   ..creep(UnitIds.spittingspider)
-  ..hp(750)
+  ..hp(900)
   ..damage(28)
   ..amount(3)
 
   ..creep(UnitIds.giantspider)
-  ..hp(900)
+  ..hp(1250)
   ..damage(25)
   ..amount(2)
 
@@ -200,7 +200,7 @@ function wave_5() returns Wave
 function wave_6() returns Wave
   return new WaveBuilder()
   ..expBounty(450)
-  ..goldBounty(150)
+  ..goldBounty(125)
 
   ..creep(UnitIds.owlbear)
   ..hp(1900)
@@ -236,7 +236,7 @@ function wave_6() returns Wave
 function wave_7() returns Wave
   return new WaveBuilder()
   ..expBounty(450)
-  ..goldBounty(175)
+  ..goldBounty(125)
 
   ..creep(UnitIds.sasquatch)
   ..hp(2800)
@@ -266,7 +266,7 @@ function wave_7() returns Wave
 function wave_8() returns Wave
   return new WaveBuilder()
   ..expBounty(450)
-  ..goldBounty(175)
+  ..goldBounty(150)
 
   ..creep(UnitIds.stonemaulogre)
   ..hp(2200)
@@ -300,7 +300,7 @@ function wave_8() returns Wave
 function wave_9() returns Wave
   return new WaveBuilder()
   ..expBounty(500)
-  ..goldBounty(200)
+  ..goldBounty(150)
 
   ..creep(UnitIds.druidoftheclaw)
   ..hp(1800)
@@ -335,7 +335,7 @@ function wave_9() returns Wave
 function boss_wave_10() returns Wave
   return new WaveBuilder()
   ..expBounty(650)
-  ..goldBounty(250)
+  ..goldBounty(200)
 
   ..creep(UnitIds.dryad)
   ..hp(3200)

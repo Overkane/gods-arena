@@ -9,7 +9,7 @@ import HeroSpellConstants
 
 public constant HEALING_SEAL_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE = lvl -> 100. + 80. * (lvl-1)
+RealLevelClosure DAMAGE = lvl -> 80. + 60. * (lvl-1)
 RealLevelClosure RADIUS = lvl -> 350.
 
 init 
@@ -59,7 +59,7 @@ init
   ..setName("Healing Seal")
   ..addTooltipProperty("Damage/Heal", DAMAGE)
   ..addTooltipProperty("Damage/Heal Radius", RADIUS)
-  ..presetManaCost(lvl -> 50 + 10 * lvl)
-  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 60 + 5 * lvl)
+  ..presetCastRange(lvl -> 450)
   ..presetCooldown(lvl -> 8)
   ..tooltipStopListen()

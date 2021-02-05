@@ -4,7 +4,7 @@ import HeroSpellConstants
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HEAL_POWER = lvl -> 200. + 100. * (lvl-1)
+constant RealLevelClosure HEAL_POWER = lvl -> 175. + 75. * (lvl-1)
 constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.25 - 0.03 * lvl
 constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 2 + lvl
 
@@ -23,9 +23,9 @@ constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 2 + lvl
   ..addTooltipProperty("Heal Reduction per Bounce", lvl -> (HEAL_REDUCTION.run(lvl) * 100).round().toString() + "%")
   ..addTooltipProperty("Number of Targets", NUMBER_OF_TARGETS)
   ..presetAreaofEffect(lvl -> 500)
-  ..presetCastRange(lvl -> 700)
-  ..presetManaCost(lvl -> 50 + 25 * lvl)
-  ..presetCooldown(lvl -> 12)
+  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 50 + 15 * lvl)
+  ..presetCooldown(lvl -> 11)
   ..tooltipStopListen()
   
   ..presetDamageperTarget(HEAL_POWER)

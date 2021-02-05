@@ -7,7 +7,7 @@ public constant BLOODLUST_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure AS_BONUS = lvl -> 0.2 + 0.1 * (lvl-1)
 constant RealLevelClosure MS_BONUS = lvl -> 0.1 + 0.05 * (lvl-1)
-constant RealLevelClosure DURATION = lvl -> 15.
+constant RealLevelClosure DURATION = lvl -> 12.
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Increases a friendly unit's attack rate and movement speed.")
@@ -25,9 +25,9 @@ constant RealLevelClosure DURATION = lvl -> 15.
   ..addTooltipProperty("Attack Speed Bonus", lvl -> (AS_BONUS.run(lvl)*100).round().toString() + "%")
   ..addTooltipProperty("Movespeed Bonus", lvl -> (MS_BONUS.run(lvl)*100).round().toString() + "%")
   ..addTooltipProperty("Duration", DURATION)
-  ..presetCastRange(lvl -> 500)
-  ..presetManaCost(lvl -> 90)
-  ..presetCooldown(lvl -> 20)
+  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 75)
+  ..presetCooldown(lvl -> 20. - lvl*2)
   ..tooltipStopListen()
   
   ..presetAttackSpeedIncrease(AS_BONUS)

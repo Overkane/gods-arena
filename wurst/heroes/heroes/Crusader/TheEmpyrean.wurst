@@ -8,7 +8,7 @@ import HeroSpellConstants
 public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure DAMAGE = lvl -> 50. + 50. * (lvl-1)
-RealLevelClosure ATTACK_SPEED_SLOW = lvl -> 80
+RealLevelClosure ATTACK_SPEED_SLOW = lvl -> 60
 RealLevelClosure HEAL_SEAL_ADDITIONAL_RADIUS = lvl -> 100. + 50. * (lvl-1)
 RealLevelClosure HOLY_SMITE_PROC_CHANCE = lvl -> 80. + 10. * (lvl-1)
 RealLevelClosure DIVINE_BLESSING_MULT = lvl -> 1.25 + lvl * 0.25
@@ -45,6 +45,6 @@ init
   ..addTooltipProperty("Holy Smite Proc Chance", HOLY_SMITE_PROC_CHANCE)
   ..addTooltipProperty("Divine Blessing Multiplayer", DIVINE_BLESSING_MULT)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 150 + 50 * lvl)
+  ..presetManaCost(lvl -> 125 + 25 * lvl)
   ..presetCooldown(lvl -> 90)
   ..tooltipStopListen()

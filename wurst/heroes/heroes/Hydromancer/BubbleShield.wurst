@@ -7,7 +7,7 @@ import BubbleShieldBuff
 
 public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HP_REGEN = lvl -> 10. + 5. * (lvl-1)
+constant RealLevelClosure HP_REGEN = lvl -> 15. + 10. * (lvl-1)
 constant RealLevelClosure SHIELD_DURABILITY = lvl -> 150. + 50. * (lvl-1)
 constant RealLevelClosure DURATION = lvl -> 8
 
@@ -29,13 +29,14 @@ init
   ..presetHotkey("E")
   ..presetDurationHero(DURATION)
   ..presetDurationNormal(DURATION)
-  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self))
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self, TargetsAllowed.friend))
   
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.UNIT)
   ..setName("Bubble Shield")
   ..addTooltipProperty("Bonus HP Regeneration", HP_REGEN)
   ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
+  ..presetCastRange(lvl -> 600)
   ..presetManaCost(lvl -> 90)
   ..presetCooldown(lvl -> 15)
   ..tooltipStopListen()

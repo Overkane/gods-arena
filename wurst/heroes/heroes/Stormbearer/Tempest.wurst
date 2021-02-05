@@ -5,7 +5,7 @@ import HeroSpellConstants
 
 public constant TEMPEST_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE = lvl -> 60. + 20. * (lvl-1)
+RealLevelClosure DAMAGE = lvl -> 60. + 50. * (lvl-1)
 RealLevelClosure DAMAGE_INTERVAL = lvl -> 1
 RealLevelClosure AOE = lvl -> 350. + 50. * (lvl-1)
 RealLevelClosure DURATION = lvl -> 10.
@@ -28,7 +28,7 @@ RealLevelClosure DURATION = lvl -> 10.
   ..presetDamageInterval(DAMAGE_INTERVAL)
   ..presetAreaofEffect(AOE)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 200 + 50 * lvl)
+  ..presetManaCost(lvl -> 150 + 25 * lvl)
   ..presetCooldown(lvl -> 75)
   ..tooltipStopListen()
   

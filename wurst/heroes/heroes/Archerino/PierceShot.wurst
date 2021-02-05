@@ -13,7 +13,7 @@ public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
 constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
 
-constant RealLevelClosure SPELL_DAMAGE = lvl -> 75. * lvl - 15
+constant RealLevelClosure SPELL_DAMAGE = lvl -> 75. + 55 * lvl
 
 class TreantEntity extends UnitEntity
 

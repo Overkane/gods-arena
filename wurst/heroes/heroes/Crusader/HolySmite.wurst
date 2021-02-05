@@ -11,8 +11,8 @@ import HeroSpellConstants
 public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
 public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure CHANCE = lvl -> 18.
-RealLevelClosure DAMAGE = lvl -> 80. + 40 * (lvl-1)
+RealLevelClosure CHANCE = lvl -> 19.
+RealLevelClosure DAMAGE = lvl -> 55. + 35 * (lvl-1)
 RealLevelClosure RADIUS = lvl -> 225
 RealLevelClosure STUN_DURATION = lvl -> 0.4
 

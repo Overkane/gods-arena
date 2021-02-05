@@ -4,7 +4,7 @@ import HeroSpellConstants
 
 public constant CATACLYSM_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DURATION = lvl -> 0.2
+RealLevelClosure DURATION = lvl -> 0.3
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "Calls down multiple Infernals from the sky.")
@@ -19,10 +19,10 @@ RealLevelClosure DURATION = lvl -> 0.2
   ..tooltipStartListen()
   ..setLevels(ULTIMATE_LEVEL_REQ)
   ..setName("Cataclysm")
-  ..presetNumberofUnitsCreated(lvl -> 3 * lvl)
+  ..presetNumberofUnitsCreated(lvl -> 2 * lvl)
   ..presetAreaofEffect(lvl -> 900)
   ..presetManaCost(lvl -> 125 + 25 * lvl)
-  ..presetCooldown(lvl -> 120)
+  ..presetCooldown(lvl -> 100)
   ..tooltipStopListen()
 
   ..presetDurationNormal(DURATION)

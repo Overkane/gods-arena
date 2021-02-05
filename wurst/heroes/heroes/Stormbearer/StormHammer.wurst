@@ -11,9 +11,9 @@ import HeroSpellConstants
 public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())
 public constant STORM_HAMMER_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure CHAIN_LIGHTNING_DAMAGE = lvl -> 35. + 15. * (lvl-1)
-IntLevelClosure CHAIN_LIGHTNING_NUMBER_OF_TARGETS = lvl -> 5 + 1 * (lvl-1)
-RealLevelClosure CHARGE_DURATION = lvl -> 5.
+RealLevelClosure CHAIN_LIGHTNING_DAMAGE = lvl -> 25. + 15. * (lvl-1)
+IntLevelClosure CHAIN_LIGHTNING_NUMBER_OF_TARGETS = lvl -> 4 + lvl
+RealLevelClosure CHARGE_DURATION = lvl -> 4.5 + 0.5 * lvl
 
 init 
   EventListener.onCast(STORM_HAMMER_ID) (unit caster) ->
@@ -48,7 +48,7 @@ init
   ..addTooltipProperty("Chain Lightning Damage", CHAIN_LIGHTNING_DAMAGE)
   ..addTooltipProperty("Chain Lightning Number of Targets", CHAIN_LIGHTNING_NUMBER_OF_TARGETS)
   ..addTooltipProperty("Charge Duration", CHARGE_DURATION)
-  ..presetManaCost(lvl -> 75 + 5 * lvl)
+  ..presetManaCost(lvl -> 90)
   ..presetCooldown(lvl -> 21. - lvl)
   ..tooltipStopListen()
 

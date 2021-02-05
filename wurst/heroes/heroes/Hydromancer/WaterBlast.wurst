@@ -11,10 +11,10 @@ public constant WATER_BLAST_ID = compiletime(ABIL_ID_GEN.next())
 
 constant SOUND = new SoundDefinition(Sounds.crushingWaveTarget1)
 
-constant RealLevelClosure DAMAGE = lvl -> 125. + 50. * (lvl-1)
+constant RealLevelClosure DAMAGE = lvl -> 70. + 45. * (lvl-1)
 constant RealLevelClosure SLOW = lvl -> 30. + 5. * (lvl-1)
-constant RealLevelClosure SLOW_DURATION = lvl -> 4.
-constant RealLevelClosure AOE = lvl -> 200.
+constant RealLevelClosure SLOW_DURATION = lvl -> 2.75 + 0.25 * lvl
+constant RealLevelClosure AOE = lvl -> 225.
 
 init 
   EventListener.onPointCast(WATER_BLAST_ID) (unit caster, vec2 target) ->
@@ -49,6 +49,6 @@ init
   ..addTooltipProperty("Duration", SLOW_DURATION)
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 50 + 25 * lvl)
+  ..presetManaCost(lvl -> 50 + 15 * lvl)
   ..presetCooldown(lvl -> 12.)
   ..tooltipStopListen()
