@@ -1,4 +1,4 @@
-package TrollShaman
+package TrollShamanHero
 import UnitIds
 import HeroPreset
 import ObjectIdGenerator
@@ -17,9 +17,17 @@ public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
   ..addHeroAbility(BLOODLUST_ID)
   ..addHeroAbility(BOUNCING_CHAKRAM_ID)
   ..addHeroAbility(VODOO_SPIRITS_ID)
+  ..setStartingStrength(16)
+  ..setStrengthPerLevel(1.7)
+  ..setStartingAgility(18)
+  ..setAgilityPerLevel(2.2)
+  ..setStartingIntelligence(20)
+  ..setIntelligencePerLevel(3)
+  ..setAttack1DamageBase(5)
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(5)
   ..setAttack1DamageLossFactor(0.15)
   ..setAttack1AreaofEffectFullDamage(400)
   ..setAttack1WeaponType(WeaponType.MissileBounce)
   ..setUpgradesUsed(BOUNCING_CHAKRAM_UPGRADE_ID.toRawCode())
-  ..buildProperNames()
-  ..buildHeroAbilities()
+  ..buildHero()

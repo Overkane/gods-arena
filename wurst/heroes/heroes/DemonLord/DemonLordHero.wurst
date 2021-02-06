@@ -1,4 +1,4 @@
-package DemonLord
+package DemonLordHero
 import UnitIds
 import HeroPreset
 import ObjectIdGenerator
@@ -16,4 +16,12 @@ public constant DEMON_LORD_ID = compiletime(HERO_ID_GEN.next())
   ..addHeroAbility(HELL_FLAME_ID)
   ..addHeroAbility(DEMONIC_POWER_ID)
   ..addHeroAbility(CATACLYSM_ID)
+  ..setStartingStrength(28)
+  ..setStrengthPerLevel(3.4)
+  ..setStartingAgility(15)
+  ..setAgilityPerLevel(1.3)
+  ..setStartingIntelligence(15)
+  ..setIntelligencePerLevel(1.8)
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(8)
   ..buildHero()
