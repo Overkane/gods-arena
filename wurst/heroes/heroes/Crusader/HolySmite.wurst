@@ -15,7 +15,7 @@ public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
 RealLevelClosure CHANCE = lvl -> 19.
 RealLevelClosure DAMAGE = lvl -> 55. + 35 * (lvl-1)
 RealLevelClosure RADIUS = lvl -> 225
-RealLevelClosure STUN_DURATION = lvl -> 0.4
+RealLevelClosure STUN_DURATION = lvl -> 0.3
 
 init 
   DamageEvent.addListener() -> 
@@ -62,6 +62,6 @@ init
   ..addTooltipProperty("Stun Duration", STUN_DURATION)
   ..tooltipStopListen()
 
-  new StunAbilityPreset(HOLY_SMITE_STUN_ID)
+  new StunAbilityPreset(HOLY_SMITE_STUN_ID, 5)
   ..presetDurationHero(STUN_DURATION)
   ..presetDurationNormal(STUN_DURATION)
