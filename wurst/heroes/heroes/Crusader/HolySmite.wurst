@@ -7,6 +7,7 @@ import InstantDummyCaster
 import StunAbilityPreset
 import TheEmpyreanBuff
 import HeroSpellConstants
+import PassiveAbilityPreset
 
 public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
 public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
@@ -46,15 +47,14 @@ init
             InstantDummyCaster.castTarget(DUMMY_PLAYER, HOLY_SMITE_STUN_ID, lvl, "thunderbolt", target) 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
-  new ChannelAbilityPreset(HOLY_SMITE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
+  new PassiveAbilityPreset(HOLY_SMITE_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..setLevelSkipRequirement(0)
   ..presetIcon(Icons.pASBTNFeedBack)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)
 
   ..tooltipStartListen()
-  ..presetTargetTypes(Targettype.PASSIVE)
   ..setName("Holy Smite")
   ..addTooltipProperty("Chance", CHANCE)
   ..addTooltipProperty("Damage", DAMAGE)

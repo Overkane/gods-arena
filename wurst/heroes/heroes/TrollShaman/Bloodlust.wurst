@@ -34,3 +34,4 @@ constant RealLevelClosure DURATION = lvl -> 12.
   ..presetMovementSpeedIncrease(MS_BONUS)
   ..presetDurationNormal(DURATION)
   ..presetDurationHero(DURATION)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.friend, TargetsAllowed.self))
