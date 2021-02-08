@@ -22,5 +22,5 @@ public class PassiveAbilityPreset extends AbilityDefinitionCriticalStrikecreep
 		setLevels(lvls)
 		tooltipStopListen(false)
 		setName("Passive ability")
-		presetChancetoCriticalStrike(lvls -> 0)
-		presetDamageMultiplier(lvls -> 0)
+		presetChancetoCriticalStrike(lvls -> 0.)
+		presetDamageMultiplier(lvls -> 0.)

@@ -12,7 +12,7 @@ public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure WALK_DURATION = lvl -> 5. + 1. * lvl
 
 public constant tagBuffObj = compiletime(createDummyBuffObject("Tagged", "This unit has been tagged.", Icons.bTNTheBlackArrow, Abilities.parasiteTarget, AttachmentPoints.overhead))
-constant stabBuffObj = compiletime(createDummyBuffObject("|cff1cd134Tag Walk", "Increases speed and reduces damage taken. Touched enemies are tagged.", Icons.bTNTheBlackArrow))
+constant stabBuffObj = compiletime(createDummyBuffObject("|cff1cd134Tag Walk", "Increases speed and reduces damage taken. Enemies touched during the effect are |cffd803bctagged|r and will receive more damage.", Icons.bTNTheBlackArrow))
 
 class TagBuff extends NormalBuff
 
@@ -28,8 +28,6 @@ class TagwalkBuff extends NormalBuff
 
     override function apply(unit target)
         super.apply(target)
-        target
-        ..setMoveSpeed(target.getMoveSpeed() + 200.)
         windEff = target.addEffect(Abilities.tornadoElementalSmall, AttachmentPoints.chest)..setScale(0.25)
         trig..registerUnitInRangeSource(target, 72., null)
         ..addAction() ->
@@ -45,7 +43,6 @@ class TagwalkBuff extends NormalBuff
 
     override function onEnd()
         super.onEnd()
-        target.setMoveSpeed(target.getMoveSpeed() - 200.)
         windEff.destr()
         target.clearRegister()
         trig.destr()

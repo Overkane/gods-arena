@@ -13,7 +13,7 @@ public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
 constant ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure DAMAGE = lvl -> 25. + 15 * lvl
-constant IntLevelClosure CHANCE = lvl -> 10 + 10 * lvl
+constant RealLevelClosure CHANCE = lvl -> 0.1 + 0.1 * lvl
 
 init
     DamageEvent.addListener() -> 
@@ -40,7 +40,7 @@ init
 
     ..tooltipStartListen()
     ..addTooltipProperty("Extra Damage", DAMAGE)
-    ..addTooltipProperty("Chance",  lvl -> CHANCE.run(lvl).toString() + "%")
+    ..addTooltipProperty("Chance",  lvl -> (CHANCE.run(lvl) * 100).toString(0) + "%")
     ..presetHotkey("E")
     ..setName("Critical Arrow")
     ..tooltipStopListen()
