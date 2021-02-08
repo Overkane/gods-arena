@@ -4,6 +4,7 @@ import Icons
 import DamageEvent
 import StandardTextTags
 import HeroSpellConstants
+import PassiveAbilityPreset
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -42,8 +43,8 @@ init
         flashEffect("Coup de Grace.mdx", tunit.getPos(), 1, sunit.getFacingAngle())
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero gains chance to deal critical strike. Chance to deal critical strike is doubled if target is attacked from behind.")
-  new ChannelAbilityPreset(COUP_DE_GRACE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gains chance to deal critical strike. Chance to deal critical strike is doubled if target is attacked from behind.")
+  new PassiveAbilityPreset(COUP_DE_GRACE_ID, ULTIMATE_SPELL_LEVELS, tooltip)
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   ..presetButtonPosNormal(3, 2)
@@ -52,7 +53,6 @@ init
   ..presetIcon(Icons.bTNSacrifice)
 
   ..tooltipStartListen()
-  ..presetTargetTypes(Targettype.PASSIVE)
   ..setName("Coup De Grace")
   ..addTooltipProperty("Critical Strike Chance", CRITICAL_CHANCE)
   ..addTooltipProperty("Damage Multiplayer", CRITICAL_MULT)

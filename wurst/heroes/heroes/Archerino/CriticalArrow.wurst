@@ -7,6 +7,7 @@ import InstantDummyCaster
 import Orders
 import Buff
 import HeroSpellConstants
+import PassiveAbilityPreset
 
 public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -31,14 +32,13 @@ init
 
 
 @compiletime function genAbility()
-    let tooltip = new AbilityTooltipGenerator("Has a chance to deal extra damage.\nIf the target is |cffd803bctagged|r, it will always crit and also become entangled.")
-    new ChannelAbilityPreset(CRIT_ARROW_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+    let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Has a chance to deal extra damage.\nIf the target is |cffd803bctagged|r, it will always crit and also become entangled.")
+    new PassiveAbilityPreset(CRIT_ARROW_ID, NORMAL_SPELL_LEVELS, tooltip)
     ..presetButtonPosNormal(2, 2)
     ..presetButtonPosResearch(2, 0)
     ..presetIcon(Icons.pASBTNCriticalStrike)
 
     ..tooltipStartListen()
-    ..presetTargetTypes(Targettype.PASSIVE)
     ..addTooltipProperty("Extra Damage", DAMAGE)
     ..addTooltipProperty("Chance",  lvl -> CHANCE.run(lvl).toString() + "%")
     ..presetHotkey("E")

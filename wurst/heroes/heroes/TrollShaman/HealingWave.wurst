@@ -4,7 +4,7 @@ import HeroSpellConstants
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HEAL_POWER = lvl -> 175. + 75. * (lvl-1)
+constant RealLevelClosure HEAL_POWER = lvl -> 175. + 90. * (lvl-1)
 constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.25 - 0.03 * lvl
 constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 2 + lvl
 

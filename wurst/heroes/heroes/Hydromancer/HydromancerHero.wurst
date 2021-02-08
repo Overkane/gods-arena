@@ -1,4 +1,4 @@
-package Hydromancer
+package HydromancerHero
 import UnitIds
 import HeroPreset
 import ObjectIdGenerator
@@ -17,5 +17,14 @@ public constant HYDROMANCER_ID = compiletime(HERO_ID_GEN.next())
   ..addHeroAbility(WATER_ELEMENTAL_ID)
   ..addHeroAbility(BUBBLE_SHIELD_ID)
   ..addHeroAbility(CRUSHING_WAVE_ID)
+  ..setStartingStrength(16)
+  ..setStrengthPerLevel(1.6)
+  ..setStartingAgility(15)
+  ..setAgilityPerLevel(1.4)
+  ..setStartingIntelligence(24)
+  ..setIntelligencePerLevel(2.8)
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(4)
+  ..setAttack1Range(350)
   ..setAttack1ProjectileArt(Abilities.waterElementalMissile)
   ..buildHero()

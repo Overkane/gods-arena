@@ -1,0 +1,26 @@
+package PassiveAbilityPreset
+import NoWurst
+import public AbilityObjEditing
+import public ObjectIds
+import public ObjectIdGenerator
+
+public class PassiveAbilityPreset extends AbilityDefinitionCriticalStrikecreep
+	construct(int newId, int lvls, TooltipGenerator tgen)
+		super(newId)
+		registerTooltipGenerator(tgen)
+		setup(lvls)
+
+	construct(int newId, int lvls)
+		super(newId)
+		setTooltipNormal(1, "")
+		setTooltipNormalExtended(1, "")
+		setup(lvls)
+
+	function setup(int lvls)
+		this.lvls = lvls
+		tooltipStartListen()
+		setLevels(lvls)
+		tooltipStopListen(false)
+		setName("Passive ability")
+		presetChancetoCriticalStrike(lvls -> 0)
+		presetDamageMultiplier(lvls -> 0)

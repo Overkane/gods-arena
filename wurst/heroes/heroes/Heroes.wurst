@@ -2,7 +2,7 @@ package Heroes
 
 // Str heroes
 import public CrusaderHero
-import public DemonLord
+import public DemonLordHero
 
 // Agi heroes
 import public AssassinHero
@@ -11,6 +11,6 @@ import public BlademasterHero
 
 // Int heroes
 import public StormbearerHero
-import public Hydromancer
-import public TrollShaman
+import public HydromancerHero
+import public TrollShamanHero
 
