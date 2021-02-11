@@ -30,12 +30,12 @@ function wave_1() returns Wave
 
   ..creep(UnitIds.giantwolf)
   ..hp(700)
-  ..damage(12)
+  ..damage(14)
   ..amount(2)
 
   ..creep(UnitIds.direwolf)
   ..hp(1000)
-  ..damage(20)
+  ..damage(26)
   ..amount(1)
   ..scale(1.5)
 
@@ -48,29 +48,29 @@ function wave_2() returns Wave
 
   ..creep(UnitIds.foresttroll)
   ..hp(550)
-  ..damage(6)
+  ..damage(8)
   ..amount(6)
 
   ..creep(UnitIds.foresttrolltrapper)
   ..hp(600)
-  ..damage(12)
+  ..damage(16)
   ..amount(4)
 
   ..wait(20)
 
   ..creep(UnitIds.foresttrollberserker)
   ..hp(700)
-  ..damage(10)
+  ..damage(14)
   ..amount(4)
 
   ..creep(UnitIds.foresttrollhighpriest)
   ..hp(600)
-  ..damage(5)
+  ..damage(15)
   ..amount(3)
 
   ..creep(UnitIds.foresttrollking)
   ..hp(1250)
-  ..damage(25)
+  ..damage(45)
   ..amount(1)
   ..scale(1.5)
 
@@ -83,34 +83,34 @@ function wave_3() returns Wave
 
   ..creep(UnitIds.furbolg)
   ..hp(700)
-  ..damage(16)
+  ..damage(18)
   ..amount(6)
 
   ..creep(UnitIds.furbolgtracker)
   ..hp(800)
-  ..damage(20)
+  ..damage(22)
   ..amount(4)
 
   ..creep(UnitIds.furbolgshaman)
   ..hp(650)
-  ..damage(15)
+  ..damage(17)
   ..amount(2)
 
   ..wait(20)
 
   ..creep(UnitIds.furbolgchampion)
   ..hp(850)
-  ..damage(26)
+  ..damage(28)
   ..amount(2)
 
   ..creep(UnitIds.furbolgeldershaman)
   ..hp(750)
-  ..damage(24)
+  ..damage(28)
   ..amount(1)
 
   ..creep(UnitIds.furbolgancient)
   ..hp(1500)
-  ..damage(32)
+  ..damage(34)
   ..amount(1)
   ..scale(1.5)
 
@@ -190,8 +190,8 @@ function wave_5() returns Wave
   ..amount(2)
 
   ..creep(UnitIds.broodmother)
-  ..hp(2000)
-  ..damage(60)
+  ..hp(2250)
+  ..damage(65)
   ..amount(1)
   ..scale(2.6)
 
@@ -222,12 +222,12 @@ function wave_6() returns Wave
 
   ..creep(UnitIds.owlbear)
   ..hp(2800)
-  ..damage(80)
+  ..damage(85)
   ..amount(3)
   ..scale(1.25)
 
   ..creep(UnitIds.misha1)
-  ..hp(1400)
+  ..hp(1800)
   ..damage(66)
   ..amount(6)
 

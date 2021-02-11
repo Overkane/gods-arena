@@ -80,7 +80,7 @@ function wave_2() returns Wave
   ..hp(12500)
   ..mana(5000)
   ..damage(220)
-  ..amount(1)
+  ..amount(3)
 
   .build()
 
@@ -106,9 +106,9 @@ function wave_3() returns Wave
 
   ..creep(UnitIds.seaelemental)
   ..hp(4850)
-  ..damage(220)
+  ..damage(280)
   ..armor(10)
-  ..amount(3)
+  ..amount(4)
   ..scale(1.1)
 
   .build()
@@ -121,18 +121,18 @@ function wave_4() returns Wave
   ..creep(UnitIds.seagiant)
   ..hp(15550)
   ..damage(225)
-  ..amount(1)
+  ..amount(3)
 
   ..creep(UnitIds.seawitch)
   ..hp(15600)
   ..damage(228)
-  ..amount(1)
+  ..amount(3)
   ..scale(1.25)
 
   ..creep(UnitIds.seagiantbehemoth)
   ..hp(13450)
   ..damage(218)
-  ..amount(1)
+  ..amount(3)
 
   .build()
 
@@ -143,8 +143,8 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.malfurion)
   ..hp(24550)
-  ..damage(725)
-  ..attackrate(0.35)
+  ..damage(425)
+  ..attackrate(0.25)
   ..amount(1)
 
   .build()

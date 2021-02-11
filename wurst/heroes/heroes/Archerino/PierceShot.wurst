@@ -8,6 +8,7 @@ import BuffObjEditing
 import Orders
 import BonusHandler
 import HeroSpellConstants
+import Buff
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -43,6 +44,7 @@ init
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
                     new TreantEntity(projectile.owner, hitTarget, lvl)
+                    hitTarget.removeBuff(TagBuff.typeId)
 
 
 @compiletime function genAbility()
