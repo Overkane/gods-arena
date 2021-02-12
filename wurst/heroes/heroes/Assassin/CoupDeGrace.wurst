@@ -49,7 +49,7 @@ init
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
-  ..presetHotkey("")
+  ..presetHotkey("R")
   ..presetIcon(Icons.bTNSacrifice)
 
   ..tooltipStartListen()

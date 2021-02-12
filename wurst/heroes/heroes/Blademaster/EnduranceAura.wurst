@@ -13,7 +13,7 @@ constant RealLevelClosure MS_BONUS = lvl -> 0.05 * lvl
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
-  ..presetHotkey("")
+  ..presetHotkey("E")
 
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)

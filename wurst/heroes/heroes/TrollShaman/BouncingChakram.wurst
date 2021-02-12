@@ -25,7 +25,7 @@ init
   ..presetIcon(Icons.pASBTNUpgradeMoonGlaive)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
-  ..presetHotkey("")
+  ..presetHotkey("E")
   
   ..tooltipStartListen()
   ..setName("Bouncing Chakram")

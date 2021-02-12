@@ -37,11 +37,11 @@ init
     ..presetButtonPosNormal(2, 2)
     ..presetButtonPosResearch(2, 0)
     ..presetIcon(Icons.pASBTNCriticalStrike)
+    ..presetHotkey("E")
 
     ..tooltipStartListen()
     ..addTooltipProperty("Extra Damage", DAMAGE)
     ..addTooltipProperty("Chance",  lvl -> (CHANCE.run(lvl) * 100).toString(0) + "%")
-    ..presetHotkey("E")
     ..setName("Critical Arrow")
     ..tooltipStopListen()
 

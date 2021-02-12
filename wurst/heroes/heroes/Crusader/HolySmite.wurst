@@ -51,8 +51,9 @@ init
   new PassiveAbilityPreset(HOLY_SMITE_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..setLevelSkipRequirement(0)
   ..presetIcon(Icons.pASBTNFeedBack)
-  ..presetButtonPosNormal(1, 2)
-  ..presetButtonPosResearch(1, 0)
+  ..presetButtonPosNormal(2, 2)
+  ..presetButtonPosResearch(2, 0)
+  ..presetHotkey("E")
 
   ..tooltipStartListen()
   ..setName("Holy Smite")
