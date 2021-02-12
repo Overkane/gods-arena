@@ -39,3 +39,4 @@ init
   ..presetBuffs(lvl -> "none")
   ..presetDurationNormal(DURATION)
   ..presetDurationHero(DURATION)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies))

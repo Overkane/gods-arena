@@ -17,7 +17,7 @@ RealLevelClosure DURATION = lvl -> 0.3
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
 
   ..tooltipStartListen()
-  ..setLevels(ULTIMATE_LEVEL_REQ)
+  ..setLevels(ULTIMATE_SPELL_LEVELS)
   ..setName("Cataclysm")
   ..presetNumberofUnitsCreated(lvl -> 1 + 1 * lvl)
   ..presetAreaofEffect(lvl -> 900)
