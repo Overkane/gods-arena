@@ -8,6 +8,8 @@ import ObjectIdGenerator
 import SoundUtils
 import Abilities
 import Funcs
+import GodOfNature
+import GodOfNatureStrong
 
 constant AFTER_WAVE_RESTORATION_SOUND = new SoundDefinition(Sounds.restorationPotion)
 
@@ -50,7 +52,20 @@ class CreepStep extends WaveStep
       new Creep(unitId, wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
       if cb.isLast()
         next.execute()
-      
+
+class BossStep extends WaveStep
+  static var bossNumber = 0
+
+  construct(Wave wave)
+    super(wave)
+
+  override function execute(NextStepListener next)
+    bossNumber++
+    if bossNumber == 1
+      new GodOfNature(wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
+    else if bossNumber == 2
+      new GodOfNatureStrong(wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
+    next.execute()
 
 public class WaveBuilder
   let result = new Wave()
@@ -74,6 +89,9 @@ public class WaveBuilder
     creepStep = new CreepStep(result, origUnitId)
     currentStep = creepStep
 
+  function boss()
+    currentStep = new BossStep(result)
+
   function abilities(string abilities)
     creepStep.creepDef.setNormalAbilities(abilities)
 
@@ -95,6 +113,9 @@ public class WaveBuilder
 
   function armor(int armor)
     creepStep.creepDef.setDefenseBase(armor)
+
+  function armorType(ArmorType armorType)
+    creepStep.creepDef.setArmorType(armorType)
 
   function model(string path)
     creepStep.creepDef.setModelFile(path)

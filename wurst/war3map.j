@@ -3,9 +3,9 @@ globals
 rect gg_rct_Arena1= null
 rect gg_rct_HeroPickArea= null
 rect gg_rct_Arena1SpawnPoint= null
-trigger gg_trg_rect_vars= null
 rect gg_rct_Arena2= null
 rect gg_rct_Arena2Center= null
+trigger gg_trg_rect_vars= null
 
 
 //JASSHelper struct globals:
@@ -41,42 +41,6 @@ endfunction
 
 //***************************************************************************
 //*
-//*  Unit Creation
-//*
-//***************************************************************************
-
-//===========================================================================
-function CreateNeutralPassive takes nothing returns nothing
-    local player p= Player(PLAYER_NEUTRAL_PASSIVE)
-    local unit u
-    local integer unitID
-    local trigger t
-    local real life
-
-    set u=BlzCreateUnitWithSkin(p, 'necr', - 1345.8, - 746.2, 155.494, 'necr')
-    set u=BlzCreateUnitWithSkin(p, 'necr', 1800.4, 942.3, 298.299, 'necr')
-    set u=BlzCreateUnitWithSkin(p, 'necr', 1672.6, 105.7, 357.473, 'necr')
-    set u=BlzCreateUnitWithSkin(p, 'necr', 1052.9, - 974.9, 155.912, 'necr')
-    set u=BlzCreateUnitWithSkin(p, 'npig', 475.1, 1244.3, 259.098, 'npig')
-endfunction
-
-//===========================================================================
-function CreatePlayerBuildings takes nothing returns nothing
-endfunction
-
-//===========================================================================
-function CreatePlayerUnits takes nothing returns nothing
-endfunction
-
-//===========================================================================
-function CreateAllUnits takes nothing returns nothing
-    call CreatePlayerBuildings()
-    call CreateNeutralPassive()
-    call CreatePlayerUnits()
-endfunction
-
-//***************************************************************************
-//*
 //*  Regions
 //*
 //***************************************************************************
@@ -84,8 +48,8 @@ endfunction
 function CreateRegions takes nothing returns nothing
     local weathereffect we
 
-    set gg_rct_Arena1=Rect(- 2272.0, - 1760.0, 2560.0, 1760.0)
-    set gg_rct_HeroPickArea=Rect(- 288.0, - 416.0, 288.0, 64.0)
+    set gg_rct_Arena1=Rect(- 1856.0, - 1376.0, 2080.0, 1344.0)
+    set gg_rct_HeroPickArea=Rect(128.0, - 832.0, 704.0, - 352.0)
     set gg_rct_Arena1SpawnPoint=Rect(- 480.0, 608.0, 416.0, 1024.0)
     set gg_rct_Arena2=Rect(- 2240.0, - 7776.0, 2592.0, - 2272.0)
     set gg_rct_Arena2Center=Rect(- 96.0, - 4960.0, 96.0, - 4736.0)
@@ -429,7 +393,6 @@ function main takes nothing returns nothing
     call SetAmbientNightSound("LordaeronSummerNight")
     call SetMapMusic("Music", true, 0)
     call CreateRegions()
-    call CreateAllUnits()
     call InitBlizzard()
 
 

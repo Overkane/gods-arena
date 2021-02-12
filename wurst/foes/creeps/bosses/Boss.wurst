@@ -1,0 +1,15 @@
+package Boss
+import Entity
+import GameProperties
+
+interface BossIsDead
+  abstract function execute()
+
+public BossIsDead onBossDefeat
+
+public class Boss extends UnitEntity
+  construct(int typId, vec3 pos, angle ang)
+    super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
+    actor.setAnimation("birth")
+
+    EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH, () -> onBossDefeat.execute())

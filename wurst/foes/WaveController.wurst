@@ -3,6 +3,7 @@ import public Wave
 import TimerUtils
 import Creep
 import Funcs
+import Boss
 
 public constant waveController = new WaveController()
 
@@ -45,3 +46,4 @@ class WaveController
 init 
   nullTimer() ->
     onAllCreepsDead = () -> waveController.checkIfCurrentWaveDone()
+    onBossDefeat = () -> waveController.checkIfCurrentWaveDone()

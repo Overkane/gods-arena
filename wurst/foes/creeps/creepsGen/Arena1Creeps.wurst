@@ -1,9 +1,6 @@
 package Arena1Creeps
 import UnitIds
 import Wave
-import ObjectIds
-import AbilityIds
-
 
 public constant ARENA1_WAVE_1 = compiletime(wave_1())
 public constant ARENA1_WAVE_2 = compiletime(wave_2())
@@ -336,19 +333,6 @@ function boss_wave_10() returns Wave
   return new WaveBuilder()
   ..expBounty(650)
   ..goldBounty(200)
-
-  ..creep(UnitIds.dryad)
-  ..hp(3200)
-  ..damage(75)
-  ..amount(5)
-
-  ..creep(UnitIds.keeperofthegrove)
-  ..abilities(commaList(AbilityIds.entanglingRoots, AbilityIds.cripple))
-  ..hp(15000)
-  ..armor(14)
-  ..damage(250)
-  ..attackrate(0.5)
-  ..amount(1)
-  ..scale(3)
-
+  ..boss()
   .build()
+  

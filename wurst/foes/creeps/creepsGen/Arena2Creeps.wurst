@@ -140,11 +140,5 @@ function wave_5() returns Wave
   return new WaveBuilder()
   ..expBounty(900)
   ..goldBounty(300)
-
-  ..creep(UnitIds.malfurion)
-  ..hp(24550)
-  ..damage(425)
-  ..attackrate(0.25)
-  ..amount(1)
-
+  ..boss()
   .build()
