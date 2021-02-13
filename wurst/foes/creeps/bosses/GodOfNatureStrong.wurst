@@ -105,7 +105,7 @@ init
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
   ..setAttack1DamageBase(250)
-  ..setDefenseBase(5)
+  ..setDefenseBase(20)
   ..setHitPointsMaximumBase(25000)
   ..setScalingValue(2.6)
 

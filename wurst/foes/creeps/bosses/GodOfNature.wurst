@@ -11,6 +11,7 @@ import ClosureForGroups
 import Assets
 import SoundUtils
 import InstantDummyCaster
+import HornOfTheGod
 
 constant ROOTS_ID = compiletime(ABIL_ID_GEN.next())
 constant WISP_HEAL_ID = compiletime(ABIL_ID_GEN.next())
@@ -30,6 +31,7 @@ constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.nightElfDefeat)
 public class GodOfNature extends Boss
   construct(vec3 pos, angle ang)
     super(GOD_OF_NATURE_ID, pos, ang)
+    actor.addItemById(HORN_OF_THE_GOD_ITEM.getNewId())
     BOSS_MUSIC_THEME.play()
     new SoundDefinition(Sounds.o05Cenarius29).play()
     castingBossSpells(actor)

@@ -1,0 +1,38 @@
+package HornOfTheGod
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import BuffObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import BuffIds
+
+constant ARMOR_AURA_ID = compiletime(ABIL_ID_GEN.next())
+constant ARMOR_AURA_BUFF_ID = compiletime(BUFF_ID_GEN.next())
+
+public constant HORN_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
+..setName("Horn of the God")
+..setInterfaceIcon(Icons.bTNHornOfFog)
+..setScalingValue(2.)
+..setTintingColor1Red(218)
+..setTintingColor2Green(165)
+..setTintingColor3Blue(32)
+..setDroppedWhenCarrierDies(true)
+..setGoldCost(1)
+..addBonus(Bonus.STRENGTH, 15)
+..addBonus(Bonus.AGILITY, 15)
+..addBonus(Bonus.INTELLIGENCE, 15)
+..setAbilities(commaList(ARMOR_AURA_ID))
+..generateTooltip("Passive - 8 armor aura.")
+)..register()
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionItemAuraDevotion(ARMOR_AURA_ID)
+  ..presetIcon(Icons.bTNHornOfFog)
+  ..setArmorBonus(1, 8)
+  ..setBuffs(1, ARMOR_AURA_BUFF_ID.toRawCode())
+
+  new BuffDefinition(ARMOR_AURA_BUFF_ID, BuffIds.devotionAura)
+  ..setIcon(Icons.bTNHornOfFog)
+  ..setTooltipNormal(1, "Horn of the God")
+  ..setTooltipNormalExtended(1, "Unit's armor increased by 8.")
