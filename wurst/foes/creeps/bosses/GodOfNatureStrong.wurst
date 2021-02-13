@@ -38,7 +38,7 @@ public class GodOfNatureStrong extends Boss
       forUnitsAll() (unit u) ->
         if u.getTypeId() == WISP_ID or u.getTypeId() == TREANT_ID
           u.kill()
-      BOSS_MUSIC_THEME.play(0)
+      BOSS_MUSIC_THEME.play(0, 0)
 
 public function castingBossSpells(unit boss)
   doAfter(7) ->
@@ -58,7 +58,7 @@ function summonTreants()
   for i = 0 to 5
     let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena2.randomPoint(), angle(GetRandomReal(0, 359)))
     doPeriodicallyCounted(2.5, 10) (CallbackCounted cb) ->
-      u.addBonus(Bonus.LIFE, 400)
+      u.addBonus(Bonus.LIFE, 75)
       u.addBonus(Bonus.DAMAGE, 50)
       u.setMoveSpeed(u.getMoveSpeed() - 34.5)
       u.setScale(2 - 0.1 * cb.getCount())
@@ -88,9 +88,9 @@ init
 
 @compiletime function genAbility()
   new UnitDefinition(WISP_ID, UnitIds.wisp)
-  ..setHitPointsMaximumBase(1250)
-  ..setArmorType(ArmorType.Hero)
-  ..setSpeedBase(225)
+  ..setHitPointsMaximumBase(200)
+  ..setArmorType(ArmorType.Divine)
+  ..setSpeedBase(200)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
   
@@ -99,7 +99,7 @@ init
   ..setAttack1DamageBase(100)
   ..setDefenseBase(1)
   ..setSpeedBase(350)
-  ..setHitPointsMaximumBase(1500)
+  ..setHitPointsMaximumBase(800)
 
   new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegroveghost)
   ..setAcquisitionRange(99999)

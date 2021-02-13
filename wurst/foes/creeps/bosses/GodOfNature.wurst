@@ -38,7 +38,7 @@ public class GodOfNature extends Boss
       forUnitsAll() (unit u) ->
         if u.getTypeId() == WISP_ID or u.getTypeId() == TREANT_ID
           u.kill()
-      BOSS_MUSIC_THEME.play(0)
+      BOSS_MUSIC_THEME.play(0, 0)
 
 public function castingBossSpells(unit boss)
   doAfter(8) ->
@@ -56,7 +56,7 @@ function summonTreants()
   for i = 0 to 5
     let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena1.randomPoint(), angle(GetRandomReal(0, 359)))
     doPeriodicallyCounted(2.5, 10) (CallbackCounted cb) ->
-      u.addBonus(Bonus.LIFE, 200)
+      u.addBonus(Bonus.LIFE, 50)
       u.addBonus(Bonus.DAMAGE, 15)
       u.setMoveSpeed(u.getMoveSpeed() - 34.5)
       u.setScale(2 - 0.1 * cb.getCount())
@@ -86,8 +86,8 @@ init
 
 @compiletime function genAbility()
   new UnitDefinition(WISP_ID, UnitIds.wisp)
-  ..setHitPointsMaximumBase(500)
-  ..setArmorType(ArmorType.Hero)
+  ..setHitPointsMaximumBase(100)
+  ..setArmorType(ArmorType.Divine)
   ..setSpeedBase(188)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
@@ -103,8 +103,8 @@ init
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
   ..setAttack1DamageBase(100)
-  ..setDefenseBase(5)
-  ..setHitPointsMaximumBase(5000)
+  ..setDefenseBase(15)
+  ..setHitPointsMaximumBase(10000)
   ..setScalingValue(2.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
