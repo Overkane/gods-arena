@@ -1,0 +1,32 @@
+package ApprenticeStaff
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import SpiritMask
+import Diamond
+
+constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
+..setName("Apprentice Staff")
+..setInterfaceIcon(Icons.bTNWand)
+..setActivelyUsed(true)
+..addBonus(Bonus.INTELLIGENCE, 10)
+..addBonus(Bonus.MANAREGEN, 1)
+..setAbilities(commaList(FIREBOLT_ID))
+..generateTooltip("Active - fires firebolt which deals 200 damage and stuns target for 1.5 seconds.")
+)..register()
+
+public constant APPRENTICE_STAFF_RECIPE = new ItemRecipe()
+..gold(65)
+..setRequiredItems(SPIRIT_MASK_ITEM.getNewId(), DIAMOND_ITEM.getNewId())
+..setResultItem(APPRENTICE_STAFF_ITEM.getNewId(), APPRENTICE_STAFF_ITEM.bonusList)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionFireBoltcreep(FIREBOLT_ID)
+  ..setDamage(1, 200)
+  ..setDurationNormal(1, 1.5)
+  ..setDurationHero(1, 0.5)
+  ..setManaCost(1, 75)

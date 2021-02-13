@@ -1,0 +1,16 @@
+package PowerGloves
+import Icons
+import RecipeItem
+import GlovesOfHaste
+
+public constant POWER_GLOVES_ITEM = compiletime(new RecipeItem()
+..setName("Power Gloves")
+..setInterfaceIcon(Icons.bTNSpellSteal)
+..addBonus(Bonus.ATTACKSPEED, 40)
+..generateTooltip("")
+)..register()
+
+public constant POWER_GLOVES_RECIPE = new ItemRecipe()
+..gold(80)
+..setRequiredItems(GLOVES_OF_HASTE_ITEM.getNewId(), GLOVES_OF_HASTE_ITEM.getNewId())
+..setResultItem(POWER_GLOVES_ITEM.getNewId(), POWER_GLOVES_ITEM.bonusList)

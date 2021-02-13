@@ -1,0 +1,28 @@
+package SteelAxe
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import IronAxe
+import IronSword
+
+constant CLEAVE_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant STEEL_AXE_ITEM = compiletime(new RecipeItem()
+..setName("Steel Axe")
+..setInterfaceIcon(Icons.bTNOrcMeleeUpTwo)
+..addBonus(Bonus.DAMAGE, 45)
+..addBonus(Bonus.ATTACKSPEED, -10)
+..setAbilities(commaList(CLEAVE_ID))
+..generateTooltip("Passive - gives 20% cleave.")
+)..register()
+
+public constant STEEL_AXE_RECIPE = new ItemRecipe()
+..gold(90)
+..setRequiredItems(IRON_AXE_ITEM.getNewId(), IRON_SWORD_ITEM.getNewId())
+..setResultItem(STEEL_AXE_ITEM.getNewId(), STEEL_AXE_ITEM.bonusList)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionPitLordCleavingAttack(CLEAVE_ID)
+  ..setDistributedDamageFactor(1, 0.2)

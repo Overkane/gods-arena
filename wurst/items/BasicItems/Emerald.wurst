@@ -1,0 +1,12 @@
+package Emerald
+import Icons
+import RecipeItem
+
+public constant EMERALD_ITEM = compiletime(new RecipeItem()
+..setName("Emerald")
+..setInterfaceIcon(Icons.bTNGem)
+..setGoldCost(100)
+..addBonus(Bonus.AGILITY, 8)
+..generateTooltip("")
+)..register()
+

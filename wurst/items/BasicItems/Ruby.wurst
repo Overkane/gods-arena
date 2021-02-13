@@ -1,0 +1,13 @@
+package Ruby
+import Icons
+import RecipeItem
+
+public constant RUBY_ITEM = compiletime(new RecipeItem()
+..setName("Ruby")
+..setInterfaceIcon(Icons.bTNPhilosophersStone)
+..setGoldCost(100)
+..addBonus(Bonus.STRENGTH, 8)
+..generateTooltip("")
+)..register()
+
+

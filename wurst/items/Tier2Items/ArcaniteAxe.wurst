@@ -1,0 +1,27 @@
+package ArcaniteAxe
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import SteelAxe
+
+constant CLEAVE_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant ARCANITE_AXE_ITEM = compiletime(new RecipeItem()
+..setName("Arcanite Axe")
+..setInterfaceIcon(Icons.bTNOrcMeleeUpThree)
+..addBonus(Bonus.DAMAGE, 120)
+..addBonus(Bonus.ATTACKSPEED, -10)
+..setAbilities(commaList(CLEAVE_ID))
+..generateTooltip("Passive - gives 50% cleave.")
+)..register()
+
+public constant ARCANITE_AXE_RECIPE = new ItemRecipe()
+..gold(250)
+..setRequiredItems(STEEL_AXE_ITEM.getNewId(), STEEL_AXE_ITEM.getNewId())
+..setResultItem(ARCANITE_AXE_ITEM.getNewId(), ARCANITE_AXE_ITEM.bonusList)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionPitLordCleavingAttack(CLEAVE_ID)
+  ..setDistributedDamageFactor(1, 0.5)
