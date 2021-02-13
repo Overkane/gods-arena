@@ -1,0 +1,33 @@
+package MaskOfMadness
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import MaskOfDeath
+
+constant BERSERK_ID = compiletime(ABIL_ID_GEN.next())
+constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
+
+constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
+..setName("Mask of Madness")
+..setInterfaceIcon(Icons.bTNUnholyFrenzy)
+..setActivelyUsed(true)
+..setAbilities(commaList(BERSERK_ID, LIFESTEAL_ID))
+..generateTooltip("Passive - 25% life steal.\nActive - berserk. Gives 40% AS, but increase input damage by 30%.")
+)..register()
+
+public constant MASK_OF_MADNESS_RECIPE = new ItemRecipe()
+..gold(200)
+..setRequiredItems(MASK_OF_DEATH_ITEM.getNewId())
+..setResultItem(MASK_OF_MADNESS_ITEM.getNewId(), MASK_OF_MADNESS_ITEM.bonusList)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionVampiricattackAIva(LIFESTEAL_ID)
+  ..setLifeStolenPerAttack(1, 0.25)
+  new AbilityDefinitionBerserk(BERSERK_ID)
+  ..setDamageTakenIncrease(1, 0.3)
+  ..setAttackSpeedIncrease(1, 0.4)
+  ..setMovementSpeedIncrease(1, 0)
+  ..setItemAbility(true)
+  ..setManaCost(1, 50)

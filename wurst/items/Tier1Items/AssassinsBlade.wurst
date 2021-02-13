@@ -1,0 +1,18 @@
+package AssassinsBlade
+import Icons
+import RecipeItem
+import IronSword
+import RingOfAgility
+
+public constant ASSASINS_BLADE_ITEM = compiletime(new RecipeItem()
+..setName("Assasin's Blade")
+..setInterfaceIcon(Icons.bTNDaggerOfEscape)
+..addBonus(Bonus.DAMAGE, 20)
+..addBonus(Bonus.AGILITY, 12)
+..generateTooltip("")
+)..register()
+
+public constant ASSASINS_BLADE_RECIPE = new ItemRecipe()
+..gold(90)
+..setRequiredItems(IRON_SWORD_ITEM.getNewId(), RING_OF_AGILITY_ITEM.getNewId())
+..setResultItem(ASSASINS_BLADE_ITEM.getNewId(), ASSASINS_BLADE_ITEM.bonusList)

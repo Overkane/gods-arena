@@ -1,0 +1,11 @@
+package RingOfRegeneration
+import Icons
+import RecipeItem
+
+public constant RING_OF_REGENERATION_ITEM = compiletime(new RecipeItem()
+..setName("Ring of Regeneration")
+..setInterfaceIcon(Icons.bTNRingSkull)
+..setGoldCost(75)
+..addBonus(Bonus.LIFEREGEN, 2)
+..generateTooltip("")
+)..register()

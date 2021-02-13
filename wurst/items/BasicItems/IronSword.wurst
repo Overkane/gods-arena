@@ -1,0 +1,11 @@
+package IronSword
+import Icons
+import RecipeItem
+
+public constant IRON_SWORD_ITEM = compiletime(new RecipeItem()
+..setName("Iron Sword")
+..setInterfaceIcon(Icons.bTNSteelMelee)
+..setGoldCost(110)
+..addBonus(Bonus.DAMAGE, 14)
+..generateTooltip("")
+)..register()

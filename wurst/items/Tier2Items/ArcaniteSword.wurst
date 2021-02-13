@@ -1,0 +1,28 @@
+package ArcaniteSword
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import SteelSword
+
+constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
+..setName("Arcanite Sword")
+..setInterfaceIcon(Icons.bTNArcaniteMelee)
+..setGoldCost(110)
+..addBonus(Bonus.DAMAGE, 80)
+..setAbilities(commaList(CRITICAL_STRIKE_ID))
+..generateTooltip("Passive - gives 25% chance to deal 2x damage.")
+)..register()
+
+public constant ARCANITE_SWORD_RECIPE = new ItemRecipe()
+..gold(180)
+..setRequiredItems(STEEL_SWORD_ITEM.getNewId(), STEEL_SWORD_ITEM.getNewId())
+..setResultItem(ARCANITE_SWORD_ITEM.getNewId(), ARCANITE_SWORD_ITEM.bonusList)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
+  ..setChancetoCriticalStrike(1, 25)
+  ..setDamageMultiplier(1, 2)

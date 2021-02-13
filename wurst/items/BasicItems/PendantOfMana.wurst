@@ -1,0 +1,11 @@
+package PendantOfMana
+import Icons
+import RecipeItem
+
+public constant PENDANT_OF_MANA_ITEM = compiletime(new RecipeItem()
+..setName("Pendant of Mana")
+..setInterfaceIcon(Icons.bTNPendantOfMana)
+..setGoldCost(75)
+..addBonus(Bonus.MANA, 175)
+..generateTooltip("")
+)..register()

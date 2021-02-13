@@ -1,0 +1,11 @@
+package VitalityStone
+import Icons
+import RecipeItem
+
+public constant VITALITY_STONE_ITEM = compiletime(new RecipeItem()
+..setName("Vitality Stone")
+..setInterfaceIcon(Icons.bTNPeriapt)
+..setGoldCost(90)
+..addBonus(Bonus.LIFE, 150)
+..generateTooltip("")
+)..register()

@@ -1,0 +1,28 @@
+package SteelSword
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import ClawsOfAttack
+import IronSword
+
+constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant STEEL_SWORD_ITEM = compiletime(new RecipeItem()
+..setName("Steel Sword")
+..setInterfaceIcon(Icons.bTNThoriumMelee)
+..addBonus(Bonus.DAMAGE, 30)
+..setAbilities(commaList(CRITICAL_STRIKE_ID))
+..generateTooltip("Passive - gives 20% chance to deal 1.5x damage.")
+)..register()
+
+public constant STEEL_SWORD_RECIPE = new ItemRecipe()
+..gold(90)
+..setRequiredItems(CLAWS_OF_ATTACK_ITEM.getNewId(), IRON_SWORD_ITEM.getNewId())
+..setResultItem(STEEL_SWORD_ITEM.getNewId(), STEEL_SWORD_ITEM.bonusList)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
+  ..setChancetoCriticalStrike(1, 20)
+  ..setDamageMultiplier(1, 1.5)

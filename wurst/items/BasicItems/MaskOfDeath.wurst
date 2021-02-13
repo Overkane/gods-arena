@@ -1,0 +1,19 @@
+package MaskOfDeath
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
+..setName("Mask of Death")
+..setInterfaceIcon(Icons.bTNMaskOfDeath)
+..setGoldCost(200)
+..setAbilities(commaList(LIFESTEAL_ID))
+..generateTooltip("Passive - 25% life steal.")
+)..register()
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionVampiricattackAIva(ABIL_ID_GEN.next())
+  ..setLifeStolenPerAttack(1, 0.25)

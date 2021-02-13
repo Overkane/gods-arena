@@ -1,0 +1,11 @@
+package RingOfProtection
+import Icons
+import RecipeItem
+
+public constant RING_OF_PROTECTION_ITEM = compiletime(new RecipeItem()
+..setName("Ring of Protection")
+..setInterfaceIcon(Icons.bTNRingGreen)
+..setGoldCost(60)
+..addBonus(Bonus.ARMOR, 2)
+..generateTooltip("")
+)..register()

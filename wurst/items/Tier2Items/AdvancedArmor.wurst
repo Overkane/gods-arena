@@ -1,0 +1,19 @@
+package AdvancedArmor
+import Icons
+import RecipeItem
+import RingOfRegeneration
+import HealthAmulet
+import SimpleArmor
+
+public constant ADVANCED_ARMOR_ITEM = compiletime(new RecipeItem()
+..setName("Advanced Armor")
+..setInterfaceIcon(Icons.bTNMoonArmor)
+..addBonus(Bonus.LIFE, 500)
+..addBonus(Bonus.LIFEREGEN, 3)
+..addBonus(Bonus.ARMOR, 4)
+..generateTooltip("")
+)..register()
+public constant ADVANCED_ARMOR_RECIPE = new ItemRecipe()
+..gold(150)
+..setRequiredItems(RING_OF_REGENERATION_ITEM.getNewId(), SIMPLE_ARMOR_ITEM.getNewId(), HEALTH_AMULET_ITEM.getNewId())
+..setResultItem(ADVANCED_ARMOR_ITEM.getNewId(), ADVANCED_ARMOR_ITEM.bonusList)

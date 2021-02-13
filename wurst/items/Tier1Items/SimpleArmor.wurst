@@ -1,0 +1,18 @@
+package SimpleArmor
+import Icons
+import RecipeItem
+import VitalityStone
+import RingOfProtection
+
+public constant SIMPLE_ARMOR_ITEM = compiletime(new RecipeItem()
+..setName("Simple Armor")
+..setInterfaceIcon(Icons.bTNLeatherUpgradeTwo)
+..addBonus(Bonus.LIFE, 200)
+..addBonus(Bonus.ARMOR, 3)
+..generateTooltip("")
+)..register()
+
+public constant SIMPLE_ARMOR_RECIPE= new ItemRecipe()
+..gold(100)
+..setRequiredItems(VITALITY_STONE_ITEM.getNewId(), RING_OF_PROTECTION_ITEM.getNewId())
+..setResultItem(SIMPLE_ARMOR_ITEM.getNewId(), SIMPLE_ARMOR_ITEM.bonusList)

@@ -1,0 +1,10 @@
+package VampiricPotion
+import RecipeItem
+import Icons
+
+public constant VAMPIRIC_POTION_ITEM = compiletime(new RecipeItem('vamp')
+  ..setName("Vampiric Potion")
+  ..setInterfaceIcon(Icons.bTNPotionOfVampirism)
+  ..setGoldCost(95)
+  ..generateTooltip("Adds 12 attack and 75% life steal. Lasts 20 seconds.")
+)..register()
