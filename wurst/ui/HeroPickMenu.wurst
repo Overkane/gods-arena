@@ -25,7 +25,7 @@ function addHeroIcons()
     ..addTooltip("Hydromancer", "Drinks cool water."))
   ..addHeroIcon(
     new HeroIcon(TROLL_SHAMAN_ID, Icons.bTNShadowHunter, Icons.dISBTNShadowHunter)
-    ..addTooltip("Troll Shaman", "Creates memes."))
+    ..addTooltip("Troll Shaman", "Creates memes. (not in game though)"))
   ..addHeroIcon(
     new HeroIcon(STORMBEARER_ID, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
     ..addTooltip("Stormbearer", "Mighty lord of storms, good at cleaning groups of weak enemies, but lacks reliable single target damage."))
@@ -80,6 +80,7 @@ class HeroPickUI
         let h = new Hero(p, pickedIcon.heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
         pData.get(p).setHero(h)
         p.selectSingle(h.actor)
+        p.setCameraPosition(h.actor.getPos())
         pickedIcon.disable()
         heroPickFrame.hide(p)
         toggleShopButton.show(p, pData.get(p).getHero().actor)
