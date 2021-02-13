@@ -11,9 +11,9 @@ public constant WATER_BLAST_ID = compiletime(ABIL_ID_GEN.next())
 
 constant SOUND = new SoundDefinition(Sounds.crushingWaveTarget1)
 
-constant RealLevelClosure DAMAGE = lvl -> 70. + 45. * (lvl-1)
+constant RealLevelClosure DAMAGE = lvl -> 70. + 70. * (lvl-1)
 constant RealLevelClosure SLOW = lvl -> 30. + 5. * (lvl-1)
-constant RealLevelClosure SLOW_DURATION = lvl -> 2.75 + 0.25 * lvl
+constant RealLevelClosure SLOW_DURATION = lvl -> 3 + 0.5 * lvl
 constant RealLevelClosure AOE = lvl -> 225.
 
 init 
