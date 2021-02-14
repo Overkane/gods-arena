@@ -16,6 +16,7 @@ import public HealthAmulet
 import public IronSword
 import public MaskOfDeath
 import public PendantOfMana
+import public RefresherOrb
 import public RingOfProtection
 import public RingOfRegeneration
 import public Ruby

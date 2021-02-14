@@ -14,6 +14,7 @@ constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 ..setInterfaceIcon(Icons.bTNUnholyFrenzy)
 ..setActivelyUsed(true)
 ..setAbilities(commaList(BERSERK_ID, LIFESTEAL_ID))
+..setCooldownGroup(BERSERK_ID.toRawCode())
 ..generateTooltip("Passive - 25% life steal.\nActive - berserk. Gives 40% AS, but increase input damage by 30%.")
 )..register()
 
