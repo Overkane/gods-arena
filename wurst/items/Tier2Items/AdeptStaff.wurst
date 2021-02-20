@@ -22,7 +22,7 @@ public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
 ..gold(140)
 ..setRequiredItems(APPRENTICE_STAFF_ITEM.getNewId(), APPRENTICE_STAFF_ITEM.getNewId())
-..setResultItem(ADEPT_STAFF_ITEM.getNewId(), ADEPT_STAFF_ITEM.bonusList)
+..setResultItem(ADEPT_STAFF_ITEM)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionFireBoltcreep(FIREBOLT_ID)

@@ -21,7 +21,7 @@ constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 public constant MASK_OF_MADNESS_RECIPE = new ItemRecipe()
 ..gold(200)
 ..setRequiredItems(MASK_OF_DEATH_ITEM.getNewId())
-..setResultItem(MASK_OF_MADNESS_ITEM.getNewId(), MASK_OF_MADNESS_ITEM.bonusList)
+..setResultItem(MASK_OF_MADNESS_ITEM)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionVampiricattackAIva(LIFESTEAL_ID)

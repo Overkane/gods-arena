@@ -20,7 +20,7 @@ public constant STEEL_SWORD_ITEM = compiletime(new RecipeItem()
 public constant STEEL_SWORD_RECIPE = new ItemRecipe()
 ..gold(90)
 ..setRequiredItems(CLAWS_OF_ATTACK_ITEM.getNewId(), IRON_SWORD_ITEM.getNewId())
-..setResultItem(STEEL_SWORD_ITEM.getNewId(), STEEL_SWORD_ITEM.bonusList)
+..setResultItem(STEEL_SWORD_ITEM)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)

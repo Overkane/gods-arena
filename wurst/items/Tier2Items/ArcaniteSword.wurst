@@ -20,7 +20,7 @@ public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
 public constant ARCANITE_SWORD_RECIPE = new ItemRecipe()
 ..gold(180)
 ..setRequiredItems(STEEL_SWORD_ITEM.getNewId(), STEEL_SWORD_ITEM.getNewId())
-..setResultItem(ARCANITE_SWORD_ITEM.getNewId(), ARCANITE_SWORD_ITEM.bonusList)
+..setResultItem(ARCANITE_SWORD_ITEM)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)

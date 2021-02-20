@@ -21,7 +21,7 @@ public constant STEEL_AXE_ITEM = compiletime(new RecipeItem()
 public constant STEEL_AXE_RECIPE = new ItemRecipe()
 ..gold(90)
 ..setRequiredItems(IRON_AXE_ITEM.getNewId(), IRON_SWORD_ITEM.getNewId())
-..setResultItem(STEEL_AXE_ITEM.getNewId(), STEEL_AXE_ITEM.bonusList)
+..setResultItem(STEEL_AXE_ITEM)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionPitLordCleavingAttack(CLEAVE_ID)

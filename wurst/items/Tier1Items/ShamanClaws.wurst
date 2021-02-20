@@ -14,4 +14,4 @@ public constant SHAMAN_CLAWS_ITEM = compiletime(new RecipeItem()
 
 public constant SHAMAN_CLAWS_RECIPE= new ItemRecipe()
 ..setRequiredItems(GLOVES_OF_HASTE_ITEM.getNewId(), CLAWS_OF_ATTACK_ITEM.getNewId(), CLAWS_OF_ATTACK_ITEM.getNewId())
-..setResultItem(SHAMAN_CLAWS_ITEM.getNewId(), SHAMAN_CLAWS_ITEM.bonusList)
+..setResultItem(SHAMAN_CLAWS_ITEM)
