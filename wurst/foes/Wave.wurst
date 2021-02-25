@@ -42,6 +42,7 @@ class CreepStep extends WaveStep
   CreepDefinition creepDef
 
   var amount = 1
+  var bounty = 0
 
   construct(Wave wave, int origUnitId)
     super(wave)
@@ -49,7 +50,7 @@ class CreepStep extends WaveStep
 
   override function execute(NextStepListener next)
     doPeriodicallyCounted(0.05, amount) cb ->
-      new Creep(unitId, wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
+      new Creep(unitId, wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg(), bounty)
       if cb.isLast()
         next.execute()
 
@@ -100,6 +101,7 @@ public class WaveBuilder
 
   function hp(int hp)
     creepStep.creepDef.setHitPointsMaximumBase(hp)
+    creepStep.bounty = max(1, (hp / 350).round())
 
   function mana(int mana)
     creepStep.creepDef.setManaMaximum(mana)
@@ -129,7 +131,7 @@ public class WaveBuilder
     creepStep.creepDef.setTintingColorBlue(blue)
 
   function goldBounty(int bounty)
-    this.result.goldBounty = bounty
+    // this.result.goldBounty = bounty
     
   function expBounty(int bounty)
     this.result.expBounty = bounty
@@ -149,7 +151,7 @@ public class Wave
   Vec2Function spawnPoint
   Vec2Function revivePoint
   
-  var goldBounty = 100
+  var goldBounty = 50
   var expBounty = 100
 
   var isDone = false

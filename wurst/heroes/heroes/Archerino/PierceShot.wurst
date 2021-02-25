@@ -38,6 +38,7 @@ init
         projectile.onHit() hitTarget ->
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
+                DamageEvent.setNextDamageFromCode()
                 caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
                 Knockback3.add(hitTarget, 450., projectile.getXYAngle(), 45 .fromDeg())
 

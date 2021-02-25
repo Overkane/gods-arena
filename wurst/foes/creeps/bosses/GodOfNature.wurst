@@ -50,9 +50,9 @@ public function castingBossSpells(unit boss)
         if boss.isAlive()
           entangleRoots()
           doAfter(10) ->
-          if boss.isAlive() 
-            summonWisps(boss)
-            castingBossSpells(boss)
+            if boss.isAlive() 
+              summonWisps(boss)
+              castingBossSpells(boss)
 
 function summonTreants()
   for i = 0 to 5
@@ -89,8 +89,8 @@ init
 @compiletime function genAbility()
   new UnitDefinition(WISP_ID, UnitIds.wisp)
   ..setHitPointsMaximumBase(100)
-  ..setArmorType(ArmorType.Divine)
-  ..setSpeedBase(188)
+  ..setArmorType(ArmorType.Unarmored)
+  ..setSpeedBase(128)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
   

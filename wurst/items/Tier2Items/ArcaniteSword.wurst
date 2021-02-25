@@ -18,7 +18,7 @@ public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant ARCANITE_SWORD_RECIPE = new ItemRecipe()
-..gold(180)
+..gold(260)
 ..setRequiredItems(STEEL_SWORD_ITEM.getNewId(), STEEL_SWORD_ITEM.getNewId())
 ..setResultItem(ARCANITE_SWORD_ITEM)
 

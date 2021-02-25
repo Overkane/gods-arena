@@ -1,6 +1,8 @@
 package Creep
 import Entity
 import GameProperties
+import Players
+import StandardTextTags
 
 interface AllCreepsDead
   abstract function execute()
@@ -10,12 +12,17 @@ public AllCreepsDead onAllCreepsDead
 public constant activeCreeps = new LinkedList<Creep>
 
 public class Creep extends UnitEntity
-  construct(int typId, vec3 pos, angle ang)
+  var bounty = 0
+  construct(int typId, vec3 pos, angle ang, int bounty)
     super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
     actor.setAnimation("birth")
     activeCreeps.add(this)
+    this.bounty = bounty
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH, () -> begin
+      createGoldBountyTextTag(actor, bounty)
+      for p in ALL_PLAYERS
+        p.addGold(bounty)
       activeCreeps.remove(this)
       if activeCreeps.isEmpty()
         onAllCreepsDead.execute()

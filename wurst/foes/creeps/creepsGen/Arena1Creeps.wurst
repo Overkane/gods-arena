@@ -89,7 +89,7 @@ function wave_3() returns Wave
   ..amount(4)
 
   ..creep(UnitIds.furbolgshaman)
-  ..hp(650)
+  ..hp(950)
   ..damage(17)
   ..amount(2)
 
@@ -121,7 +121,7 @@ function wave_4() returns Wave
   ..creep(UnitIds.gnoll1)
   ..hp(800)
   ..damage(25)
-  ..amount(10)
+  ..amount(14)
 
   ..creep(UnitIds.gnoll3)
   ..hp(1000)
@@ -162,17 +162,17 @@ function wave_5() returns Wave
   ..creep(UnitIds.spider)
   ..hp(900)
   ..damage(28)
-  ..amount(10)
+  ..amount(12)
 
   ..creep(UnitIds.forestspider)
   ..hp(650)
   ..damage(24)
-  ..amount(10)
+  ..amount(12)
 
   ..creep(UnitIds.spiderblack)
   ..hp(700)
   ..damage(19)
-  ..amount(10)
+  ..amount(12)
 
   ..wait(25)
 
@@ -188,7 +188,7 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.broodmother)
   ..hp(2250)
-  ..damage(65)
+  ..damage(75)
   ..amount(1)
   ..scale(2.6)
 
@@ -202,12 +202,12 @@ function wave_6() returns Wave
   ..creep(UnitIds.owlbear)
   ..hp(1900)
   ..damage(50)
-  ..amount(4)
+  ..amount(6)
 
   ..creep(UnitIds.enragedowlbear)
   ..hp(2000)
   ..damage(55)
-  ..amount(2)
+  ..amount(4)
 
   ..creep(UnitIds.berserkowlbear)
   ..hp(3550)
@@ -220,7 +220,7 @@ function wave_6() returns Wave
   ..creep(UnitIds.owlbear)
   ..hp(2800)
   ..damage(85)
-  ..amount(3)
+  ..amount(4)
   ..scale(1.25)
 
   ..creep(UnitIds.misha1)
@@ -237,24 +237,24 @@ function wave_7() returns Wave
 
   ..creep(UnitIds.sasquatch)
   ..hp(2800)
-  ..damage(60)
+  ..damage(40)
   ..amount(10)
 
   ..creep(UnitIds.eldersasquatch)
   ..hp(3250)
-  ..damage(65)
+  ..damage(45)
   ..amount(2)
 
   ..wait(20)
 
   ..creep(UnitIds.sasquatchoracle)
   ..hp(3250)
-  ..damage(45)
+  ..damage(35)
   ..amount(2)
 
   ..creep(UnitIds.ancientsasquatch)
   ..hp(6000)
-  ..damage(85)
+  ..damage(95)
   ..amount(1)
   ..scale(2)
 
@@ -266,30 +266,39 @@ function wave_8() returns Wave
   ..goldBounty(200)
 
   ..creep(UnitIds.stonemaulogre)
-  ..hp(2200)
-  ..damage(25)
-  ..amount(10)
+  ..hp(2500)
+  ..damage(45)
+  ..amount(12)
 
   ..creep(UnitIds.stonemaulmagi)
   ..hp(1950)
   ..damage(40)
-  ..amount(4)
+  ..amount(6)
 
   ..wait(20)
 
   ..creep(UnitIds.stonemaulwarchief)
-  ..hp(2750)
-  ..damage(110)
+  ..hp(3750)
+  ..damage(140)
   ..armor(8)
   ..amount(1)
   ..scale(0.9)
   ..rgb(0, 0, 255)
 
   ..creep(UnitIds.stonemaulwarchief)
-  ..hp(5500)
+  ..hp(4500)
   ..damage(80)
   ..amount(1)
   ..scale(1.8)
+  ..rgb(255, 0, 0)
+
+  ..wait(5)
+
+  ..creep(UnitIds.ogrelord)
+  ..hp(10500)
+  ..damage(120)
+  ..amount(1)
+  ..scale(1.2)
   ..rgb(255, 0, 0)
 
   .build()
@@ -312,7 +321,7 @@ function wave_9() returns Wave
   ..creep(UnitIds.archer)
   ..hp(1750)
   ..damage(95)
-  ..amount(10)
+  ..amount(12)
 
   ..creep(UnitIds.dryad)
   ..hp(2800)
