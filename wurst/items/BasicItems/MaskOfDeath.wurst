@@ -15,5 +15,5 @@ public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
 )..register()
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionVampiricattackAIva(ABIL_ID_GEN.next())
+  new AbilityDefinitionVampiricattackAIva(LIFESTEAL_ID)
   ..setLifeStolenPerAttack(1, 0.25)
