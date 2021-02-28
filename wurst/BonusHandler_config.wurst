@@ -1,0 +1,15 @@
+package BonusHandler_config
+
+constant BONUS_POWER = 16
+
+@config public constant MAX_BONUS_LIFE   = BONUS_POWER
+@config public constant MAX_BONUS_MANA   = BONUS_POWER
+@config public constant MAX_BONUS_DAMAGE = BONUS_POWER
+@config public constant MAX_BONUS_ARMOR = BONUS_POWER
+@config public constant MAX_BONUS_SIGHTRANGE = BONUS_POWER
+@config public constant MAX_BONUS_LIFEREGEN = BONUS_POWER
+@config public constant MAX_BONUS_MANAREGEN = BONUS_POWER
+@config public constant MAX_BONUS_ATTACKSPEED = BONUS_POWER
+@config public constant MAX_BONUS_STRENGTH = BONUS_POWER
+@config public constant MAX_BONUS_AGILITY = BONUS_POWER
+@config public constant MAX_BONUS_INTELLIGENCE = BONUS_POWER
