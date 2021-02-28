@@ -6,6 +6,7 @@ import SoundUtils
 import PlayerData
 import Abilities
 import AttachmentPoints
+import ClosureForGroups
 
 constant LAST_WAVE_COMPLETED = new SoundDefinition(Sounds.credits)
 
@@ -37,9 +38,10 @@ public class Arena
     pData.forEach() (player p, PlayerData playerData) ->
       modifier = createVision(p, arenaRect, true)..start()
       if isNext
-        let heroUnit = playerData.getHero().actor
-        heroUnit..setPos(heroSpawn.randomPoint()).addEffect(Abilities.massTeleportTarget, AttachmentPoints.origin).destr()
-        heroUnit.getOwner().panCamToTimed(heroUnit, 0)
+        forUnitsOfPlayer(p) u ->
+          u..setPos(heroSpawn.randomPoint()).addEffect(Abilities.massTeleportTarget, AttachmentPoints.origin).destr()
+
+        p.panCamToTimed(playerData.getHero().actor, 0)
 
     waveController.addWaves(waves)
     waveController.startWaveSpawn()
