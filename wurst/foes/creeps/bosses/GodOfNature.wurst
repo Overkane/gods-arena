@@ -34,7 +34,11 @@ public class GodOfNature extends Boss
     actor.addItemById(HORN_OF_THE_GOD_ITEM.getNewId())
     BOSS_MUSIC_THEME.play()
     new SoundDefinition(Sounds.o05Cenarius29).play()
-    castingBossSpells(actor)
+    doPeriodically(8) cb ->
+      if actor.isAlive()
+        castBossSpell()
+      else
+        destroy cb
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
       forUnitsAll() (unit u) ->
@@ -42,43 +46,41 @@ public class GodOfNature extends Boss
           u.kill()
       BOSS_MUSIC_THEME.play(0, 0)
 
-public function castingBossSpells(unit boss)
-  doAfter(8) ->
-    if boss.isAlive()
-      summonTreants()
-      doAfter(5) -> 
-        if boss.isAlive()
-          entangleRoots()
-          doAfter(10) ->
-            if boss.isAlive() 
-              summonWisps(boss)
-              castingBossSpells(boss)
+  function castBossSpell()
+    let rand = GetRandomInt(0, 2)
+    switch rand
+      case 0
+        summonTreants()
+      case 1
+        entangleRoots()
+      case 2
+        summonWisps()
 
-function summonTreants()
-  for i = 0 to 5
-    let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena1.randomPoint(), angle(GetRandomReal(0, 359)))
-    doPeriodicallyCounted(2.5, 10) (CallbackCounted cb) ->
-      u.addBonus(Bonus.LIFE, 50)
-      u.addBonus(Bonus.DAMAGE, 15)
-      u.setMoveSpeed(u.getMoveSpeed() - 34.5)
-      u.setScale(2 - 0.1 * cb.getCount())
+  function summonTreants()
+    for i = 0 to 5
+      let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena1.randomPoint(), angle(GetRandomReal(0, 359)))
+      flashEffect(Abilities.howlTarget, u.getPos())
+      doPeriodicallyCounted(2.5, 10) (CallbackCounted cb) ->
+        u.addBonus(Bonus.LIFE, 50)
+        u.addBonus(Bonus.DAMAGE, 15)
+        u.setMoveSpeed(u.getMoveSpeed() - 34.5)
+        u.setScale(2 - 0.1 * cb.getCount())
 
-function summonWisps(unit boss)
-  for i = 0 to 3
-    let u = createUnit(ENEMY_PLAYER, WISP_ID, WISP_SPAWN_POINTS[i], angle(0))
-    u.issueTargetOrder(WISP_HEAL_DEF.getOrderString(), boss)
+  function summonWisps()
+    for i = 0 to 3
+      let u = createUnit(ENEMY_PLAYER, WISP_ID, WISP_SPAWN_POINTS[i], angle(0))
+      u.issueTargetOrder(WISP_HEAL_DEF.getOrderString(), actor)
 
-function entangleRoots()
-  pData.forEach() (player key, PlayerData value) ->
-    let heroPos = value.getHero().getPos().toVec2()
-    flashEffect(Abilities.healBottleMissile, heroPos.add(0, 200))
-    flashEffect(Abilities.healBottleMissile, heroPos.add(0, -200))
-    flashEffect(Abilities.healBottleMissile, heroPos.add(200, 0))
-    flashEffect(Abilities.healBottleMissile, heroPos.add(-200, 0))
-    doAfter(2) -> 
-      forUnitsInRange(heroPos, 200) (unit u) ->
-        if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
-          InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
+  function entangleRoots()
+    pData.forEach() (player key, PlayerData value) ->
+      let heroPos = value.getHero().getPos().toVec2()
+      for i = 0 to 12
+        flashEffect(Abilities.healBottleMissile, heroPos.polarOffset((i * 360 / 12).fromDeg(), 200))
+      
+      doAfter(4) -> 
+        forUnitsInRange(heroPos, 200) (unit u) ->
+          if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
+            InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
 
 init
   EventListener.onTargetCast(WISP_HEAL_ID) (unit caster, unit target) ->
@@ -88,7 +90,7 @@ init
 
 @compiletime function genAbility()
   new UnitDefinition(WISP_ID, UnitIds.wisp)
-  ..setHitPointsMaximumBase(100)
+  ..setHitPointsMaximumBase(200)
   ..setArmorType(ArmorType.Unarmored)
   ..setSpeedBase(128)
   ..setMovementType(MovementType.Fly)
@@ -106,11 +108,11 @@ init
   ..setName("God of Nature")
   ..setAttack1DamageBase(100)
   ..setDefenseBase(15)
-  ..setHitPointsMaximumBase(10000)
+  ..setHitPointsMaximumBase(20000)
   ..setScalingValue(2.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()
-  ..setDamageperSecond(1, 50)
+  ..setDamageperSecond(1, 100)
   ..setDurationHero(1, 3)
   ..setDurationNormal(1, 3)
