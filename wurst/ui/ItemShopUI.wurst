@@ -4,7 +4,16 @@ import PlayerData
 import Items
 import ItemShopMenu
 import ToggleShopButton
-import HornOfTheGod
+import ClosureEvents
+import ChannelAbilityPreset
+import RecipeItem
+import Icons
+import SoundUtils
+
+public constant SELL_ID = compiletime(ABIL_ID_GEN.next())
+
+constant ITEM_SOLD = new SoundDefinition(Sounds.receiveGold)
+constant CANT_SOLD_ITEM = new SoundDefinition(Sounds.error) 
 
 public ToggleShopButton toggleShopButton
 
@@ -56,3 +65,33 @@ public function initItemShop()
   toggleShopButton = new ToggleShopButton(shop, "Shop (Tab)")
   pData.forEach() (player key, PlayerData value) ->
     toggleShopButton.addHotkeyForPlayer(key, OSKEY_TAB)
+
+  EventListener.onTargetCast(SELL_ID) (unit caster, unit target) ->
+    let tItem = GetSpellTargetItem()..setUserData(-1) 
+    
+    if caster.hasItem(tItem)
+      let itemCost = tItem.getRecipeItem().goldCost
+
+      ITEM_SOLD.play()
+      tItem.remove()
+      caster.getOwner().addGold((itemCost * 0.5).round())
+    else
+      CANT_SOLD_ITEM.play() 
+      print("Can sell items only from inventory.")
+
+@compiletime function genAbility()
+  new AbilityDefinitionMountainKingThunderBolt(SELL_ID)
+  ..setDummyAbility()
+  ..presetIcon(Icons.bTNPickUpItem)
+  ..presetButtonPosNormal(2, 1)
+  ..presetHotkey("F")
+  ..setTooltipNormal(1, "Sell")
+  ..setTooltipNormalExtended(1, "Select item from inventory to sell it.")
+  ..presetTargetsAllowed(lvl -> TargetsAllowed.item_t)
+  ..setArtEffect("")
+  ..setArtCaster("")
+  ..setArtTarget("")
+  ..setMissileArt("")
+  ..setAnimationNames("")
+  ..setMissileSpeed(99999)
+  ..presetDamage(lvl -> 0.)

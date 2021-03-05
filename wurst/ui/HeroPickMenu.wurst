@@ -85,6 +85,8 @@ class HeroPickUI
         heroPickFrame.hide(p)
         toggleShopButton.show(p, pData.get(p).getHero().actor)
 
+        h.actor.addAbility(SELL_ID)
+
         playerSelection.forEach() (player key, HeroIcon value) ->
           if value == pickedIcon
             playerSelection.remove(key)
