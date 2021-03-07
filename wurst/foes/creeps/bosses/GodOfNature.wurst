@@ -34,7 +34,7 @@ public class GodOfNature extends Boss
     actor.addItemById(HORN_OF_THE_GOD_ITEM.getNewId())
     BOSS_MUSIC_THEME.play()
     new SoundDefinition(Sounds.o05Cenarius29).play()
-    doPeriodically(8) cb ->
+    doPeriodically(6) cb ->
       if actor.isAlive()
         castBossSpell()
       else
@@ -47,6 +47,7 @@ public class GodOfNature extends Boss
       BOSS_MUSIC_THEME.play(0, 0)
 
   function castBossSpell()
+    actor.setAnimation("cast")
     let rand = GetRandomInt(0, 2)
     switch rand
       case 0
@@ -60,11 +61,11 @@ public class GodOfNature extends Boss
     for i = 0 to 5
       let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena1.randomPoint(), angle(GetRandomReal(0, 359)))
       flashEffect(Abilities.howlTarget, u.getPos())
-      doPeriodicallyCounted(2.5, 10) (CallbackCounted cb) ->
-        u.addBonus(Bonus.LIFE, 50)
-        u.addBonus(Bonus.DAMAGE, 15)
-        u.setMoveSpeed(u.getMoveSpeed() - 34.5)
-        u.setScale(2 - 0.1 * cb.getCount())
+      doPeriodicallyCounted(2.5, 10) cb ->
+        u..addBonus(Bonus.LIFE, 50)
+        ..addBonus(Bonus.DAMAGE, 15)
+        ..setMoveSpeed(u.getMoveSpeed() - 34.5)
+        ..setScale(2 - 0.1 * cb.getCount())
 
   function summonWisps()
     for i = 0 to 3
@@ -74,10 +75,10 @@ public class GodOfNature extends Boss
   function entangleRoots()
     pData.forEach() (player key, PlayerData value) ->
       let heroPos = value.getHero().getPos().toVec2()
-      for i = 0 to 12
-        flashEffect(Abilities.healBottleMissile, heroPos.polarOffset((i * 360 / 12).fromDeg(), 200))
+      let targetCircle = addEffect(Buildings.circleOfPower1, heroPos)
       
       doAfter(4) -> 
+        targetCircle.destr()
         forUnitsInRange(heroPos, 200) (unit u) ->
           if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
             InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
