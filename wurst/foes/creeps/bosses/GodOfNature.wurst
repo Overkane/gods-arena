@@ -107,9 +107,9 @@ init
   new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegrove)
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
-  ..setAttack1DamageBase(100)
+  ..setAttack1DamageBase(150)
   ..setDefenseBase(15)
-  ..setHitPointsMaximumBase(20000)
+  ..setHitPointsMaximumBase(25000)
   ..setScalingValue(2.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
