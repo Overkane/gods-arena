@@ -35,6 +35,7 @@ public class Arena
       this.waves.add(wave)
 
   function start(boolean isNext)
+    printTimed("|cffceac15>> Arena:|r " + name, 10.)
     pData.forEach() (player p, PlayerData playerData) ->
       modifier = createVision(p, arenaRect, true)..start()
       if isNext

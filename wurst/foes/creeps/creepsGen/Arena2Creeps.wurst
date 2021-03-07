@@ -7,6 +7,7 @@ public constant ARENA2_WAVE_2 = compiletime(wave_2())
 public constant ARENA2_WAVE_3 = compiletime(wave_3())
 public constant ARENA2_WAVE_4 = compiletime(wave_4())
 public constant ARENA2_WAVE_5 = compiletime(wave_5())
+public constant ARENA2_WAVE_6 = compiletime(wave_6())
 // public constant ARENA2_WAVE_5 = compiletime(wave_5())
 // public constant ARENA2_WAVE_6 = compiletime(wave_6())
 // public constant ARENA2_WAVE_7 = compiletime(wave_7())
@@ -30,10 +31,10 @@ function wave_1() returns Wave
   ..amount(8)
 
   ..creep(UnitIds.murlocnightcrawler)
-  ..hp(2750)
+  ..hp(3750)
   ..damage(115)
   ..amount(4)
-
+  ..armor(10)
   ..wait(20)
 
   ..creep(UnitIds.murgulbloodgill)
@@ -43,7 +44,7 @@ function wave_1() returns Wave
   ..scale(1.5)
 
   ..creep(UnitIds.murgulcliffrunner)
-  ..hp(850)
+  ..hp(1850)
   ..damage(140)
   ..amount(12)
   ..scale(1.5)
@@ -79,7 +80,9 @@ function wave_2() returns Wave
   ..creep(UnitIds.nagaroyalguard)
   ..hp(12500)
   ..mana(5000)
-  ..damage(220)
+  ..damage(120)
+  ..armor(9)
+  ..attackrate(0.5)
   ..amount(3)
 
   .build()
@@ -89,14 +92,14 @@ function wave_3() returns Wave
   ..expBounty(900)
   ..goldBounty(150)
 
-  ..creep(UnitIds.dragonturtle)
+  ..creep(UnitIds.seaturtle)
   ..hp(5000)
   ..damage(95)
   ..amount(4)
 
   ..wait(10)
 
-  ..creep(UnitIds.seaturtle)
+  ..creep(UnitIds.dragonturtle)
   ..hp(7500)
   ..damage(150)
   ..amount(3)
@@ -111,6 +114,15 @@ function wave_3() returns Wave
   ..amount(6)
   ..scale(1.1)
 
+  ..wait(20)
+
+  ..creep(UnitIds.wateryminiontidewarrior)
+  ..hp(3850)
+  ..damage(280)
+  ..armor(8)
+  ..amount(6)
+  ..scale(1.1)
+
   .build()
 
 function wave_4() returns Wave
@@ -120,6 +132,7 @@ function wave_4() returns Wave
 
   ..creep(UnitIds.seagiant)
   ..hp(15550)
+  ..armor(8)
   ..damage(245)
   ..amount(3)
 
@@ -131,12 +144,36 @@ function wave_4() returns Wave
 
   ..creep(UnitIds.seagiantbehemoth)
   ..hp(13450)
-  ..damage(248)
+  ..damage(298)
   ..amount(3)
 
   .build()
 
 function wave_5() returns Wave
+  return new WaveBuilder()
+  ..expBounty(900)
+  ..goldBounty(150)
+
+  ..creep(UnitIds.nagacoutl)
+  ..hp(7550)
+  ..damage(245)
+  ..amount(3)
+
+  ..creep(UnitIds.quillboar)
+  ..hp(9600)
+  ..damage(248)
+  ..amount(10)
+  ..scale(1.25)
+
+  ..creep(UnitIds.tichondrius)
+  ..hp(23450)
+  ..damage(248)
+  ..attackrate(1.0)
+  ..amount(2)
+
+  .build()
+
+function wave_6() returns Wave
   return new WaveBuilder()
   ..expBounty(900)
   ..goldBounty(300)

@@ -16,4 +16,4 @@ init
 
     new Arena("The Pond", gg_rct_Arena2, gg_rct_Arena2Center)
     ..setSpawnPoint(() -> gg_rct_Arena2Center.getCenter().polarOffset(GetRandomReal(0, 360).fromDeg(), 1800))
-    ..setWaves(ARENA2_WAVE_1, ARENA2_WAVE_2, ARENA2_WAVE_3, ARENA2_WAVE_4, ARENA2_WAVE_5)
+    ..setWaves(ARENA2_WAVE_1, ARENA2_WAVE_2, ARENA2_WAVE_3, ARENA2_WAVE_4, ARENA2_WAVE_5, ARENA2_WAVE_6)

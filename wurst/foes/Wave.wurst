@@ -102,6 +102,10 @@ public class WaveBuilder
   function hp(int hp)
     creepStep.creepDef.setHitPointsMaximumBase(hp)
     creepStep.bounty = max(1, (hp / 350).round())
+    if creepStep.bounty > 10
+      creepStep.bounty = (creepStep.bounty * .75).round()
+    else if creepStep.bounty > 25
+    creepStep.bounty = (creepStep.bounty * .5).round()
 
   function mana(int mana)
     creepStep.creepDef.setManaMaximum(mana)
