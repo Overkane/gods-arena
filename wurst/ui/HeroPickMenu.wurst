@@ -84,6 +84,7 @@ class HeroPickUI
         pickedIcon.disable()
         heroPickFrame.hide(p)
         toggleShopButton.show(p, pData.get(p).getHero().actor)
+        shop.showToPlayer(p)
 
         h.actor.addAbility(SELL_ID)
 

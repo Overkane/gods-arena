@@ -16,9 +16,10 @@ constant ITEM_SOLD = new SoundDefinition(Sounds.receiveGold)
 constant CANT_SOLD_ITEM = new SoundDefinition(Sounds.error) 
 
 public ToggleShopButton toggleShopButton
+public ItemShop shop
 
 public function initItemShop()
-  let shop = new ItemShop()
+  shop = new ItemShop()
   ..addSection("Consumables")
   ..addItem(S_HEALING_POT_ITEM)
   ..addItem(M_HEALING_POT_ITEM)

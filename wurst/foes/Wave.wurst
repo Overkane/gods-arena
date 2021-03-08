@@ -191,7 +191,7 @@ public class Wave
       if not heroUnit.isAlive()
         heroUnit.revive(revivePoint.execute(), true)
         heroUnit.setHP(heroUnit.getMaxHP() * 0.5)
-        heroUnit.setMana(heroUnit.getMaxMana() * 0.2)
+        heroUnit.setMana(heroUnit.getMaxMana() * 0.5)
         p.select(heroUnit)
         p.setCameraPosition(heroUnit.getPos())
       else 

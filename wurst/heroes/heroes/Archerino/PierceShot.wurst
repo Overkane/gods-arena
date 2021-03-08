@@ -59,7 +59,7 @@ init
     ..presetHotkey("Q")
     ..setName("Piercing Shot")
     ..addTooltipProperty("Damage", SPELL_DAMAGE)
-    ..presetManaCost(lvl -> 50 - 10 * lvl)
+    ..presetManaCost(lvl -> 70 + 10 * lvl)
     ..presetCastRange(lvl -> 1000)
     ..presetCooldown(lvl -> 16)
     ..tooltipStopListen()

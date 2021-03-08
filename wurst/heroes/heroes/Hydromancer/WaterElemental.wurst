@@ -49,7 +49,7 @@ init
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Water Elemental")
   ..addTooltipProperty("Max Summon Count", MAX_SUMMON_COUNT)
-  ..presetManaCost(lvl -> 65 + 10 * lvl)
+  ..presetManaCost(lvl -> 95 + 25 * lvl)
   ..tooltipStopListen()
 
   ..presetDurationNormal(DURATION)

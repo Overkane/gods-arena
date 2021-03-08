@@ -38,6 +38,6 @@ init
   ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 90)
-  ..presetCooldown(lvl -> 16. - lvl)
+  ..presetManaCost(lvl -> 110)
+  ..presetCooldown(lvl -> 15. - lvl)
   ..tooltipStopListen()

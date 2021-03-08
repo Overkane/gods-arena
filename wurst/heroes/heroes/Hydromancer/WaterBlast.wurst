@@ -49,6 +49,6 @@ init
   ..addTooltipProperty("Duration", SLOW_DURATION)
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 50 + 15 * lvl)
+  ..presetManaCost(lvl -> 80 + 15 * lvl)
   ..presetCooldown(lvl -> 12.)
   ..tooltipStopListen()

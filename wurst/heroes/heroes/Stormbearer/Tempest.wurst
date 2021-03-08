@@ -29,6 +29,7 @@ RealLevelClosure DURATION = lvl -> 10.
   ..presetAreaofEffect(AOE)
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 150 + 25 * lvl)
+  ..presetDurationHero(lvl -> 10)
   ..presetCooldown(lvl -> 75)
   ..tooltipStopListen()
   
