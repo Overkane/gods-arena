@@ -51,8 +51,8 @@ function CreateRegions takes nothing returns nothing
     set gg_rct_Arena1=Rect(- 1856.0, - 1376.0, 2080.0, 1344.0)
     set gg_rct_HeroPickArea=Rect(128.0, - 832.0, 704.0, - 352.0)
     set gg_rct_Arena1SpawnPoint=Rect(- 480.0, 608.0, 416.0, 1024.0)
-    set gg_rct_Arena2=Rect(- 2240.0, - 7776.0, 2592.0, - 2272.0)
-    set gg_rct_Arena2Center=Rect(- 96.0, - 4960.0, 96.0, - 4736.0)
+    set gg_rct_Arena2=Rect(- 2208.0, - 7712.0, 2560.0, - 2272.0)
+    set gg_rct_Arena2Center=Rect(- 160.0, - 5056.0, 192.0, - 4672.0)
 endfunction
 
 //***************************************************************************
