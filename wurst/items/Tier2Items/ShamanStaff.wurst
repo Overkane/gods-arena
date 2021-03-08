@@ -1,0 +1,35 @@
+package ShamanStaff
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import ApprenticeStaff
+import ShamanClaws
+
+constant HEALING_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant SHAMAN_STAFF_ITEM = compiletime(new RecipeItem()
+..setName("Shaman Staff")
+..setInterfaceIcon(Icons.bTNWitchDoctorAdept)
+..setActivelyUsed(true)
+..addBonus(Bonus.DAMAGE, 30)
+..addBonus(Bonus.ATTACKSPEED, 20)
+..addBonus(Bonus.INTELLIGENCE, 15)
+..addBonus(Bonus.MANAREGEN, 1.5)
+..setAbilities(commaList(HEALING_ID))
+..setCooldownGroup(HEALING_ID.toRawCode())
+..generateTooltip("Active - Healing Ward - places healing ward, which heals 2% hp per second. Lasts 15 seconds.")
+)..register()
+
+public constant SHAMAN_STAFF_RECIPE = new ItemRecipe()
+..gold(110)
+..setRequiredItems(APPRENTICE_STAFF_ITEM.getNewId(), SHAMAN_CLAWS_ITEM.getNewId())
+..setResultItem(SHAMAN_STAFF_ITEM)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionHealingWard(HEALING_ID)
+  ..setWardUnitType(1, 'ohwd'.toRawCode())
+  ..setDurationNormal(1, 15)
+  ..setManaCost(1, 125)
+  ..setCooldown(1, 40)
