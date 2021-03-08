@@ -1,25 +1,30 @@
 package Items
 
 // Consumables
-import public HealingPotions
-import public ManaPotions
+import public SmallHealingPotion
+import public MediumHealingPotion
+import public BigHealingPotion
+import public SmallManaPotion
+import public MediumManaPotion
+import public BigManaPotion
 import public VampiricPotion
 import public Tomes
 
 // Basic items
-import public IronAxe
 import public ClawsOfAttack
 import public Diamond
 import public Emerald
 import public GlovesOfHaste
 import public HealthAmulet
+import public IronAxe
+import public IronShield
 import public IronSword
 import public MaskOfDeath
 import public PendantOfMana
-import public RefresherOrb
 import public RingOfProtection
 import public RingOfRegeneration
 import public Ruby
+import public RunedBracers
 import public SpiritMask
 import public VitalityStone
 
@@ -39,3 +44,7 @@ import public AdeptStaff
 import public AdvancedArmor
 import public ArcaniteAxe
 import public ArcaniteSword
+import public LightningShield
+import public MantleOfProtection
+import public ShamanStaff
+import public Thornmail

@@ -1,0 +1,23 @@
+package IronShield
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+
+constant BLOCK_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant IRON_SHIELD_ITEM = compiletime(new RecipeItem()
+..setName("Iron Shield")
+..setInterfaceIcon(Icons.bTNHumanArmorUpOne)
+..setGoldCost(110)
+..setAbilities(commaList(BLOCK_ID))
+..generateTooltip("Passive - 50% chance to block 25 damage.")
+)..register()
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionHardenedSkin(BLOCK_ID)
+  ..setChancetoReduceDamage(1, 50)
+  ..setIgnoredDamage(1, 25)
+  ..setMinimumDamage(1, 1)
+  ..setCheckDependencies(false)

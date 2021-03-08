@@ -19,7 +19,7 @@ RealLevelClosure DURATION = lvl -> 1
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Hell Flame")
-  ..presetDamageperInterval(lvl -> 15. * lvl)
+  ..presetDamageperInterval(lvl -> 20. * lvl)
   ..presetManaDrainedperSecond(lvl -> 8.)
   ..presetManaCost(lvl -> 25)
   ..tooltipStopListen()

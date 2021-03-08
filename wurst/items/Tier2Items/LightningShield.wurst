@@ -1,0 +1,55 @@
+package LightningShield
+import RecipeItem
+import Icons
+import PassiveAbilityPreset
+import DummyCaster
+import OrderIds
+import DamageEvent
+import IronShield
+import SimpleArmor
+
+constant BLOCK_ID = compiletime(ABIL_ID_GEN.next())
+constant LIGHTNING_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
+constant LIGHTNING_SHIELD_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant LIGHTNING_SHIELD_ITEM = compiletime(new RecipeItem()
+..setName("Lightning Shield")
+..setInterfaceIcon(Icons.bTNLightningShield)
+..addBonus(Bonus.LIFE, 300)
+..addBonus(Bonus.ARMOR, 5)
+..setAbilities(commaList(BLOCK_ID, LIGHTNING_SHIELD_ID))
+..generateTooltip("Passive - Block - 75% chance to block 40 damage.\n" + 
+"Passive - Lightning Shield - 10% chance to cast chain lightning on attacker, which deals 125 damage and jumps between 3 units.")
+)..register()
+
+public constant LIGHTNING_SHIELD_RECIPE = new ItemRecipe()
+..gold(120)
+..setRequiredItems(SIMPLE_ARMOR_ITEM.getNewId(), IRON_SHIELD_ITEM.getNewId())
+..setResultItem(LIGHTNING_SHIELD_ITEM)
+
+init 
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if tunit.hasItemById(LIGHTNING_SHIELD_ITEM.getNewId()) and not tunit.isIllusion() and DamageEvent.getType() == DamageType.ATTACK and sunit.isEnemyOf(tunit)
+      if 10 >= GetRandomInt(1, 100)
+        new DummyCaster()..origin(tunit.getPos())
+        ..owner(tunit.getOwner())
+        .castTarget(LIGHTNING_SHIELD_CHAIN_LIGHTNING_ID, 1 , OrderIds.chainlightning, sunit)
+
+@compiletime function genAbility()
+  new AbilityDefinitionHardenedSkin(BLOCK_ID)
+  ..setChancetoReduceDamage(1, 75)
+  ..setIgnoredDamage(1, 40)
+  ..setMinimumDamage(1, 1)
+  ..setCheckDependencies(false)
+
+  new PassiveAbilityPreset(LIGHTNING_SHIELD_ID, 1)
+
+  new AbilityDefinitionFarseerChainLightning(LIGHTNING_SHIELD_CHAIN_LIGHTNING_ID)
+  ..setDummyAbility()
+  ..setDamageperTarget(1, 125)
+  ..setNumberofTargetsHit(1, 3)
+  ..presetDamageReductionperTarget(lvl -> 0)
+    

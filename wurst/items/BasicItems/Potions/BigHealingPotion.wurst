@@ -1,0 +1,40 @@
+package BigHealingPotion
+import ItemObjEditing
+import ObjectIdGenerator
+import AbilityObjEditing
+import RecipeItem
+import ObjectIds
+import ClosureEvents
+import UnitExtFuncs
+
+public constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
+constant FLAT_HEAL = 1000
+constant PERC_HEAL = 35
+
+public constant B_HEALING_POT_ITEM = compiletime(new RecipeItem()
+  ..setName("Big Healing Potion")
+  ..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNBigHealingPotion.blp")
+  ..setGoldCost(105)
+  ..setNumberofCharges(1)
+  ..setMaxStack(5)
+  ..setActivelyUsed(true)
+  ..setPerishable(true)
+  ..setAbilities(HEAL_ID.toRawCode())
+  ..setCooldownGroup(HEAL_ID.toRawCode())
+  ..generateTooltip("Heals "+ FLAT_HEAL.toString() +" or "+ PERC_HEAL.toString() +"% hp, which value is bigger.")
+)..register()
+
+init 
+  EventListener.onCast(HEAL_ID) (unit caster) ->
+    let percHeal = caster.getMaxHP() * PERC_HEAL/100
+    
+    if FLAT_HEAL > percHeal
+      caster.heal(FLAT_HEAL)
+    else
+      caster.heal(percHeal)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionItemHealLesser(HEAL_ID)
+  ..presetHitPointsGained(lvl -> 0)
+  ..presetCooldown(lvl -> 20)
+

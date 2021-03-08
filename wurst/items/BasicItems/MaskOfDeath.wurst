@@ -4,6 +4,7 @@ import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
+
 constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
 
 public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
