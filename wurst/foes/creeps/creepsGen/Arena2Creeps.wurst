@@ -33,14 +33,14 @@ function wave_1() returns Wave
   ..creep(UnitIds.murlocnightcrawler)
   ..hp(3750)
   ..damage(115)
-  ..amount(4)
+  ..amount(6)
   ..armor(10)
   ..wait(20)
 
   ..creep(UnitIds.murgulbloodgill)
   ..hp(3500)
   ..damage(120)
-  ..amount(6)
+  ..amount(8)
   ..scale(1.5)
 
   ..creep(UnitIds.murgulcliffrunner)
@@ -80,10 +80,11 @@ function wave_2() returns Wave
   ..creep(UnitIds.nagaroyalguard)
   ..hp(12500)
   ..mana(5000)
+  ..attackrate(0.75)
   ..damage(120)
   ..armor(9)
   ..attackrate(0.5)
-  ..amount(3)
+  ..amount(2)
 
   .build()
 

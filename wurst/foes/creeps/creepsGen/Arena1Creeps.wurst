@@ -1,6 +1,8 @@
 package Arena1Creeps
 import UnitIds
 import Wave
+import ObjectIds
+import AbilityIds
 
 public constant ARENA1_WAVE_1 = compiletime(wave_1())
 public constant ARENA1_WAVE_2 = compiletime(wave_2())
@@ -30,9 +32,11 @@ function wave_1() returns Wave
   ..damage(14)
   ..amount(2)
 
+  ..wait(5)
+
   ..creep(UnitIds.direwolf)
-  ..hp(1000)
-  ..damage(26)
+  ..hp(1250)
+  ..damage(29)
   ..amount(1)
   ..scale(1.5)
 
@@ -61,9 +65,10 @@ function wave_2() returns Wave
   ..amount(4)
 
   ..creep(UnitIds.foresttrollhighpriest)
-  ..hp(600)
+  ..hp(800)
+  ..mana(1000)
   ..damage(15)
-  ..amount(3)
+  ..amount(5)
 
   ..creep(UnitIds.foresttrollking)
   ..hp(1250)
@@ -93,7 +98,7 @@ function wave_3() returns Wave
   ..damage(17)
   ..amount(2)
 
-  ..wait(20)
+  ..wait(15)
 
   ..creep(UnitIds.furbolgchampion)
   ..hp(850)
@@ -105,8 +110,10 @@ function wave_3() returns Wave
   ..damage(28)
   ..amount(1)
 
+  ..wait(5)
+
   ..creep(UnitIds.furbolgancient)
-  ..hp(1500)
+  ..hp(2000)
   ..damage(34)
   ..amount(1)
   ..scale(1.5)
@@ -119,7 +126,7 @@ function wave_4() returns Wave
   ..goldBounty(140)
 
   ..creep(UnitIds.gnoll1)
-  ..hp(800)
+  ..hp(850)
   ..damage(25)
   ..amount(14)
 
@@ -147,7 +154,7 @@ function wave_4() returns Wave
   ..amount(3)
 
   ..creep(UnitIds.gnollking)
-  ..hp(1600)
+  ..hp(2200)
   ..damage(50)
   ..amount(1)
   ..scale(1.5)
@@ -165,29 +172,29 @@ function wave_5() returns Wave
   ..amount(12)
 
   ..creep(UnitIds.forestspider)
-  ..hp(650)
+  ..hp(750)
   ..damage(24)
   ..amount(12)
 
   ..creep(UnitIds.spiderblack)
-  ..hp(700)
+  ..hp(800)
   ..damage(19)
   ..amount(12)
 
   ..wait(25)
 
   ..creep(UnitIds.spittingspider)
-  ..hp(900)
+  ..hp(1100)
   ..damage(28)
   ..amount(3)
 
   ..creep(UnitIds.giantspider)
-  ..hp(1250)
+  ..hp(1550)
   ..damage(25)
   ..amount(2)
 
   ..creep(UnitIds.broodmother)
-  ..hp(2250)
+  ..hp(2750)
   ..damage(75)
   ..amount(1)
   ..scale(2.6)
@@ -205,7 +212,7 @@ function wave_6() returns Wave
   ..amount(6)
 
   ..creep(UnitIds.enragedowlbear)
-  ..hp(2000)
+  ..hp(2400)
   ..damage(55)
   ..amount(4)
 
@@ -218,15 +225,16 @@ function wave_6() returns Wave
   ..wait(25)
 
   ..creep(UnitIds.owlbear)
-  ..hp(2800)
-  ..damage(85)
+  ..hp(2900)
+  ..damage(45)
   ..amount(4)
   ..scale(1.25)
 
   ..creep(UnitIds.misha1)
-  ..hp(1800)
-  ..damage(66)
+  ..hp(2400)
+  ..damage(96)
   ..amount(6)
+  ..rgb(125, 125, 125)
 
   .build()
 
@@ -257,6 +265,8 @@ function wave_7() returns Wave
   ..damage(95)
   ..amount(1)
   ..scale(2)
+  ..armor(10)
+  ..abilities(commaList(AbilityIds.slam, AbilityIds.forceofNature))
 
   .build()
 
@@ -266,12 +276,12 @@ function wave_8() returns Wave
   ..goldBounty(200)
 
   ..creep(UnitIds.stonemaulogre)
-  ..hp(2500)
+  ..hp(3500)
   ..damage(45)
   ..amount(12)
 
   ..creep(UnitIds.stonemaulmagi)
-  ..hp(1950)
+  ..hp(2350)
   ..damage(40)
   ..amount(6)
 
@@ -286,17 +296,18 @@ function wave_8() returns Wave
   ..rgb(0, 0, 255)
 
   ..creep(UnitIds.stonemaulwarchief)
-  ..hp(4500)
-  ..damage(80)
+  ..hp(5500)
+  ..damage(110)
   ..amount(1)
   ..scale(1.8)
   ..rgb(255, 0, 0)
 
-  ..wait(5)
+  ..wait(15)
 
   ..creep(UnitIds.ogrelord)
   ..hp(10500)
   ..damage(120)
+  ..attackrate(0.75)
   ..amount(1)
   ..scale(1.2)
   ..rgb(255, 0, 0)
@@ -314,7 +325,7 @@ function wave_9() returns Wave
   ..amount(4)
 
   ..creep(UnitIds.mountaingiant)
-  ..hp(4000)
+  ..hp(8000)
   ..damage(60)
   ..amount(2)
 
@@ -334,6 +345,22 @@ function wave_9() returns Wave
   ..hp(3500)
   ..damage(150)
   ..amount(2)
+  ..scale(2)
+
+  ..wait(35)
+
+  ..creep(UnitIds.druidoftheclawmorphed)
+  ..hp(3500)
+  ..damage(75)
+  ..attackrate(0.25)
+  ..amount(6)
+  ..scale(2)
+
+  ..creep(UnitIds.druidoftheclaw)
+  ..hp(4500)
+  ..damage(95)
+  ..attackrate(0.95)
+  ..amount(6)
   ..scale(2)
 
   .build()

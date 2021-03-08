@@ -47,13 +47,13 @@ public class GodOfNatureStrong extends Boss
 
   function castBossSpell()
     actor.setAnimation("cast")
-    let rand = GetRandomInt(0, 2)
+    let rand = GetRandomInt(0, 3)
     switch rand
       case 0
         summonTreants()
       case 1
         entangleRoots()
-      case 2
+      case 2 | 3
         summonWisps()
     
   function summonTreants()
@@ -66,7 +66,7 @@ public class GodOfNatureStrong extends Boss
         ..setScale(2 - 0.1 * cb.getCount())
 
   function summonWisps()
-    for i = 0 to 3
+    for i = 0 to GetRandomInt(3, 5)
       let u = createUnit(ENEMY_PLAYER, WISP_ID, WISP_SPAWN_POINTS[i], angle(0))
       u.issueTargetOrder(WISP_HEAL_DEF.getOrderString(), actor)
 
@@ -91,7 +91,7 @@ init
   new UnitDefinition(WISP_ID, UnitIds.wisp)
   ..setHitPointsMaximumBase(200)
   ..setArmorType(ArmorType.Divine)
-  ..setSpeedBase(200)
+  ..setSpeedBase(175)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
   
@@ -100,18 +100,18 @@ init
   ..setAttack1DamageBase(100)
   ..setDefenseBase(1)
   ..setSpeedBase(350)
-  ..setHitPointsMaximumBase(800)
+  ..setHitPointsMaximumBase(500)
 
   new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegroveghost)
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
   ..setAttack1DamageBase(250)
   ..setDefenseBase(20)
-  ..setHitPointsMaximumBase(25000)
+  ..setHitPointsMaximumBase(35000)
   ..setScalingValue(2.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()
-  ..setDamageperSecond(1, 100)
-  ..setDurationHero(1, 3.5)
-  ..setDurationNormal(1, 3.5)
+  ..setDamageperSecond(1, 250)
+  ..setDurationHero(5, 3.5)
+  ..setDurationNormal(5, 3.5)
