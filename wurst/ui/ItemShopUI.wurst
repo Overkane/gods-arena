@@ -78,11 +78,11 @@ public function initItemShop()
     if caster.hasItem(tItem)
       let itemCost = tItem.getRecipeItem().goldCost
 
-      ITEM_SOLD.play()
+      ITEM_SOLD.playForPlayer(caster.getOwner())
       tItem.remove()
       caster.getOwner().addGold((itemCost * 0.5).round())
     else
-      CANT_SOLD_ITEM.play() 
+      CANT_SOLD_ITEM.playForPlayer(caster.getOwner())
       print("Can sell items only from inventory.")
 
 @compiletime function genAbility()
