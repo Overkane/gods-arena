@@ -6,8 +6,9 @@ import RecipeItem
 import ObjectIds
 import ClosureEvents
 import UnitExtFuncs
+import SmallManaPotion
 
-public constant MANA_ID = compiletime(ABIL_ID_GEN.next())
+constant MANA_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_MP = 275
 constant PERC_MP = 20
 
@@ -20,7 +21,7 @@ public constant M_MANA_POT_ITEM = compiletime(new RecipeItem()
   ..setActivelyUsed(true)
   ..setPerishable(true)
   ..setAbilities(MANA_ID.toRawCode())
-  ..setCooldownGroup(MANA_ID.toRawCode())
+  ..setCooldownGroup(MANA_COOLDOWN_GROUP_ID.toRawCode())
   ..generateTooltip("Restores "+ FLAT_MP.toString() +" or "+ PERC_MP.toString() +"% mp, which value is bigger.")
 )..register()
 

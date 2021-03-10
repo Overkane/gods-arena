@@ -6,8 +6,9 @@ import RecipeItem
 import ObjectIds
 import ClosureEvents
 import UnitExtFuncs
+import SmallHealingPotion
 
-public constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
+constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_HEAL = 500
 constant PERC_HEAL = 25
 
@@ -20,7 +21,7 @@ public constant M_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setActivelyUsed(true)
   ..setPerishable(true)
   ..setAbilities(HEAL_ID.toRawCode())
-  ..setCooldownGroup(HEAL_ID.toRawCode())
+  ..setCooldownGroup(HEALING_COOLDOWN_GROUP_ID.toRawCode())
   ..generateTooltip("Heals "+ FLAT_HEAL.toString() +" or "+ PERC_HEAL.toString() +"% hp, which value is bigger.")
 )..register()
 

@@ -1,0 +1,30 @@
+package Mace
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import IronAxe
+
+constant BASH_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant MACE_ITEM = compiletime(new RecipeItem()
+..setName("Mace")
+..setInterfaceIcon(Icons.bTNHammer)
+..addBonus(Bonus.DAMAGE, 50)
+..addBonus(Bonus.ATTACKSPEED, -15)
+..setAbilities(commaList(BASH_ID))
+..generateTooltip("Passive - Bash - gives 15% chance to bash on attack for 0.4 seconds with 25 bonus damage.")
+)..register()
+
+public constant MACE_RECIPE = new ItemRecipe()
+..gold(90)
+..setRequiredItems(IRON_AXE_ITEM.getNewId(), IRON_AXE_ITEM.getNewId())
+..setResultItem(MACE_ITEM)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionBashcreep(BASH_ID)
+  ..setChancetoBash(1, 15)
+  ..setDamageBonus(1, 25)
+  ..setDurationHero(1, 0.4)
+  ..setDurationNormal(1, 0.4)

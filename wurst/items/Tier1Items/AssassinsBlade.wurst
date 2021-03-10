@@ -4,7 +4,7 @@ import RecipeItem
 import IronSword
 import Emerald
 
-public constant ASSASINS_BLADE_ITEM = compiletime(new RecipeItem()
+public constant ASSASSINS_BLADE_ITEM = compiletime(new RecipeItem()
 ..setName("Assasin's Blade")
 ..setInterfaceIcon(Icons.bTNDaggerOfEscape)
 ..addBonus(Bonus.DAMAGE, 20)
@@ -15,4 +15,4 @@ public constant ASSASINS_BLADE_ITEM = compiletime(new RecipeItem()
 public constant ASSASINS_BLADE_RECIPE = new ItemRecipe()
 ..gold(90)
 ..setRequiredItems(IRON_SWORD_ITEM.getNewId(), EMERALD_ITEM.getNewId())
-..setResultItem(ASSASINS_BLADE_ITEM)
+..setResultItem(ASSASSINS_BLADE_ITEM)

@@ -1,5 +1,6 @@
 package ShamanStaff
 import Icons
+import UnitIds
 import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
@@ -7,7 +8,9 @@ import ObjectIds
 import ApprenticeStaff
 import ShamanClaws
 
-constant HEALING_ID = compiletime(ABIL_ID_GEN.next())
+constant HEALING_WARD_ID = compiletime(ABIL_ID_GEN.next())
+constant HEALING_WARD_UNIT_ID = compiletime(UNIT_ID_GEN.next())
+constant HEALING_WARD_AURA_ID = compiletime(UNIT_ID_GEN.next())
 
 public constant SHAMAN_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Shaman Staff")
@@ -17,9 +20,9 @@ public constant SHAMAN_STAFF_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.ATTACKSPEED, 20)
 ..addBonus(Bonus.INTELLIGENCE, 15)
 ..addBonus(Bonus.MANAREGEN, 1.5)
-..setAbilities(commaList(HEALING_ID))
-..setCooldownGroup(HEALING_ID.toRawCode())
-..generateTooltip("Active - Healing Ward - places healing ward, which heals 2% hp per second. Lasts 15 seconds.")
+..setAbilities(commaList(HEALING_WARD_ID))
+..setCooldownGroup(HEALING_WARD_ID.toRawCode())
+..generateTooltip("Active - Healing Ward - places healing ward, which heals 1% hp per second. Lasts 15 seconds.")
 )..register()
 
 public constant SHAMAN_STAFF_RECIPE = new ItemRecipe()
@@ -28,8 +31,14 @@ public constant SHAMAN_STAFF_RECIPE = new ItemRecipe()
 ..setResultItem(SHAMAN_STAFF_ITEM)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionHealingWard(HEALING_ID)
-  ..setWardUnitType(1, 'ohwd'.toRawCode())
+  new AbilityDefinitionHealingWard(HEALING_WARD_ID)
+  ..setWardUnitType(1, HEALING_WARD_UNIT_ID.toRawCode())
   ..setDurationNormal(1, 15)
   ..setManaCost(1, 125)
   ..setCooldown(1, 40)
+
+  new UnitDefinition(HEALING_WARD_UNIT_ID, UnitIds.healingward)
+  ..setNormalAbilities(HEALING_WARD_AURA_ID.toRawCode())
+
+  new AbilityDefinitionAuraRegenerationHealingWard(HEALING_WARD_AURA_ID)
+  ..setAmountofHitPointsRegenerated(1, 0.01)

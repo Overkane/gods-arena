@@ -1,0 +1,37 @@
+package MageKiller
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import SteelSword
+import AssassinsBlade
+
+constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
+constant FEEDBACK_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
+..setName("Mage Killer")
+..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNDarkShaft.blp")
+..setGoldCost(110)
+..addBonus(Bonus.DAMAGE, 65)
+..addBonus(Bonus.AGILITY, 15)
+..setAbilities(commaList(CRITICAL_STRIKE_ID, FEEDBACK_ID))
+..generateTooltip("Passive - Critical Strike - gives 20% chance to deal 1.5x damage.\n" +
+"Passive - Feedback - burn out 25 mana from attacked target. Deals 2 damage per 1 burned mana.")
+)..register()
+
+public constant MAGE_KILLER_RECIPE = new ItemRecipe()
+..gold(195)
+..setRequiredItems(STEEL_SWORD_ITEM.getNewId(), ASSASSINS_BLADE_ITEM.getNewId())
+..setResultItem(MAGE_KILLER_ITEM)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
+  ..setChancetoCriticalStrike(1, 20)
+  ..setDamageMultiplier(1, 1.5)
+
+  new AbilityDefinitionFeedback(FEEDBACK_ID)
+  ..setDamageRatioHeros(1, 2)
+  ..setDamageRatioUnits(1, 2)
+  ..setMaxManaDrainedHeros(1, 25)
+  ..setMaxManaDrainedUnits(1, 25)

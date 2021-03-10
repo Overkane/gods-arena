@@ -1,0 +1,20 @@
+package TalismanOfEvasion
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+
+constant EVASION_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant TALISMAN_OF_EVASION_ITEM = compiletime(new RecipeItem()
+..setName("Talisman of Evasion")
+..setInterfaceIcon(Icons.bTNTalisman)
+..setGoldCost(95)
+..setAbilities(commaList(EVASION_ID))
+..generateTooltip("Passive - Evasion - 15% to dodge an attack.")
+)..register()
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionEvasion(EVASION_ID)
+  ..setChancetoEvade(1, 0.15)
