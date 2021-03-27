@@ -21,8 +21,8 @@ class TreantEntity extends UnitEntity
         super(createUnit(owner, TREANT_ID, target.getPos(), angle(0))
         ..setTimedLife(12.)
         ..issueTargetOrderById(OrderIds.attack, target)
-        ..addBonus(Bonus.DAMAGE, lvl * 20.)
-        ..addBonus(Bonus.LIFE, 75. * lvl))
+        ..addBonus(Bonus.DAMAGE, lvl * 25.)
+        ..addBonus(Bonus.LIFE, 85. * lvl))
 
 
 init
@@ -61,7 +61,7 @@ init
     ..addTooltipProperty("Damage", SPELL_DAMAGE)
     ..presetManaCost(lvl -> 70 + 10 * lvl)
     ..presetCastRange(lvl -> 1000)
-    ..presetCooldown(lvl -> 16)
+    ..presetCooldown(lvl -> 16. - lvl)
     ..tooltipStopListen()
 
     new UnitDefinition(TREANT_ID, UnitIds.forceofnature)

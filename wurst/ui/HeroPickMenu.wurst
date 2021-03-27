@@ -83,8 +83,8 @@ class HeroPickUI
         p.setCameraPosition(h.actor.getPos())
         pickedIcon.disable()
         heroPickFrame.hide(p)
-        toggleShopButton.show(p, pData.get(p).getHero().actor)
-        shop.showToUnit(pData.get(p).getHero().actor)
+        toggleShopButton.show(p, h.actor)
+        shop.showToUnit(h.actor)
 
         h.actor.addAbility(SELL_ID)
 
