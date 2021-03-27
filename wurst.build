@@ -8,8 +8,8 @@ dependencies:
 - https://github.com/Frotty/wurst-item-shop:main
 - https://github.com/Frotty/wurst-item-recipes:main
 buildMapData:
-  name: Gods' Arena v0.3.8
-  fileName: Gods' Arena v0.3.8
+  name: Gods' Arena v0.3.9
+  fileName: Gods' Arena v0.3.9
   author: Overkane & Frotty
   scenarioData:
     description: Survive the arena of the gods.
