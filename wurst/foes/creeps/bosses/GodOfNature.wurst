@@ -48,13 +48,13 @@ public class GodOfNature extends Boss
 
   function castBossSpell()
     actor.setAnimation("cast")
-    let rand = GetRandomInt(0, 3)
+    let rand = GetRandomInt(0, 2)
     switch rand
       case 0
         summonTreants()
       case 1
         entangleRoots()
-      case 2 | 3
+      case 2
         summonWisps()
 
   function summonTreants()
@@ -77,7 +77,7 @@ public class GodOfNature extends Boss
       let heroPos = value.getHero().getPos().toVec2()
       let targetCircle = addEffect(Buildings.circleOfPower1, heroPos)
       
-      doAfter(4) -> 
+      doAfter(3) -> 
         targetCircle.destr()
         forUnitsInRange(heroPos, 200) (unit u) ->
           if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()

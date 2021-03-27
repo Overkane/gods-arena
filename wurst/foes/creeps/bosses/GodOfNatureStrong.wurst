@@ -53,7 +53,7 @@ public class GodOfNatureStrong extends Boss
         summonTreants()
       case 1
         entangleRoots()
-      case 2 | 3
+      case 2
         summonWisps()
     
   function summonTreants()
