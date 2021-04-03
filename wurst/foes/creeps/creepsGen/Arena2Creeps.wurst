@@ -80,8 +80,8 @@ function wave_2() returns Wave
   ..creep(UnitIds.nagaroyalguard)
   ..hp(12500)
   ..mana(5000)
-  ..attackrate(0.75)
-  ..damage(120)
+  ..attackrate(0.65)
+  ..damage(160)
   ..armor(9)
   ..attackrate(0.5)
   ..amount(2)
@@ -101,8 +101,8 @@ function wave_3() returns Wave
   ..wait(10)
 
   ..creep(UnitIds.dragonturtle)
-  ..hp(7500)
-  ..damage(150)
+  ..hp(9500)
+  ..damage(180)
   ..amount(3)
   ..scale(1.15)
 
@@ -110,8 +110,8 @@ function wave_3() returns Wave
 
   ..creep(UnitIds.sludgeflinger)
   ..hp(4850)
-  ..damage(280)
-  ..armor(8)
+  ..damage(290)
+  ..armor(9)
   ..amount(6)
   ..scale(1.1)
 

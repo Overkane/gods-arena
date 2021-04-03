@@ -83,7 +83,7 @@ public class GodOfNatureStrong extends Boss
       
       doAfter(1.5) -> 
         targetCircle.destr()
-        forUnitsInRange(heroPos, 200) (unit u) ->
+        forUnitsInRange(heroPos, 160) (unit u) ->
           if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
             InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
 

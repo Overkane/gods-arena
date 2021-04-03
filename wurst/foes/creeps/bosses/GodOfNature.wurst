@@ -83,16 +83,16 @@ public class GodOfNature extends Boss
       let heroPos = value.getHero().getPos().toVec2()
       let targetCircle = addEffect(Buildings.circleOfPower1, heroPos)
       
-      doAfter(3) -> 
+      doAfter(3) ->
         targetCircle.destr()
-        forUnitsInRange(heroPos, 200) (unit u) ->
+        forUnitsInRange(heroPos, 160) (unit u) ->
           if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
             InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
 
 init
   EventListener.onTargetCast(WISP_HEAL_ID) (unit caster, unit target) ->
     target.setHP(target.getHP() + target.getMaxHP() * 0.15)
-    target.addBonus(Bonus.DAMAGE, 10)
+    target.addBonus(Bonus.DAMAGE, 15)
     flashEffect(Abilities.healTarget, target.getPos())
     caster.kill()
 
@@ -122,5 +122,5 @@ init
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()
   ..setDamageperSecond(1, 150)
-  ..setDurationHero(3, 3)
-  ..setDurationNormal(3, 3)
+  ..setDurationHero(3, 3.5)
+  ..setDurationNormal(3, 3.5)
