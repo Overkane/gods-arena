@@ -29,6 +29,8 @@ vec2 array WISP_SPAWN_POINTS = [gg_rct_Arena1.getRightTop(), gg_rct_Arena1.getLe
 constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.nightElfDefeat)
 
 public class GodOfNature extends Boss
+  let castQueue = new LinkedList<int>
+
   construct(vec3 pos, angle ang)
     super(GOD_OF_NATURE_ID, pos, ang)
     actor.addItemById(HORN_OF_THE_GOD_ITEM.getNewId())
@@ -47,8 +49,12 @@ public class GodOfNature extends Boss
       BOSS_MUSIC_THEME.play(0, 0)
 
   function castBossSpell()
+    if castQueue.isEmpty()
+      for i = 0 to 2
+        castQueue.add(i)
+      castQueue.shuffle()
     actor.setAnimation("cast")
-    let rand = GetRandomInt(0, 2)
+    let rand = castQueue.pop()
     switch rand
       case 0
         summonTreants()
@@ -68,7 +74,7 @@ public class GodOfNature extends Boss
         ..setScale(2 - 0.1 * cb.getCount())
 
   function summonWisps()
-    for i = 0 to GetRandomInt(2, 4)
+    for i = 0 to GetRandomInt(2, 3)
       let u = createUnit(ENEMY_PLAYER, WISP_ID, WISP_SPAWN_POINTS[i], angle(0))
       u.issueTargetOrder(WISP_HEAL_DEF.getOrderString(), actor)
 
@@ -86,14 +92,15 @@ public class GodOfNature extends Boss
 init
   EventListener.onTargetCast(WISP_HEAL_ID) (unit caster, unit target) ->
     target.setHP(target.getHP() + target.getMaxHP() * 0.15)
-    target.addBonus(Bonus.DAMAGE, 15)
+    target.addBonus(Bonus.DAMAGE, 10)
+    flashEffect(Abilities.healTarget, target.getPos())
     caster.kill()
 
 @compiletime function genAbility()
   new UnitDefinition(WISP_ID, UnitIds.wisp)
   ..setHitPointsMaximumBase(500)
   ..setArmorType(ArmorType.Unarmored)
-  ..setSpeedBase(128)
+  ..setSpeedBase(100)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
   
@@ -107,9 +114,9 @@ init
   new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegrove)
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
-  ..setAttack1DamageBase(150)
+  ..setAttack1DamageBase(100)
   ..setDefenseBase(15)
-  ..setHitPointsMaximumBase(30000)
+  ..setHitPointsMaximumBase(35000)
   ..setScalingValue(2.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
