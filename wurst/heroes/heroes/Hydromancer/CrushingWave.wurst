@@ -22,7 +22,7 @@ constant RealLevelClosure DAMAGE = lvl -> 400. + 400. * (lvl-1)
   ..presetDamage(DAMAGE)
   ..presetDistance(lvl -> 1200)
   ..presetCastRange(lvl -> 800)
-  ..presetManaCost(lvl -> 125 + 25 * lvl)
+  ..presetManaCost(lvl -> 145 + 75 * lvl)
   ..presetCooldown(lvl -> 45)
   ..tooltipStopListen()
   

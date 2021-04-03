@@ -8,7 +8,7 @@ import BubbleShieldBuff
 public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure HP_REGEN = lvl -> 10. + 8. * (lvl-1)
-constant RealLevelClosure SHIELD_DURABILITY = lvl -> 150. + 50. * (lvl-1)
+constant RealLevelClosure SHIELD_DURABILITY = lvl -> 50. + 100. * lvl
 constant RealLevelClosure DURATION = lvl -> 8
 
 init
@@ -38,6 +38,6 @@ init
   ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 110)
-  ..presetCooldown(lvl -> 15. - lvl)
+  ..presetManaCost(lvl -> 110 + 30 * lvl)
+  ..presetCooldown(lvl -> 14. - lvl)
   ..tooltipStopListen()
