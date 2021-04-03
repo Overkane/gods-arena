@@ -1,6 +1,5 @@
 package CoupDeGrace
 import AbilityTooltipGenerator
-import Icons
 import DamageEvent
 import StandardTextTags
 import HeroSpellConstants
@@ -8,7 +7,7 @@ import PassiveAbilityPreset
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure CRITICAL_CHANCE = lvl -> 15. + 5. * (lvl-1)
+constant RealLevelClosure CRITICAL_CHANCE = lvl -> 10. + 5. * (lvl-1)
 constant RealLevelClosure CRITICAL_MULT = lvl -> 2.5 + 0.5 * (lvl-1)
 constant RealLevelClosure BACKSTAB_MULT = lvl -> 2.
 
@@ -50,7 +49,7 @@ init
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetHotkey("R")
-  ..presetIcon(Icons.bTNSacrifice)
+  ..presetIcon("ReplaceableTextures/CommandButtons/BTNAbility_BackStab.blp")
 
   ..tooltipStartListen()
   ..setName("Coup De Grace")
