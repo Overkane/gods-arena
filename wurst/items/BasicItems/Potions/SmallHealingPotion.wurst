@@ -10,13 +10,13 @@ import UnitExtFuncs
 public constant HEALING_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_HEAL = 250
+constant FLAT_HEAL = 350.
 constant PERC_HEAL = 15
 
 public constant S_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Small Healing Potion")
   ..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNSmallHealingPotion.blp")
-  ..setGoldCost(35)
+  ..setGoldCost(30)
   ..setNumberofCharges(1)
   ..setMaxStack(5)
   ..setActivelyUsed(true)
@@ -31,9 +31,9 @@ init
     let percHeal = caster.getMaxHP() * PERC_HEAL/100
     
     if FLAT_HEAL > percHeal
-      caster.heal(FLAT_HEAL)
+      caster.addHP(FLAT_HEAL)
     else
-      caster.heal(percHeal)
+      caster.addHP(percHeal)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionItemHealLesser(HEAL_ID)

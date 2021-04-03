@@ -1,14 +1,2 @@
 package UnitExtFuncs
 
-public function unit.heal(int amount)
-  this.setHP(this.getHP() + amount)
-
-public function unit.heal(real amount)
-  this.setHP(this.getHP() + amount)
-
-public function unit.restoreMP(int amount)
-  this.setMana(this.getMaxMana() + amount)
-
-public function unit.restoreMP(real amount)
-  this.setMana(this.getMaxMana() + amount)
-  

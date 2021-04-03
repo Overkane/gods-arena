@@ -10,13 +10,13 @@ import UnitExtFuncs
 public constant MANA_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_MP = 155
+constant FLAT_MP = 255.
 constant PERC_MP = 10
 
 public constant S_MANA_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Small Mana Potion")
   ..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNSmallManaPotion.blp")
-  ..setGoldCost(40)
+  ..setGoldCost(35)
   ..setNumberofCharges(1)
   ..setMaxStack(5)
   ..setActivelyUsed(true)
@@ -31,9 +31,9 @@ init
     let percMP = caster.getMaxMana() * PERC_MP/100
     
     if FLAT_MP > percMP
-      caster.restoreMP(FLAT_MP)
+      caster.addMana(FLAT_MP)
     else
-      caster.restoreMP(percMP)
+      caster.addMana(percMP)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionItemManaRestoreLesser(MANA_ID)

@@ -9,7 +9,7 @@ import UnitExtFuncs
 import SmallHealingPotion
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_HEAL = 1000
+constant FLAT_HEAL = 1000.
 constant PERC_HEAL = 35
 
 public constant B_HEALING_POT_ITEM = compiletime(new RecipeItem()
@@ -30,9 +30,9 @@ init
     let percHeal = caster.getMaxHP() * PERC_HEAL/100
     
     if FLAT_HEAL > percHeal
-      caster.heal(FLAT_HEAL)
+      caster.addHP(FLAT_HEAL)
     else
-      caster.heal(percHeal)
+      caster.addHP(percHeal)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionItemHealLesser(HEAL_ID)
