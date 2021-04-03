@@ -3,7 +3,7 @@ import UnitIds
 import HeroPreset
 import ObjectIdGenerator
 import FireStorm
-import HellFlame
+import HowlOfTerror
 import DemonicPower
 import Cataclysm
 
@@ -13,7 +13,7 @@ public constant DEMON_LORD_ID = compiletime(HERO_ID_GEN.next())
   new HeroPreset(DEMON_LORD_ID, UnitIds.pitlord, "Demon Lord")
   ..addProperName("Legion")
   ..addHeroAbility(FIRE_STORM_ID)
-  ..addHeroAbility(HELL_FLAME_ID)
+  ..addHeroAbility(HOWL_OF_TERROR_ID)
   ..addHeroAbility(DEMONIC_POWER_ID)
   ..addHeroAbility(CATACLYSM_ID)
   ..setStartingStrength(28)

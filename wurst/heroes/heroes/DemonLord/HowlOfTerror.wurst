@@ -1,0 +1,32 @@
+package HowlOfTerror
+import AbilityTooltipGenerator
+import HeroSpellConstants
+import Icons
+
+public constant HOWL_OF_TERROR_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure DAMAGE_DECREASE = lvl -> 0.15 + 0.05 * (lvl-1)
+RealLevelClosure DURATION = lvl -> 10
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "The Pit Lord lets loose a terrifying howl that causes nearby enemy units to shiver in fear, reducing their attack damage.")
+  new AbilityDefinitionPitLordHowlofTerror(HOWL_OF_TERROR_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..presetIcon(Icons.bTNImmolationOn)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("W")
+
+  ..tooltipStartListen()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Howl of Terror")
+  ..addTooltipProperty("Damage Decrease", lvl -> (DAMAGE_DECREASE.run(lvl) * 100).toString(0) + "%")
+  ..presetAreaofEffect(lvl -> 500)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 75)
+  ..presetCooldown(lvl -> 25)
+  ..tooltipStopListen()
+  
+  ..presetDamageIncrease(DAMAGE_DECREASE)
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)

@@ -1,13 +1,23 @@
 package DemonicPower
 import AbilityTooltipGenerator
 import HeroSpellConstants
+import ClosureEvents
+import BonusHandler
 
 public constant DEMONIC_POWER_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure CLEAVE_PERCENT = lvl -> 0.4 + .1 * (lvl-1)
+RealLevelClosure CLEAVE_PERCENT = lvl -> 0.35 + .1 * (lvl-1)
+RealLevelClosure STR_BONUS = lvl -> 4. * lvl
+
+init
+  EventListener.add(EVENT_PLAYER_HERO_SKILL) -> 
+    let u = GetTriggerUnit()
+  
+    if GetLearnedSkill() == DEMONIC_POWER_ID
+      u.addBonus(Bonus.STRENGTH, STR_BONUS.run(1))
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero attacks deal splash damage.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero attacks deal splash damage. Also increases hero strength.")
   new AbilityDefinitionPitLordCleavingAttack(DEMONIC_POWER_ID)
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(2, 2)
@@ -18,6 +28,7 @@ RealLevelClosure CLEAVE_PERCENT = lvl -> 0.4 + .1 * (lvl-1)
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Demonic Power")
   ..addTooltipProperty("Cleave Percent", lvl -> (CLEAVE_PERCENT.run(lvl) * 100).round().toString() + "%")
+  ..addTooltipProperty("Bonus Strength", lvl -> STR_BONUS.run(lvl))
   ..tooltipStopListen()
 
   ..presetDistributedDamageFactor(CLEAVE_PERCENT)
