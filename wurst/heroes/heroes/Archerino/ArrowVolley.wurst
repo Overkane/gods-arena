@@ -22,7 +22,7 @@ init
                 projectile.gravity = defaultGravity
                 projectile
                 ..setTarget(u.getPos().withTerrainZ(), 30.)
-                ..setRanged(caster.getPos().distanceTo(target))
+                ..setRanged(caster.getPos().distanceTo(u.getPos()))
                 ..onEnd() ->
                     caster.damageTarget(u, DAMAGE.run(lvl))
                     flashEffect(Abilities.ballistaImpact, u.getPos())

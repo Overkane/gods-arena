@@ -4,8 +4,8 @@ import HeroSpellConstants
 
 public constant FORKED_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE_PER_TARGET = lvl -> 75. + 50. * (lvl-1)
-IntLevelClosure NUMBER_OF_TARGETS = lvl -> 5 + 2 * (lvl-1)
+RealLevelClosure DAMAGE_PER_TARGET = lvl -> 75. + 75. * lvl
+IntLevelClosure NUMBER_OF_TARGETS = lvl -> 3 + 2 * lvl
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Calls forth a cone of lightning.")
@@ -21,6 +21,6 @@ IntLevelClosure NUMBER_OF_TARGETS = lvl -> 5 + 2 * (lvl-1)
   ..presetNumberofTargetsHit(NUMBER_OF_TARGETS)
   ..presetDamageperTarget(DAMAGE_PER_TARGET)
   ..presetCastRange(lvl -> 550)
-  ..presetManaCost(lvl -> 80 + 10 * lvl)
-  ..presetCooldown(lvl -> 12)
+  ..presetManaCost(lvl -> 80 + 20 * lvl)
+  ..presetCooldown(lvl -> 13 - 1. * lvl)
   ..tooltipStopListen()

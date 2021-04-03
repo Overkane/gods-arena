@@ -22,7 +22,7 @@ RealLevelClosure DURATION = lvl -> 0.3
   ..presetNumberofUnitsCreated(lvl -> 1 + 1 * lvl)
   ..presetAreaofEffect(lvl -> 900)
   ..presetManaCost(lvl -> 205 + 50 * lvl)
-  ..presetCooldown(lvl -> 160)
+  ..presetCooldown(lvl -> 165)
   ..tooltipStopListen()
 
   ..presetDurationNormal(DURATION)

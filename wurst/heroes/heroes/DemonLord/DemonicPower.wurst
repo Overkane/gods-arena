@@ -17,7 +17,7 @@ RealLevelClosure CLEAVE_PERCENT = lvl -> 0.4 + .1 * (lvl-1)
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Demonic Power")
-  ..addTooltipProperty("Cleave Percent", lvl -> (CLEAVE_PERCENT.run(lvl)*100).round().toString() + "%")
+  ..addTooltipProperty("Cleave Percent", lvl -> (CLEAVE_PERCENT.run(lvl) * 100).round().toString() + "%")
   ..tooltipStopListen()
 
   ..presetDistributedDamageFactor(CLEAVE_PERCENT)

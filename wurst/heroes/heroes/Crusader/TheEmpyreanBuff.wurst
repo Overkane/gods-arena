@@ -28,7 +28,7 @@ public class TheEmpyreanBuff extends NormalBuff
     ON_APPLY_SOUND.play()
     target..addBonus(Bonus.DAMAGE, bonusDamage)
     ..addBonus(Bonus.ATTACKSPEED, -attackSpeedSlow)
-    ..setScale(2)
+    ..setScale(1.75)
 
   override function onEnd()
     ON_END_SOUND.play()
