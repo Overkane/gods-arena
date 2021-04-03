@@ -49,7 +49,7 @@ init
 
 
 @compiletime function genAbility()
-    let tooltip = new AbilityTooltipGenerator("Shoots an arrow towards the target position, damaging enemies in its path. If hit enemies are currently |cffd803bctagged|r, they become wounded.")
+    let tooltip = new AbilityTooltipGenerator("Shoots an arrow towards the target position, damaging enemies in its path. If hit enemies are currently |cffd803bctagged|r, an ent will be spawned.")
     new ChannelAbilityPreset(PIERCESHOT_ID, NORMAL_SPELL_LEVELS, true, tooltip)
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)

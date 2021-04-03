@@ -21,8 +21,8 @@ RealLevelClosure DURATION = lvl -> 0.3
   ..setName("Cataclysm")
   ..presetNumberofUnitsCreated(lvl -> 1 + 1 * lvl)
   ..presetAreaofEffect(lvl -> 900)
-  ..presetManaCost(lvl -> 145 + 50 * lvl)
-  ..presetCooldown(lvl -> 140)
+  ..presetManaCost(lvl -> 205 + 50 * lvl)
+  ..presetCooldown(lvl -> 160)
   ..tooltipStopListen()
 
   ..presetDurationNormal(DURATION)
