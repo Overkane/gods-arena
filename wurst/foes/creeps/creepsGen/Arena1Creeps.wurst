@@ -230,9 +230,9 @@ function wave_6() returns Wave
   ..amount(4)
   ..scale(1.25)
 
-  ..creep(UnitIds.misha1)
+  ..creep(UnitIds.misha)
   ..hp(2400)
-  ..damage(96)
+  ..damage(976)
   ..amount(6)
   ..rgb(125, 125, 125)
 
@@ -261,10 +261,11 @@ function wave_7() returns Wave
   ..amount(2)
 
   ..creep(UnitIds.ancientsasquatch)
-  ..hp(6000)
-  ..damage(95)
+  ..hp(11000)
+  ..damage(115)
+  ..attackrate(0.45)
   ..amount(1)
-  ..scale(2)
+  ..scale(1.95)
   ..armor(10)
   ..abilities(commaList(AbilityIds.slam, AbilityIds.forceofNature))
 
@@ -289,7 +290,7 @@ function wave_8() returns Wave
 
   ..creep(UnitIds.stonemaulwarchief)
   ..hp(3750)
-  ..damage(140)
+  ..damage(145)
   ..armor(8)
   ..amount(1)
   ..scale(0.9)
@@ -297,7 +298,7 @@ function wave_8() returns Wave
 
   ..creep(UnitIds.stonemaulwarchief)
   ..hp(5500)
-  ..damage(110)
+  ..damage(120)
   ..amount(1)
   ..scale(1.8)
   ..rgb(255, 0, 0)
@@ -306,7 +307,7 @@ function wave_8() returns Wave
 
   ..creep(UnitIds.ogrelord)
   ..hp(10500)
-  ..damage(120)
+  ..damage(140)
   ..attackrate(0.75)
   ..amount(1)
   ..scale(1.2)
@@ -358,10 +359,10 @@ function wave_9() returns Wave
 
   ..creep(UnitIds.druidoftheclaw)
   ..hp(4500)
-  ..damage(95)
-  ..attackrate(0.95)
+  ..damage(90)
+  ..attackrate(0.85)
   ..amount(6)
-  ..scale(2)
+  ..scale(1.75)
 
   .build()
 

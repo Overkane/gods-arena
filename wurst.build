@@ -17,5 +17,5 @@ buildMapData:
     loadingScreen:
       title: by Overkane and Frotty
       subTitle: Gods' Arena v0.4.4
-      text: "Try to survive the arena of the gods.\n\n Press TAB to open the shop!\n\
+      text: "Try to survive the arena of the gods.\n\n Press TAB to toggle the shop!\n\
         \n You will be revived at the end of each round. "

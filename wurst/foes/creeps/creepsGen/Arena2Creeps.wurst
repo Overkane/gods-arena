@@ -39,13 +39,13 @@ function wave_1() returns Wave
 
   ..creep(UnitIds.murgulbloodgill)
   ..hp(3500)
-  ..damage(120)
+  ..damage(125)
   ..amount(8)
   ..scale(1.5)
 
   ..creep(UnitIds.murgulcliffrunner)
-  ..hp(1850)
-  ..damage(140)
+  ..hp(2250)
+  ..damage(145)
   ..amount(12)
   ..scale(1.5)
 
@@ -80,10 +80,9 @@ function wave_2() returns Wave
   ..creep(UnitIds.nagaroyalguard)
   ..hp(12500)
   ..mana(5000)
-  ..attackrate(0.65)
-  ..damage(160)
+  ..attackrate(0.55)
+  ..damage(165)
   ..armor(9)
-  ..attackrate(0.5)
   ..amount(2)
 
   .build()
@@ -94,7 +93,7 @@ function wave_3() returns Wave
   ..goldBounty(150)
 
   ..creep(UnitIds.seaturtle)
-  ..hp(5000)
+  ..hp(5500)
   ..damage(95)
   ..amount(4)
 
@@ -102,7 +101,7 @@ function wave_3() returns Wave
 
   ..creep(UnitIds.dragonturtle)
   ..hp(9500)
-  ..damage(180)
+  ..damage(185)
   ..amount(3)
   ..scale(1.15)
 
@@ -111,6 +110,7 @@ function wave_3() returns Wave
   ..creep(UnitIds.sludgeflinger)
   ..hp(4850)
   ..damage(290)
+  ..attackrate(1.25)
   ..armor(9)
   ..amount(6)
   ..scale(1.1)
@@ -139,7 +139,8 @@ function wave_4() returns Wave
 
   ..creep(UnitIds.seawitch)
   ..hp(15600)
-  ..damage(248)
+  ..damage(228)
+  ..attackrate(0.85)
   ..amount(3)
   ..scale(1.25)
 
@@ -157,13 +158,13 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.quillboar)
   ..hp(9600)
-  ..damage(268)
-  ..amount(14)
+  ..damage(288)
+  ..amount(18)
   ..scale(1.25)
 
   ..creep(UnitIds.tichondrius)
   ..hp(13450)
-  ..damage(448)
+  ..damage(228)
   ..attackrate(1.0)
   ..amount(2)
 
