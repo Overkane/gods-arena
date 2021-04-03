@@ -13,7 +13,7 @@ public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
 constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
 
-constant RealLevelClosure SPELL_DAMAGE = lvl -> 75. + 55 * lvl
+constant RealLevelClosure SPELL_DAMAGE = lvl -> 75. + 65 * lvl
 
 class TreantEntity extends UnitEntity
 
@@ -21,8 +21,8 @@ class TreantEntity extends UnitEntity
         super(createUnit(owner, TREANT_ID, target.getPos(), angle(0))
         ..setTimedLife(12.)
         ..issueTargetOrderById(OrderIds.attack, target)
-        ..addBonus(Bonus.DAMAGE, lvl * 25.)
-        ..addBonus(Bonus.LIFE, 85. * lvl))
+        ..addBonus(Bonus.DAMAGE, lvl * 35.)
+        ..addBonus(Bonus.LIFE, 95. * lvl))
 
 
 init
@@ -39,8 +39,9 @@ init
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
                 DamageEvent.setNextDamageFromCode()
+                let dmg = SPELL_DAMAGE.run(lvl)
                 caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
-                Knockback3.add(hitTarget, 450., projectile.getXYAngle(), 45 .fromDeg())
+                Knockback3.add(hitTarget, 350. + dmg, projectile.getXYAngle(), 45 .fromDeg())
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
                     new TreantEntity(projectile.owner, hitTarget, lvl)

@@ -57,7 +57,7 @@ init
 
 
 @compiletime function genAbility()
-    let tooltip = new AbilityTooltipGenerator("Reduces incoming damage and boosts speed. Enemies touched during the effect are tagged.")
+    let tooltip = new AbilityTooltipGenerator("Reduces incoming damage and boosts speed. Walking through enemies will make them |cffd803bctagged|r, enhancing other spells.")
     new AbilityDefinitionBladeMasterWindWalk(TAGWALK_ID)
     ..registerTooltipGenerator(tooltip)
     ..presetIcon(Icons.bTNTheBlackArrow)
@@ -71,8 +71,8 @@ init
     ..addTooltipProperty("Walk Duration", WALK_DURATION)
     ..addTooltipProperty("Damage Reduction", lvl -> 0.75)
     
-    ..presetManaCost(lvl -> 50 + 10 * lvl)
-    ..presetCooldown(lvl -> 21. - 1. * lvl)
+    ..presetManaCost(lvl -> 50 + 20 * lvl)
+    ..presetCooldown(lvl -> 21. - 2. * lvl)
     ..tooltipStopListen()
     
     ..presetDurationHero(WALK_DURATION)

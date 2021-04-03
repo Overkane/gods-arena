@@ -1,0 +1,50 @@
+package ArrowVolley
+import AbilityTooltipGenerator
+import Icons
+import Projectile
+import Abilities
+import ClosureForGroups
+import HeroSpellConstants
+import GameProperties
+import Buff
+import Tagwalk
+
+public constant ARROW_VOLLEY_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure DAMAGE = lvl -> 85. + 55 * lvl
+
+init
+    EventListener.onPointCast(ARROW_VOLLEY_ID) (caster, target) ->
+        let lvl = caster.getAbilityLevel(ARROW_VOLLEY_ID)
+        forUnitsOfPlayer(ENEMY_PLAYER) u ->
+            if u.hasBuff(TagBuff.typeId)
+                let projectile = new Projectile(caster.getPos().withTerrainZ(64), 16., caster.getOwner(), caster.getPos().angleTo(target), Abilities.arrowMissile1)
+                projectile.gravity = defaultGravity
+                projectile
+                ..setTarget(u.getPos().withTerrainZ(), 30.)
+                ..setRanged(caster.getPos().distanceTo(target))
+                ..onEnd() ->
+                    caster.damageTarget(u, DAMAGE.run(lvl))
+                    flashEffect(Abilities.ballistaImpact, u.getPos())
+
+            
+
+
+@compiletime function genAbility()
+    let tooltip = new AbilityTooltipGenerator("Shoots an arrow at every enemy that is |cffd803bctagged|r.")
+    new ChannelAbilityPreset(ARROW_VOLLEY_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
+    ..presetButtonPosNormal(3, 2)
+    ..presetButtonPosResearch(3, 0)
+    ..presetIcon(Icons.bTNImprovedBows)
+    ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+    ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+
+    ..tooltipStartListen()
+    ..presetTargetTypes(Targettype.NONE)
+    ..presetHotkey("R")
+    ..setName("Arrow Volley")
+    ..addTooltipProperty("Damage per Target", DAMAGE)
+    ..presetManaCost(lvl -> 100 + 45 * lvl)
+    ..presetCooldown(lvl -> 55)
+    ..tooltipStopListen()
+        

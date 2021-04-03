@@ -5,7 +5,7 @@ import HeroPreset
 import PierceShot
 import Tagwalk
 import CriticalArrow
-import ExplosiveArrow
+import ArrowVolley
 
 public constant ARCHER_ID = compiletime(HERO_ID_GEN.next())
 
@@ -16,7 +16,7 @@ public constant ARCHER_ID = compiletime(HERO_ID_GEN.next())
   ..addHeroAbility(PIERCESHOT_ID)
   ..addHeroAbility(TAGWALK_ID)
   ..addHeroAbility(CRIT_ARROW_ID)
-  ..addHeroAbility(EXPLOSIVE_ARROW_ID)
+  ..addHeroAbility(ARROW_VOLLEY_ID)
   ..setStartingStrength(15)
   ..setStrengthPerLevel(1.6)
   ..setStartingAgility(19)

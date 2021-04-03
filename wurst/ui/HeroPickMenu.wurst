@@ -51,7 +51,7 @@ class HeroPickUI
   private constant PADDING = 0.03
   private constant HORIZONTAL_SPACING = 0.08
   private constant VERTICAL_SPACING = -0.08
-  private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDING, -PADDING)
+  private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDING, -PADDING * 2)
   private constant MAX_ICONS_PER_ROW = 8
 
   private constant didntSelectHeroSound = new SoundDefinition(Sounds.error)
@@ -67,11 +67,16 @@ class HeroPickUI
     ..setSize(0.8, 0.35)
     ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.4, 0.52))
 
+    createFrame(FramehandleTypeNames.text, "itemText", heroPickFrame, "", GetRandomInt(0, 1000000))
+    ..setText("Choose your hero")
+    ..setTextColor(colorA(255, 255, 255, 1))
+    ..setPoint(FRAMEPOINT_TOPLEFT, heroPickFrame, FRAMEPOINT_TOP, vec2(0, -PADDING))
+
     heroPickBackdrop.setAllPoints(heroPickFrame)
 
     heroPickButton
     ..setPoint(FRAMEPOINT_BOTTOM, heroPickFrame, FRAMEPOINT_BOTTOM, vec2(0, 0.02))
-    ..setText("Pick hero")
+    ..setText("Pick Hero")
     ..onClick() ->
       let p = GetTriggerPlayer()
       
