@@ -26,7 +26,7 @@ public constant SHAMAN_STAFF_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant SHAMAN_STAFF_RECIPE = new ItemRecipe()
-..gold(110)
+..gold(220)
 ..setRequiredItems(APPRENTICE_STAFF_ITEM.getNewId(), SHAMAN_CLAWS_ITEM.getNewId())
 ..setResultItem(SHAMAN_STAFF_ITEM)
 

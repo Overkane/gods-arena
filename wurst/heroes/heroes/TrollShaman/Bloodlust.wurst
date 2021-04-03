@@ -26,8 +26,8 @@ constant RealLevelClosure DURATION = lvl -> 12.
   ..addTooltipProperty("Movespeed Bonus", lvl -> (MS_BONUS.run(lvl)*100).round().toString() + "%")
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 75)
-  ..presetCooldown(lvl -> 20. - lvl*2)
+  ..presetManaCost(lvl -> 75 + 25 * lvl)
+  ..presetCooldown(lvl -> 18. - lvl * 2)
   ..tooltipStopListen()
   
   ..presetAttackSpeedIncrease(AS_BONUS)

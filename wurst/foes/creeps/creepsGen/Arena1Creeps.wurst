@@ -35,7 +35,7 @@ function wave_1() returns Wave
   ..wait(5)
 
   ..creep(UnitIds.direwolf)
-  ..hp(1250)
+  ..hp(1750)
   ..damage(29)
   ..amount(1)
   ..scale(1.5)
@@ -71,7 +71,7 @@ function wave_2() returns Wave
   ..amount(5)
 
   ..creep(UnitIds.foresttrollking)
-  ..hp(1250)
+  ..hp(2550)
   ..damage(45)
   ..amount(1)
   ..scale(1.5)
@@ -113,7 +113,7 @@ function wave_3() returns Wave
   ..wait(5)
 
   ..creep(UnitIds.furbolgancient)
-  ..hp(2000)
+  ..hp(4000)
   ..damage(34)
   ..amount(1)
   ..scale(1.5)
@@ -154,7 +154,7 @@ function wave_4() returns Wave
   ..amount(3)
 
   ..creep(UnitIds.gnollking)
-  ..hp(2200)
+  ..hp(6500)
   ..damage(50)
   ..amount(1)
   ..scale(1.5)
@@ -194,7 +194,7 @@ function wave_5() returns Wave
   ..amount(2)
 
   ..creep(UnitIds.broodmother)
-  ..hp(2750)
+  ..hp(8750)
   ..damage(75)
   ..amount(1)
   ..scale(2.6)
