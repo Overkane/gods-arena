@@ -55,6 +55,7 @@ init
   ..setName("Divine Blessing")
   ..addTooltipProperty("Bonus Armor", BONUS_ARMOR)
   ..addTooltipProperty("Bonus HP Reg", BONUS_HP_REG)
+  ..presetCastRange(lvl -> 1000)
   ..presetAreaofEffect(RADIUS)
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 65)
