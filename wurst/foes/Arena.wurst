@@ -49,6 +49,10 @@ public class Arena
     waveController.onAllWavesFinished = () -> begin
       if this.next != null
         printTimed("|cffceac15>> Congratulations! You finished this arena! You will progress to the next one momentarily..", 10.)
+        pData.forEach() (player p, PlayerData playerData) -> 
+          let heroUnit = playerData.getHero().actor
+          heroUnit.setHP(heroUnit.getMaxHP())
+          heroUnit.setMana(heroUnit.getMaxMana())
         doAfter(7.5) -> 
           modifier..stop()..destr()
           this.next.start(true)
