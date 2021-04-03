@@ -1,0 +1,41 @@
+package CloakOfShadows
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import NinjaCloak
+import AssassinsBlade
+
+constant EVASION_ID = compiletime(ABIL_ID_GEN.next())
+constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
+..setName("Cloak of Shadows")
+..setInterfaceIcon(Icons.bTNCloakOfFlames)
+..setActivelyUsed(true)
+..addBonus(Bonus.DAMAGE, 25)
+..addBonus(Bonus.AGILITY, 25)
+..addBonus(Bonus.LIFE, 300)
+..setAbilities(commaList(PHASE_STEP_ID, EVASION_ID))
+..generateTooltip("Active - Phase Step - allows owner to walk through other units. Lasts 5 seconds.\n" +
+"Passive - Evasion - 35% chance to dodge an attack.")
+)..register()
+
+public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
+..gold(120)
+..setRequiredItems(NINJA_CLOAK_ITEM.getNewId(), ASSASSINS_BLADE_ITEM.getNewId())
+..setResultItem(CLOAK_OF_SHADOWS_ITEM)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionEvasion(EVASION_ID)
+  ..setChancetoEvade(1, 0.35)
+
+  new AbilityDefinitionWindWalk(PHASE_STEP_ID)
+  ..setTransitionTime(1, 5)
+  ..setMovementSpeedIncrease(1, 0)
+  ..setBackstabDamage(1, false)
+  ..setDurationHero(1, 5)
+  ..setDurationNormal(1, 5)
+  ..setManaCost(1, 25)
+  ..setCooldown(1, 18)

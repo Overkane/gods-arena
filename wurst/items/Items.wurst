@@ -33,6 +33,7 @@ import public ApprenticeStaff
 import public AssassinsBlade
 import public Mace
 import public MaskOfMadness
+import public NinjaCloak
 import public OrbOfMagic
 import public PowerGloves
 import public RobeOfTheMage
@@ -46,6 +47,7 @@ import public AdeptStaff
 import public AdvancedArmor
 import public ArcaniteAxe
 import public ArcaniteSword
+import public CloakOfShadows
 import public LightningShield
 import public MageKiller
 import public MantleOfProtection

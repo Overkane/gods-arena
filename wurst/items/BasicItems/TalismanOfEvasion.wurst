@@ -12,7 +12,7 @@ public constant TALISMAN_OF_EVASION_ITEM = compiletime(new RecipeItem()
 ..setInterfaceIcon(Icons.bTNTalisman)
 ..setGoldCost(95)
 ..setAbilities(commaList(EVASION_ID))
-..generateTooltip("Passive - Evasion - 15% to dodge an attack.")
+..generateTooltip("Passive - Evasion - 15% chance to dodge an attack.")
 )..register()
 
 @compiletime function genItemAbils()

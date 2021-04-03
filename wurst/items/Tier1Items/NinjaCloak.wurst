@@ -1,0 +1,29 @@
+package NinjaCloak
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import TalismanOfEvasion
+import Emerald
+import VitalityStone
+
+constant EVASION_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
+..setName("Ninja Cloak")
+..setInterfaceIcon(Icons.bTNCloak)
+..addBonus(Bonus.AGILITY, 12)
+..addBonus(Bonus.LIFE, 200)
+..setAbilities(commaList(EVASION_ID))
+..generateTooltip("Passive - Evasion - 25% chance to dodge an attack.")
+)..register()
+
+public constant NINJA_CLOAK_RECIPE = new ItemRecipe()
+..gold(0)
+..setRequiredItems(TALISMAN_OF_EVASION_ITEM.getNewId(), EMERALD_ITEM.getNewId(), VITALITY_STONE_ITEM.getNewId())
+..setResultItem(NINJA_CLOAK_ITEM)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionEvasion(EVASION_ID)
+  ..setChancetoEvade(1, 0.25)
