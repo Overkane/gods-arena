@@ -4,9 +4,9 @@ import HeroSpellConstants
 
 public constant MIRROR_IMAGE_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE_DEALT = lvl -> 0.2 + 0.1 * lvl
-RealLevelClosure DAMAGE_TAKEN = lvl -> 1.7 - 0.1 * lvl
-RealLevelClosure DURATION = lvl -> 15. + 5 * lvl
+RealLevelClosure DAMAGE_DEALT = lvl -> 0.65 + 0.05 * lvl
+RealLevelClosure DAMAGE_TAKEN = lvl -> 1.55 - 0.05 * lvl
+RealLevelClosure DURATION = lvl -> 30.
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "Confuses the enemy by creating illusion of the hero. Dispels all magic from the hero.")
