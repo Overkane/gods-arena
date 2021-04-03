@@ -121,6 +121,6 @@ init
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()
-  ..setDamageperSecond(1, 150)
+  ..setDamageperSecond(1, 250)
   ..setDurationHero(3, 3.5)
   ..setDurationNormal(3, 3.5)

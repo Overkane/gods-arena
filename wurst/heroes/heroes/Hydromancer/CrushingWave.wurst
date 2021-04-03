@@ -28,4 +28,4 @@ constant RealLevelClosure DAMAGE = lvl -> 400. + 400. * (lvl-1)
   
   ..presetMaxDamage(lvl -> 999999)
   ..presetFinalArea(lvl -> 900)
-  ..presetAreaofEffect(lvl -> 100)
+  ..presetAreaofEffect(lvl -> 150)
