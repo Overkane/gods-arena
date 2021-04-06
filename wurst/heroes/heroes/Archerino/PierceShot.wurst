@@ -22,7 +22,7 @@ class TreantEntity extends UnitEntity
         ..setTimedLife(12.)
         ..issueTargetOrderById(OrderIds.attack, target)
         ..addBonus(Bonus.DAMAGE, lvl * 35.)
-        ..addBonus(Bonus.LIFE, 125. * lvl))
+        ..addBonus(Bonus.LIFE, 95. * lvl))
 
 
 init
@@ -66,5 +66,5 @@ init
     ..tooltipStopListen()
 
     new UnitDefinition(TREANT_ID, UnitIds.forceofnature)
-    ..setHitPointsMaximumBase(150)
+    ..setHitPointsMaximumBase(50)
     ..setAttack1DamageBase(15)
