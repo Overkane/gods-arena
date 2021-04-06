@@ -5,7 +5,6 @@ import AbilityObjEditing
 import RecipeItem
 import ObjectIds
 import ClosureEvents
-import UnitExtFuncs
 
 public constant HEALING_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
 
