@@ -5,9 +5,23 @@ import ObjectIdGenerator
 import ObjectIds
 import SteelSword
 import AssassinsBlade
+import TooltipFactory
 
 constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
+constant CRITICAL_STRIKE_CHANCE = 20
+constant CRITICAL_STRIKE_MUL = 1.5
+
 constant FEEDBACK_ID = compiletime(ABIL_ID_GEN.next())
+constant FEEDBACK_MP_BURN = 25
+constant FEEDBACK_RATIO = 2
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Critical Strike", 
+  "gives " + CRITICAL_STRIKE_CHANCE.colorPerc(COLOR_GOLD) + " chance to deal " + CRITICAL_STRIKE_MUL.color(COLOR_GOLD) + "x damage.")
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Feedback", 
+  "burn out " + FEEDBACK_MP_BURN.color(COLOR_GOLD) + " mana from attacked target. Deals " + FEEDBACK_RATIO.color(COLOR_GOLD) + " damage per burned mana.")
 
 public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 ..setName("Mage Killer")
@@ -16,8 +30,7 @@ public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.DAMAGE, 65)
 ..addBonus(Bonus.AGILITY, 15)
 ..setAbilities(commaList(CRITICAL_STRIKE_ID, FEEDBACK_ID))
-..generateTooltip("Passive - Critical Strike - gives 20% chance to deal 1.5x damage.\n" +
-"Passive - Feedback - burn out 25 mana from attacked target. Deals 2 damage per 1 burned mana.")
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant MAGE_KILLER_RECIPE = new ItemRecipe()
@@ -27,11 +40,11 @@ public constant MAGE_KILLER_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
-  ..setChancetoCriticalStrike(1, 20)
-  ..setDamageMultiplier(1, 1.5)
+  ..setChancetoCriticalStrike(1, CRITICAL_STRIKE_CHANCE.toReal())
+  ..setDamageMultiplier(1, CRITICAL_STRIKE_MUL)
 
   new AbilityDefinitionFeedback(FEEDBACK_ID)
-  ..setDamageRatioHeros(1, 2)
-  ..setDamageRatioUnits(1, 2)
-  ..setMaxManaDrainedHeros(1, 25)
-  ..setMaxManaDrainedUnits(1, 25)
+  ..setDamageRatioHeros(1, FEEDBACK_RATIO.toReal())
+  ..setDamageRatioUnits(1, FEEDBACK_RATIO.toReal())
+  ..setMaxManaDrainedHeros(1, FEEDBACK_MP_BURN.toReal())
+  ..setMaxManaDrainedUnits(1, FEEDBACK_MP_BURN.toReal())

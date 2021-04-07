@@ -4,8 +4,15 @@ import Icons
 import PassiveAbilityPreset
 import RobeOfTheMage
 import SimpleArmor
+import TooltipFactory
 
 constant MANA_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
+constant MANA_SHIELD_ABSORB = 2
+constant MANA_SHIELD_DURATION = 15
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Mana Shield", 
+  "activates a shield that absorbs " + MANA_SHIELD_ABSORB.color(COLOR_GOLD) + " damage per point of mana. Lasts " + MANA_SHIELD_DURATION.color(COLOR_GOLD) + " seconds.")
 
 public constant MANTLE_OF_PROTECTION_ITEM = compiletime(new RecipeItem()
 ..setName("Mantle of Protection")
@@ -16,7 +23,7 @@ public constant MANTLE_OF_PROTECTION_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.ARMOR, 3)
 ..addBonus(Bonus.MANAREGEN, 1.2)
 ..setAbilities(commaList(MANA_SHIELD_ID))
-..generateTooltip("Active - Mana Shield - activates a shield that absorbs 2 damage per point of mana. Lasts 15 seconds.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant MANTLE_OF_PROTECTION_RECIPE = new ItemRecipe()
@@ -27,7 +34,7 @@ public constant MANTLE_OF_PROTECTION_RECIPE = new ItemRecipe()
 @compiletime function genItemAbils()
   new AbilityDefinitionManaShieldCreep(MANA_SHIELD_ID)
   ..setDamageAbsorbed(1, 1)
-  ..setManaperHitPoint(1, 2)
-  ..setDurationHero(1, 15)
+  ..setManaperHitPoint(1, MANA_SHIELD_ABSORB.toReal())
+  ..setDurationHero(1, MANA_SHIELD_DURATION.toReal())
   ..setManaCost(1, 25)
   ..setCooldown(1, 30)

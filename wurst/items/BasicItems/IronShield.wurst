@@ -4,20 +4,27 @@ import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
+import TooltipFactory
 
 constant BLOCK_ID = compiletime(ABIL_ID_GEN.next())
+constant BLOCK_CHANCE = 50
+constant BLOCK_VALUE = 25
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Block", 
+  BLOCK_CHANCE.colorPerc(COLOR_GOLD) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD) + " damage.")
 
 public constant IRON_SHIELD_ITEM = compiletime(new RecipeItem()
 ..setName("Iron Shield")
 ..setInterfaceIcon(Icons.bTNHumanArmorUpOne)
 ..setGoldCost(110)
 ..setAbilities(commaList(BLOCK_ID))
-..generateTooltip("Passive - 50% chance to block 25 damage.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionHardenedSkin(BLOCK_ID)
-  ..setChancetoReduceDamage(1, 50)
-  ..setIgnoredDamage(1, 25)
+  ..setChancetoReduceDamage(1, BLOCK_CHANCE.toReal())
+  ..setIgnoredDamage(1, BLOCK_VALUE.toReal())
   ..setMinimumDamage(1, 1)
   ..setCheckDependencies(false)

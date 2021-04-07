@@ -6,8 +6,13 @@ import DamageEvent
 import SimpleArmor
 import HealthAmulet
 import IronSword
+import TooltipFactory
 
 constant RETALIATE_ID = compiletime(ABIL_ID_GEN.next())
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Retaliate", 
+  "deals " + "[Hero Level]*10".color(COLOR_GOLD) + " damage to the attacker. Multiple items don't stack.")
 
 public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 ..setName("Thornmail")
@@ -16,7 +21,7 @@ public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.LIFE, 550)
 ..addBonus(Bonus.ARMOR, 5)
 ..setAbilities(commaList(RETALIATE_ID))
-..generateTooltip("Passive - deals [Hero Level]*10 damage to the attacker. Multiple items don't stack.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant THORNMAIL_RECIPE = new ItemRecipe()

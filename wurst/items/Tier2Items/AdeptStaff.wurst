@@ -5,8 +5,16 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import ApprenticeStaff
+import TooltipFactory
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
+constant FIREBOLT_DAMAGE = 350
+constant FIREBOLT_STUN = 0.5
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Fire Bolt", 
+  "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD)
+  + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD) + " seconds.")
 
 public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Adept Staff")
@@ -16,7 +24,7 @@ public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.MANAREGEN, 2.5)
 ..setAbilities(commaList(FIREBOLT_ID))
 ..setCooldownGroup(FIREBOLT_ID.toRawCode())
-..generateTooltip("Active - fires firebolt which deals 350 damage and stuns target for 0.5 seconds.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
@@ -26,8 +34,8 @@ public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionFireBoltcreep(FIREBOLT_ID)
-  ..setDamage(1, 350)
-  ..setDurationNormal(1, 2)
-  ..setDurationHero(1, 0.5)
+  ..setDamage(1, FIREBOLT_DAMAGE.toReal())
+  ..setDurationNormal(1, FIREBOLT_STUN)
+  ..setDurationHero(1, FIREBOLT_STUN)
   ..setManaCost(1, 100)
   ..setCooldown(1, 16)

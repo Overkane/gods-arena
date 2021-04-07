@@ -7,8 +7,14 @@ import ObjectIds
 import TalismanOfEvasion
 import Emerald
 import VitalityStone
+import TooltipFactory
 
 constant EVASION_ID = compiletime(ABIL_ID_GEN.next())
+constant EVASION_CHANCE = 25
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Evasion", 
+  EVASION_CHANCE.colorPerc(COLOR_GOLD) + " chance to dodge an attack.")
 
 public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
 ..setName("Ninja Cloak")
@@ -16,7 +22,7 @@ public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.AGILITY, 12)
 ..addBonus(Bonus.LIFE, 200)
 ..setAbilities(commaList(EVASION_ID))
-..generateTooltip("Passive - Evasion - 25% chance to dodge an attack.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant NINJA_CLOAK_RECIPE = new ItemRecipe()
@@ -26,4 +32,4 @@ public constant NINJA_CLOAK_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionEvasion(EVASION_ID)
-  ..setChancetoEvade(1, 0.25)
+  ..setChancetoEvade(1, EVASION_CHANCE/100)

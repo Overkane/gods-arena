@@ -5,8 +5,17 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import IronAxe
+import TooltipFactory
 
 constant BASH_ID = compiletime(ABIL_ID_GEN.next())
+constant BASH_CHANCE = 15
+constant BASH_DURATION = 0.4
+constant BASH_DAMAGE = 25
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Bash", 
+  "gives " + BASH_CHANCE.colorPerc(COLOR_GOLD) + " chance to bash on attack for " + BASH_DURATION.color(COLOR_GOLD) + " seconds with " 
+  + BASH_DAMAGE.color(COLOR_GOLD) + " bonus damage.")
 
 public constant MACE_ITEM = compiletime(new RecipeItem()
 ..setName("Mace")
@@ -14,7 +23,7 @@ public constant MACE_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.DAMAGE, 50)
 ..addBonus(Bonus.ATTACKSPEED, -15)
 ..setAbilities(commaList(BASH_ID))
-..generateTooltip("Passive - Bash - gives 15% chance to bash on attack for 0.4 seconds with 25 bonus damage.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant MACE_RECIPE = new ItemRecipe()
@@ -24,7 +33,7 @@ public constant MACE_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionBashcreep(BASH_ID)
-  ..setChancetoBash(1, 15)
-  ..setDamageBonus(1, 25)
-  ..setDurationHero(1, 0.4)
-  ..setDurationNormal(1, 0.4)
+  ..setChancetoBash(1, BASH_CHANCE.toReal())
+  ..setDamageBonus(1, BASH_DAMAGE.toReal())
+  ..setDurationHero(1, BASH_DURATION)
+  ..setDurationNormal(1, BASH_DURATION)

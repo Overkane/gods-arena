@@ -6,8 +6,15 @@ import ObjectIdGenerator
 import ObjectIds
 import ClawsOfAttack
 import IronSword
+import TooltipFactory
 
 constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
+constant CRITICAL_STRIKE_CHANCE = 20
+constant CRITICAL_STRIKE_MUL = 1.5
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Critical Strike", 
+  "gives " + CRITICAL_STRIKE_CHANCE.colorPerc(COLOR_GOLD) + " chance to deal " + CRITICAL_STRIKE_MUL.color(COLOR_GOLD) + "x damage.")
 
 public constant STEEL_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Steel Sword")
@@ -24,5 +31,5 @@ public constant STEEL_SWORD_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
-  ..setChancetoCriticalStrike(1, 20)
-  ..setDamageMultiplier(1, 1.5)
+  ..setChancetoCriticalStrike(1, CRITICAL_STRIKE_CHANCE.toReal())
+  ..setDamageMultiplier(1, CRITICAL_STRIKE_MUL)
