@@ -1,0 +1,19 @@
+package GoldenArmor
+import Icons
+import RecipeItem
+import SimpleArmor
+import AdvancedArmor
+
+public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
+..setName("Golden Armor")
+..setInterfaceIcon(Icons.bTNHumanArmorUpThree)
+..addBonus(Bonus.LIFE, 750)
+..addBonus(Bonus.LIFEREGEN, 5)
+..addBonus(Bonus.ARMOR, 6)
+..generateTooltip("")
+)..register()
+
+public constant GOLDEN_ARMOR_RECIPE = new ItemRecipe()
+..gold(280)
+..setRequiredItems(SIMPLE_ARMOR_ITEM.getNewId(), ADVANCED_ARMOR_ITEM.getNewId())
+..setResultItem(GOLDEN_ARMOR_ITEM)

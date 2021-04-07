@@ -8,7 +8,7 @@ import ClosureEvents
 import SmallHealingPotion
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_HEAL = 1000.
+constant FLAT_HEAL = 1250.
 constant PERC_HEAL = 35
 
 public constant B_HEALING_POT_ITEM = compiletime(new RecipeItem()
