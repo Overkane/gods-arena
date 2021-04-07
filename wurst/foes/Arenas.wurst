@@ -3,6 +3,7 @@ import Arena
 import Arena1Creeps
 import Arena2Creeps
 import ClosureTimers
+import Arena3Creeps
 
 public function startArenas()
   Arena.first.start(false)
@@ -17,3 +18,20 @@ init
     new Arena("The Pond", gg_rct_Arena2, gg_rct_Arena2Center)
     ..setSpawnPoint(() -> gg_rct_Arena2Center.getCenter().polarOffset(GetRandomReal(0, 360).fromDeg(), 1800))
     ..setWaves(ARENA2_WAVE_1, ARENA2_WAVE_2, ARENA2_WAVE_3, ARENA2_WAVE_4, ARENA2_WAVE_5, ARENA2_WAVE_6)
+
+    new Arena("The City", gg_rct_Arena3, gg_rct_Arena3Center)
+    ..setSpawnPoint(() -> begin
+      let rand = GetRandomInt(0, 3)
+      var spawnLoc = ZERO2
+      switch rand
+        case 0
+          spawnLoc = gg_rct_Arena3Spawn1.getCenter()
+        case 1
+          spawnLoc = gg_rct_Arena3Spawn2.getCenter()
+        case 2
+          spawnLoc = gg_rct_Arena3Spawn3.getCenter()
+        case 3
+          spawnLoc = gg_rct_Arena3Spawn4.getCenter()
+      return spawnLoc
+    end)
+    ..setWaves(ARENA3_WAVE_1)

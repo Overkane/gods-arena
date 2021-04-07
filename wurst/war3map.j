@@ -6,6 +6,12 @@ rect gg_rct_Arena1SpawnPoint= null
 rect gg_rct_Arena2= null
 rect gg_rct_Arena2Center= null
 trigger gg_trg_rect_vars= null
+rect gg_rct_Arena3= null
+rect gg_rct_Arena3Center= null
+rect gg_rct_Arena3Spawn1= null
+rect gg_rct_Arena3Spawn2= null
+rect gg_rct_Arena3Spawn3= null
+rect gg_rct_Arena3Spawn4= null
 
 
 //JASSHelper struct globals:
@@ -53,6 +59,14 @@ function CreateRegions takes nothing returns nothing
     set gg_rct_Arena1SpawnPoint=Rect(- 480.0, 608.0, 416.0, 1024.0)
     set gg_rct_Arena2=Rect(- 2208.0, - 7712.0, 2560.0, - 2272.0)
     set gg_rct_Arena2Center=Rect(- 160.0, - 5056.0, 192.0, - 4672.0)
+    set gg_rct_Arena3=Rect(2976.0, - 2240.0, 7296.0, 1664.0)
+    set we=AddWeatherEffect(gg_rct_Arena3, 'RLlr')
+    call EnableWeatherEffect(we, true)
+    set gg_rct_Arena3Center=Rect(4768.0, - 544.0, 5472.0, 32.0)
+    set gg_rct_Arena3Spawn1=Rect(3104.0, 1120.0, 3392.0, 1440.0)
+    set gg_rct_Arena3Spawn2=Rect(6816.0, 1152.0, 7104.0, 1472.0)
+    set gg_rct_Arena3Spawn3=Rect(6784.0, - 2144.0, 7072.0, - 1824.0)
+    set gg_rct_Arena3Spawn4=Rect(3168.0, - 2112.0, 3456.0, - 1792.0)
 endfunction
 
 //***************************************************************************
