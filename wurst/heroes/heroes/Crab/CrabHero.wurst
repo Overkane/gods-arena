@@ -2,6 +2,8 @@ package CrabHero
 import ObjectIdGenerator
 import UnitIds
 import HeroPreset
+import ProtectiveShellSpell
+import HardenedShell
 
 public constant CRAB_ID = compiletime(HERO_ID_GEN.next())
 
@@ -9,8 +11,8 @@ public constant CRAB_ID = compiletime(HERO_ID_GEN.next())
 @compiletime function genHero()
   new HeroPreset(CRAB_ID, UnitIds.lobstrokkdeepseer, "Giant Ally Crab")
   ..addProperName("Crabus Maximus")
-//   ..addHeroAbility(PIERCESHOT_ID)
-//   ..addHeroAbility(TAGWALK_ID)
+  ..addHeroAbility(SHELL_ABIL_ID)
+  ..addHeroAbility(HARD_SHELL_ID)
 //   ..addHeroAbility(CRIT_ARROW_ID)
 //   ..addHeroAbility(ARROW_VOLLEY_ID)
   ..setStartingStrength(20)
