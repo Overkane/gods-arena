@@ -9,6 +9,7 @@ import Hero
 import GameProperties
 import SoundUtils
 import ItemShopUI
+import CrabHero
 
 public HeroPickUI heroPickUI
 
@@ -44,6 +45,9 @@ function addHeroIcons()
   ..addHeroIcon(
     new HeroIcon(ARCHER_ID, Icons.bTNSylvanusWindRunner, Icons.dISBTNSylvanusWindRunner)
     ..addTooltip("Archerino", "Shoots pointy sticks."))
+  // ..addHeroIcon(
+  //   new HeroIcon(CRAB_ID, Icons.bTNLobstrokkBlue, Icons.dISBTNLobstrokkBlue)
+  //   ..addTooltip("Crab", "Why do things keep evolving into crabs?"))
 
 class HeroPickUI
   private var heroIconCounter = 0

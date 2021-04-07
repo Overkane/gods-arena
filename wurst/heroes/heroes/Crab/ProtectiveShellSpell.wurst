@@ -1,0 +1,74 @@
+package ProtectiveShellSpell
+import ClosureEvents
+import Assets
+import ClosureForGroups
+import AbilityTooltipGenerator
+import InstantDummyCaster
+import Orders
+import ClosureTimers
+import BonusHandler
+import HeroSpellConstants
+
+public constant SHELL_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure SPELL_DMG = lvl -> 25. + 65. * lvl
+constant RealLevelClosure SPELL_REGEN = lvl -> 2. + 3. * lvl
+constant RealLevelClosure SPELL_ARMOR = lvl -> 7. + 3. * lvl
+constant SPELL_AOE = 256.
+constant SPELL_DURATION = 7.
+constant FLASH_EFFECT_DELAY = 0.9
+
+init
+    EventListener.onCast(SHELL_ABIL_ID) caster ->
+        let lvl = caster.getAbilityLevel(SHELL_ABIL_ID)
+        let owner = caster.getOwner()
+
+        let iceEffect = caster.addEffect(Doodads.ruins_Shells4, AttachmentPoints.origin)
+        ..setScale(5.)
+
+        let regen = SPELL_REGEN.run(lvl)
+        let armor = SPELL_ARMOR.run(lvl)
+        caster..setPropWindow(0 .fromDeg())
+        ..addBonus(Bonus.MANAREGEN, regen)
+        ..addBonus(Bonus.LIFEREGEN, regen)
+        ..addBonus(Bonus.ARMOR, armor)
+
+        forUnitsInRange(caster.getPos(), SPELL_AOE) (target) ->
+            if target.isEnemyOf(owner)
+                InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, lvl, OrderIds.frostnova, target)
+
+        doAfter(SPELL_DURATION) ->
+            iceEffect.destr()
+            caster..setPropWindow(caster.getDefaultPropWindow())
+            ..addBonus(Bonus.MANAREGEN, -regen)
+            ..addBonus(Bonus.LIFEREGEN, -regen)
+            ..addBonus(Bonus.ARMOR, -armor)
+
+
+
+@compiletime
+function genAbility()
+    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases regeneration and splashes nearby enemies."))
+    ..presetButtonPosNormal(1, 2)
+    ..presetButtonPosResearch(1, 0)
+    ..presetIcon(Icons.bTNShimmerWeed)
+
+    ..tooltipStartListen()
+    ..presetTargetTypes(Targettype.NONE)
+    ..setName("Protective Shell")
+    ..presetHotkey("W")
+    ..addTooltipProperty("Damage", SPELL_DMG)
+    ..addTooltipProperty("Mana/Life Regen", SPELL_REGEN)
+    ..addTooltipProperty("ARMOR", SPELL_ARMOR)
+    ..presetManaCost(lvl -> 50 + lvl * 10)
+    ..presetAreaofEffect(lvl -> SPELL_AOE)
+    ..presetCooldown(lvl -> 16. - lvl)
+    ..presetCastRange(lvl -> 600)
+
+    ..tooltipStopListen()
+
+    new AbilityDefinitionFrostNovacreep(DUMMY_ABIL_ID)
+    ..setDummyAbility()
+    ..setLevels(NORMAL_SPELL_LEVELS)
+    ..presetAreaofEffect(lvl -> 1)
+    ..presetSpecificTargetDamage(SPELL_DMG)

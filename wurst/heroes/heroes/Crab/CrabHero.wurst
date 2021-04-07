@@ -1,0 +1,25 @@
+package CrabHero
+import ObjectIdGenerator
+import UnitIds
+import HeroPreset
+
+public constant CRAB_ID = compiletime(HERO_ID_GEN.next())
+
+
+@compiletime function genHero()
+  new HeroPreset(CRAB_ID, UnitIds.lobstrokkdeepseer, "Giant Ally Crab")
+  ..addProperName("Crabus Maximus")
+//   ..addHeroAbility(PIERCESHOT_ID)
+//   ..addHeroAbility(TAGWALK_ID)
+//   ..addHeroAbility(CRIT_ARROW_ID)
+//   ..addHeroAbility(ARROW_VOLLEY_ID)
+  ..setStartingStrength(20)
+  ..setStrengthPerLevel(3.6)
+  ..setStartingAgility(14)
+  ..setAgilityPerLevel(2.2)
+  ..setStartingIntelligence(11)
+  ..setIntelligencePerLevel(1.8)
+  ..setAttack1DamageBase(3)
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(8)
+  ..buildHero()
