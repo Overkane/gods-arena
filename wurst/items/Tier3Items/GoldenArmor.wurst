@@ -14,6 +14,6 @@ public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant GOLDEN_ARMOR_RECIPE = new ItemRecipe()
-..gold(320)
+..gold(360)
 ..setRequiredItems(SIMPLE_ARMOR_ITEM.getNewId(), ADVANCED_ARMOR_ITEM.getNewId())
 ..setResultItem(GOLDEN_ARMOR_ITEM)
