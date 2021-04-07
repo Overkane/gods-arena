@@ -6,9 +6,21 @@ import ObjectIdGenerator
 import ObjectIds
 import NinjaCloak
 import AssassinsBlade
+import TooltipFactory
 
 constant EVASION_ID = compiletime(ABIL_ID_GEN.next())
+constant EVASION_CHANCE = 35
+
 constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
+constant PHASE_STEP_DURATION = 5
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Phase Step", 
+  "allows owner to walk through other units. Lasts " + PHASE_STEP_DURATION.color(COLOR_GOLD) + " seconds.")
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Evasion", 
+  (EVASION_CHANCE.toString() + "%").color(COLOR_GOLD) + " chance to dodge an attack.")
 
 public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..setName("Cloak of Shadows")
@@ -18,8 +30,7 @@ public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.AGILITY, 25)
 ..addBonus(Bonus.LIFE, 300)
 ..setAbilities(commaList(PHASE_STEP_ID, EVASION_ID))
-..generateTooltip("Active - Phase Step - allows owner to walk through other units. Lasts 5 seconds.\n" +
-"Passive - Evasion - 35% chance to dodge an attack.")
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
@@ -29,13 +40,13 @@ public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionEvasion(EVASION_ID)
-  ..setChancetoEvade(1, 0.35)
+  ..setChancetoEvade(1, EVASION_CHANCE/100)
 
   new AbilityDefinitionWindWalk(PHASE_STEP_ID)
   ..setTransitionTime(1, 5)
   ..setMovementSpeedIncrease(1, 0)
   ..setBackstabDamage(1, false)
-  ..setDurationHero(1, 5)
-  ..setDurationNormal(1, 5)
+  ..setDurationHero(1, PHASE_STEP_DURATION.toReal())
+  ..setDurationNormal(1, PHASE_STEP_DURATION.toReal())
   ..setManaCost(1, 25)
   ..setCooldown(1, 18)

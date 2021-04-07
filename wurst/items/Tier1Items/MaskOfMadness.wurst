@@ -5,9 +5,23 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import MaskOfDeath
+import TooltipFactory
 
 constant BERSERK_ID = compiletime(ABIL_ID_GEN.next())
+constant BERSERK_BONUS_AS = 40
+constant BERSERK_DAMAGE_TAKEN_INC = 30
+
 constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
+constant LIFESTEAL_VALUE = 25
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Berserk", 
+  "gives " + BERSERK_BONUS_AS.colorPerc(COLOR_GOLD) + " AS, but increase input damage by " 
+  + BERSERK_DAMAGE_TAKEN_INC.colorPerc(COLOR_GOLD) + ".")
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Lifesteal", 
+  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of damage dealt converts to hitpoints.")
 
 constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Madness")
@@ -15,7 +29,7 @@ constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 ..setActivelyUsed(true)
 ..setAbilities(commaList(BERSERK_ID, LIFESTEAL_ID))
 ..setCooldownGroup(BERSERK_ID.toRawCode())
-..generateTooltip("Passive - 25% life steal.\nActive - berserk. Gives 40% AS, but increase input damage by 30%.")
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant MASK_OF_MADNESS_RECIPE = new ItemRecipe()
@@ -25,10 +39,10 @@ public constant MASK_OF_MADNESS_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionVampiricattackAIva(LIFESTEAL_ID)
-  ..setLifeStolenPerAttack(1, 0.25)
+  ..setLifeStolenPerAttack(1, LIFESTEAL_VALUE/100)
   new AbilityDefinitionBerserk(BERSERK_ID)
-  ..setDamageTakenIncrease(1, 0.3)
-  ..setAttackSpeedIncrease(1, 0.4)
+  ..setDamageTakenIncrease(1, BERSERK_DAMAGE_TAKEN_INC/100)
+  ..setAttackSpeedIncrease(1, BERSERK_BONUS_AS/100)
   ..setMovementSpeedIncrease(1, 0)
   ..setItemAbility(true)
   ..setManaCost(1, 50)

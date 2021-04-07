@@ -5,8 +5,14 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import SteelAxe
+import TooltipFactory
 
 constant CLEAVE_ID = compiletime(ABIL_ID_GEN.next())
+constant CLEAVE_PERC = 50
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Cleave", 
+  "gives " + CLEAVE_PERC.colorPerc(COLOR_GOLD) + " cleave.")
 
 public constant ARCANITE_AXE_ITEM = compiletime(new RecipeItem()
 ..setName("Arcanite Axe")
@@ -14,7 +20,7 @@ public constant ARCANITE_AXE_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.DAMAGE, 120)
 ..addBonus(Bonus.ATTACKSPEED, -10)
 ..setAbilities(commaList(CLEAVE_ID))
-..generateTooltip("Passive - gives 50% cleave.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant ARCANITE_AXE_RECIPE = new ItemRecipe()
@@ -24,4 +30,4 @@ public constant ARCANITE_AXE_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionPitLordCleavingAttack(CLEAVE_ID)
-  ..setDistributedDamageFactor(1, 0.5)
+  ..setDistributedDamageFactor(1, CLEAVE_PERC/100)

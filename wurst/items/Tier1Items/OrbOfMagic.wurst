@@ -6,8 +6,13 @@ import Icons
 import ClosureEvents
 import SoundUtils
 import Diamond
+import TooltipFactory
 
 constant ORB_OF_MAGIC_ID = compiletime(ABIL_ID_GEN.next())
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Refresh", 
+  "refreshes all abilities of the owner.")
 
 public constant ORB_OF_MAGIC_ITEM = compiletime(new RecipeItem()
   ..setName("Orb of Magic")
@@ -17,7 +22,7 @@ public constant ORB_OF_MAGIC_ITEM = compiletime(new RecipeItem()
   ..addBonus(Bonus.INTELLIGENCE, 50)
   ..setAbilities(ORB_OF_MAGIC_ID.toRawCode())
   ..setCooldownGroup(ORB_OF_MAGIC_ID.toRawCode())
-  ..generateTooltip("Active - Refresh - refreshes all abilities of the owner.")
+  ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant ORB_OF_MAGIC_RECIPE = new ItemRecipe()

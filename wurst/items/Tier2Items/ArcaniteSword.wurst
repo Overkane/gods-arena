@@ -5,8 +5,15 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import SteelSword
+import TooltipFactory
 
 constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
+constant CRITICAL_STRIKE_CHANCE = 25
+constant CRITICAL_STRIKE_MUL = 2
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Critical Strike", 
+  "gives " + CRITICAL_STRIKE_CHANCE.colorPerc(COLOR_GOLD) + " chance to deal " + CRITICAL_STRIKE_MUL.color(COLOR_GOLD) + "x damage.")
 
 public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Arcanite Sword")
@@ -14,7 +21,7 @@ public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
 ..setGoldCost(110)
 ..addBonus(Bonus.DAMAGE, 80)
 ..setAbilities(commaList(CRITICAL_STRIKE_ID))
-..generateTooltip("Passive - gives 25% chance to deal 2x damage.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant ARCANITE_SWORD_RECIPE = new ItemRecipe()
@@ -24,5 +31,5 @@ public constant ARCANITE_SWORD_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
-  ..setChancetoCriticalStrike(1, 25)
-  ..setDamageMultiplier(1, 2)
+  ..setChancetoCriticalStrike(1, CRITICAL_STRIKE_CHANCE.toReal())
+  ..setDamageMultiplier(1, CRITICAL_STRIKE_MUL.toReal())

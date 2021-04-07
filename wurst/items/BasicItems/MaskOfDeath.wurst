@@ -4,17 +4,23 @@ import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
+import TooltipFactory
 
 constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
+constant LIFESTEAL_VALUE = 25
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Lifesteal", 
+  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of damage dealt converts to hitpoints.")
 
 public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Death")
 ..setInterfaceIcon(Icons.bTNMaskOfDeath)
 ..setGoldCost(200)
 ..setAbilities(commaList(LIFESTEAL_ID))
-..generateTooltip("Passive - 25% life steal.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionVampiricattackAIva(LIFESTEAL_ID)
-  ..setLifeStolenPerAttack(1, 0.25)
+  ..setLifeStolenPerAttack(1, LIFESTEAL_VALUE/100)

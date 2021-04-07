@@ -1,0 +1,55 @@
+package TooltipFactory
+
+constant ACTIVE_TOOLTIP_COLOR = COLOR_GOLD
+constant PASSIVE_TOOLTIP_COLOR = COLOR_GOLD
+constant ABILITY_NAME_COLOR = color(106, 194, 221)
+
+public enum AbilityType
+  PASSIVE
+  ACTIVE
+
+// To avoid redundant toString() calls.
+public function real.color(color which) returns string
+  return this.toString().color(which)
+
+// To avoid redundant toString() calls.
+public function int.color(color which) returns string
+  return this.toString().color(which)
+
+// To avoid redundant toString() calls.
+public function real.color(colorA which) returns string
+  return this.toString().color(which)
+
+// To avoid redundant toString() calls.
+public function int.color(colorA which) returns string
+  return this.toString().color(which)
+  
+// To avoid redundant toString() calls and % uses.
+public function real.colorPerc(color which) returns string
+  return (this.toString() + "%").color(which)
+
+// To avoid redundant toString() calls and % uses.
+public function int.colorPerc(color which) returns string
+  return (this.toString() + "%").color(which)
+
+// To avoid redundant toString() calls and % uses.
+public function real.colorPerc(colorA which) returns string
+  return (this.toString() + "%").color(which)
+
+// To avoid redundant toString() calls and % uses.
+public function int.colorPerc(colorA which) returns string
+  return (this.toString() + "%").color(which)
+
+public function itemAbilityTooltip(AbilityType abilityType, string abilityName, string abilityDescription) returns string
+  var itemAbilityTooltip = ""
+  
+  if abilityType == AbilityType.ACTIVE
+    itemAbilityTooltip += "Active".color(ACTIVE_TOOLTIP_COLOR)
+  else
+    itemAbilityTooltip += "Passive".color(PASSIVE_TOOLTIP_COLOR)
+  
+  itemAbilityTooltip += " - " + abilityName.color(ABILITY_NAME_COLOR) + " - "
+
+  itemAbilityTooltip += abilityDescription
+
+  return itemAbilityTooltip
