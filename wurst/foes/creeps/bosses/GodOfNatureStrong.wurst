@@ -34,7 +34,7 @@ public class GodOfNatureStrong extends Boss
     super(GOD_OF_NATURE_ID, pos, ang)
     BOSS_MUSIC_THEME.play()
     new SoundDefinition(Sounds.o05Cenarius27).play()
-    doPeriodically(6) cb ->
+    doPeriodically(5) cb ->
       if actor.isAlive()
         castBossSpell()
       else
@@ -63,9 +63,9 @@ public class GodOfNatureStrong extends Boss
         summonWisps()
     
   function summonTreants()
-    for i = 0 to 5
+    for i = 0 to 8
       let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena2.randomPoint(), angle(GetRandomReal(0, 359)))
-      doPeriodicallyCounted(2.5, 10) (CallbackCounted cb) ->
+      doPeriodicallyCounted(1.5, 10) (CallbackCounted cb) ->
         u..addBonus(Bonus.LIFE, 75)
         ..addBonus(Bonus.DAMAGE, 50)
         ..setMoveSpeed(u.getMoveSpeed() - 34.5)
@@ -98,7 +98,7 @@ init
   new UnitDefinition(WISP_ID, UnitIds.wisp)
   ..setHitPointsMaximumBase(500)
   ..setArmorType(ArmorType.Divine)
-  ..setSpeedBase(175)
+  ..setSpeedBase(205)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
   
@@ -114,11 +114,11 @@ init
   ..setName("God of Nature")
   ..setAttack1DamageBase(300)
   ..setDefenseBase(20)
-  ..setHitPointsMaximumBase(50000)
+  ..setHitPointsMaximumBase(100000)
   ..setScalingValue(2.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()
-  ..setDamageperSecond(1, 250)
+  ..setDamageperSecond(1, 450)
   ..setDurationHero(5, 4.5)
   ..setDurationNormal(5, 4.5)
