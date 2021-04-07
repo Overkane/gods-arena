@@ -8,14 +8,14 @@ dependencies:
 - https://github.com/Frotty/wurst-item-shop:main
 - https://github.com/Frotty/wurst-item-recipes:main
 buildMapData:
-  name: Gods' Arena v0.4.5
-  fileName: Gods' Arena v0.4.5
+  name: Gods' Arena v0.5.0
+  fileName: Gods' Arena v0.5.0
   author: Overkane & Frotty
   scenarioData:
-    description: Survive the arena of the gods.
+    description: PvE Hero Survival. Beat all waves the god of each arena to win.
     suggestedPlayers: 4-8
     loadingScreen:
       title: by Overkane and Frotty
-      subTitle: Gods' Arena v0.4.5
+      subTitle: Gods' Arena v0.5.0
       text: "Try to survive the arena of the gods.\n\n Press TAB to toggle the shop!\n\
         \n You will be revived at the end of each round. "

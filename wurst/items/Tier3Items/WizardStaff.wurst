@@ -1,0 +1,33 @@
+package WizardStaff
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import AdeptStaff
+
+constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
+..setName("Wizard Staff")
+..setInterfaceIcon(Icons.bTNWandOfNeutralization)
+..setActivelyUsed(true)
+..addBonus(Bonus.INTELLIGENCE, 35)
+..addBonus(Bonus.MANAREGEN, 3.5)
+..setAbilities(commaList(FIREBOLT_ID))
+..setCooldownGroup(FIREBOLT_ID.toRawCode())
+..generateTooltip("Active - fires firebolt which deals 500 damage and stuns target for 0.75 seconds.")
+)..register()
+
+public constant WIZARD_STAFF_RECIPE = new ItemRecipe()
+..gold(290)
+..setRequiredItems(ADEPT_STAFF_ITEM.getNewId())
+..setResultItem(WIZARD_STAFF_ITEM)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionFireBoltcreep(FIREBOLT_ID)
+  ..setDamage(1, 500)
+  ..setDurationNormal(1, 2)
+  ..setDurationHero(1, 0.75)
+  ..setManaCost(1, 125)
+  ..setCooldown(1, 16)

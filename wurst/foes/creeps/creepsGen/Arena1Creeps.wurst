@@ -232,7 +232,7 @@ function wave_6() returns Wave
 
   ..creep(UnitIds.misha)
   ..hp(2400)
-  ..damage(76)
+  ..damage(56)
   ..amount(6)
   ..rgb(125, 125, 125)
 

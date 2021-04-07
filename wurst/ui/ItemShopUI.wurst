@@ -9,6 +9,8 @@ import ChannelAbilityPreset
 import RecipeItem
 import Icons
 import SoundUtils
+import WizardStaff
+import GoldenArmor
 
 public constant SELL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -68,6 +70,9 @@ public function initItemShop()
   ..addRecipe(LIGHTNING_SHIELD_RECIPE)
   ..addRecipe(MANTLE_OF_PROTECTION_RECIPE)
   ..addRecipe(THORNMAIL_RECIPE)
+  ..addSection("Tier 3 Recipes")
+  ..addRecipe(WIZARD_STAFF_RECIPE)
+  ..addRecipe(GOLDEN_ARMOR_RECIPE)
   // ..addSection("Tomes")
   // ..addItem(TOME_OF_STRENGTH_ITEM)
   // ..addItem(TOME_OF_AGILITY_ITEM)

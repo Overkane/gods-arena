@@ -8,8 +8,8 @@ import BubbleShieldBuff
 public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure HP_REGEN = lvl -> 10. + 8. * (lvl-1)
-constant RealLevelClosure SHIELD_DURABILITY = lvl -> 50. + 100. * lvl
-constant RealLevelClosure DURATION = lvl -> 8
+constant RealLevelClosure SHIELD_DURABILITY = lvl -> 25. + 150. * lvl
+constant RealLevelClosure DURATION = lvl -> 6. + lvl
 
 init
   EventListener.onTargetCast(BUBBLE_SHIELD_ID) (unit caster, unit target) ->
@@ -21,7 +21,7 @@ init
     new BubbleShieldBuff(spellDuration, shieldDurability, spellHPRegen).apply(target)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Applies bubble shield to the target, which increases its hp regeneration. Bubble shield can block small amount of damage and brokes if block limit was exceeded.")
+  let tooltip = new AbilityTooltipGenerator("Applies a bubble shield to the target, which increases its hp regeneration and blocks some amount of damage. The effect ends when the shield is destroyed or the duration exceeded.")
   new ChannelAbilityPreset(BUBBLE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetIcon(Icons.bTNNeutralManaShield)
   ..presetButtonPosNormal(2, 2)
@@ -38,6 +38,6 @@ init
   ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 90 + 10 * lvl)
-  ..presetCooldown(lvl -> 14. - lvl)
+  ..presetManaCost(lvl -> 70 + 20 * lvl)
+  ..presetCooldown(lvl -> 15. - lvl)
   ..tooltipStopListen()

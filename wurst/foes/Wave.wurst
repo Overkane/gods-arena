@@ -104,8 +104,12 @@ public class WaveBuilder
     creepStep.bounty = max(1, (hp / 395).round())
     if creepStep.bounty > 10
       creepStep.bounty = (creepStep.bounty * .65).round()
-    else if creepStep.bounty > 25
+    else if creepStep.bounty > 20
+      creepStep.bounty = (creepStep.bounty * .55).round()
+    else if creepStep.bounty > 35
       creepStep.bounty = (creepStep.bounty * .45).round()
+    else if creepStep.bounty > 50
+      creepStep.bounty = (creepStep.bounty * .35).round()
 
   function mana(int mana)
     creepStep.creepDef.setManaMaximum(mana)

@@ -1,0 +1,83 @@
+package Arena3Creeps
+import UnitIds
+import Wave
+
+public constant ARENA3_WAVE_1 = compiletime(wave_1())
+public constant ARENA3_WAVE_2 = compiletime(wave_2())
+
+function wave_1() returns Wave
+  return new WaveBuilder()
+  ..expBounty(900)
+  ..goldBounty(150)
+
+  ..creep(UnitIds.footman)
+  ..hp(9600)
+  ..damage(288)
+  ..amount(18)
+  ..scale(1.15)
+
+  ..creep(UnitIds.knight)
+  ..hp(13450)
+  ..damage(228)
+  ..attackrate(1.0)
+  ..scale(1.25)
+  ..amount(4)
+
+  ..wait(25)
+
+  ..creep(UnitIds.rifleman)
+  ..hp(5000)
+  ..damage(145)
+  ..attackrate(0.25)
+  ..amount(8)
+
+  ..creep(UnitIds.militia)
+  ..hp(7600)
+  ..damage(188)
+  ..amount(20)
+  ..scale(1.05)
+
+  .build()
+
+
+function wave_2() returns Wave
+  return new WaveBuilder()
+  ..expBounty(900)
+  ..goldBounty(150)
+
+  ..creep(UnitIds.priest)
+  ..hp(12000)
+  ..damage(88)
+  ..attackrate(0.25)
+  ..amount(8)
+  ..scale(1.15)
+
+  ..creep(UnitIds.paladin)
+  ..hp(50450)
+  ..damage(628)
+  ..attackrate(0.12)
+  ..scale(1.25)
+  ..amount(1)
+
+  .build()
+
+function wave_3() returns Wave
+  return new WaveBuilder()
+  ..expBounty(900)
+  ..goldBounty(150)
+
+  ..creep(UnitIds.spellbreaker)
+  ..hp(25000)
+  ..damage(666)
+  ..attackrate(0.25)
+  ..amount(10)
+  ..scale(1.15)
+
+  ..creep(UnitIds.sorceress)
+  ..hp(25000)
+  ..damage(333)
+  ..attackrate(0.12)
+  ..scale(1.25)
+  ..amount(10)
+
+  .build()
