@@ -133,6 +133,9 @@ public class WaveBuilder
   function scale(real scale)
     creepStep.creepDef.setScalingValue(scale)
 
+  function movespeed(int speed)
+    creepStep.creepDef.setSpeedBase(speed)
+
   function rgb(int red, int green, int blue)
     creepStep.creepDef.setTintingColorRed(red)
     creepStep.creepDef.setTintingColorGreen(green)

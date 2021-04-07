@@ -286,7 +286,7 @@ function wave_8() returns Wave
   ..damage(40)
   ..amount(6)
 
-  ..wait(20)
+  ..wait(25)
 
   ..creep(UnitIds.stonemaulwarchief)
   ..hp(3750)
@@ -303,7 +303,7 @@ function wave_8() returns Wave
   ..scale(1.8)
   ..rgb(255, 0, 0)
 
-  ..wait(15)
+  ..wait(25)
 
   ..creep(UnitIds.ogrelord)
   ..hp(10500)
@@ -311,6 +311,7 @@ function wave_8() returns Wave
   ..attackrate(0.75)
   ..amount(1)
   ..scale(1.2)
+  ..movespeed(150)
   ..rgb(255, 0, 0)
 
   .build()
