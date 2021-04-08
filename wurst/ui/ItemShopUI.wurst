@@ -12,6 +12,7 @@ import SoundUtils
 import WizardStaff
 import GoldenArmor
 import PlatedGauntlets
+import CrownOfKings
 
 public constant SELL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -48,6 +49,7 @@ public function initItemShop()
   ..addItem(RUBY_ITEM)
   ..addItem(EMERALD_ITEM)
   ..addItem(DIAMOND_ITEM)
+  ..addItem(CROWN_ITEM)
   ..addSection("Tier 1 Recipes")
   ..addRecipe(APPRENTICE_STAFF_RECIPE)
   ..addRecipe(ASSASINS_BLADE_RECIPE)

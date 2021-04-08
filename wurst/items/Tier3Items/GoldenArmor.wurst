@@ -3,6 +3,7 @@ import Icons
 import RecipeItem
 import SimpleArmor
 import AdvancedArmor
+import CrownOfKings
 
 public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Golden Armor")
@@ -10,10 +11,13 @@ public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.LIFE, 750)
 ..addBonus(Bonus.LIFEREGEN, 8)
 ..addBonus(Bonus.ARMOR, 7)
+..addBonus(Bonus.AGILITY, 15)
+..addBonus(Bonus.STRENGTH, 15)
+..addBonus(Bonus.INTELLIGENCE, 15)
 ..generateTooltip("")
 )..register()
 
 public constant GOLDEN_ARMOR_RECIPE = new ItemRecipe()
 ..gold(380)
-..setRequiredItems(SIMPLE_ARMOR_ITEM.getNewId(), ADVANCED_ARMOR_ITEM.getNewId())
+..setRequiredItems(CROWN_ITEM.getNewId(), ADVANCED_ARMOR_ITEM.getNewId())
 ..setResultItem(GOLDEN_ARMOR_ITEM)
