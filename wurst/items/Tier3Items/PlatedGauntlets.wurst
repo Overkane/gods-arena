@@ -1,0 +1,19 @@
+package PlatedGauntlets
+import RecipeItem
+import PowerGloves
+import AssassinsBlade
+
+public constant PLATED_GAUNTLETS_ITEM = compiletime(new RecipeItem()
+..setName("Plated Gauntlets")
+..setInterfaceIcon("PlateGauntlet")
+..addBonus(Bonus.ATTACKSPEED, 60)
+..addBonus(Bonus.AGILITY, 16)
+..addBonus(Bonus.DAMAGE, 24)
+..addBonus(Bonus.ARMOR, 2)
+..generateTooltip("")
+)..register()
+
+public constant PLATED_GAUNTLETS_RECIPE = new ItemRecipe()
+..gold(270)
+..setRequiredItems(POWER_GLOVES_ITEM.getNewId(), ASSASSINS_BLADE_ITEM.getNewId())
+..setResultItem(PLATED_GAUNTLETS_ITEM)

@@ -11,6 +11,7 @@ import Icons
 import SoundUtils
 import WizardStaff
 import GoldenArmor
+import PlatedGauntlets
 
 public constant SELL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -74,6 +75,7 @@ public function initItemShop()
   ..addSection("Tier 3 Recipes")
   ..addRecipe(WIZARD_STAFF_RECIPE)
   ..addRecipe(GOLDEN_ARMOR_RECIPE)
+  ..addRecipe(PLATED_GAUNTLETS_RECIPE)
   // ..addSection("Tomes")
   // ..addItem(TOME_OF_STRENGTH_ITEM)
   // ..addItem(TOME_OF_AGILITY_ITEM)
