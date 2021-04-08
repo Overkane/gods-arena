@@ -3,14 +3,22 @@ import Quest
 import Icons
 
 init
-  let credits = new Quest(false)
-  credits
+  new Quest(false)
   ..setIcon(Icons.bTNTome)
   ..setTitle("Credits")
   ..setDescription(
     "Hiveworkshop guys:\n" + 
     "Mythic - spell effects\n" +
     "JesusHipster - spell effects\n" +
-    "PrinceYaser - item icons\n" +
+    "PrinceYaser & PeeKay - item icons\n" +
     "GooS - potion icons\n"
+  )
+
+  new Quest(true)
+  ..setIcon(Icons.bTNRacoon)
+  ..setTitle("About")
+  ..setDescription(
+    "Beat the creep waves and the god of each arena to win!\n" + 
+    "You will revive after each round.\n" +
+    "Use the hotkey TAB to toggle the shop display.\n"
   )

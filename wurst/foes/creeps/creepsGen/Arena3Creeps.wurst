@@ -13,7 +13,7 @@ function wave_1() returns Wave
   ..creep(UnitIds.footman)
   ..hp(9600)
   ..damage(288)
-  ..amount(18)
+  ..amount(22)
   ..scale(1.15)
 
   ..creep(UnitIds.knight)
@@ -21,20 +21,20 @@ function wave_1() returns Wave
   ..damage(228)
   ..attackrate(1.0)
   ..scale(1.25)
-  ..amount(4)
+  ..amount(6)
 
   ..wait(25)
 
   ..creep(UnitIds.rifleman)
   ..hp(5000)
   ..damage(145)
-  ..attackrate(0.25)
+  ..attackrate(0.35)
   ..amount(8)
 
   ..creep(UnitIds.militia)
-  ..hp(7600)
+  ..hp(6600)
   ..damage(188)
-  ..amount(20)
+  ..amount(28)
   ..scale(1.05)
 
   .build()
