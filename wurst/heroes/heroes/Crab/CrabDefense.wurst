@@ -19,7 +19,7 @@ init
     let target = DamageEvent.getTarget()
     let source = DamageEvent.getSource()
 
-    if target.hasAbility(CRAB_DEFENSE_ID)
+    if target.hasAbility(CRAB_DEFENSE_ID) and source.isEnemyOf(target)
       let lvl = target.getAbilityLevel(CRAB_DEFENSE_ID)
       let chance = SPELL_CHANCE.run(lvl)
       let rand = GetRandomReal(0, 1)
