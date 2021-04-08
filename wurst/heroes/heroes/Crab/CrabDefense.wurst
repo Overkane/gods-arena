@@ -12,7 +12,7 @@ public constant CRAB_DEFENSE_ID = compiletime(ABIL_ID_GEN.next())
 public constant CRABLING_ID = compiletime(UNIT_ID_GEN.next())
 
 constant RealLevelClosure SPELL_CHANCE = lvl -> 0.15 + 0.05 * lvl
-constant RealLevelClosure CRAB_DAMAGE = lvl -> 7. * lvl
+constant RealLevelClosure CRAB_DAMAGE = lvl -> 9. * lvl
 
 init
   DamageEvent.addListener() -> 
@@ -30,6 +30,7 @@ init
         ..setTimedLife(5.)
         ..addBonus(Bonus.DAMAGE, CRAB_DAMAGE.run(lvl))
         ..addAbility(LOCUST_ID)
+        ..setXY(target.getPos())
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Has a chance to spawn a defensive crabling when attacked")
@@ -50,6 +51,7 @@ init
   new UnitDefinition(CRABLING_ID, UnitIds.spidercrab)
   ..setScalingValue(0.45)
   ..setHitPointsMaximumBase(35)
+  ..setAttack1Range(25)
   ..setAttack1CooldownTime(1)
   ..setAttack1DamageBase(2)
   ..setDeathTimeseconds(0.5)

@@ -6,7 +6,7 @@ import Icons
 public constant HARD_SHELL_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure SPELL_CHANCE = lvl -> 0.35 + 0.05 * lvl
-constant RealLevelClosure IGNORED_DAMAGE = lvl -> 10. + 15 * lvl
+constant RealLevelClosure IGNORED_DAMAGE = lvl -> 5. + 20 * lvl
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Adds a chance to block incoming damage.")
