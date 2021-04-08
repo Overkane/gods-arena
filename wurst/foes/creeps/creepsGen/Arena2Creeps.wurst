@@ -156,62 +156,56 @@ function wave_5() returns Wave
   ..expBounty(900)
   ..goldBounty(150)
 
-  ..creep(UnitIds.quillboar)
-  ..hp(9600)
-  ..damage(328)
-  ..amount(5)
-  ..scale(1.25)
-
   ..creep(UnitIds.tichondrius)
   ..hp(13450)
   ..damage(248)
   ..attackrate(0.75)
   ..amount(2)
 
-  ..wait(5)
+  ..wait(10)
 
   ..creep(UnitIds.quillboar)
-  ..hp(9600)
+  ..hp(7600)
   ..damage(328)
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(5)
+  ..wait(10)
 
   ..creep(UnitIds.quillboar)
-  ..hp(9600)
+  ..hp(7600)
   ..damage(328)
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(5)
+  ..wait(10)
 
   ..creep(UnitIds.quillboar)
-  ..hp(9600)
+  ..hp(7600)
   ..damage(328)
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(5)
+  ..wait(10)
 
   ..creep(UnitIds.quillboar)
-  ..hp(9600)
+  ..hp(7600)
   ..damage(328)
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(5)
+  ..wait(10)
 
   ..creep(UnitIds.quillboar)
-  ..hp(9600)
+  ..hp(7600)
   ..damage(328)
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(5)
+  ..wait(10)
 
   ..creep(UnitIds.quillboar)
-  ..hp(9600)
+  ..hp(7600)
   ..damage(328)
   ..amount(5)
   ..scale(1.25)
