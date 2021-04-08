@@ -80,14 +80,15 @@ public class GodOfNature extends Boss
 
   function entangleRoots()
     pData.forEach() (player key, PlayerData value) ->
-      let heroPos = value.getHero().getPos().toVec2()
-      let targetCircle = addEffect(Buildings.circleOfPower1, heroPos)
-      
-      doAfter(3) ->
-        targetCircle.destr()
-        forUnitsInRange(heroPos, 160) (unit u) ->
-          if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
-            InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
+      if value.getHero().have
+        let heroPos = value.getHero().hero.getPos().toVec2()
+        let targetCircle = addEffect(Buildings.circleOfPower1, heroPos)
+
+        doAfter(3) ->
+          targetCircle.destr()
+          forUnitsInRange(heroPos, 160) (unit u) ->
+            if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
+              InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
 
 init
   EventListener.onTargetCast(WISP_HEAL_ID) (unit caster, unit target) ->
@@ -103,7 +104,7 @@ init
   ..setSpeedBase(100)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
-  
+
   new UnitDefinition(TREANT_ID, UnitIds.forceofnature)
   ..setAcquisitionRange(99999)
   ..setAttack1DamageBase(20)

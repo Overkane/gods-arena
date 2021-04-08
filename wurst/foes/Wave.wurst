@@ -26,14 +26,14 @@ abstract class WaveStep
 
 class WaitStep extends WaveStep
   var duration = 0.
- 
+
 
   construct(Wave wave, real duration)
     super(wave)
     this.duration = duration
 
   override function execute(NextStepListener next)
-    doAfter(duration) -> 
+    doAfter(duration) ->
       next.execute()
 
 
@@ -143,7 +143,7 @@ public class WaveBuilder
 
   function goldBounty(int bounty)
     // this.result.goldBounty = bounty
-    
+
   function expBounty(int bounty)
     this.result.expBounty = bounty
 
@@ -161,7 +161,7 @@ public class Wave
   LinkedList<WaveStep> steps
   Vec2Function spawnPoint
   Vec2Function revivePoint
-  
+
   var goldBounty = 50
   var expBounty = 100
 
@@ -171,14 +171,14 @@ public class Wave
     printTimed("|cffceac15>> The wave begins!", 10.)
     NEXT_WAVE.play()
     nextStep()
-      
+
   function nextStep()
     if steps.isEmpty()
       isDone = true
     else
-      steps.dequeue().execute() -> 
+      steps.dequeue().execute() ->
         nextStep()
-      
+
 
   function finish()
     printTimed("|cff1f9913>> Wave cleared!", 10.)
@@ -190,20 +190,20 @@ public class Wave
     let additionalGoldBounty = (goldBounty * 0.5 * (8-pData.size())/7).round()
     //-
 
-    pData.forEach() (player p, PlayerData playerData) -> 
-      let heroUnit = playerData.getHero().actor
-      p.addGold(goldBounty + additionalGoldBounty)
-      playerData.getHero().addXp(expBounty + additionalExpBounty, true)
-    
-      if not heroUnit.isAlive()
-        heroUnit.revive(revivePoint.execute(), true)
-        heroUnit.setHP(heroUnit.getMaxHP() * 0.35)
-        heroUnit.setMana(heroUnit.getMaxMana() * 0.15)
-        p.select(heroUnit)
-        p.setCameraPosition(heroUnit.getPos())
-      else 
-        AFTER_WAVE_RESTORATION_SOUND.play(1, 30)
-        flashEffect(Abilities.replenishHealthCasterOverhead, heroUnit.getPos())
-        heroUnit.addHP(heroUnit.getMaxHP() * 0.35)
-        heroUnit.addMana(heroUnit.getMaxMana() * 0.15)
-    
+    pData.forEach() (player p, PlayerData playerData) ->
+      if playerData.getHero().have
+        let heroUnit = playerData.getHero().hero.actor
+        p.addGold(goldBounty + additionalGoldBounty)
+        playerData.getHero().hero.addXp(expBounty + additionalExpBounty, true)
+
+        if not heroUnit.isAlive()
+          heroUnit.revive(revivePoint.execute(), true)
+          heroUnit.setHP(heroUnit.getMaxHP() * 0.35)
+          heroUnit.setMana(heroUnit.getMaxMana() * 0.15)
+          p.select(heroUnit)
+          p.setCameraPosition(heroUnit.getPos())
+        else
+          AFTER_WAVE_RESTORATION_SOUND.play(1, 30)
+          flashEffect(Abilities.replenishHealthCasterOverhead, heroUnit.getPos())
+          heroUnit.addHP(heroUnit.getMaxHP() * 0.35)
+          heroUnit.addMana(heroUnit.getMaxMana() * 0.15)

@@ -32,27 +32,27 @@ function initPickTimer()
   heroPickTimer.doAfter(HERO_PICK_TIME) ->
     heroPickTimerDialog.destr()
     startArenas()
-        
+
 function initCheatCodes()
   pData.forEach() (player p, PlayerData playerData) ->
     if p.getName() == "Overkane" or p.getName() == "Frotty" or p.getName() == "Local Player"
       CreateTrigger()
       ..registerPlayerChatEvent(p, "!maxLevel", true)
       ..addAction() ->
-        pData.get(GetTriggerPlayer()).getHero().actor.setLevel(50, false)
+        pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.setLevel(50, false))
       CreateTrigger()
       ..registerPlayerChatEvent(p, "!refresh", true)
       ..addAction() ->
-        pData.get(GetTriggerPlayer()).getHero().actor.setMana(pData.get(GetTriggerPlayer()).getHero().actor.getMaxMana())
-        pData.get(GetTriggerPlayer()).getHero().actor.setHP(pData.get(GetTriggerPlayer()).getHero().actor.getMaxHP())
-        pData.get(GetTriggerPlayer()).getHero().actor.resetCooldown()
+        pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.setMana(h.actor.getMaxMana()))
+        pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.setHP(h.actor.getMaxHP()))
+        pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.resetCooldown())
       CreateTrigger()
       ..registerPlayerChatEvent(p, "!addGold", true)
       ..addAction() ->
         GetTriggerPlayer().setGold(99999)
-  
+
 init
-  nullTimer() -> 
+  nullTimer() ->
     initFrames()
     startEntityLoop()
     initPlayers()
@@ -62,5 +62,5 @@ init
     initHeroPickMenu()
     initItemShop()
     initCheatCodes()
-    doAfter(5) -> 
+    doAfter(5) ->
       BlzChangeMinimapTerrainTex("originalMap.blp")

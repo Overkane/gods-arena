@@ -61,7 +61,7 @@ public class GodOfNatureStrong extends Boss
         entangleRoots()
       case 2
         summonWisps()
-    
+
   function summonTreants()
     for i = 0 to 8
       let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena2.randomPoint(), angle(GetRandomReal(0, 359)))
@@ -78,14 +78,15 @@ public class GodOfNatureStrong extends Boss
 
   function entangleRoots()
     pData.forEach() (player key, PlayerData value) ->
-      let heroPos = value.getHero().getPos().toVec2()
-      let targetCircle = addEffect(Buildings.circleOfPower1, heroPos)
-      
-      doAfter(1.5) -> 
-        targetCircle.destr()
-        forUnitsInRange(heroPos, 160) (unit u) ->
-          if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
-            InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
+      if value.getHero().have
+        let heroPos = value.getHero().hero.getPos().toVec2()
+        let targetCircle = addEffect(Buildings.circleOfPower1, heroPos)
+
+        doAfter(1.5) ->
+          targetCircle.destr()
+          forUnitsInRange(heroPos, 160) (unit u) ->
+            if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
+              InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
 
 init
   EventListener.onTargetCast(WISP_HEAL_ID) (unit caster, unit target) ->
@@ -101,7 +102,7 @@ init
   ..setSpeedBase(205)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
-  
+
   new UnitDefinition(TREANT_ID, UnitIds.forceofnature)
   ..setAcquisitionRange(99999)
   ..setAttack1DamageBase(100)
