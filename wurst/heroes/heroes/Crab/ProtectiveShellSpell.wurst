@@ -49,14 +49,14 @@ init
 @compiletime
 function genAbility()
     new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases regeneration and splashes nearby enemies."))
-    ..presetButtonPosNormal(1, 2)
-    ..presetButtonPosResearch(1, 0)
+    ..presetButtonPosNormal(0, 2)
+    ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNShimmerWeed)
 
     ..tooltipStartListen()
     ..presetTargetTypes(Targettype.NONE)
     ..setName("Protective Shell")
-    ..presetHotkey("W")
+    ..presetHotkey("Q")
     ..addTooltipProperty("Mana/Life Regen", SPELL_REGEN)
     ..addTooltipProperty("Armor", SPELL_ARMOR)
     ..presetManaCost(lvl -> 50 + lvl * 10)

@@ -4,6 +4,8 @@ import UnitIds
 import HeroPreset
 import ProtectiveShellSpell
 import HardenedShell
+import CrabDefense
+import CrabStampede
 
 public constant CRAB_ID = compiletime(HERO_ID_GEN.next())
 
@@ -13,8 +15,10 @@ public constant CRAB_ID = compiletime(HERO_ID_GEN.next())
   ..addProperName("Crabus Maximus")
   ..addHeroAbility(SHELL_ABIL_ID)
   ..addHeroAbility(HARD_SHELL_ID)
-//   ..addHeroAbility(CRIT_ARROW_ID)
-//   ..addHeroAbility(ARROW_VOLLEY_ID)
+  ..addHeroAbility(CRAB_DEFENSE_ID)
+  ..addHeroAbility(CRAB_STAMPEDE_ID)
+  ..setAttack1Range(100)
+  ..setAttack1ProjectileArt("")
   ..setStartingStrength(20)
   ..setStrengthPerLevel(3.6)
   ..setStartingAgility(14)
