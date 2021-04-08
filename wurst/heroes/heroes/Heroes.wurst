@@ -3,6 +3,7 @@ package Heroes
 // Str heroes
 import public CrusaderHero
 import public DemonLordHero
+import public CrabHero
 
 // Agi heroes
 import public AssassinHero

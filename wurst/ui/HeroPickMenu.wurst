@@ -9,7 +9,6 @@ import Hero
 import GameProperties
 import SoundUtils
 import ItemShopUI
-import CrabHero
 
 public HeroPickUI heroPickUI
 
