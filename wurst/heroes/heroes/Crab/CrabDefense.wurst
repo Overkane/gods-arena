@@ -12,7 +12,7 @@ public constant CRAB_DEFENSE_ID = compiletime(ABIL_ID_GEN.next())
 public constant CRABLING_ID = compiletime(UNIT_ID_GEN.next())
 
 constant RealLevelClosure SPELL_CHANCE = lvl -> 0.15 + 0.05 * lvl
-constant RealLevelClosure CRAB_DAMAGE = lvl -> 2 + 5. * lvl
+constant RealLevelClosure CRAB_DAMAGE = lvl -> 7. * lvl
 
 init
   DamageEvent.addListener() -> 

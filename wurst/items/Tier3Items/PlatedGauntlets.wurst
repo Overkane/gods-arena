@@ -5,7 +5,7 @@ import AssassinsBlade
 
 public constant PLATED_GAUNTLETS_ITEM = compiletime(new RecipeItem()
 ..setName("Plated Gauntlets")
-..setInterfaceIcon("PlateGauntlet")
+..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNPlateGauntlet.blp")
 ..addBonus(Bonus.ATTACKSPEED, 60)
 ..addBonus(Bonus.AGILITY, 16)
 ..addBonus(Bonus.DAMAGE, 24)
