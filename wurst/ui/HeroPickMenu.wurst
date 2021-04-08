@@ -23,28 +23,28 @@ function addHeroIcons()
   heroPickUI
   ..addHeroIcon(
     new HeroIcon(HYDROMANCER_ID, Icons.bTNJaina, Icons.dISBTNJaina)
-    ..addTooltip("Hydromancer", "Drinks cool water."))
+    ..addTooltip("Hydromancer", "Drinks cool water. Summons elementals. Crushing."))
   ..addHeroIcon(
     new HeroIcon(TROLL_SHAMAN_ID, Icons.bTNShadowHunter, Icons.dISBTNShadowHunter)
-    ..addTooltip("Troll Shaman", "Creates memes. (not in game though)"))
+    ..addTooltip("Troll Shaman", "Creates memes (not in game though)."))
   ..addHeroIcon(
     new HeroIcon(STORMBEARER_ID, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
     ..addTooltip("Stormbearer", "Mighty lord of storms, good at cleaning groups of weak enemies, but lacks reliable single target damage."))
   ..addHeroIcon(
     new HeroIcon(BLADEMASTER_ID, Icons.bTNHeroBlademaster, Icons.dISBTNHeroBlademaster)
-    ..addTooltip("Blademaster", "Flesh cutter."))
+    ..addTooltip("Blademaster", "Flesh cutter. Can't go wrong with some illusions."))
   ..addHeroIcon(
     new HeroIcon(CRUSADER_ID, Icons.bTNArthas, Icons.dISBTNArthas)
-    ..addTooltip("Crusader", "Holy warrior, which can heal and buff allies, but also has strong buff for himself and his attacks are quite hard."))
+    ..addTooltip("Crusader", "Holy warrior, can heal and buff allies, but also has strong buff for himself and his attacks are quite strong."))
   ..addHeroIcon(
     new HeroIcon(ASSASSIN_ID, Icons.bTNHeroWarden, Icons.dISBTNHeroWarden)
-    ..addTooltip("Assassin", "Stealthy killer, which good vs single targets."))
+    ..addTooltip("Assassin", "Stealthy killer, good versus single targets."))
   ..addHeroIcon(
     new HeroIcon(DEMON_LORD_ID, Icons.bTNPitLord, Icons.dISBTNPitLord)
-    ..addTooltip("Demon Lord", "Loves destruction."))
+    ..addTooltip("Demon Lord", "Loves destruction. And Donuts."))
   ..addHeroIcon(
     new HeroIcon(ARCHER_ID, Icons.bTNSylvanusWindRunner, Icons.dISBTNSylvanusWindRunner)
-    ..addTooltip("Archerino", "Shoots pointy sticks."))
+    ..addTooltip("Archerino", "Shoots pointy sticks and is in tune with nature."))
   ..addHeroIcon(
     new HeroIcon(CRAB_ID, Icons.bTNLobstrokkBlue, Icons.dISBTNLobstrokkBlue)
     ..addTooltip("Crab", "Why do things keep evolving into crabs?"))
