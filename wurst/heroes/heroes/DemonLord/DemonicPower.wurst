@@ -3,16 +3,15 @@ import AbilityTooltipGenerator
 import HeroSpellConstants
 import ClosureEvents
 import BonusHandler
-
-public constant DEMONIC_POWER_ID = compiletime(ABIL_ID_GEN.next())
+import DemonLordIds
 
 RealLevelClosure CLEAVE_PERCENT = lvl -> 0.35 + .1 * (lvl-1)
 RealLevelClosure STR_BONUS = lvl -> 4. * lvl
 
 init
-  EventListener.add(EVENT_PLAYER_HERO_SKILL) -> 
+  EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
     let u = GetTriggerUnit()
-  
+
     if GetLearnedSkill() == DEMONIC_POWER_ID
       u.addBonus(Bonus.STRENGTH, STR_BONUS.run(1))
 

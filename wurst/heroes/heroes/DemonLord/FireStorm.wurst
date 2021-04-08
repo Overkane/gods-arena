@@ -1,34 +1,76 @@
 package FireStorm
+import Assets
 import AbilityTooltipGenerator
+import ClosureEvents
+import ClosureForGroups
+import ClosureTimers
+import DamageEvent
+import DemonLordIds
 import HeroSpellConstants
-
-public constant FIRE_STORM_ID = compiletime(ABIL_ID_GEN.next())
+import Reference
 
 RealLevelClosure DURATION = lvl -> 3
+RealLevelClosure DAMAGE = lvl -> 150. * lvl
+RealLevelClosure COOLDOWN = lvl -> 14. - lvl
+IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 5 * lvl
+RealLevelClosure BONUS_DURATION = lvl -> 5. + lvl
+
+constant RADIUS = 250.
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_SPELL_EFFECT) ->
+    if EventData.getSpellAbilityId() == FIRE_STORM_ID
+      let caster = EventData.getTriggerUnit()
+      for i = 0 to 9
+        flashEffect(
+          Abilities.rainOfFireTarget,
+          caster.getPos().polarOffset(360 .fromDeg() / 10 * i.toReal(), RADIUS / 2))
+      doAfter(1.) ->
+        let lvl = caster.getAbilityLevel(FIRE_STORM_ID)
+        let str_per_struck = BONUS_STR_PER_FOE_STRUCK.run(lvl)
+        let bonus_str = new Reference(0)
+        forUnitsInRange(caster.getPos(), RADIUS) u ->
+          if u.isEnemyOf(caster.getOwner()) and not u.isInvulnerable()
+            DamageEvent.setNextDamageFromCode()
+            caster.damageTarget(u, DAMAGE.run(lvl))
+            flashEffect(Abilities.flameStrikeDamageTarget, u.getPos())
+            bonus_str.val += str_per_struck
+        let bonus_str_ = bonus_str.into()
+        if caster.isAlive()
+          caster.addStr(bonus_str_)
+          doAfter(BONUS_DURATION.run(lvl)) ->
+            caster.addStr(-bonus_str_)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Calls down waves of fire that damage units in an area. Each wave deals initial damage and then burns enemies.")
-  new AbilityDefinitionRainofFire(FIRE_STORM_ID)
+  let tooltip = new AbilityTooltipGenerator(
+    Targettype.NONE,
+    "Calls down a wave of fire that damages nearby units. "
+    + "The Demon Lord temporarily gains strength based on the number of struck foes.")
+  new AbilityDefinitionBerserk(FIRE_STORM_ID)
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
   ..presetHotkey("Q")
+  ..presetDamageTakenIncrease(lvl -> 0.)
+  ..presetMovementSpeedIncrease(lvl -> 0.)
+  ..presetAttackSpeedIncrease(lvl -> 0)
+  ..presetIcon(Icons.bTNFire)
+  ..setLevelSkipRequirement(2)
 
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Fire Storm")
-  ..presetDamage(lvl -> 30. * lvl)
-  ..presetDamagePerSecond(lvl -> 3. * lvl)
-  ..presetNumberofWaves(lvl -> 5)
-  ..presetNumberofShards(lvl -> 9)
+  ..addTooltipProperty("Damage", DAMAGE)
+  ..addTooltipProperty("Radius", lvl -> RADIUS)
+  ..addTooltipProperty("Bonus strength per foe struck", BONUS_STR_PER_FOE_STRUCK)
+  ..addTooltipProperty("Bonus strength duration", BONUS_DURATION)
   ..presetAreaofEffect(lvl -> 250)
   ..presetCastRange(lvl -> 600)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 75)
-  ..presetCooldown(lvl -> 13)
+  ..presetManaCost(lvl -> 65)
+  ..presetCooldown(COOLDOWN)
   ..tooltipStopListen()
 
-  ..presetMaximumDamageperWave(lvl -> 99999)
   ..presetDurationNormal(DURATION)
   ..presetDurationHero(DURATION)
 

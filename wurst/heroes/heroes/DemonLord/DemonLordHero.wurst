@@ -1,13 +1,7 @@
 package DemonLordHero
 import UnitIds
 import HeroPreset
-import ObjectIdGenerator
-import FireStorm
-import HowlOfTerror
-import DemonicPower
-import Cataclysm
-
-public constant DEMON_LORD_ID = compiletime(HERO_ID_GEN.next())
+import DemonLordIds
 
 @compiletime function genHero()
   new HeroPreset(DEMON_LORD_ID, UnitIds.pitlord, "Demon Lord")

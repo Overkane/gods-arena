@@ -9,6 +9,7 @@ import Hero
 import GameProperties
 import SoundUtils
 import ItemShopUI
+import DemonLordIds
 
 public HeroPickUI heroPickUI
 
@@ -50,7 +51,7 @@ function addHeroIcons()
 
 class HeroPickUI
   private var heroIconCounter = 0
-  
+
   private constant PADDING = 0.03
   private constant HORIZONTAL_SPACING = 0.08
   private constant VERTICAL_SPACING = -0.08
@@ -83,7 +84,7 @@ class HeroPickUI
     ..setText("Pick Hero")
     ..onClick() ->
       let p = GetTriggerPlayer()
-      
+
       if playerSelection.has(p)
         let pickedIcon = playerSelection.getAndRemove(p)
         let h = new Hero(p, pickedIcon.heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
@@ -100,14 +101,14 @@ class HeroPickUI
         playerSelection.forEach() (player key, HeroIcon value) ->
           if value == pickedIcon
             playerSelection.remove(key)
-      else 
+      else
         p.print("Choose hero first!")
         didntSelectHeroSound.playForPlayer(p)
 
   function addHeroIcon(HeroIcon heroIcon)
     heroIconCounter++
     if heroIconCounter == 1
-      skip 
+      skip
     else if (heroIconCounter - 1) % MAX_ICONS_PER_ROW == 0
       iconPosition = iconPosition.add(-HORIZONTAL_SPACING * (MAX_ICONS_PER_ROW - 1), VERTICAL_SPACING)
     else
@@ -135,10 +136,10 @@ class HeroIcon
 
     heroIconButton = createFrame(FramehandleTypeNames.gluebutton, "PickIconButton", heroPickUI.heroPickFrame, FramehandleNames.iconButtonTemplate, iconContext)
     heroIcon = createFrame(FramehandleTypeNames.backdrop, "pickIcon", heroIconButton, "", iconContext)
-    
+
     heroIconButton
     ..setSize(0.05, 0.05)
-    ..onClick() -> 
+    ..onClick() ->
       let p = GetTriggerPlayer()
       playerSelection.put(p, this)
 
