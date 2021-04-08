@@ -12,7 +12,7 @@ import PassiveAbilityPreset
 public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
 constant ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure DAMAGE = lvl -> 15. + 25 * lvl
+constant RealLevelClosure DAMAGE = lvl -> 10. + 35 * lvl
 constant RealLevelClosure CHANCE = lvl -> 0.1 + 0.1 * lvl
 
 init
@@ -48,7 +48,7 @@ init
     new AbilityDefinitionEntanglingRootscreep(ENTANGLE_ID)
     ..setDummyAbility()
     ..setLevels(NORMAL_SPELL_LEVELS)
-    ..presetDamageperSecond(lvl -> 15 + 35. * lvl)
+    ..presetDamageperSecond(lvl -> 10 + 45. * lvl)
     ..presetDurationHero(lvl -> 5.)
     ..presetDurationNormal(lvl -> 5.)
         

@@ -5,7 +5,7 @@ import HeroSpellConstants
 public constant MIRROR_IMAGE_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure DAMAGE_DEALT = lvl -> 0.65 + 0.05 * lvl
-RealLevelClosure DAMAGE_TAKEN = lvl -> 1.55 - 0.05 * lvl
+RealLevelClosure DAMAGE_TAKEN = lvl -> 1.75 - 0.05 * lvl
 RealLevelClosure DURATION = lvl -> 30.
 
 @compiletime function genAbility()
@@ -19,7 +19,7 @@ RealLevelClosure DURATION = lvl -> 30.
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Mirror Image")
-  ..presetNumberofImages(lvl -> 3)
+  ..presetNumberofImages(lvl -> 2 + (lvl / 3).toInt())
   ..addTooltipProperty("Damage Dealt", lvl -> (DAMAGE_DEALT.run(lvl) * 100).round().toString() + "%")
   ..addTooltipProperty("Damage Taken", lvl -> (DAMAGE_TAKEN.run(lvl) * 100).round().toString() + "%")
   ..addTooltipProperty("Duration", DURATION)
