@@ -56,7 +56,7 @@ class HeroPickUI
   private constant HORIZONTAL_SPACING = 0.08
   private constant VERTICAL_SPACING = -0.08
   private constant ITEM_ICON_INITIAL_POSITION = vec2(PADDING, -PADDING * 2)
-  private constant MAX_ICONS_PER_ROW = 8
+  private constant MAX_ICONS_PER_ROW = 7
 
   private constant didntSelectHeroSound = new SoundDefinition(Sounds.error)
 
@@ -68,13 +68,14 @@ class HeroPickUI
 
   construct()
     heroPickFrame
-    ..setSize(0.8, 0.35)
+    ..setSize(0.6, 0.35)
     ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.4, 0.52))
 
     createFrame(FramehandleTypeNames.text, "itemText", heroPickFrame, "", GetRandomInt(0, 1000000))
     ..setText("Choose your hero")
     ..setTextColor(colorA(255, 255, 255, 1))
     ..setPoint(FRAMEPOINT_TOPLEFT, heroPickFrame, FRAMEPOINT_TOP, vec2(0, -PADDING))
+    ..setCenter()
 
     heroPickBackdrop.setAllPoints(heroPickFrame)
 
@@ -150,10 +151,10 @@ class HeroIcon
     let tooltip = createFrame("BoxedText", heroIconButton, 0, iconContext)
     heroIconButton.setTooltip(tooltip)
 
-    tooltip..setSize(0.15, 0.08)
+    tooltip..setSize(0.2, 0.08)
     ..setPoint(FRAMEPOINT_LEFT, heroIconButton, FRAMEPOINT_RIGHT)
-    getFrame("BoxedTextTitle", iconContext).setText(tooltipTitle)
-    getFrame("BoxedTextValue", iconContext).setText(tooltipDescription)
+    getFrame("BoxedTextTitle", iconContext).setText("Pick " + COLOR_GOLD.toColorString() + tooltipTitle + "|r")
+    getFrame("BoxedTextValue", iconContext)..setText("________\n\n"+tooltipDescription)
 
   function disable()
     heroIcon.setTexture(disabledIcon, 0, true)
