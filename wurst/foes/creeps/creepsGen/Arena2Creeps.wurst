@@ -23,7 +23,7 @@ function wave_1() returns Wave
   ..creep(UnitIds.murlochuntsman)
   ..hp(2250)
   ..damage(75)
-  ..amount(6)
+  ..amount(8)
 
   ..creep(UnitIds.murlocflesheater)
   ..hp(1950)
@@ -33,14 +33,14 @@ function wave_1() returns Wave
   ..creep(UnitIds.murlocnightcrawler)
   ..hp(3750)
   ..damage(115)
-  ..amount(6)
+  ..amount(8)
   ..armor(10)
   ..wait(20)
 
   ..creep(UnitIds.murgulbloodgill)
   ..hp(3500)
   ..damage(125)
-  ..amount(8)
+  ..amount(10)
   ..scale(1.5)
 
   ..creep(UnitIds.murgulcliffrunner)
@@ -59,7 +59,7 @@ function wave_2() returns Wave
   ..creep(UnitIds.nagamyrmidon)
   ..hp(3200)
   ..damage(75)
-  ..amount(9)
+  ..amount(12)
 
   ..wait(5)
 
@@ -71,8 +71,8 @@ function wave_2() returns Wave
 
   ..creep(UnitIds.murgulsnarecaster)
   ..hp(1550)
-  ..damage(80)
-  ..amount(5)
+  ..damage(60)
+  ..amount(7)
   ..scale(1.1)
 
   ..wait(10)
@@ -80,7 +80,7 @@ function wave_2() returns Wave
   ..creep(UnitIds.nagaroyalguard)
   ..hp(12500)
   ..mana(5000)
-  ..attackrate(0.45)
+  ..attackrate(0.4)
   ..damage(185)
   ..armor(11)
   ..amount(2)
@@ -93,9 +93,9 @@ function wave_3() returns Wave
   ..goldBounty(150)
 
   ..creep(UnitIds.seaturtle)
-  ..hp(5500)
-  ..damage(95)
-  ..amount(4)
+  ..hp(4500)
+  ..damage(85)
+  ..amount(10)
 
   ..wait(10)
 
@@ -105,14 +105,14 @@ function wave_3() returns Wave
   ..amount(3)
   ..scale(1.15)
 
-  ..wait(10)
+  ..wait(15)
 
   ..creep(UnitIds.sludgeflinger)
-  ..hp(4850)
+  ..hp(4250)
   ..damage(290)
   ..attackrate(1.15)
   ..armor(9)
-  ..amount(6)
+  ..amount(8)
   ..scale(1.1)
 
   ..wait(20)
@@ -132,22 +132,22 @@ function wave_4() returns Wave
   ..goldBounty(150)
 
   ..creep(UnitIds.seagiant)
-  ..hp(15550)
+  ..hp(11550)
   ..armor(8)
-  ..damage(245)
-  ..amount(3)
+  ..damage(215)
+  ..amount(5)
 
   ..creep(UnitIds.seawitch)
-  ..hp(15600)
-  ..damage(228)
+  ..hp(11600)
+  ..damage(128)
   ..attackrate(0.85)
-  ..amount(3)
+  ..amount(7)
   ..scale(1.25)
 
   ..creep(UnitIds.seagiantbehemoth)
-  ..hp(13450)
-  ..damage(298)
-  ..amount(3)
+  ..hp(11450)
+  ..damage(218)
+  ..amount(5)
 
   .build()
 
@@ -166,7 +166,7 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
-  ..damage(328)
+  ..damage(228)
   ..amount(5)
   ..scale(1.25)
 
@@ -174,7 +174,7 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
-  ..damage(328)
+  ..damage(228)
   ..amount(5)
   ..scale(1.25)
 
@@ -182,7 +182,7 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
-  ..damage(328)
+  ..damage(228)
   ..amount(5)
   ..scale(1.25)
 
@@ -190,7 +190,7 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
-  ..damage(328)
+  ..damage(228)
   ..amount(5)
   ..scale(1.25)
 
@@ -198,7 +198,7 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
-  ..damage(328)
+  ..damage(228)
   ..amount(5)
   ..scale(1.25)
 
@@ -206,7 +206,7 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
-  ..damage(328)
+  ..damage(228)
   ..amount(5)
   ..scale(1.25)
 
