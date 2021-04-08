@@ -1,0 +1,19 @@
+package Death
+import ClosureEvents
+import ClosureTimers
+import Reference
+
+import PlayerData
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+    if EventData.getTriggerUnit().isType(UNIT_TYPE_HERO)
+      doAfter(5.) ->
+        let aliveCount = new Reference(0)
+        pData.forEach() (player key, PlayerData value) ->
+          if value.getHero().have and value.getHero().hero.actor.isAlive()
+            aliveCount.val += 1
+        if aliveCount.into() == 0
+          print(">> You lose!".color(COLOR_GOLD))
+          doAfter(30.) ->
+            EndGame(true)

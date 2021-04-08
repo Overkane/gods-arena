@@ -42,18 +42,18 @@ public class Arena
         forUnitsOfPlayer(p) u ->
           u..setPos(heroSpawn.randomPoint()).addEffect(Abilities.massTeleportTarget, AttachmentPoints.origin).destr()
 
-        p.panCamToTimed(playerData.getHero().actor, 0)
+        playerData.getHero().ifPresent(h -> p.panCamToTimed(h.actor, 0))
 
     waveController.addWaves(waves)
     waveController.startWaveSpawn()
     waveController.onAllWavesFinished = () -> begin
       if this.next != null
         printTimed("|cffceac15>> Congratulations! You finished this arena! You will progress to the next one momentarily..", 10.)
-        pData.forEach() (player p, PlayerData playerData) -> 
-          let heroUnit = playerData.getHero().actor
-          heroUnit.setHP(heroUnit.getMaxHP())
-          heroUnit.setMana(heroUnit.getMaxMana())
-        doAfter(7.5) -> 
+        pData.forEach() (player p, PlayerData playerData) ->
+          playerData.getHero().ifPresent(h -> h.actor
+            ..setHP(h.actor.getMaxHP())
+            ..setMana(h.actor.getMaxMana()))
+        doAfter(7.5) ->
           modifier..stop()..destr()
           this.next.start(true)
       else

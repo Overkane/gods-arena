@@ -9,26 +9,37 @@ public constant pData = new IterableMap<player, PlayerData>
 public function player.getData() returns PlayerData
   return pData.get(this)
 
+public tuple maybe_hero(bool have, Hero hero)
+
+public interface MaybeHeroIfPresent
+  function if_present(Hero h)
+
+public function maybe_hero.ifPresent(MaybeHeroIfPresent ifPresent)
+  if not this.have
+    return
+  ifPresent.if_present(this.hero)
+
 public class PlayerData
   private player p
-  private Hero hero
-  
+  private maybe_hero maybeHero
+
   construct (player p)
     this.p = p
-    pData.put(p, this)  
+    this.maybeHero = maybe_hero(false, null)
+    pData.put(p, this)
 
   function setHero(Hero h)
-    this.hero = h
+    this.maybeHero = maybe_hero(true, h)
 
-  function getHero() returns Hero
-    return hero
+  function getHero() returns maybe_hero
+    return this.maybeHero
 
   ondestroy
     pData.remove(p)
-    destroy hero
+    this.maybeHero.ifPresent(h -> destroy h)
 
 public function initPlayers()
-  let humanPlayers = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER) 
+  let humanPlayers = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER)
   humanPlayers.forEach() p ->
     new PlayerData(p)
 
