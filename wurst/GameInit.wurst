@@ -6,6 +6,7 @@ import ItemShopUI
 import HeroPickMenu
 import Arenas
 import ClosureTimers
+import DamageEvent
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
@@ -37,7 +38,7 @@ function initCheatCodes()
   pData.forEach() (player p, PlayerData playerData) ->
     if p.getName() == "Overkane" or p.getName() == "Frotty" or p.getName() == "Local Player"
       CreateTrigger()
-      ..registerPlayerChatEvent(p, "!maxLevel", true)
+      ..registerPlayerChatEvent(p, "!level", true)
       ..addAction() ->
         pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.setLevel(50, false))
       CreateTrigger()
@@ -47,9 +48,16 @@ function initCheatCodes()
         pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.setHP(h.actor.getMaxHP()))
         pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.resetCooldown())
       CreateTrigger()
-      ..registerPlayerChatEvent(p, "!addGold", true)
+      ..registerPlayerChatEvent(p, "!gold", true)
       ..addAction() ->
         GetTriggerPlayer().setGold(99999)
+      CreateTrigger()
+      ..registerPlayerChatEvent(p, "!debug", true)
+      ..addAction() ->
+        DamageEvent.addListener() ->
+          print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
+          print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
+          print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
 
 init
   nullTimer() ->
