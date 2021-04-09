@@ -11,8 +11,8 @@ import Reference
 
 RealLevelClosure DURATION = lvl -> 3
 RealLevelClosure DAMAGE = lvl -> 150. * lvl
-RealLevelClosure COOLDOWN = lvl -> 14. - lvl
-IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 5 * lvl
+RealLevelClosure COOLDOWN = lvl -> 14.
+IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 3 * lvl
 RealLevelClosure BONUS_DURATION = lvl -> 5. + lvl
 
 constant RADIUS = 250.
