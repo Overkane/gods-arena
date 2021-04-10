@@ -1,0 +1,70 @@
+package DamageSystem
+import StandardTextTags
+import public DamageEvent
+import public CustomStatSystem
+
+public enum DamageEvents
+  START // First listener, where can be set stats for next listeners
+  RELATIVE // Damage affected by multiplication and division
+  ABSOLUTE // Damage affected by addition and subtraction
+  CRIT // Damage affected by crits
+  SHIELD // Damage reduced by shield
+  FINAL // Final damage
+
+init
+  DamageEvent.addUnreducedListener(DamageEvents.START castTo int) ->
+    let damageType = DamageEvent.getType()
+    let tunit = DamageEvent.getTarget()
+
+    if damageType == DamageType.ATTACK
+      let tUnitEvasion = tunit.getStat(CustomUnitStats.EVASION) + tunit.getOnetimeStat(CustomUnitStats.EVASION)
+
+      if tUnitEvasion > GetRandomReal(0, 1)
+        DamageEvent.abortCurrent()
+        createMissTextTag(tunit)
+
+  DamageEvent.addUnreducedListener(DamageEvents.RELATIVE castTo int) ->
+    let damageType = DamageEvent.getType()
+    let sunit = DamageEvent.getSource()
+    
+    if damageType == DamageType.ATTACK
+      let newDamage = DamageEvent.getAmount() * (1 + sunit.getStat(CustomUnitStats.ATTACK_POWER) + sunit.getOnetimeStat(CustomUnitStats.ATTACK_POWER))
+      DamageEvent.setAmount(newDamage)
+
+    else if damageType == DamageType.SPELL or damageType == DamageType.CODE 
+      let newDamage = DamageEvent.getAmount() * (1 + sunit.getStat(CustomUnitStats.SPELL_POWER) + sunit.getOnetimeStat(CustomUnitStats.SPELL_POWER))
+      DamageEvent.setAmount(newDamage)
+
+  DamageEvent.addUnreducedListener(DamageEvents.ABSOLUTE castTo int) ->
+    let damageType = DamageEvent.getType()
+    let sunit = DamageEvent.getSource()
+    var bonusDamage = 0.
+
+    if damageType == DamageType.ATTACK
+      bonusDamage = sunit.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE) + sunit.getOnetimeStat(CustomUnitStats.BONUS_ATTACK_DAMAGE)
+    else if damageType == DamageType.SPELL or damageType == DamageType.CODE 
+      bonusDamage = sunit.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE) + sunit.getOnetimeStat(CustomUnitStats.BONUS_SPELL_DAMAGE)
+      
+    DamageEvent.addAmount(bonusDamage)
+
+  DamageEvent.addUnreducedListener(DamageEvents.CRIT castTo int) ->
+    let damageType = DamageEvent.getType()
+    let sunit = DamageEvent.getSource()
+
+    if damageType == DamageType.ATTACK
+      let attackCritChance = sunit.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE) + sunit.getOnetimeStat(CustomUnitStats.ATTACK_CRIT_CHANCE)
+      
+      if attackCritChance > GetRandomReal(0, 1)
+        let newDamage = DamageEvent.getAmount() * (1 + sunit.getStat(CustomUnitStats.ATTACK_CRIT_POWER) + sunit.getOnetimeStat(CustomUnitStats.ATTACK_CRIT_POWER))
+        DamageEvent.setAmount(newDamage)
+
+        createCriticalStrikeTextTag(sunit, newDamage.toInt())
+
+    else if damageType == DamageType.SPELL or damageType == DamageType.CODE 
+      let spellCritChance = sunit.getStat(CustomUnitStats.SPELL_CRIT_CHANCE) + sunit.getOnetimeStat(CustomUnitStats.SPELL_CRIT_CHANCE)
+      
+      if spellCritChance > GetRandomReal(0, 1)
+        let newDamage = DamageEvent.getAmount() * (1 + sunit.getStat(CustomUnitStats.SPELL_CRIT_POWER) + sunit.getOnetimeStat(CustomUnitStats.SPELL_CRIT_POWER))
+        DamageEvent.setAmount(newDamage)
+
+        createCriticalStrikeTextTag(sunit, newDamage.toInt()).setColor(82, 82, 255, 255)

@@ -55,9 +55,10 @@ function initCheatCodes()
       ..registerPlayerChatEvent(p, "!debug", true)
       ..addAction() ->
         DamageEvent.addListener() ->
-          print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
-          print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
-          print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
+          if DamageEvent.getSource().isAllyOf(players[0])
+            print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
+            print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
+            print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
 
 init
   nullTimer() ->

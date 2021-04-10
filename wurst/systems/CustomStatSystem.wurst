@@ -1,0 +1,53 @@
+package CustomStatSystem
+import HashMap
+
+// Constant unit stats
+constant customUnitStats = new HashMap<unit, HashMap<CustomUnitStats, real>>
+
+// Temporary unit stats, which are removed upon getting
+constant customUnitOnetimeStats = new HashMap<unit, HashMap<CustomUnitStats, real>>
+
+public enum CustomUnitStats
+  // Attack related stuff
+  BONUS_ATTACK_DAMAGE
+  ATTACK_POWER
+  ATTACK_CRIT_POWER
+  ATTACK_CRIT_CHANCE
+  EVASION
+  // Spell related stuff
+  BONUS_SPELL_DAMAGE
+  SPELL_POWER
+  SPELL_CRIT_POWER
+  SPELL_CRIT_CHANCE
+
+// Functions, which work with constant stats
+public function unit.getStat(CustomUnitStats stat) returns real
+  if customUnitStats.has(this) and customUnitStats.get(this).has(stat)
+    return customUnitStats.get(this).get(stat)
+  else 
+    return 0
+
+public function unit.setStat(CustomUnitStats stat, real value)
+  if not customUnitStats.has(this)
+    customUnitStats.put(this, new HashMap<CustomUnitStats, real>)
+
+  customUnitStats.get(this).put(stat, value)
+
+public function unit.addStat(CustomUnitStats stat, real value)
+  this.setStat(stat, this.getStat(stat) + value)
+
+// Functions, which work with temporary stats
+public function unit.getOnetimeStat(CustomUnitStats stat) returns real
+  if customUnitOnetimeStats.has(this) and customUnitOnetimeStats.get(this).has(stat)
+    return customUnitOnetimeStats.get(this).getAndRemove(stat)
+  else 
+    return 0
+
+public function unit.setOnetimeStat(CustomUnitStats stat, real value)
+  if not customUnitOnetimeStats.has(this)
+    customUnitOnetimeStats.put(this, new HashMap<CustomUnitStats, real>)
+
+  customUnitOnetimeStats.get(this).put(stat, value)
+
+public function unit.addOnetimeStat(CustomUnitStats stat, real value)
+  this.setOnetimeStat(stat, this.getOnetimeStat(stat) + value)
