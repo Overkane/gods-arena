@@ -1,15 +1,33 @@
 package HowlOfTerror
+import Abilities
 import AbilityTooltipGenerator
+import BuffIds
+import ClosureEvents
+import DemonLordIds
 import HeroSpellConstants
 import Icons
 
-public constant HOWL_OF_TERROR_ID = compiletime(ABIL_ID_GEN.next())
-
-RealLevelClosure DAMAGE_DECREASE = lvl -> 0.15 + 0.05 * (lvl-1)
+RealLevelClosure DAMAGE_DECREASE = lvl -> 0.25 + 0.1 * (lvl-1)
 RealLevelClosure DURATION = lvl -> 10
+IntLevelClosure STR_BONUS = lvl -> (0.5 * (lvl - 1)).floor() + 1 // 1, 1, 2, 2, 3
+RealLevelClosure HP_RECOVERY = lvl -> 100.0 + 50 * (lvl-1)
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+    let killer = EventData.getKillingUnit()
+    if killer.getTypeId() == DEMON_LORD_ID and EventData.getTriggerUnit().hasAbility(BuffIds.howlofTerror)
+      let level = killer.getAbilityLevel(HOWL_OF_TERROR_ID)
+      killer.addStr(STR_BONUS.run(level))
+      killer.addHP(HP_RECOVERY.run(level))
+      flashEffect(Abilities.deathCoilMissile, killer.getPos())
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "The Pit Lord lets loose a terrifying howl that causes nearby enemy units to shiver in fear, reducing their attack damage.")
+  let tooltip = new AbilityTooltipGenerator(
+    Targettype.NONE,
+    "The Demon Lord lets loose a terrifying howl that causes nearby enemy units to shiver in fear. "
+    + "Feared units have reduced attack damage. "
+    + "If the Demon Lord kills a feared unit, it permanently gains strength and recovers HP."
+  )
   new AbilityDefinitionPitLordHowlofTerror(HOWL_OF_TERROR_ID)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.bTNHowlOfTerror)
@@ -21,12 +39,14 @@ RealLevelClosure DURATION = lvl -> 10
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Howl of Terror")
   ..addTooltipProperty("Damage Decrease", lvl -> (DAMAGE_DECREASE.run(lvl) * 100).toString(0) + "%")
-  ..presetAreaofEffect(lvl -> 500)
+  ..addTooltipProperty("Bonus Strength", STR_BONUS)
+  ..addTooltipProperty("HP Recovered", HP_RECOVERY)
+  ..presetAreaofEffect(lvl -> 400)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 65)
+  ..presetManaCost(lvl -> 60)
   ..presetCooldown(lvl -> 25)
   ..tooltipStopListen()
-  
+
   ..presetDamageIncrease(DAMAGE_DECREASE)
   ..presetDurationNormal(DURATION)
   ..presetDurationHero(DURATION)

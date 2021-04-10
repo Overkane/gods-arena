@@ -1,8 +1,7 @@
 package Cataclysm
 import AbilityTooltipGenerator
 import HeroSpellConstants
-
-public constant CATACLYSM_ID = compiletime(ABIL_ID_GEN.next())
+import DemonLordIds
 
 RealLevelClosure DURATION = lvl -> 0.3
 
