@@ -1,9 +1,8 @@
 package CoupDeGrace
 import AbilityTooltipGenerator
-import DamageEvent
-import StandardTextTags
 import HeroSpellConstants
 import PassiveAbilityPreset
+import DamageSystem
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -14,7 +13,7 @@ constant RealLevelClosure BACKSTAB_MULT = lvl -> 2.
 constant CONE_ANGLE = 140.
 
 init
-  DamageEvent.addUnreducedListener() -> 
+  DamageEvent.addUnreducedListener(DamageEvents.START castTo int) -> 
     let sunit = DamageEvent.getSource()
 
     if sunit.hasAbility(COUP_DE_GRACE_ID) and DamageEvent.getType() == DamageType.ATTACK 
@@ -30,16 +29,13 @@ init
       if (delta < CONE_ANGLE / 2.)
         chance *= 2.
       
+      let multiplayer = CRITICAL_MULT.run(lvl)
 
-      if chance >= GetRandomInt(1, 100)
-        let multiplayer = CRITICAL_MULT.run(lvl)
-        let currentDamage = DamageEvent.getUnreducedAmount()
-        let damageToAdd = currentDamage * (multiplayer-1)
-        let resultDamage = currentDamage * multiplayer
+      sunit
+      ..addOnetimeStat(CustomUnitStats.ATTACK_CRIT_CHANCE, chance/100)
+      ..setOnetimeStat(CustomUnitStats.ATTACK_CRIT_POWER, multiplayer-1) // Basic damage is already included in crit listener
       
-        DamageEvent.addAmount(damageToAdd)
-        createCriticalStrikeTextTag(sunit, resultDamage.toInt())
-        flashEffect("Coup de Grace.mdx", tunit.getPos(), 1, sunit.getFacingAngle())
+      // flashEffect("Coup de Grace.mdx", tunit.getPos(), 1, sunit.getFacingAngle()) TODO Place it to another spell
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gains chance to deal critical strike. Chance to deal critical strike is doubled if target is attacked from behind.")

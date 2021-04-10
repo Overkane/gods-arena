@@ -2,24 +2,56 @@ package KillerReflexes
 import AbilityTooltipGenerator
 import Icons
 import HeroSpellConstants
+import PassiveAbilityPreset
+import DamageSystem
+import ClosureForGroups
+import Reference
+import SoundUtils
 
 public constant KILLER_REFLEXES = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure EVASION_CHANCE = lvl -> 0.2 + 0.05 * (lvl-1)
+RealLevelClosure BONUS_DAMAGE = lvl -> 12. + 12 * (lvl-1)
+RealLevelClosure BONUS_AP = lvl -> 10. + 5 * (lvl-1)
+RealLevelClosure RANGE_CHECK = lvl -> 200.
+
+constant attackSound = new SoundDefinition(Sounds.feedback)
+
+init
+  DamageEvent.addUnreducedListener(DamageEvents.START castTo int) -> 
+    let sunit = DamageEvent.getSource()
+    
+    if sunit.hasAbility(KILLER_REFLEXES)
+      let lvl = sunit.getAbilityLevel(KILLER_REFLEXES)
+      let tunit = DamageEvent.getTarget()
+
+      let tunitIsAlone = new Reference(true)
+
+      forUnitsInRange(tunit.getPos(), RANGE_CHECK.run(lvl)) (unit u) ->
+        if u.isAlive() and u.isAllyOf(tunit) and u != tunit
+          tunitIsAlone.val = false
+
+      if tunitIsAlone.into()
+        let bonusDamage = BONUS_DAMAGE.run(lvl)
+        let bonusAP = BONUS_AP.run(lvl)/100
+
+        sunit
+        ..addOnetimeStat(CustomUnitStats.BONUS_ATTACK_DAMAGE, bonusDamage)
+        ..addOnetimeStat(CustomUnitStats.ATTACK_POWER, bonusAP)
+
+        attackSound.playForPlayer(sunit.getOwner())
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives hero chance to evade the incoming attack.")
-  new AbilityDefinitionEvasion(KILLER_REFLEXES)
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero has gets bonus damage and increased physical damage overall, if his target stays alone.")
+  new PassiveAbilityPreset(KILLER_REFLEXES, NORMAL_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
-  ..presetIcon(Icons.pASBTNEvasion)
+  ..presetIcon(Icons.bTNSentinel)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
   ..presetHotkey("E")
   
   ..tooltipStartListen()
-  ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Killer Reflexes")
-  ..addTooltipProperty("Evasion chance", lvl -> (EVASION_CHANCE.run(lvl) * 100).round())
+  ..addTooltipProperty("Bonus Damage", BONUS_DAMAGE)
+  ..addTooltipProperty("Bonus Physical Damage", BONUS_AP)
+  ..addTooltipProperty("Range Check", RANGE_CHECK)
   ..tooltipStopListen()
-  
-  ..presetChancetoEvade(EVASION_CHANCE)
