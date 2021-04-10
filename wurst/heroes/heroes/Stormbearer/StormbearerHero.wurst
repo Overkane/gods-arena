@@ -6,6 +6,8 @@ import StormHammer
 import ForkedLightning
 import ThunderStrike
 import Tempest
+import Overcharge
+import AbilityIds
 
 public constant STORMBEARER_ID = compiletime(HERO_ID_GEN.next())
 
@@ -16,7 +18,8 @@ public constant STORMBEARER_ID = compiletime(HERO_ID_GEN.next())
   ..addHeroAbility(FORKED_LIGHTNING_ID)
   ..addHeroAbility(THUNDER_STRIKE_ID)
   ..addHeroAbility(TEMPEST_ID)
-  ..setNormalAbilities("AInv, Alit")
+  ..addNormalAbility(AbilityIds.lightningAttack)
+  ..addNormalAbility(OVERCHARGE_ID)
   ..setPrimaryAttribute("Intelligence")
   ..setStartingStrength(20)
   ..setStrengthPerLevel(2)
@@ -28,5 +31,4 @@ public constant STORMBEARER_ID = compiletime(HERO_ID_GEN.next())
   ..setAttack1DamageSidesperDie(4)
   ..setAttack1Range(350)
   ..setAttack1WeaponSound(WeaponSound.Nothing)
-  ..buildProperNames()
-  ..buildHeroAbilities()
+  ..buildHero()

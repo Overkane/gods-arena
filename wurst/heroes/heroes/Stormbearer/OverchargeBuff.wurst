@@ -1,0 +1,41 @@
+package OverchargeBuff
+import PresetBuffs
+import Assets
+import SoundUtils
+import CustomStatSystem
+
+constant buffTuple1 = compiletime(createDummyBuffObject("Overcharge Buff", "Hero deals increased magic damage",  Icons.bTNControlMagic))
+constant buffTuple2 = compiletime(createDummyBuffObject("Overcharge Debuff", "Hero deals decreased magic damage",  Icons.bTNControlMagic))
+
+public class OverchargeBuff extends NormalBuff
+  constant ON_APPLY_SOUND = new SoundDefinition(Sounds.stormBoltLaunch)
+  constant bonusSP = 0.
+  constant duration = 0.
+
+  construct(real dur, real bonusSP)
+    super(dur, buffTuple1)
+    this.bonusSP = bonusSP
+    this.duration = dur
+    
+  override function onApply()
+    target.addStat(CustomUnitStats.SPELL_POWER, bonusSP)
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
+
+  override function onEnd()
+    target.addStat(CustomUnitStats.SPELL_POWER, -bonusSP)
+    new OverchargeDebuff(duration, bonusSP).apply(target)
+
+public class OverchargeDebuff extends NormalBuff
+  constant ON_APPLY_SOUND = new SoundDefinition(Sounds.manaFlareStrike)
+  constant bonusSP = 0.
+
+  construct(real dur, real bonusSP)
+    super(dur, buffTuple2)
+    this.bonusSP = bonusSP
+
+  override function onApply()
+    target.addStat(CustomUnitStats.SPELL_POWER, -bonusSP)
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
+
+  override function onEnd()
+    target.addStat(CustomUnitStats.SPELL_POWER, bonusSP)

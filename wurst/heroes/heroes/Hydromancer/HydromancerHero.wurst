@@ -6,6 +6,7 @@ import WaterBlast
 import WaterElemental
 import BubbleShield
 import CrushingWave
+import SeaAura
 import Abilities
 
 public constant HYDROMANCER_ID = compiletime(HERO_ID_GEN.next())
@@ -17,6 +18,7 @@ public constant HYDROMANCER_ID = compiletime(HERO_ID_GEN.next())
   ..addHeroAbility(WATER_ELEMENTAL_ID)
   ..addHeroAbility(BUBBLE_SHIELD_ID)
   ..addHeroAbility(CRUSHING_WAVE_ID)
+  ..addNormalAbility(SEA_AURA_ID)
   ..setStartingStrength(16)
   ..setStrengthPerLevel(1.6)
   ..setStartingAgility(15)

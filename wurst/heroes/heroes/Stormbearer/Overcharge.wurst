@@ -1,0 +1,36 @@
+package Overcharge
+import Icons
+import AbilityTooltipGenerator
+import ClosureEvents
+import OverchargeBuff
+
+public constant OVERCHARGE_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure BONUS_SP = lvl -> 0.2
+RealLevelClosure DURATION = lvl -> 8
+
+init 
+  EventListener.onCast(OVERCHARGE_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(OVERCHARGE_ID)
+    let additionalSP = BONUS_SP.run(lvl)
+    let spellDuration = DURATION.run(lvl)
+
+    new OverchargeBuff(spellDuration, additionalSP).apply(caster)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero overcharges himself to gain additional magic damage. After overcharge duration ends, hero gets reverted debuff for same duration.")
+  new ChannelAbilityPreset(OVERCHARGE_ID, 1, true, tooltip)
+  ..presetIcon(Icons.bTNControlMagic)
+  ..presetButtonPosNormal(1, 1)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("D")
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..setName("Overcharge")
+  ..addTooltipProperty("Magic Damage Multiplier", BONUS_SP)
+  ..addTooltipProperty("Overcharge Duration", DURATION)
+  ..presetManaCost(lvl -> 50)
+  ..presetCooldown(lvl -> 30.)
+  ..tooltipStopListen()
+
