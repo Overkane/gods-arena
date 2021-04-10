@@ -10,7 +10,7 @@ init
   EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
     let tunit = EventData.getTriggerUnit()
     if tunit.isType(UNIT_TYPE_HERO) and tunit.getOwner().isEnemyOf(ENEMY_PLAYER)
-      printTimedToPlayer(COLOR_GOLD.toColorString() + ">>|r You died. You will revive at then end of the round.", 15., tunit.getOwner())
+      printTimedToPlayer(COLOR_GOLD.toColorString() + ">>|r You died. You will revive at the end of the round.", 15., tunit.getOwner())
       doAfter(5.) ->
         let aliveCount = new Reference(0)
         pData.forEach() (player key, PlayerData value) ->

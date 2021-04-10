@@ -1,7 +1,6 @@
 package GoldenArmor
 import Icons
 import RecipeItem
-import SimpleArmor
 import AdvancedArmor
 import CrownOfKings
 
