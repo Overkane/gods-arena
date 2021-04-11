@@ -6,10 +6,15 @@ import RecipeItem
 import ObjectIds
 import ClosureEvents
 import SmallHealingPotion
+import TooltipFactory
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_HEAL = 600.
-constant PERC_HEAL = 25
+constant FLAT_HEAL = 750
+constant PERC_HEAL = 35
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Heal", 
+  "Heals "+ FLAT_HEAL.color(COLOR_GOLD) +" or "+ PERC_HEAL.colorPerc(COLOR_GOLD) +" hp, depending on which value is bigger.")
 
 public constant M_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Medium Healing Potion")
@@ -21,7 +26,7 @@ public constant M_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setPerishable(true)
   ..setAbilities(HEAL_ID.toRawCode())
   ..setCooldownGroup(HEALING_COOLDOWN_GROUP_ID.toRawCode())
-  ..generateTooltip("Heals "+ FLAT_HEAL.toString() +" or "+ PERC_HEAL.toString() +"% hp, which value is bigger.")
+  ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 init 
@@ -29,7 +34,7 @@ init
     let percHeal = caster.getMaxHP() * PERC_HEAL/100
     
     if FLAT_HEAL > percHeal
-      caster.addHP(FLAT_HEAL)
+      caster.addHP(FLAT_HEAL.toReal())
     else
       caster.addHP(percHeal)
 
