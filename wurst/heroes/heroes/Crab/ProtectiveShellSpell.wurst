@@ -29,7 +29,6 @@ init
         let regen = SPELL_REGEN.run(lvl)
         let armor = SPELL_ARMOR.run(lvl)
         caster..setPropWindow(0 .fromDeg())
-        ..addBonus(Bonus.MANAREGEN, regen)
         ..addBonus(Bonus.LIFEREGEN, regen)
         ..addBonus(Bonus.ARMOR, armor)
 
@@ -41,7 +40,6 @@ init
         doAfter(SPELL_DURATION) ->
             iceEffect.destr()
             caster..setPropWindow(caster.getDefaultPropWindow())
-            ..addBonus(Bonus.MANAREGEN, -regen)
             ..addBonus(Bonus.LIFEREGEN, -regen)
             ..addBonus(Bonus.ARMOR, -armor)
 
@@ -58,7 +56,7 @@ function genAbility()
     ..presetTargetTypes(Targettype.NONE)
     ..setName("Protective Shell")
     ..presetHotkey("Q")
-    ..addTooltipProperty("Mana/Life Regen", SPELL_REGEN)
+    ..addTooltipProperty("Life Regen", SPELL_REGEN)
     ..addTooltipProperty("Armor", SPELL_ARMOR)
     ..presetManaCost(lvl -> 50 + lvl * 10)
     ..presetCooldown(lvl -> 16. - lvl)

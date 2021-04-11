@@ -6,17 +6,19 @@ import Reference
 import PlayerData
 import GameProperties
 
+var ended = false
+
 init
   EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
     let tunit = EventData.getTriggerUnit()
-    if tunit.isType(UNIT_TYPE_HERO) and tunit.getOwner().isEnemyOf(ENEMY_PLAYER)
+    if tunit.isType(UNIT_TYPE_HERO) and tunit.getOwner().isEnemyOf(ENEMY_PLAYER) and not ended
       printTimedToPlayer(COLOR_GOLD.toColorString() + ">>|r You died. You will revive at the end of the round.", 15., tunit.getOwner())
-      doAfter(5.) ->
-        let aliveCount = new Reference(0)
-        pData.forEach() (player key, PlayerData value) ->
-          if value.getHero().have and value.getHero().hero.actor.isAlive()
-            aliveCount.val += 1
-        if aliveCount.into() == 0
-          print(">> You lose!".color(COLOR_GOLD))
-          doAfter(30.) ->
-            EndGame(true)
+      let aliveCount = new Reference(0)
+      pData.forEach() (player key, PlayerData value) ->
+        if value.getHero().have and value.getHero().hero.actor.isAlive()
+          aliveCount.val += 1
+      if aliveCount.into() == 0
+        print(">> All Heroes died. You lost!".color(COLOR_GOLD))
+        ended = true
+        doAfter(30.) ->
+          EndGame(true)
