@@ -6,6 +6,7 @@ import RecipeItem
 import ObjectIds
 import ClosureEvents
 import TooltipFactory
+import MapIcons
 
 public constant HEALING_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -19,7 +20,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 
 public constant S_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Small Healing Potion")
-  ..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNSmallHealingPotion.blp")
+  ..setInterfaceIcon(MapIcons.bTNSmallHealingPotion)
   ..setGoldCost(30)
   ..setNumberofCharges(1)
   ..setMaxStack(5)

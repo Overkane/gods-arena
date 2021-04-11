@@ -7,6 +7,7 @@ import ObjectIds
 import ClosureEvents
 import SmallManaPotion
 import TooltipFactory
+import MapIcons
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_MP = 625
@@ -18,7 +19,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 
 public constant B_MANA_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Big Mana Potion")
-  ..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNBigManaPotion.blp")
+  ..setInterfaceIcon(MapIcons.bTNBigManaPotion)
   ..setGoldCost(105)
   ..setNumberofCharges(1)
   ..setMaxStack(5)

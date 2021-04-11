@@ -44,7 +44,7 @@ init
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero has gets bonus damage and increased physical damage overall, if his target stays alone.")
   new PassiveAbilityPreset(KILLER_REFLEXES, NORMAL_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
-  ..presetIcon(Icons.bTNSentinel)
+  ..presetIcon(Icons.pASBTNEvasion)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
   ..presetHotkey("E")

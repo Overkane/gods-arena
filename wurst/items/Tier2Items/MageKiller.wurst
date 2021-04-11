@@ -6,6 +6,7 @@ import ObjectIds
 import SteelSword
 import AssassinsBlade
 import TooltipFactory
+import MapIcons
 
 constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
 constant CRITICAL_STRIKE_CHANCE = 20
@@ -25,7 +26,7 @@ constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
 
 public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 ..setName("Mage Killer")
-..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNDarkShaft.blp")
+..setInterfaceIcon(MapIcons.bTNDarkShaft)
 ..setGoldCost(110)
 ..addBonus(Bonus.DAMAGE, 65)
 ..addBonus(Bonus.AGILITY, 15)

@@ -1,0 +1,15 @@
+package MapIcons
+import Icons
+
+public class MapIcons extends Icons
+  // Active Buttons
+  static constant bTNSmallManaPotion = "ReplaceableTextures/CommandButtons/BTNSmallManaPotion.blp"
+  static constant bTNMediumManaPotion = "ReplaceableTextures/CommandButtons/BTNMediumManaPotion.blp"
+  static constant bTNBigManaPotion = "ReplaceableTextures/CommandButtons/BTNBigManaPotion.blp"
+  static constant bTNSmallHealingPotion = "ReplaceableTextures/CommandButtons/BTNSmallHealingPotion.blp"
+  static constant bTNMediumHealingPotion = "ReplaceableTextures/CommandButtons/BTNMediumHealingPotion.blp"
+  static constant bTNBigHealingPotion = "ReplaceableTextures/CommandButtons/BTNBigHealingPotion.blp"
+  static constant bTNDarkShaft = "ReplaceableTextures/CommandButtons/BTNDarkShaft.blp"
+  static constant bTNPlateGauntlet = "ReplaceableTextures/CommandButtons/BTNPlateGauntlet.blp"
+  // Passive Buttons
+  static constant pASBTNBackstab = "ReplaceableTextures/PassiveButtons/PASBackStab.blp"

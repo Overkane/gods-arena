@@ -2,10 +2,11 @@ package PlatedGauntlets
 import RecipeItem
 import PowerGloves
 import AssassinsBlade
+import MapIcons
 
 public constant PLATED_GAUNTLETS_ITEM = compiletime(new RecipeItem()
 ..setName("Plated Gauntlets")
-..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNPlateGauntlet.blp")
+..setInterfaceIcon(MapIcons.bTNPlateGauntlet)
 ..addBonus(Bonus.ATTACKSPEED, 60)
 ..addBonus(Bonus.AGILITY, 16)
 ..addBonus(Bonus.DAMAGE, 24)

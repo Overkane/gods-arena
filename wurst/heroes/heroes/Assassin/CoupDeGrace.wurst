@@ -45,7 +45,7 @@ init
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetHotkey("R")
-  ..presetIcon("ReplaceableTextures/CommandButtons/BTNAbility_BackStab.blp")
+  ..presetIcon("ReplaceableTextures/PassiveButtons/PASBackStab.blp")
 
   ..tooltipStartListen()
   ..setName("Coup De Grace")

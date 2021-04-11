@@ -7,6 +7,7 @@ import ObjectIds
 import ClosureEvents
 import SmallHealingPotion
 import TooltipFactory
+import MapIcons
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_HEAL = 1500
@@ -18,7 +19,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 
 public constant B_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Big Healing Potion")
-  ..setInterfaceIcon("ReplaceableTextures/CommandButtons/BTNBigHealingPotion.blp")
+  ..setInterfaceIcon(MapIcons.bTNBigHealingPotion)
   ..setGoldCost(105)
   ..setNumberofCharges(1)
   ..setMaxStack(5)
