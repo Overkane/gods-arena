@@ -57,9 +57,9 @@ function wave_2() returns Wave
   ..goldBounty(150)
 
   ..creep(UnitIds.nagamyrmidon)
-  ..hp(3200)
-  ..damage(75)
-  ..amount(12)
+  ..hp(3000)
+  ..damage(65)
+  ..amount(18)
 
   ..wait(5)
 
@@ -80,8 +80,8 @@ function wave_2() returns Wave
   ..creep(UnitIds.nagaroyalguard)
   ..hp(12500)
   ..mana(5000)
-  ..attackrate(0.4)
-  ..damage(185)
+  ..attackrate(0.35)
+  ..damage(195)
   ..armor(11)
   ..amount(2)
 
@@ -95,9 +95,9 @@ function wave_3() returns Wave
   ..creep(UnitIds.seaturtle)
   ..hp(4500)
   ..damage(85)
-  ..amount(10)
+  ..amount(12)
 
-  ..wait(10)
+  ..wait(15)
 
   ..creep(UnitIds.dragonturtle)
   ..hp(9500)
@@ -105,7 +105,7 @@ function wave_3() returns Wave
   ..amount(3)
   ..scale(1.15)
 
-  ..wait(15)
+  ..wait(20)
 
   ..creep(UnitIds.sludgeflinger)
   ..hp(4250)

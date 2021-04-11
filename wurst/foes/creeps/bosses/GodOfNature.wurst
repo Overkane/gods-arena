@@ -117,7 +117,7 @@ init
   ..setName("God of Nature")
   ..setAttack1DamageBase(100)
   ..setDefenseBase(15)
-  ..setHitPointsMaximumBase(35000)
+  ..setHitPointsMaximumBase(37500)
   ..setScalingValue(2.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
