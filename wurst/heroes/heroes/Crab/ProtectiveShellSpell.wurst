@@ -14,6 +14,7 @@ constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 25. + 65. * lvl
 constant RealLevelClosure SPELL_REGEN = lvl -> 3. + 6. * lvl
 constant RealLevelClosure SPELL_ARMOR = lvl -> 7. + 3. * lvl
+constant RealLevelClosure REDUCE_DMG = lvl -> 5. * lvl
 constant SPELL_AOE = 256.
 constant SPELL_DURATION = 7.
 constant FLASH_EFFECT_DELAY = 0.9
@@ -47,7 +48,7 @@ init
 
 @compiletime
 function genAbility()
-    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases regeneration and splashes nearby enemies."))
+    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases regeneration and reduces attack damage of nearby enemies."))
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNShimmerWeed)
@@ -68,5 +69,5 @@ function genAbility()
     ..setLevels(NORMAL_SPELL_LEVELS)
     ..presetAreaofEffect(lvl -> 1)
     ..presetMovementSpeedReduction(lvl -> 0)
-    ..presetAttackSpeedReduction(lvl -> 0.2)
-    ..presetDamageReduction(lvl -> 0)
+    ..presetDamageReduction(REDUCE_DMG)
+    ..presetAttackSpeedReduction(lvl -> 0)
