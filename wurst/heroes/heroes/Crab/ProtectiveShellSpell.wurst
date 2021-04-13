@@ -14,7 +14,7 @@ constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 25. + 65. * lvl
 constant RealLevelClosure SPELL_REGEN = lvl -> 3. + 6. * lvl
 constant RealLevelClosure SPELL_ARMOR = lvl -> 7. + 3. * lvl
-constant RealLevelClosure REDUCE_DMG = lvl -> 5. * lvl
+// constant RealLevelClosure REDUCE_DMG = lvl -> 0. * lvl
 constant SPELL_AOE = 256.
 constant SPELL_DURATION = 7.
 constant FLASH_EFFECT_DELAY = 0.9
@@ -69,5 +69,7 @@ function genAbility()
     ..setLevels(NORMAL_SPELL_LEVELS)
     ..presetAreaofEffect(lvl -> 1)
     ..presetMovementSpeedReduction(lvl -> 0)
-    ..presetDamageReduction(REDUCE_DMG)
+    ..presetDamageReduction(lvl -> 0.2)
+    ..presetDurationNormal(lvl -> SPELL_DURATION)
+    ..presetDurationHero(lvl -> SPELL_DURATION)
     ..presetAttackSpeedReduction(lvl -> 0)
