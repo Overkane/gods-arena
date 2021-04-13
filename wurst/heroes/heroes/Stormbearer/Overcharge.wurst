@@ -31,6 +31,6 @@ init
   ..addTooltipProperty("Magic Damage Multiplier", BONUS_SP)
   ..addTooltipProperty("Overcharge Duration", DURATION)
   ..presetManaCost(lvl -> 50)
-  ..presetCooldown(lvl -> 30.)
+  ..presetCooldown(lvl -> 35.)
   ..tooltipStopListen()
 
