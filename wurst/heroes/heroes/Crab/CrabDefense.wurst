@@ -56,4 +56,5 @@ init
   ..setAttack1DamageBase(2)
   ..setDeathTimeseconds(0.5)
   ..setCollisionSize(0.)
+  ..setSpeedBase(400)
 
