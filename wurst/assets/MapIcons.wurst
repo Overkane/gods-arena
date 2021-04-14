@@ -12,5 +12,6 @@ public class MapIcons extends Icons
   static constant bTNDarkShaft = "ReplaceableTextures/CommandButtons/BTNDarkShaft.blp"
   static constant bTNPlateGauntlet = "ReplaceableTextures/CommandButtons/BTNPlateGauntlet.blp"
   static constant bTNDraculasAxe = "ReplaceableTextures/CommandButtons/BTNAxeOfAshes.blp"
+  static constant bTNMoonAmulet = "ReplaceableTextures/CommandButtons/BTNMoonAmulet.blp"
   // Passive Buttons
   static constant pASBTNBackstab = "ReplaceableTextures/PassiveButtons/PASBackStab.blp"

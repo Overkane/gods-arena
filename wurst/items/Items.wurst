@@ -27,6 +27,8 @@ import public Ruby
 import public SpiritMask
 import public TalismanOfEvasion
 import public VitalityStone
+import public CrownOfKings
+import public MoonAmulet
 
 // Tier 1 items
 import public ApprenticeStaff

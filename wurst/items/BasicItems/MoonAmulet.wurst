@@ -1,0 +1,13 @@
+package MoonAmulet
+import RecipeItem
+import MapIcons
+import CustomStatSystem
+
+public constant MOON_AMULET_ITEM = compiletime(new RecipeItem()
+..setName("Moon Amulet")
+..setInterfaceIcon(MapIcons.bTNMoonAmulet)
+..setGoldCost(170)
+..onPickup(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, 0.2))
+..onDrop(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, -0.2)) 
+..generateTooltip("+20%".color(COLOR_GOLD) + " Spell Power")
+)..register()
