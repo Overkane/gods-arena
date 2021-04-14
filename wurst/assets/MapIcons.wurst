@@ -13,6 +13,6 @@ public class MapIcons extends Icons
   static constant bTNPlateGauntlet = "ReplaceableTextures/CommandButtons/BTNPlateGauntlet.blp"
   static constant bTNDraculasAxe = "ReplaceableTextures/CommandButtons/BTNAxeOfAshes.blp"
   static constant bTNMoonAmulet = "ReplaceableTextures/CommandButtons/BTNMoonAmulet.blp"
-  static constant bTNJewleryNecklace = "ReplaceableTextures/CommandButtons/BTNJewery_Necklace.blp"
+  static constant bTNJewelryNecklace = "ReplaceableTextures/CommandButtons/BTNJewelry_Necklace.blp"
   // Passive Buttons
   static constant pASBTNBackstab = "ReplaceableTextures/PassiveButtons/PASBackStab.blp"
