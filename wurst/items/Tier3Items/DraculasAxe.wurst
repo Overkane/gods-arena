@@ -1,0 +1,43 @@
+package DraculasAxe
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import ArcaniteAxe
+import TooltipFactory
+import MaskOfDeath
+import CrownOfKings
+import MapIcons
+
+constant CLEAVE_ID = compiletime(ABIL_ID_GEN.next())
+constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
+constant CLEAVE_PERC = 55
+constant LIFESTEAL_VALUE = 25
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Cleave", 
+  "gives " + CLEAVE_PERC.colorPerc(COLOR_GOLD) + " cleave.")
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Lifesteal", 
+  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of damage dealt converted to hitpoints.")
+
+public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
+..setName("Dracula's Axe")
+..setInterfaceIcon(MapIcons.bTNDraculasAxe)
+..addBonus(Bonus.DAMAGE, 140)
+..setAbilities(commaList(CLEAVE_ID))
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+)..register()
+
+public constant DRACULAS_AXE_RECIPE = new ItemRecipe()
+..gold(320)
+..setRequiredItems(ARCANITE_AXE_ITEM.getNewId(), MASK_OF_DEATH_ITEM.getNewId(), CROWN_ITEM.getNewId())
+..setResultItem(DRACULAS_AXE_ITEM)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionPitLordCleavingAttack(CLEAVE_ID)
+  ..setDistributedDamageFactor(1, CLEAVE_PERC/100)
+
+  new AbilityDefinitionVampiricattackAIva(LIFESTEAL_ID)
+  ..setLifeStolenPerAttack(1, LIFESTEAL_VALUE/100)

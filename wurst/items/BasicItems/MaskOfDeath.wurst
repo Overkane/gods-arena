@@ -11,7 +11,7 @@ constant LIFESTEAL_VALUE = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Lifesteal", 
-  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of damage dealt converts to hitpoints.")
+  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of damage dealt converted to hitpoints.")
 
 public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Death")

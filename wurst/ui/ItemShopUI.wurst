@@ -13,6 +13,7 @@ import WizardStaff
 import GoldenArmor
 import PlatedGauntlets
 import CrownOfKings
+import DraculasAxe
 
 public constant SELL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -69,6 +70,7 @@ public function initItemShop()
   ..addRecipe(MAGE_KILLER_RECIPE)
   ..addRecipe(ARCANITE_SWORD_RECIPE)
   ..addRecipe(ARCANITE_AXE_RECIPE)
+  ..addRecipe(PLATED_GAUNTLETS_RECIPE)
   ..addRecipe(ADVANCED_ARMOR_RECIPE)
   ..addRecipe(CLOAK_OF_SHADOWS_RECIPE)
   ..addRecipe(LIGHTNING_SHIELD_RECIPE)
@@ -77,7 +79,7 @@ public function initItemShop()
   ..addSection("Tier 3 Recipes")
   ..addRecipe(WIZARD_STAFF_RECIPE)
   ..addRecipe(GOLDEN_ARMOR_RECIPE)
-  ..addRecipe(PLATED_GAUNTLETS_RECIPE)
+  ..addRecipe(DRACULAS_AXE_RECIPE)
   // ..addSection("Tomes")
   // ..addItem(TOME_OF_STRENGTH_ITEM)
   // ..addItem(TOME_OF_AGILITY_ITEM)
