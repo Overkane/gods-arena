@@ -2,12 +2,12 @@ package LightningShield
 import RecipeItem
 import Icons
 import PassiveAbilityPreset
-import DummyCaster
 import OrderIds
 import DamageEvent
 import IronShield
 import SimpleArmor
 import TooltipFactory
+import DummyStatCaster
 
 constant BLOCK_ID = compiletime(ABIL_ID_GEN.next())
 constant BLOCK_CHANCE = 75
@@ -49,9 +49,10 @@ init
 
     if tunit.hasItemById(LIGHTNING_SHIELD_ITEM.getNewId()) and not tunit.isIllusion() and DamageEvent.getType() == DamageType.ATTACK and sunit.isEnemyOf(tunit)
       if CHAIN_LIGHTNING_CHANCE >= GetRandomInt(1, 100)
-        new DummyCaster()..origin(tunit.getPos())
-        ..owner(tunit.getOwner())
-        .castTarget(CHAIN_LIGHTNING_ID, 1 , OrderIds.chainlightning, sunit)
+        new DummyStatCaster()
+        ..origin(tunit.getPos())
+        ..caster(tunit)
+        ..castTarget(CHAIN_LIGHTNING_ID, 1, OrderIds.chainlightning, sunit)
 
 @compiletime function genAbility()
   new AbilityDefinitionHardenedSkin(BLOCK_ID)

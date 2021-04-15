@@ -1,0 +1,19 @@
+package DummyStatCaster
+import DummyCaster
+import CustomStatSystem
+
+public class DummyStatCaster extends DummyCaster
+    unit caster = null
+
+    function caster(unit u)
+        owner(u.getOwner())
+        caster = u
+
+    override function prepare(int id, int lvl) returns unit
+        let dummy = super.prepare(id, lvl)
+        dummy.copyStats(caster)
+        return dummy
+
+    override function finish(unit dummy, int id)
+        dummy.clearStats()
+        super.finish(dummy, id)

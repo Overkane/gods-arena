@@ -3,11 +3,11 @@ import AbilityTooltipGenerator
 import Icons
 import StandardTextTags
 import Tagwalk
-import InstantDummyCaster
 import Orders
 import Buff
 import HeroSpellConstants
 import PassiveAbilityPreset
+import DummyStatCaster
 
 public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -26,7 +26,10 @@ init
             createCriticalStrikeTextTag(attacker, damage.toInt())
 
             if isTagged
-                InstantDummyCaster.castTarget(attacker.getOwner(), ENTANGLE_ID, lvl, OrderIds.entanglingroots, DamageEvent.getTarget())
+                new DummyStatCaster()
+                ..caster(attacker)
+                ..castTarget(ENTANGLE_ID, lvl, OrderIds.entanglingroots, DamageEvent.getTarget())
+
                 DamageEvent.getTarget().removeBuff(TagBuff.typeId)
 
 

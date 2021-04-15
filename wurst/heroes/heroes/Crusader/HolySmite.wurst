@@ -3,11 +3,12 @@ import Icons
 import Abilities
 import ClosureForGroups
 import AbilityTooltipGenerator
-import InstantDummyCaster
 import StunAbilityPreset
 import TheEmpyreanBuff
 import HeroSpellConstants
 import PassiveAbilityPreset
+import DummyStatCaster
+import Orders
 
 public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
 public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
@@ -44,7 +45,11 @@ init
           if target.isEnemyOf(sunit) and target.isAlive()
             DamageEvent.setNextDamageFromCode()
             sunit.damageTarget(target, spellDamage)
-            InstantDummyCaster.castTarget(DUMMY_PLAYER, HOLY_SMITE_STUN_ID, lvl, "thunderbolt", target) 
+
+            new DummyStatCaster()
+            ..delay(1.)
+            ..caster(sunit)
+            ..castTarget(HOLY_SMITE_STUN_ID, lvl, OrderIds.thunderbolt, target)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")

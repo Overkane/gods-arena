@@ -2,11 +2,11 @@ package StormHammer
 import Icons
 import AbilityTooltipGenerator
 import StormHammerBuff
-import DummyCaster
 import Buff
 import OrderIds
 import ClosureEvents
 import HeroSpellConstants
+import DummyStatCaster
 
 public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())
 public constant STORM_HAMMER_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
@@ -29,9 +29,10 @@ init
       let lvl = sunit.getAbilityLevel(STORM_HAMMER_ID)
       let tunit = DamageEvent.getTarget()
 
-      new DummyCaster()..origin(sunit.getPos())
-      ..owner(sunit.getOwner())
-      .castTarget(STORM_HAMMER_CHAIN_LIGHTNING_ID, lvl, OrderIds.chainlightning, tunit)
+      new DummyStatCaster()
+      ..origin(sunit.getPos())
+      ..caster(sunit)
+      ..castTarget(STORM_HAMMER_CHAIN_LIGHTNING_ID, lvl, OrderIds.chainlightning, tunit)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero charges his hammer for a short duration. While hammer charged, each hero attack calls chain lightning.")
