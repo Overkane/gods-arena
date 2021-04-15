@@ -26,7 +26,7 @@ constant WISP_ID = compiletime(UNIT_ID_GEN.next())
 constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
 vec2 array WISP_SPAWN_POINTS = [gg_rct_Arena1.getRightTop(), gg_rct_Arena1.getLeftTop(), gg_rct_Arena1.getLeftBot(), gg_rct_Arena1.getRightBot()]
 
-constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.nightElfDefeat)
+constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.doom)
 
 public class GodOfNature extends Boss
   let castQueue = new LinkedList<int>
