@@ -1,0 +1,13 @@
+package DamageTexts
+import DamageEvent
+import GameProperties
+import FText
+
+init
+    DamageEvent.addListener(99) ->
+        let target = DamageEvent.getTarget()
+
+        if target.getOwner() == ENEMY_PLAYER
+            createFText(target.getPos().withTerrainZ(45), DamageEvent.getAmount().toInt().toString(), 4 + SquareRoot(DamageEvent.getAmount()),
+                0.5, vec2(0, 0.1), COLOR_WHITE, DamageEvent.getSource().getOwner())
+        
