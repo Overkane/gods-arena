@@ -5,7 +5,7 @@ import RecipeItem
 public constant HEALTH_AMULET_ITEM = compiletime(new RecipeItem()
 ..setName("Health Amulet")
 ..setInterfaceIcon(Icons.bTNSpellShieldAmulet)
-..setGoldCost(125)
+..setGoldCost(150)
 ..addBonus(Bonus.LIFE, 250)
 ..generateTooltip("")
 )..register()

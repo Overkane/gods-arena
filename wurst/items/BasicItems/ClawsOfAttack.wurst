@@ -5,7 +5,7 @@ import RecipeItem
 public constant CLAWS_OF_ATTACK_ITEM = compiletime(new RecipeItem()
 ..setName("Claws of Attack")
 ..setInterfaceIcon(Icons.bTNClawsOfAttack)
-..setGoldCost(80)
+..setGoldCost(60)
 ..addBonus(Bonus.DAMAGE, 8)
 ..generateTooltip("")
 )..register()

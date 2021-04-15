@@ -5,7 +5,7 @@ import RecipeItem
 public constant SPIRIT_MASK_ITEM = compiletime(new RecipeItem()
 ..setName("Spirit Mask")
 ..setInterfaceIcon(Icons.bTNSobiMask)
-..setGoldCost(80)
+..setGoldCost(75)
 ..addBonus(Bonus.MANAREGEN, 0.5)
 ..generateTooltip("")
 )..register()

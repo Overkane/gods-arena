@@ -5,6 +5,7 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import MaskOfDeath
+import GlovesOfHaste
 import TooltipFactory
 
 constant BERSERK_ID = compiletime(ABIL_ID_GEN.next())
@@ -26,6 +27,7 @@ constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
 constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Madness")
 ..setInterfaceIcon(Icons.bTNUnholyFrenzy)
+..addBonus(Bonus.ATTACKSPEED, 15)
 ..setActivelyUsed(true)
 ..setAbilities(commaList(BERSERK_ID, LIFESTEAL_ID))
 ..setCooldownGroup(BERSERK_ID.toRawCode())
@@ -33,8 +35,8 @@ constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant MASK_OF_MADNESS_RECIPE = new ItemRecipe()
-..gold(200)
-..setRequiredItems(MASK_OF_DEATH_ITEM.getNewId())
+..gold(125)
+..setRequiredItems(MASK_OF_DEATH_ITEM.getNewId(), GLOVES_OF_HASTE_ITEM.getNewId())
 ..setResultItem(MASK_OF_MADNESS_ITEM)
 
 @compiletime function genItemAbils()

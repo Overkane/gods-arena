@@ -5,7 +5,7 @@ import RecipeItem
 public constant GLOVES_OF_HASTE_ITEM = compiletime(new RecipeItem()
 ..setName("Gloves of Haste")
 ..setInterfaceIcon(Icons.bTNGlove)
-..setGoldCost(90)
+..setGoldCost(65)
 ..addBonus(Bonus.ATTACKSPEED, 15)
 ..generateTooltip("")
 )..register()

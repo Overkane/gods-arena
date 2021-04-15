@@ -16,7 +16,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
 public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Death")
 ..setInterfaceIcon(Icons.bTNMaskOfDeath)
-..setGoldCost(200)
+..setGoldCost(135)
 ..setAbilities(commaList(LIFESTEAL_ID))
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
