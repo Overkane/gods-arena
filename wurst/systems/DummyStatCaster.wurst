@@ -9,11 +9,11 @@ public class DummyStatCaster extends DummyCaster
         owner(u.getOwner())
         caster = u
 
-    override function prepare(int id, int lvl) returns unit
+    override protected function prepare(int id, int lvl) returns unit
         let dummy = super.prepare(id, lvl)
         caster.copyStats(dummy)
         return dummy
 
-    override function finish(unit dummy, int id)
+    override function recycleDummy(unit dummy, int id)
         dummy.clearStats()
-        super.finish(dummy, id)
+        super.recycleDummy(dummy, id)

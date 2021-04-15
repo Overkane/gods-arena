@@ -8,6 +8,13 @@ init
         let target = DamageEvent.getTarget()
 
         if target.getOwner() == ENEMY_PLAYER
-            createFText(target.getPos().withTerrainZ(45), DamageEvent.getAmount().toInt().toString(), 4 + SquareRoot(DamageEvent.getAmount()),
-                0.5, vec2(0, 0.1), COLOR_WHITE, DamageEvent.getSource().getOwner())
+            if DamageEvent.getType() == DamageType.ATTACK
+                createFText(target.getPos().withTerrainZ(35), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 4,
+                    0.75, vec2(0, 0.02), colorA(233, 202, 116, 255), DamageEvent.getSource().getOwner())
+            else
+                createFText(target.getPos().withTerrainZ(45), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 4,
+                    0.75, vec2(0, 0.02), colorA(116, 147, 233, 255), DamageEvent.getSource().getOwner())
+        else
+            createFText(target.getPos().withTerrainZ(45), DamageEvent.getAmount().toInt().toString(), 6 + SquareRoot(DamageEvent.getAmount()) / 8,
+                0.75, vec2(0, 0.02), colorA(146, 29, 29, 255), target.getOwner())
         

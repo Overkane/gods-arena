@@ -97,7 +97,7 @@ init
 
 @compiletime function genAbility()
   new UnitDefinition(WISP_ID, UnitIds.wisp)
-  ..setHitPointsMaximumBase(1000)
+  ..setHitPointsMaximumBase(2500)
   ..setArmorType(ArmorType.Unarmored)
   ..setSpeedBase(205)
   ..setMovementType(MovementType.Fly)
