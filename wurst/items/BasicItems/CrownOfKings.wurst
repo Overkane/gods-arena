@@ -5,7 +5,7 @@ import RecipeItem
 public constant CROWN_ITEM = compiletime(new RecipeItem()
 ..setName("Crown of Kings")
 ..setInterfaceIcon(Icons.bTNHelmutPurple)
-..setGoldCost(500)
+..setGoldCost(400)
 ..addBonus(Bonus.AGILITY, 10)
 ..addBonus(Bonus.STRENGTH, 10)
 ..addBonus(Bonus.INTELLIGENCE, 10)

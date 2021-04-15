@@ -17,7 +17,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
 public constant IRON_SHIELD_ITEM = compiletime(new RecipeItem()
 ..setName("Iron Shield")
 ..setInterfaceIcon(Icons.bTNHumanArmorUpOne)
-..setGoldCost(110)
+..setGoldCost(100)
 ..setAbilities(commaList(BLOCK_ID))
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
