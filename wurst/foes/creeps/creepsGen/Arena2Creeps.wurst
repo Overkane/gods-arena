@@ -162,7 +162,7 @@ function wave_5() returns Wave
   ..attackrate(0.75)
   ..amount(2)
 
-  ..wait(10)
+  ..wait(5)
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
@@ -170,7 +170,7 @@ function wave_5() returns Wave
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(10)
+  ..wait(5)
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
@@ -178,7 +178,7 @@ function wave_5() returns Wave
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(10)
+  ..wait(5)
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
@@ -186,7 +186,7 @@ function wave_5() returns Wave
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(10)
+  ..wait(5)
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
@@ -194,7 +194,7 @@ function wave_5() returns Wave
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(10)
+  ..wait(5)
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
@@ -202,7 +202,23 @@ function wave_5() returns Wave
   ..amount(5)
   ..scale(1.25)
 
-  ..wait(10)
+  ..wait(5)
+
+  ..creep(UnitIds.quillboar)
+  ..hp(7600)
+  ..damage(228)
+  ..amount(5)
+  ..scale(1.25)
+
+  ..wait(5)
+
+  ..creep(UnitIds.quillboar)
+  ..hp(7600)
+  ..damage(228)
+  ..amount(5)
+  ..scale(1.25)
+
+  ..wait(5)
 
   ..creep(UnitIds.quillboar)
   ..hp(7600)
