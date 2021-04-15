@@ -2,46 +2,30 @@ package KillerReflexes
 import AbilityTooltipGenerator
 import Icons
 import HeroSpellConstants
+import ClosureEvents
+import CustomStatSystem
 import PassiveAbilityPreset
-import DamageSystem
-import ClosureForGroups
-import Reference
-import SoundUtils
 
 public constant KILLER_REFLEXES = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure BONUS_DAMAGE = lvl -> 12. + 12 * (lvl-1)
-RealLevelClosure BONUS_AP = lvl -> 10. + 5 * (lvl-1)
-RealLevelClosure RANGE_CHECK = lvl -> 200.
-
-constant attackSound = new SoundDefinition(Sounds.feedback)
+RealLevelClosure EVASION = lvl -> 20. + 5 * (lvl-1)
+constant ACTIVE_BONUS = 2.
 
 init
-  DamageEvent.addUnreducedListener(DamageEvents.START castTo int) -> 
-    let sunit = DamageEvent.getSource()
-    
-    if sunit.hasAbility(KILLER_REFLEXES)
-      let lvl = sunit.getAbilityLevel(KILLER_REFLEXES)
-      let tunit = DamageEvent.getTarget()
+  EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
+    let u = EventData.getTriggerUnit()
 
-      let tunitIsAlone = new Reference(true)
-
-      forUnitsInRange(tunit.getPos(), RANGE_CHECK.run(lvl)) (unit u) ->
-        if u.isAlive() and u.isAllyOf(tunit) and u != tunit
-          tunitIsAlone.val = false
-
-      if tunitIsAlone.into()
-        let bonusDamage = BONUS_DAMAGE.run(lvl)
-        let bonusAP = BONUS_AP.run(lvl)/100
-
-        sunit
-        ..addOnetimeStat(CustomUnitStats.BONUS_ATTACK_DAMAGE, bonusDamage)
-        ..addOnetimeStat(CustomUnitStats.ATTACK_POWER, bonusAP)
-
-        attackSound.playForPlayer(sunit.getOwner())
+    if EventData.getLearnedSkill() == KILLER_REFLEXES
+      let lvl = u.getAbilityLevel(KILLER_REFLEXES)
+      if lvl != 1
+        let evasionOld = EVASION.run(lvl-1)
+        u.addStat(CustomUnitStats.EVASION, -evasionOld/100)
+      
+      let evasion = EVASION.run(lvl)
+      u.addStat(CustomUnitStats.EVASION, evasion/100)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero has gets bonus damage and increased physical damage overall, if his target stays alone.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gets chance to evade an attack.")
   new PassiveAbilityPreset(KILLER_REFLEXES, NORMAL_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.pASBTNEvasion)
@@ -51,7 +35,5 @@ init
   
   ..tooltipStartListen()
   ..setName("Killer Reflexes")
-  ..addTooltipProperty("Bonus Damage", BONUS_DAMAGE)
-  ..addTooltipProperty("Bonus Physical Damage", BONUS_AP)
-  ..addTooltipProperty("Range Check", RANGE_CHECK)
+  ..addTooltipProperty("Evasion", lvl -> EVASION.run(lvl).toString() + "%")
   ..tooltipStopListen()

@@ -1,0 +1,80 @@
+package Contract
+import Icons
+import AbilityTooltipGenerator
+import ClosureEvents
+import ClosureForGroups
+import LinkedList
+import ContractBuff
+import DamageSystem
+import Buff
+import StandardTextTags
+
+public constant CONTRACT_ID = compiletime(ABIL_ID_GEN.next())
+
+constant AOE = 1000.
+constant DURATION = 15.
+constant BONUS_AP = 25.
+constant BOUNTY = 10
+
+init 
+  EventListener.onCast(CONTRACT_ID) (unit caster) ->
+    let targets = new LinkedList<unit>
+
+    forUnitsInRange(caster.getPos(), AOE) (unit u) ->
+      if u.isEnemyOf(caster) and u.isAlive()
+        targets.add(u)  
+
+    if not targets.isEmpty()
+      targets.shuffle()
+      let target = targets.pop()
+
+      new ContractBuff(DURATION).apply(target)
+    else 
+      caster.resetAbilityCooldown(CONTRACT_ID)
+  
+  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+    let sunit = EventData.getKillingUnit()
+    let tunit = EventData.getDyingUnit()
+    
+    if tunit.hasBuff(ContractBuff.typeId) 
+      if sunit.hasAbility(CONTRACT_ID)
+        let bounty = BOUNTY * sunit.getLevel()
+        
+        sunit.getOwner().addGold(bounty)
+        createGoldBountyTextTag(tunit, bounty, sunit.getOwner())
+      else
+        forUnitsInRange(tunit.getPos(), 225) (unit u) ->
+          if u.hasAbility(CONTRACT_ID)
+            let bounty = BOUNTY * u.getLevel()
+        
+            u.getOwner().addGold(bounty)
+            createGoldBountyTextTag(tunit, bounty, u.getOwner())
+      
+  DamageEvent.addUnreducedListener(DamageEvents.START castTo int) ->
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if tunit.hasBuff(ContractBuff.typeId) and sunit.hasAbility(CONTRACT_ID)
+      sunit.addOnetimeStat(CustomUnitStats.ATTACK_POWER, BONUS_AP/100)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Assassin takes a killing contract on random target in the AOE. " 
+  + "She will deal additional damage to the contract target and if she kills it, she also will get additional bounty. "
+  + "If she won't kill the target, but will be in range 225 of it, then Assassin will get half of the bounty, otherwise she gets nothing. "
+  + "If there is not any appropriate target nearby skill cooldown will be reset.")
+  new ChannelAbilityPreset(CONTRACT_ID, 1, true, tooltip)
+  ..presetIcon(Icons.bTNSnazzyScrollPurple)
+  ..presetButtonPosNormal(1, 1)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("D")
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..setName("Contract")
+  ..addTooltipProperty("Bonus Physical Damage", lvl -> BONUS_AP.toString() + "%")
+  ..addTooltipProperty("Additional Bounty", lvl -> BOUNTY.toString() + " * [Hero Level]")
+  ..presetAreaofEffect(lvl -> AOE)
+  ..presetCooldown(lvl -> 40.)
+  ..tooltipStopListen()
+  
+  ..presetManaCost(lvl -> 0)

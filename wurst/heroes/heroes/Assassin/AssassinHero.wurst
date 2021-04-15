@@ -6,6 +6,7 @@ import BlinkCut
 import Stealth
 import KillerReflexes
 import CoupDeGrace
+import Contract
 
 public constant ASSASSIN_ID = compiletime(HERO_ID_GEN.next())
 
@@ -16,6 +17,7 @@ public constant ASSASSIN_ID = compiletime(HERO_ID_GEN.next())
   ..addHeroAbility(STEALTH_ID)
   ..addHeroAbility(KILLER_REFLEXES)
   ..addHeroAbility(COUP_DE_GRACE_ID)
+  ..addNormalAbility(CONTRACT_ID)
   ..setStartingStrength(16)
   ..setStrengthPerLevel(1.5)
   ..setStartingAgility(25)

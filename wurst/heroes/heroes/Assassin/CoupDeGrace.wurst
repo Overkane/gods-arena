@@ -3,6 +3,7 @@ import AbilityTooltipGenerator
 import HeroSpellConstants
 import PassiveAbilityPreset
 import DamageSystem
+import MapIcons
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -45,7 +46,7 @@ init
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetHotkey("R")
-  ..presetIcon("ReplaceableTextures/PassiveButtons/PASBackStab.blp")
+  ..presetIcon(MapIcons.pASBTNBackstab)
 
   ..tooltipStartListen()
   ..setName("Coup De Grace")

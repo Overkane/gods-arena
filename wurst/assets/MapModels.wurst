@@ -1,0 +1,5 @@
+package MapModels
+
+public class MapModels
+  static constant redSnipeTarget = "Red Snipe Target.mdx"
+
