@@ -54,8 +54,10 @@ public function unit.addOnetimeStat(CustomUnitStats stat, real value)
   this.setOnetimeStat(stat, this.getOnetimeStat(stat) + value)
 
 public function unit.copyStats(unit target)
-  customUnitStats.put(target, customUnitStats.get(this))
-  customUnitOnetimeStats.put(target, customUnitOnetimeStats.get(this))
+  if customUnitStats.has(this)
+    customUnitStats.put(target, customUnitStats.get(this))
+  if customUnitOnetimeStats.has(this)
+    customUnitOnetimeStats.put(target, customUnitOnetimeStats.get(this))
 
 public function unit.clearStats()
   customUnitStats.remove(this)

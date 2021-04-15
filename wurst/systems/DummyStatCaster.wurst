@@ -11,7 +11,7 @@ public class DummyStatCaster extends DummyCaster
 
     override function prepare(int id, int lvl) returns unit
         let dummy = super.prepare(id, lvl)
-        dummy.copyStats(caster)
+        caster.copyStats(dummy)
         return dummy
 
     override function finish(unit dummy, int id)
