@@ -34,7 +34,7 @@ init
 
       sunit
       ..addOnetimeStat(CustomUnitStats.ATTACK_CRIT_CHANCE, chance/100)
-      ..setOnetimeStat(CustomUnitStats.ATTACK_CRIT_POWER, multiplayer-1) // Basic damage is already included in crit listener
+      ..addOnetimeStat(CustomUnitStats.ATTACK_CRIT_POWER, multiplayer-1) // Basic damage is already included in crit listener
       
       // flashEffect("Coup de Grace.mdx", tunit.getPos(), 1, sunit.getFacingAngle()) TODO Place it to another spell
 

@@ -7,8 +7,8 @@ import ObjectIds
 import NinjaCloak
 import AssassinsBlade
 import TooltipFactory
+import CustomStatSystem
 
-constant EVASION_ID = compiletime(ABIL_ID_GEN.next())
 constant EVASION_CHANCE = 35
 
 constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
@@ -29,7 +29,9 @@ public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.DAMAGE, 25)
 ..addBonus(Bonus.AGILITY, 25)
 ..addBonus(Bonus.LIFE, 300)
-..setAbilities(commaList(PHASE_STEP_ID, EVASION_ID))
+..setAbilities(commaList(PHASE_STEP_ID))
+..onPickup(actor -> actor.addStat(CustomUnitStats.EVASION, EVASION_CHANCE/100))
+..onDrop(actor -> actor.addStat(CustomUnitStats.EVASION, -EVASION_CHANCE/100)) 
 ..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
@@ -39,9 +41,6 @@ public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
 ..setResultItem(CLOAK_OF_SHADOWS_ITEM)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionEvasion(EVASION_ID)
-  ..setChancetoEvade(1, EVASION_CHANCE/100)
-
   new AbilityDefinitionWindWalk(PHASE_STEP_ID)
   ..setTransitionTime(1, 5)
   ..setMovementSpeedIncrease(1, 0)

@@ -1,15 +1,12 @@
 package NinjaCloak
 import Icons
 import RecipeItem
-import AbilityObjEditing
-import ObjectIdGenerator
-import ObjectIds
 import TalismanOfEvasion
 import Emerald
 import VitalityStone
 import TooltipFactory
+import CustomStatSystem
 
-constant EVASION_ID = compiletime(ABIL_ID_GEN.next())
 constant EVASION_CHANCE = 25
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
@@ -21,7 +18,8 @@ public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
 ..setInterfaceIcon(Icons.bTNCloak)
 ..addBonus(Bonus.AGILITY, 12)
 ..addBonus(Bonus.LIFE, 200)
-..setAbilities(commaList(EVASION_ID))
+..onPickup(actor -> actor.addStat(CustomUnitStats.EVASION, EVASION_CHANCE/100))
+..onDrop(actor -> actor.addStat(CustomUnitStats.EVASION, -EVASION_CHANCE/100)) 
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
@@ -29,7 +27,3 @@ public constant NINJA_CLOAK_RECIPE = new ItemRecipe()
 ..gold(0)
 ..setRequiredItems(TALISMAN_OF_EVASION_ITEM.getNewId(), EMERALD_ITEM.getNewId(), VITALITY_STONE_ITEM.getNewId())
 ..setResultItem(NINJA_CLOAK_ITEM)
-
-@compiletime function genItemAbils()
-  new AbilityDefinitionEvasion(EVASION_ID)
-  ..setChancetoEvade(1, EVASION_CHANCE/100)

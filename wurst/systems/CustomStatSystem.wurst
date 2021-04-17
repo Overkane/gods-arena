@@ -1,11 +1,12 @@
 package CustomStatSystem
 import HashMap
+import LinkedList
 
 // Constant unit stats
-constant customUnitStats = new HashMap<unit, HashMap<CustomUnitStats, real>>
+constant customUnitStats = new HashMap<unit, HashMap<CustomUnitStats, LinkedList<real>>>
 
 // Temporary unit stats, which are removed upon getting
-constant customUnitOnetimeStats = new HashMap<unit, HashMap<CustomUnitStats, real>>
+constant customUnitOnetimeStats = new HashMap<unit, HashMap<CustomUnitStats, LinkedList<real>>>
 
 public enum CustomUnitStats
   // Attack related stuff
@@ -13,46 +14,100 @@ public enum CustomUnitStats
   ATTACK_POWER
   ATTACK_CRIT_POWER
   ATTACK_CRIT_CHANCE
-  EVASION
+  LIFESTEAL // TODO
   // Spell related stuff
   BONUS_SPELL_DAMAGE
   SPELL_POWER
-  SPELL_CRIT_POWER
+  SPELL_CRIT_POWER 
   SPELL_CRIT_CHANCE
-  
+  SPELL_LIFESTEAL  // TODO
+  // Utility 
+  EVASION
 
+// Additive stats value is calculated just by addictiton
+constant additiveStats = new LinkedList<CustomUnitStats>
+..add(CustomUnitStats.BONUS_ATTACK_DAMAGE)
+..add(CustomUnitStats.ATTACK_CRIT_POWER)
+..add(CustomUnitStats.ATTACK_CRIT_CHANCE)
+..add(CustomUnitStats.BONUS_SPELL_DAMAGE)
+..add(CustomUnitStats.SPELL_CRIT_POWER)
+..add(CustomUnitStats.SPELL_CRIT_CHANCE)
+
+// Multiplicative stats value is calculated by formula — 1 - ((1 - x) * (1 - y) * ...)
+// where x, y and etc are stats in the list
+constant multiplicativeStats = new LinkedList<CustomUnitStats>
+..add(CustomUnitStats.ATTACK_POWER)
+..add(CustomUnitStats.LIFESTEAL)
+..add(CustomUnitStats.SPELL_POWER)
+..add(CustomUnitStats.SPELL_LIFESTEAL)
+..add(CustomUnitStats.EVASION)
+  
 // Functions, which work with constant stats
 public function unit.getStat(CustomUnitStats stat) returns real
+  let oneTimeStats = new LinkedList<real>  
+  let constantStats = new LinkedList<real>  
+
   if customUnitStats.has(this) and customUnitStats.get(this).has(stat)
-    return customUnitStats.get(this).get(stat)
-  else 
-    return 0
+    constantStats.addAll(customUnitStats.get(this).get(stat))
 
-public function unit.setStat(CustomUnitStats stat, real value)
-  if not customUnitStats.has(this)
-    customUnitStats.put(this, new HashMap<CustomUnitStats, real>)
+  if customUnitOnetimeStats.has(this) and customUnitOnetimeStats.get(this).has(stat)
+    oneTimeStats.addAll(customUnitOnetimeStats.get(this).get(stat))
 
-  customUnitStats.get(this).put(stat, value)
+    customUnitOnetimeStats.get(this).get(stat).clear()
+
+  let allStats = oneTimeStats.copy()..addAll(constantStats)
+
+  var overallStatValue = 0.
+
+  if additiveStats.has(stat)
+    for elem in allStats
+      overallStatValue += elem
+      
+  else if multiplicativeStats.has(stat)
+    var multiplicativePositiveValue = 1.
+    var multiplicativeNegativeValue = 1.
+
+    for elem in allStats
+      if elem > 0
+        multiplicativePositiveValue *= 1 - elem
+      else
+        multiplicativeNegativeValue *= 1 - elem.abs()
+
+    multiplicativePositiveValue = 1 - multiplicativePositiveValue
+    multiplicativeNegativeValue = 1 - multiplicativeNegativeValue
+
+    overallStatValue = multiplicativePositiveValue - multiplicativeNegativeValue 
+
+  else
+    print("Unknown stat " + (stat castTo int).toString())
+  
+  return overallStatValue
 
 public function unit.addStat(CustomUnitStats stat, real value)
-  this.setStat(stat, this.getStat(stat) + value)
 
-// Functions, which work with temporary stats
-public function unit.getOnetimeStat(CustomUnitStats stat) returns real
-  if customUnitOnetimeStats.has(this) and customUnitOnetimeStats.get(this).has(stat)
-    return customUnitOnetimeStats.get(this).getAndRemove(stat)
-  else 
-    return 0
-
-public function unit.setOnetimeStat(CustomUnitStats stat, real value)
-  if not customUnitOnetimeStats.has(this)
-    customUnitOnetimeStats.put(this, new HashMap<CustomUnitStats, real>)
-
-  customUnitOnetimeStats.get(this).put(stat, value)
+  if not customUnitStats.has(this)
+    customUnitStats.put(this, new HashMap<CustomUnitStats, LinkedList<real>>)
+  
+  if not customUnitStats.get(this).has(stat)
+    customUnitStats.get(this).put(stat, new LinkedList<real>)
+  
+  // If in the list there is opposite value, then need to remove it, instead of adding its opposite value.
+  // so stat list won't be overflowed with bunch of opposite values.
+  if not customUnitStats.get(this).get(stat).remove(-value)
+    customUnitStats.get(this).get(stat).add(value)
 
 public function unit.addOnetimeStat(CustomUnitStats stat, real value)
-  this.setOnetimeStat(stat, this.getOnetimeStat(stat) + value)
+  if not customUnitOnetimeStats.has(this)
+    customUnitOnetimeStats.put(this, new HashMap<CustomUnitStats, LinkedList<real>>)
+  
+  if not customUnitOnetimeStats.get(this).has(stat)
+    customUnitOnetimeStats.get(this).put(stat, new LinkedList<real>)
 
+  // If in the list there is opposite value, then need to remove it, instead of adding its opposite value.
+  // so stat list won't be overflowed with bunch of opposite values.
+  if not customUnitOnetimeStats.get(this).get(stat).remove(-value)
+    customUnitOnetimeStats.get(this).get(stat).add(value)
+  
 public function unit.copyStats(unit target)
   if customUnitStats.has(this)
     customUnitStats.put(target, customUnitStats.get(this))
