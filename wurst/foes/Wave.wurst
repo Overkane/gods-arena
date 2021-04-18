@@ -16,6 +16,15 @@ constant AFTER_WAVE_RESTORATION_SOUND = new SoundDefinition(Sounds.restorationPo
 interface NextStepListener
   abstract function execute()
 
+interface OnWaveStart
+  function onStart(Wave wave)
+
+OnWaveStart onStartListener
+
+/** Set listener for when a wave starts */
+public function onWaveStart(OnWaveStart onStart)
+  onStartListener = onStart
+
 abstract class WaveStep
   Wave wave
 
@@ -27,7 +36,6 @@ abstract class WaveStep
 class WaitStep extends WaveStep
   var duration = 0.
 
-
   construct(Wave wave, real duration)
     super(wave)
     this.duration = duration
@@ -35,7 +43,6 @@ class WaitStep extends WaveStep
   override function execute(NextStepListener next)
     doAfter(duration) ->
       next.execute()
-
 
 class CreepStep extends WaveStep
   let unitId = UNIT_ID_GEN.next()
@@ -74,6 +81,7 @@ public class WaveBuilder
   var currentUnitId = '0000'
   WaveStep currentStep = null
   CreepStep creepStep = null
+  int creepAmount = 0
 
   function wait(real duration)
     if currentStep != null
@@ -98,6 +106,7 @@ public class WaveBuilder
 
   function amount(int amount)
     creepStep.amount = amount
+    creepAmount += amount
 
   function hp(int hp)
     creepStep.creepDef.setHitPointsMaximumBase(hp)
@@ -152,6 +161,7 @@ public class WaveBuilder
       steps.add(currentStep)
       currentStep = null
     result.steps = steps
+    result.creepAmount = creepAmount
     return result
 
 constant NEXT_WAVE = new SoundDefinition(Sounds.questNew)
@@ -165,9 +175,12 @@ public class Wave
   var goldBounty = 50
   var expBounty = 100
 
+  var creepAmount = 0
+
   var isDone = false
 
   function spawn()
+    onStartListener.onStart(this)
     printTimed("|cffceac15>> The wave begins!", 10.)
     NEXT_WAVE.play()
     nextStep()
@@ -179,14 +192,12 @@ public class Wave
       steps.dequeue().execute() ->
         nextStep()
 
-
   function finish()
     printTimed("|cff1f9913>> Wave cleared!", 10.)
     WAVE_FINISHED.play()
     //+ TODO - temporary decision - One active player gets 50% additional gold and exp.
     //  And for each additional player additional bounty decreased by 1/7.
     //  So at 8 players there won't be any additional bounty, just wave based values.
-    let additionalExpBounty = (expBounty * 0.5 * (8-pData.size())/7).round()
     let additionalGoldBounty = (goldBounty * 0.5 * (8-pData.size())/7).round()
     //-
 
@@ -194,7 +205,6 @@ public class Wave
       if playerData.getHero().have
         let heroUnit = playerData.getHero().hero.actor
         p.addGold(goldBounty + additionalGoldBounty)
-        playerData.getHero().hero.addXp(expBounty + additionalExpBounty, true)
 
         if not heroUnit.isAlive()
           heroUnit.revive(revivePoint.execute(), true)

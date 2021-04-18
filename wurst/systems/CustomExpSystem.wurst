@@ -1,0 +1,33 @@
+package CustomExpSystem
+import ClosureEvents
+import GameProperties
+import PlayerData
+import HashMap
+import Wave
+
+var expPerUnit = 0
+var expPull = 0
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+    let u = EventData.getDyingUnit()
+
+    if u.getOwner() == ENEMY_PLAYER
+      pData.forEach() (player p, PlayerData playerData) ->
+        if playerData.getHero().have
+          // That condition means that if exp for 2 units is bigger then overall pull,
+          // which means that there is not enough exp for 2 units in pull,
+          // then there is only 1 unit left with some exp leftovers from division
+          if expPerUnit * 2 > expPull
+            playerData.getHero().hero.addXp(expPull, true)
+            expPull -= expPull
+          else
+            playerData.getHero().hero.addXp(expPerUnit, true)
+            expPull -= expPerUnit
+  
+  onWaveStart() (Wave wave) ->
+    let creepAmount = wave.creepAmount
+    let waveExp = wave.expBounty
+    expPull = waveExp + (waveExp * 0.5 * (8-pData.size())/7).round()
+
+    expPerUnit = (expPull / creepAmount).toInt()
