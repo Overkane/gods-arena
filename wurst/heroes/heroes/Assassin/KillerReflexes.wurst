@@ -6,7 +6,7 @@ import ClosureEvents
 import CustomStatSystem
 import PassiveAbilityPreset
 
-public constant KILLER_REFLEXES = compiletime(ABIL_ID_GEN.next())
+public constant KILLER_REFLEXES_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure EVASION = lvl -> 20. + 5 * (lvl-1)
 constant ACTIVE_BONUS = 2.
@@ -15,8 +15,8 @@ init
   EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
     let u = EventData.getTriggerUnit()
 
-    if EventData.getLearnedSkill() == KILLER_REFLEXES
-      let lvl = u.getAbilityLevel(KILLER_REFLEXES)
+    if EventData.getLearnedSkill() == KILLER_REFLEXES_ID
+      let lvl = u.getAbilityLevel(KILLER_REFLEXES_ID)
       if lvl != 1
         let evasionOld = EVASION.run(lvl-1)
         u.addStat(CustomUnitStats.EVASION, -evasionOld/100)
@@ -26,7 +26,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gets chance to evade an attack.")
-  new PassiveAbilityPreset(KILLER_REFLEXES, NORMAL_SPELL_LEVELS, tooltip)
+  new PassiveAbilityPreset(KILLER_REFLEXES_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.pASBTNEvasion)
   ..presetButtonPosNormal(2, 2)

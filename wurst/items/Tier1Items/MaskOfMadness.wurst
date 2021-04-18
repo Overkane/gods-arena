@@ -7,13 +7,13 @@ import ObjectIds
 import MaskOfDeath
 import GlovesOfHaste
 import TooltipFactory
+import CustomStatSystem
 
 constant BERSERK_ID = compiletime(ABIL_ID_GEN.next())
 constant BERSERK_BONUS_AS = 40
 constant BERSERK_DAMAGE_TAKEN_INC = 30
 
-constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
-constant LIFESTEAL_VALUE = 25
+constant LIFESTEAL_VALUE = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Berserk", 
@@ -29,8 +29,10 @@ constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 ..setInterfaceIcon(Icons.bTNUnholyFrenzy)
 ..addBonus(Bonus.ATTACKSPEED, 15)
 ..setActivelyUsed(true)
-..setAbilities(commaList(BERSERK_ID, LIFESTEAL_ID))
+..setAbilities(commaList(BERSERK_ID))
 ..setCooldownGroup(BERSERK_ID.toRawCode())
+..onPickup(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE/100))
+..onDrop(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, -LIFESTEAL_VALUE/100)) 
 ..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
@@ -40,8 +42,6 @@ public constant MASK_OF_MADNESS_RECIPE = new ItemRecipe()
 ..setResultItem(MASK_OF_MADNESS_ITEM)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionVampiricattackAIva(LIFESTEAL_ID)
-  ..setLifeStolenPerAttack(1, LIFESTEAL_VALUE/100)
   new AbilityDefinitionBerserk(BERSERK_ID)
   ..setDamageTakenIncrease(1, BERSERK_DAMAGE_TAKEN_INC/100)
   ..setAttackSpeedIncrease(1, BERSERK_BONUS_AS/100)

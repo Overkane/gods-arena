@@ -4,11 +4,12 @@ import HeroSpellConstants
 import PassiveAbilityPreset
 import DamageSystem
 import MapIcons
+import ClosureEvents
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure CRITICAL_CHANCE = lvl -> 10. + 5. * (lvl-1)
-constant RealLevelClosure CRITICAL_MULT = lvl -> 2.5 + 0.5 * (lvl-1)
+constant RealLevelClosure CRITICAL_MULT = lvl -> 2 + 0.5 * (lvl-1)
 constant RealLevelClosure BACKSTAB_MULT = lvl -> 2.
 
 constant CONE_ANGLE = 140.
@@ -22,24 +23,30 @@ init
       let tunit = DamageEvent.getTarget()
       var chance = CRITICAL_CHANCE.run(lvl)
 
-
       let facing = tunit.getFacingAngle()
       let back = facing - (180).fromDeg()
       let targetAngle = tunit.getPos().angleTo(sunit.getPos())
       let delta = Atan2((targetAngle - back).sin(), (targetAngle - back).cos()).abs()
       if (delta < CONE_ANGLE / 2.)
         chance *= 2.
-      
-      let multiplayer = CRITICAL_MULT.run(lvl)
 
       sunit
       ..addOnetimeStat(CustomUnitStats.ATTACK_CRIT_CHANCE, chance/100)
-      ..addOnetimeStat(CustomUnitStats.ATTACK_CRIT_POWER, multiplayer-1) // Basic damage is already included in crit listener
       
-      // flashEffect("Coup de Grace.mdx", tunit.getPos(), 1, sunit.getFacingAngle()) TODO Place it to another spell
+  EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
+    let u = EventData.getTriggerUnit()
+
+    if EventData.getLearnedSkill() == COUP_DE_GRACE_ID
+      let lvl = u.getAbilityLevel(COUP_DE_GRACE_ID)
+      if lvl != 1
+        let multiplayerOld = CRITICAL_MULT.run(lvl-1)
+        u.addStat(CustomUnitStats.ATTACK_CRIT_POWER, -multiplayerOld)
+      
+      let multiplayer = CRITICAL_MULT.run(lvl)
+      u.addStat(CustomUnitStats.ATTACK_CRIT_POWER, multiplayer)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gains chance to deal critical strike. Chance to deal critical strike is doubled if target is attacked from behind.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero empowers his ability to deal critical strikes greatly. Bonus chance to deal critical strike is doubled if target is attacked from behind.")
   new PassiveAbilityPreset(COUP_DE_GRACE_ID, ULTIMATE_SPELL_LEVELS, tooltip)
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)

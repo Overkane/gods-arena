@@ -29,23 +29,23 @@ constant additiveStats = new LinkedList<CustomUnitStats>
 ..add(CustomUnitStats.BONUS_ATTACK_DAMAGE)
 ..add(CustomUnitStats.ATTACK_CRIT_POWER)
 ..add(CustomUnitStats.ATTACK_CRIT_CHANCE)
+..add(CustomUnitStats.LIFESTEAL)
 ..add(CustomUnitStats.BONUS_SPELL_DAMAGE)
 ..add(CustomUnitStats.SPELL_CRIT_POWER)
 ..add(CustomUnitStats.SPELL_CRIT_CHANCE)
+..add(CustomUnitStats.SPELL_LIFESTEAL)
 
 // Multiplicative stats value is calculated by formula — 1 - ((1 - x) * (1 - y) * ...)
 // where x, y and etc are stats in the list
 constant multiplicativeStats = new LinkedList<CustomUnitStats>
 ..add(CustomUnitStats.ATTACK_POWER)
-..add(CustomUnitStats.LIFESTEAL)
 ..add(CustomUnitStats.SPELL_POWER)
-..add(CustomUnitStats.SPELL_LIFESTEAL)
 ..add(CustomUnitStats.EVASION)
   
 // Functions, which work with constant stats
 public function unit.getStat(CustomUnitStats stat) returns real
-  let oneTimeStats = new LinkedList<real>  
   let constantStats = new LinkedList<real>  
+  let oneTimeStats = new LinkedList<real>  
 
   if customUnitStats.has(this) and customUnitStats.get(this).has(stat)
     constantStats.addAll(customUnitStats.get(this).get(stat))

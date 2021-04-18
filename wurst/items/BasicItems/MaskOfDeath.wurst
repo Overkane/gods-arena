@@ -1,13 +1,10 @@
 package MaskOfDeath
 import Icons
 import RecipeItem
-import AbilityObjEditing
-import ObjectIdGenerator
-import ObjectIds
 import TooltipFactory
+import CustomStatSystem
 
-constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
-constant LIFESTEAL_VALUE = 20
+constant LIFESTEAL_VALUE = 15
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Lifesteal", 
@@ -17,10 +14,7 @@ public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Death")
 ..setInterfaceIcon(Icons.bTNMaskOfDeath)
 ..setGoldCost(135)
-..setAbilities(commaList(LIFESTEAL_ID))
+..onPickup(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE/100))
+..onDrop(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, -LIFESTEAL_VALUE/100)) 
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
-
-@compiletime function genItemAbils()
-  new AbilityDefinitionVampiricattackAIva(LIFESTEAL_ID)
-  ..setLifeStolenPerAttack(1, LIFESTEAL_VALUE/100)
