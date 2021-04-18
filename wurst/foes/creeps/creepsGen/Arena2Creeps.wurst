@@ -1,6 +1,7 @@
 package Arena2Creeps
 import UnitIds
 import Wave
+import ObjEditingCommons
 
 public constant ARENA2_WAVE_1 = compiletime(wave_1())
 public constant ARENA2_WAVE_2 = compiletime(wave_2())
@@ -161,6 +162,7 @@ function wave_5() returns Wave
   ..damage(248)
   ..attackrate(0.75)
   ..amount(2)
+  ..armorType(ArmorType.Hero)
 
   ..wait(5)
 

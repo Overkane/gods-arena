@@ -62,13 +62,13 @@ function wave_2() returns Wave
   ..creep(UnitIds.foresttrollberserker)
   ..hp(700)
   ..damage(14)
-  ..amount(7)
+  ..amount(9)
 
   ..creep(UnitIds.foresttrollhighpriest)
-  ..hp(800)
+  ..hp(650)
   ..mana(1000)
   ..damage(15)
-  ..amount(7)
+  ..amount(3)
 
   ..creep(UnitIds.foresttrollking)
   ..hp(2750)

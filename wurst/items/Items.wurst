@@ -1,5 +1,6 @@
 package Items
 
+// Item packages are sorted alphabetically in inner groups
 // Consumables
 import public SmallHealingPotion
 import public MediumHealingPotion
@@ -12,6 +13,7 @@ import public Tomes
 
 // Basic items
 import public ClawsOfAttack
+import public CrownOfKings
 import public Diamond
 import public Emerald
 import public GlovesOfHaste
@@ -20,6 +22,7 @@ import public IronAxe
 import public IronShield
 import public IronSword
 import public MaskOfDeath
+import public MoonAmulet
 import public PendantOfMana
 import public RingOfProtection
 import public RingOfRegeneration
@@ -27,8 +30,6 @@ import public Ruby
 import public SpiritMask
 import public TalismanOfEvasion
 import public VitalityStone
-import public CrownOfKings
-import public MoonAmulet
 
 // Tier 1 items
 import public ApprenticeStaff
@@ -53,5 +54,11 @@ import public CloakOfShadows
 import public LightningShield
 import public MageKiller
 import public MantleOfProtection
+import public PlatedGauntlets
 import public ShamanStaff
 import public Thornmail
+
+// Tier 3 items
+import public DraculasAxe
+import public GoldenArmor
+import public WizardStaff
