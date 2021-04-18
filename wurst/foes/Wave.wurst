@@ -49,7 +49,6 @@ class CreepStep extends WaveStep
   CreepDefinition creepDef
 
   var amount = 1
-  var bounty = 0
 
   construct(Wave wave, int origUnitId)
     super(wave)
@@ -57,7 +56,7 @@ class CreepStep extends WaveStep
 
   override function execute(NextStepListener next)
     doPeriodicallyCounted(0.05, amount) cb ->
-      new Creep(unitId, wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg(), bounty)
+      new Creep(unitId, wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
       if cb.isLast()
         next.execute()
 
@@ -110,15 +109,6 @@ public class WaveBuilder
 
   function hp(int hp)
     creepStep.creepDef.setHitPointsMaximumBase(hp)
-    creepStep.bounty = max(1, (hp / 395).round())
-    if creepStep.bounty > 10
-      creepStep.bounty = (creepStep.bounty * .65).round()
-    else if creepStep.bounty > 20
-      creepStep.bounty = (creepStep.bounty * .55).round()
-    else if creepStep.bounty > 35
-      creepStep.bounty = (creepStep.bounty * .45).round()
-    else if creepStep.bounty > 50
-      creepStep.bounty = (creepStep.bounty * .35).round()
 
   function mana(int mana)
     creepStep.creepDef.setManaMaximum(mana)
@@ -151,7 +141,7 @@ public class WaveBuilder
     creepStep.creepDef.setTintingColorBlue(blue)
 
   function goldBounty(int bounty)
-    // this.result.goldBounty = bounty
+    this.result.goldBounty = bounty
 
   function expBounty(int bounty)
     this.result.expBounty = bounty
@@ -172,8 +162,8 @@ public class Wave
   Vec2Function spawnPoint
   Vec2Function revivePoint
 
-  var goldBounty = 50
-  var expBounty = 100
+  var goldBounty = 0
+  var expBounty = 0
 
   var creepAmount = 0
 
@@ -195,16 +185,10 @@ public class Wave
   function finish()
     printTimed("|cff1f9913>> Wave cleared!", 10.)
     WAVE_FINISHED.play()
-    //+ TODO - temporary decision - One active player gets 50% additional gold and exp.
-    //  And for each additional player additional bounty decreased by 1/7.
-    //  So at 8 players there won't be any additional bounty, just wave based values.
-    let additionalGoldBounty = (goldBounty * 0.5 * (8-pData.size())/7).round()
-    //-
 
     pData.forEach() (player p, PlayerData playerData) ->
       if playerData.getHero().have
         let heroUnit = playerData.getHero().hero.actor
-        p.addGold(goldBounty + additionalGoldBounty)
 
         if not heroUnit.isAlive()
           heroUnit.revive(revivePoint.execute(), true)
@@ -215,5 +199,5 @@ public class Wave
         else
           AFTER_WAVE_RESTORATION_SOUND.play(1, 30)
           flashEffect(Abilities.replenishHealthCasterOverhead, heroUnit.getPos())
-          heroUnit.addHP(heroUnit.getMaxHP() * 0.35)
-          heroUnit.addMana(heroUnit.getMaxMana() * 0.15)
+          heroUnit.addHP(heroUnit.getMaxHP() * 0.45)
+          heroUnit.addMana(heroUnit.getMaxMana() * 0.25)

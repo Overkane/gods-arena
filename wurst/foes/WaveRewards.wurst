@@ -1,12 +1,16 @@
-package CustomExpSystem
+package WaveRewards
 import ClosureEvents
 import GameProperties
 import PlayerData
 import HashMap
 import Wave
+import StandardTextTags
 
 var expPerUnit = 0
 var expPull = 0
+
+var goldPerUnit = 0
+var goldPull = 0
 
 init
   EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
@@ -24,10 +28,23 @@ init
           else
             playerData.getHero().hero.addXp(expPerUnit, true)
             expPull -= expPerUnit
+            
+          if goldPerUnit * 2 > goldPull
+            p.addGold(goldPull)
+            createGoldBountyTextTag(u, goldPull)
+            goldPull -= goldPull
+          else
+            p.addGold(goldPerUnit)
+            createGoldBountyTextTag(u, goldPerUnit)
+            goldPull -= goldPerUnit
   
   onWaveStart() (Wave wave) ->
     let creepAmount = wave.creepAmount
     let waveExp = wave.expBounty
+    let waveGold = wave.goldBounty
+
     expPull = waveExp + (waveExp * 0.5 * (8-pData.size())/7).round()
+    goldPull = waveGold + (waveGold * 0.5 * (8-pData.size())/7).round()
 
     expPerUnit = (expPull / creepAmount).toInt()
+    goldPerUnit = (goldPull / creepAmount).toInt()
