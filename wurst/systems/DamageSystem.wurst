@@ -77,13 +77,13 @@ init
       let lifestealAmount = sunit.getStat(CustomUnitStats.LIFESTEAL)
       
       if lifestealAmount != 0
-        let healValue = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.LIFESTEAL)
+        let healValue = DamageEvent.getAmount() * lifestealAmount
         sunit.addHP(healValue)
 
     else if damageType == DamageType.SPELL or damageType == DamageType.CODE 
-      let lifestealAmount = sunit.getStat(CustomUnitStats.LIFESTEAL)
+      let lifestealAmount = sunit.getStat(CustomUnitStats.SPELL_LIFESTEAL)
       
       if lifestealAmount != 0
-        let healValue = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.SPELL_LIFESTEAL)
+        let healValue = DamageEvent.getAmount() * lifestealAmount
         sunit.addHP(healValue)
     
