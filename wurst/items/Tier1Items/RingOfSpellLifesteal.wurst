@@ -1,0 +1,27 @@
+package RingOfSpellLifesteal
+import MapIcons
+import RecipeItem
+import TooltipFactory
+import CustomStatSystem
+import MaskOfDeath
+import Sapphire
+
+constant SPELL_LIFESTEAL_VALUE = 10
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Spell Lifesteal", 
+  SPELL_LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of spell damage dealt converted to hitpoints.")
+
+public constant RING_OF_SPELL_LIFESTEAL_ITEM = compiletime(new RecipeItem()
+..setName("Ring of Spell Lifesteal")
+..setInterfaceIcon(MapIcons.bTNDeathKnightRing)
+..addBonus(Bonus.INTELLIGENCE, 10)
+..onPickup(actor -> actor.addStat(CustomUnitStats.SPELL_LIFESTEAL, SPELL_LIFESTEAL_VALUE/100))
+..onDrop(actor -> actor.addStat(CustomUnitStats.SPELL_LIFESTEAL, -SPELL_LIFESTEAL_VALUE/100)) 
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant RING_OF_SPELL_LIFESTEAL_RECIPE = new ItemRecipe()
+..gold(50)
+..setRequiredItems(MASK_OF_DEATH_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId())
+..setResultItem(RING_OF_SPELL_LIFESTEAL_ITEM)

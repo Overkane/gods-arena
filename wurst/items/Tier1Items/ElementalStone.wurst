@@ -1,0 +1,20 @@
+package ElementalStone
+import MapIcons
+import RecipeItem
+import Ruby
+import Emerald
+import Sapphire
+
+public constant ELEMENTAL_STONE_ITEM = compiletime(new RecipeItem()
+..setName("Elemental Stone")
+..setInterfaceIcon(MapIcons.btNElementalSpin)
+..addBonus(Bonus.STRENGTH, 15)
+..addBonus(Bonus.AGILITY, 15)
+..addBonus(Bonus.INTELLIGENCE, 15)
+..generateTooltip("")
+)..register()
+
+public constant ELEMENTAL_STONE_RECIPE= new ItemRecipe()
+..gold(90)
+..setRequiredItems(RUBY_ITEM.getNewId(), EMERALD_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId())
+..setResultItem(ELEMENTAL_STONE_ITEM)

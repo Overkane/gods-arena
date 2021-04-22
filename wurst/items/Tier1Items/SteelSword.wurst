@@ -1,35 +1,38 @@
 package SteelSword
 import Icons
 import RecipeItem
-import AbilityObjEditing
-import ObjectIdGenerator
-import ObjectIds
 import ClawsOfAttack
 import IronSword
 import TooltipFactory
+import CustomStatSystem
 
-constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
-constant CRITICAL_STRIKE_CHANCE = 20
-constant CRITICAL_STRIKE_MUL = 1.5
+constant ATTACK_CRIT_CHANCE = 10
+constant ATTACK_CRIT_POWER = 25
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Strike", 
-  "gives " + CRITICAL_STRIKE_CHANCE.colorPerc(COLOR_GOLD) + " chance to deal " + CRITICAL_STRIKE_MUL.color(COLOR_GOLD) + "x damage.")
+  "Critical Chance", 
+  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD) + ".")
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Critical Power", 
+  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD) + ".")
 
 public constant STEEL_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Steel Sword")
 ..setInterfaceIcon(Icons.bTNThoriumMelee)
 ..addBonus(Bonus.DAMAGE, 30)
-..setAbilities(commaList(CRITICAL_STRIKE_ID))
-..generateTooltip("Passive - gives 20% chance to deal 1.5x damage.")
+..onPickup(actor -> begin
+  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, ATTACK_CRIT_CHANCE/100)
+  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, ATTACK_CRIT_POWER/100)
+end)
+..onDrop(actor -> begin
+  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, -ATTACK_CRIT_CHANCE/100)
+  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, -ATTACK_CRIT_POWER/100)
+end)
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant STEEL_SWORD_RECIPE = new ItemRecipe()
 ..gold(90)
 ..setRequiredItems(CLAWS_OF_ATTACK_ITEM.getNewId(), IRON_SWORD_ITEM.getNewId())
 ..setResultItem(STEEL_SWORD_ITEM)
-
-@compiletime function genItemAbils()
-  new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
-  ..setChancetoCriticalStrike(1, CRITICAL_STRIKE_CHANCE.toReal())
-  ..setDamageMultiplier(1, CRITICAL_STRIKE_MUL)

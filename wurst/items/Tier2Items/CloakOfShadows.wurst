@@ -1,5 +1,5 @@
 package CloakOfShadows
-import Icons
+import MapIcons
 import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
@@ -24,7 +24,7 @@ constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
 
 public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..setName("Cloak of Shadows")
-..setInterfaceIcon(Icons.bTNCloakOfFlames)
+..setInterfaceIcon(MapIcons.bTNCloakOfShadows)
 ..setActivelyUsed(true)
 ..addBonus(Bonus.DAMAGE, 25)
 ..addBonus(Bonus.AGILITY, 25)

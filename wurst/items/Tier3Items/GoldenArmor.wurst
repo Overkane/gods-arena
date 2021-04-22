@@ -2,7 +2,7 @@ package GoldenArmor
 import Icons
 import RecipeItem
 import AdvancedArmor
-import CrownOfKings
+import ElementalStone
 
 public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Golden Armor")
@@ -18,5 +18,5 @@ public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
 
 public constant GOLDEN_ARMOR_RECIPE = new ItemRecipe()
 ..gold(380)
-..setRequiredItems(CROWN_ITEM.getNewId(), ADVANCED_ARMOR_ITEM.getNewId())
+..setRequiredItems(ELEMENTAL_STONE_ITEM.getNewId(), ADVANCED_ARMOR_ITEM.getNewId())
 ..setResultItem(GOLDEN_ARMOR_ITEM)

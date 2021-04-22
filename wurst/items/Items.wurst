@@ -13,11 +13,9 @@ import public Tomes
 
 // Basic items
 import public ClawsOfAttack
-import public CrownOfKings
-import public Diamond
 import public Emerald
 import public GlovesOfHaste
-import public HealthAmulet
+import public HeartAmulet
 import public IronAxe
 import public IronShield
 import public IronSword
@@ -27,6 +25,7 @@ import public PendantOfMana
 import public RingOfProtection
 import public RingOfRegeneration
 import public Ruby
+import public Sapphire
 import public SpiritMask
 import public TalismanOfEvasion
 import public VitalityStone
@@ -34,11 +33,13 @@ import public VitalityStone
 // Tier 1 items
 import public ApprenticeStaff
 import public AssassinsBlade
+import public ElementalStone
 import public Mace
 import public MaskOfMadness
 import public NinjaCloak
 import public OrbOfMagic
 import public PowerGloves
+import public RingOfSpellLifesteal
 import public RobeOfTheMage
 import public ShamanClaws
 import public SimpleArmor
@@ -53,12 +54,14 @@ import public ArcaniteSword
 import public CloakOfShadows
 import public LightningShield
 import public MageKiller
+import public MagesSword
 import public MantleOfProtection
 import public PlatedGauntlets
 import public ShamanStaff
 import public Thornmail
 
 // Tier 3 items
+import public ArchmageRobe
 import public DraculasAxe
 import public GoldenArmor
 import public WizardStaff

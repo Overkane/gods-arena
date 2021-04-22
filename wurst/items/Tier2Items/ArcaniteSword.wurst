@@ -1,35 +1,38 @@
 package ArcaniteSword
 import Icons
 import RecipeItem
-import AbilityObjEditing
-import ObjectIdGenerator
-import ObjectIds
 import SteelSword
 import TooltipFactory
+import CustomStatSystem
 
-constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
-constant CRITICAL_STRIKE_CHANCE = 25
-constant CRITICAL_STRIKE_MUL = 2
+constant ATTACK_CRIT_CHANCE = 15
+constant ATTACK_CRIT_POWER = 50
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Strike", 
-  "gives " + CRITICAL_STRIKE_CHANCE.colorPerc(COLOR_GOLD) + " chance to deal " + CRITICAL_STRIKE_MUL.color(COLOR_GOLD) + "x damage.")
+  "Critical Chance", 
+  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD) + ".")
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Critical Power", 
+  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD) + ".")
 
 public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Arcanite Sword")
 ..setInterfaceIcon(Icons.bTNArcaniteMelee)
 ..setGoldCost(110)
 ..addBonus(Bonus.DAMAGE, 80)
-..setAbilities(commaList(CRITICAL_STRIKE_ID))
-..generateTooltip(ABIL_TOOLTIP)
+..onPickup(actor -> begin
+  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, ATTACK_CRIT_CHANCE/100)
+  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, ATTACK_CRIT_POWER/100)
+end)
+..onDrop(actor -> begin
+  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, -ATTACK_CRIT_CHANCE/100)
+  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, -ATTACK_CRIT_POWER/100)
+end)
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant ARCANITE_SWORD_RECIPE = new ItemRecipe()
 ..gold(260)
 ..setRequiredItems(STEEL_SWORD_ITEM.getNewId(), STEEL_SWORD_ITEM.getNewId())
 ..setResultItem(ARCANITE_SWORD_ITEM)
-
-@compiletime function genItemAbils()
-  new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
-  ..setChancetoCriticalStrike(1, CRITICAL_STRIKE_CHANCE.toReal())
-  ..setDamageMultiplier(1, CRITICAL_STRIKE_MUL.toReal())

@@ -5,7 +5,7 @@ import ChannelAbilityPreset
 import Icons
 import ClosureEvents
 import SoundUtils
-import Diamond
+import Sapphire
 import TooltipFactory
 
 constant ORB_OF_MAGIC_ID = compiletime(ABIL_ID_GEN.next())
@@ -27,7 +27,7 @@ public constant ORB_OF_MAGIC_ITEM = compiletime(new RecipeItem()
 
 public constant ORB_OF_MAGIC_RECIPE = new ItemRecipe()
 ..gold(100)
-..setRequiredItems(DIAMOND_ITEM.getNewId(), DIAMOND_ITEM.getNewId(), DIAMOND_ITEM.getNewId(), DIAMOND_ITEM.getNewId(), DIAMOND_ITEM.getNewId(), DIAMOND_ITEM.getNewId())
+..setRequiredItems(SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId())
 ..setResultItem(ORB_OF_MAGIC_ITEM)
 
 init

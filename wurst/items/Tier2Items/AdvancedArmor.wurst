@@ -2,7 +2,7 @@ package AdvancedArmor
 import Icons
 import RecipeItem
 import RingOfRegeneration
-import HealthAmulet
+import HeartAmulet
 import SimpleArmor
 
 public constant ADVANCED_ARMOR_ITEM = compiletime(new RecipeItem()
@@ -15,5 +15,5 @@ public constant ADVANCED_ARMOR_ITEM = compiletime(new RecipeItem()
 )..register()
 public constant ADVANCED_ARMOR_RECIPE = new ItemRecipe()
 ..gold(180)
-..setRequiredItems(RING_OF_REGENERATION_ITEM.getNewId(), SIMPLE_ARMOR_ITEM.getNewId(), HEALTH_AMULET_ITEM.getNewId())
+..setRequiredItems(RING_OF_REGENERATION_ITEM.getNewId(), SIMPLE_ARMOR_ITEM.getNewId(), HEART_AMULET_ITEM.getNewId())
 ..setResultItem(ADVANCED_ARMOR_ITEM)

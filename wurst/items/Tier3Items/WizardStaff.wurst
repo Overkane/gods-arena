@@ -6,15 +6,22 @@ import ObjectIdGenerator
 import ObjectIds
 import AdeptStaff
 import TooltipFactory
+import CustomStatSystem
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 500
 constant FIREBOLT_STUN = 0.75
 
+constant SPELL_POWER = 50
+
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Fire Bolt", 
   "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD)
   + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD) + " seconds.")
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Spell Power", 
+  "Increases user " + "Spell Power".color(COLOR_GOLD) + " by " + SPELL_POWER.colorPerc(COLOR_GOLD) + ".")
 
 public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Wizard Staff")
@@ -24,7 +31,9 @@ public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.MANAREGEN, 3)
 ..setAbilities(commaList(FIREBOLT_ID))
 ..setCooldownGroup(FIREBOLT_ID.toRawCode())
-..generateTooltip(ABIL_TOOLTIP)
+..onPickup(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, SPELL_POWER/100))
+..onDrop(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, -SPELL_POWER/100)) 
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant WIZARD_STAFF_RECIPE = new ItemRecipe()

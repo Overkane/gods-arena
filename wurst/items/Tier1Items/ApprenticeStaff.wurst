@@ -5,7 +5,7 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import SpiritMask
-import Diamond
+import Sapphire
 import TooltipFactory
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
@@ -30,7 +30,7 @@ public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
 
 public constant APPRENTICE_STAFF_RECIPE = new ItemRecipe()
 ..gold(65)
-..setRequiredItems(SPIRIT_MASK_ITEM.getNewId(), DIAMOND_ITEM.getNewId())
+..setRequiredItems(SPIRIT_MASK_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId())
 ..setResultItem(APPRENTICE_STAFF_ITEM)
 
 @compiletime function genItemAbils()

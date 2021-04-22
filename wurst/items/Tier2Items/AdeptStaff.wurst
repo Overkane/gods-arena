@@ -5,31 +5,41 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import ApprenticeStaff
+import MoonAmulet
 import TooltipFactory
+import CustomStatSystem
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 350
 constant FIREBOLT_STUN = 0.5
+
+constant SPELL_POWER = 25
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Fire Bolt", 
   "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD)
   + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD) + " seconds.")
 
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Spell Power", 
+  "Increases user " + "Spell Power".color(COLOR_GOLD) + " by " + SPELL_POWER.colorPerc(COLOR_GOLD) + ".")
+
 public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Adept Staff")
 ..setInterfaceIcon(Icons.bTNWandOfShadowSight)
 ..setActivelyUsed(true)
-..addBonus(Bonus.INTELLIGENCE, 25)
-..addBonus(Bonus.MANAREGEN, 2.5)
+..addBonus(Bonus.INTELLIGENCE, 20)
+..addBonus(Bonus.MANAREGEN, 2)
 ..setAbilities(commaList(FIREBOLT_ID))
 ..setCooldownGroup(FIREBOLT_ID.toRawCode())
-..generateTooltip(ABIL_TOOLTIP)
+..onPickup(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, SPELL_POWER/100))
+..onDrop(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, -SPELL_POWER/100)) 
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
 ..gold(190)
-..setRequiredItems(APPRENTICE_STAFF_ITEM.getNewId(), APPRENTICE_STAFF_ITEM.getNewId())
+..setRequiredItems(APPRENTICE_STAFF_ITEM.getNewId(), MOON_AMULET_ITEM.getNewId())
 ..setResultItem(ADEPT_STAFF_ITEM)
 
 @compiletime function genItemAbils()

@@ -1,11 +1,11 @@
 package Ruby
-import Icons
+import MapIcons
 import RecipeItem
 
 public constant RUBY_ITEM = compiletime(new RecipeItem()
 ..setName("Ruby")
-..setInterfaceIcon(Icons.bTNPhilosophersStone)
-..setGoldCost(100)
+..setInterfaceIcon(MapIcons.bTNRuby)
+..setGoldCost(90)
 ..addBonus(Bonus.STRENGTH, 8)
 ..generateTooltip("")
 )..register()

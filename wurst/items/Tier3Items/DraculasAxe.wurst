@@ -6,7 +6,7 @@ import ObjectIds
 import ArcaniteAxe
 import TooltipFactory
 import MaskOfDeath
-import CrownOfKings
+import ElementalStone
 import MapIcons
 import CustomStatSystem
 
@@ -38,7 +38,7 @@ public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 
 public constant DRACULAS_AXE_RECIPE = new ItemRecipe()
 ..gold(320)
-..setRequiredItems(ARCANITE_AXE_ITEM.getNewId(), MASK_OF_DEATH_ITEM.getNewId(), CROWN_ITEM.getNewId())
+..setRequiredItems(ARCANITE_AXE_ITEM.getNewId(), MASK_OF_DEATH_ITEM.getNewId(), ELEMENTAL_STONE_ITEM.getNewId())
 ..setResultItem(DRACULAS_AXE_ITEM)
 
 @compiletime function genItemAbils()

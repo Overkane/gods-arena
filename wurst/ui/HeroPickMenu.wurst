@@ -10,6 +10,7 @@ import GameProperties
 import SoundUtils
 import ItemShopUI
 import DemonLordIds
+import CustomStatSystem
 
 public HeroPickUI heroPickUI
 
@@ -97,6 +98,10 @@ class HeroPickUI
         shop.showToUnit(h.actor)
 
         h.actor.addAbility(SELL_ID)
+
+        // Setting starting stats for heroes
+        h.actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.5)
+        h.actor.addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.5)
 
         playerSelection.forEach() (player key, HeroIcon value) ->
           if value == pickedIcon

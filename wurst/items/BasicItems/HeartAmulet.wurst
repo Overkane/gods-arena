@@ -1,0 +1,11 @@
+package HeartAmulet
+import MapIcons
+import RecipeItem
+
+public constant HEART_AMULET_ITEM = compiletime(new RecipeItem()
+..setName("Heart Amulet")
+..setInterfaceIcon(MapIcons.bTNHeartAmulet)
+..setGoldCost(150)
+..addBonus(Bonus.LIFE, 250)
+..generateTooltip("")
+)..register()
