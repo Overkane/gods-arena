@@ -17,26 +17,32 @@ init
     let u = EventData.getDyingUnit()
 
     if u.getOwner() == ENEMY_PLAYER
-      pData.forEach() (player p, PlayerData playerData) ->
-        if playerData.getHero().have
-          // That condition means that if exp for 2 units is bigger then overall pull,
-          // which means that there is not enough exp for 2 units in pull,
-          // then there is only 1 unit left with some exp leftovers from division
-          if expPerUnit * 2 > expPull
+      // That condition means that if exp for 2 units is bigger then overall pull,
+      // which means that there is not enough exp for 2 units in pull,
+      // then there is only 1 unit left with some exp leftovers from division
+      if expPerUnit * 2 > expPull
+        pData.forEach() (player p, PlayerData playerData) ->
+          if playerData.getHero().have
             playerData.getHero().hero.addXp(expPull, true)
-            expPull -= expPull
-          else
+        expPull -= expPull
+      else
+        pData.forEach() (player p, PlayerData playerData) ->
+          if playerData.getHero().have
             playerData.getHero().hero.addXp(expPerUnit, true)
-            expPull -= expPerUnit
-            
-          if goldPerUnit * 2 > goldPull
+        expPull -= expPerUnit
+        
+      if goldPerUnit * 2 > goldPull
+        pData.forEach() (player p, PlayerData playerData) ->
+          if playerData.getHero().have
             p.addGold(goldPull)
-            createGoldBountyTextTag(u, goldPull)
-            goldPull -= goldPull
-          else
+        createGoldBountyTextTag(u, goldPull)
+        goldPull -= goldPull
+      else
+        pData.forEach() (player p, PlayerData playerData) ->
+          if playerData.getHero().have
             p.addGold(goldPerUnit)
-            createGoldBountyTextTag(u, goldPerUnit)
-            goldPull -= goldPerUnit
+        createGoldBountyTextTag(u, goldPerUnit)
+        goldPull -= goldPerUnit
   
   onWaveStart() (Wave wave) ->
     let creepAmount = wave.creepAmount
