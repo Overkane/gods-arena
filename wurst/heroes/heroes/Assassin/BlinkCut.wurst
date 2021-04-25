@@ -56,6 +56,8 @@ init
           caster.setInvulnerable(false)
           caster.getOwner().select(caster)
 
+        destroy unitList
+
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero blinks and strikes several enemies.")
   new ChannelAbilityPreset(BLINK_CUT_ID, NORMAL_SPELL_LEVELS, true, tooltip)

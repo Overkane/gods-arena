@@ -44,18 +44,16 @@ constant multiplicativeStats = new LinkedList<CustomUnitStats>
   
 // Functions, which work with constant stats
 public function unit.getStat(CustomUnitStats stat) returns real
-  let constantStats = new LinkedList<real>  
-  let oneTimeStats = new LinkedList<real>  
+  let allStats = new LinkedList<real>
 
   if customUnitStats.has(this) and customUnitStats.get(this).has(stat)
-    constantStats.addAll(customUnitStats.get(this).get(stat))
+    allStats.addAll(customUnitStats.get(this).get(stat))
 
   if customUnitOnetimeStats.has(this) and customUnitOnetimeStats.get(this).has(stat)
-    oneTimeStats.addAll(customUnitOnetimeStats.get(this).get(stat))
+    allStats.addAll(customUnitOnetimeStats.get(this).get(stat))
 
     customUnitOnetimeStats.get(this).get(stat).clear()
 
-  let allStats = oneTimeStats.copy()..addAll(constantStats)
 
   var overallStatValue = 0.
 
@@ -80,6 +78,8 @@ public function unit.getStat(CustomUnitStats stat) returns real
 
   else
     print("Unknown stat " + (stat castTo int).toString())
+
+  destroy allStats
   
   return overallStatValue
 

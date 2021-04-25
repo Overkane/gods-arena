@@ -31,6 +31,8 @@ init
       new ContractBuff(DURATION).apply(target)
     else 
       caster.resetAbilityCooldown(CONTRACT_ID)
+
+    destroy targets
   
   EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
     let sunit = EventData.getKillingUnit()
