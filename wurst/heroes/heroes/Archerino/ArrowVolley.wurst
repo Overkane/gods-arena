@@ -24,6 +24,7 @@ init
                 ..setTarget(u.getPos().withTerrainZ(), 30.)
                 ..setRanged(caster.getPos().distanceTo(u.getPos()))
                 ..onEnd() ->
+                    DamageEvent.setNextDamageFromCode()
                     caster.damageTarget(u, DAMAGE.run(lvl))
                     flashEffect(Abilities.ballistaImpact, u.getPos())
 

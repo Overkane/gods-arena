@@ -24,7 +24,7 @@ public enum CustomUnitStats
   // Utility 
   EVASION
 
-// Additive stats value is calculated just by addictiton
+// Additive stats value is calculated just by addition
 constant additiveStats = new LinkedList<CustomUnitStats>
 ..add(CustomUnitStats.BONUS_ATTACK_DAMAGE)
 ..add(CustomUnitStats.ATTACK_CRIT_POWER)
@@ -42,7 +42,6 @@ constant multiplicativeStats = new LinkedList<CustomUnitStats>
 ..add(CustomUnitStats.SPELL_POWER)
 ..add(CustomUnitStats.EVASION)
   
-// Functions, which work with constant stats
 public function unit.getStat(CustomUnitStats stat) returns real
   let allStats = new LinkedList<real>
 
@@ -53,7 +52,6 @@ public function unit.getStat(CustomUnitStats stat) returns real
     allStats.addAll(customUnitOnetimeStats.get(this).get(stat))
 
     customUnitOnetimeStats.get(this).get(stat).clear()
-
 
   var overallStatValue = 0.
 
