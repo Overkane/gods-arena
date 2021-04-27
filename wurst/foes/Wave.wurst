@@ -25,6 +25,15 @@ OnWaveStart onStartListener
 public function onWaveStart(OnWaveStart onStart)
   onStartListener = onStart
 
+interface OnWaveFinish
+  function onFinish(Wave wave)
+
+OnWaveFinish onFinishListener
+
+/** Set listener for when a wave Finishs */
+public function onWaveFinish(OnWaveFinish onFinish)
+  onFinishListener = onFinish
+
 abstract class WaveStep
   Wave wave
 
@@ -81,6 +90,7 @@ public class WaveBuilder
   WaveStep currentStep = null
   CreepStep creepStep = null
   int creepAmount = 0
+  var bossWave = false
 
   function wait(real duration)
     if currentStep != null
@@ -99,6 +109,8 @@ public class WaveBuilder
 
   function boss()
     currentStep = new BossStep(result)
+    bossWave = true
+    creepAmount = 1
 
   function abilities(string abilities)
     creepStep.creepDef.setNormalAbilities(abilities)
@@ -152,6 +164,7 @@ public class WaveBuilder
       currentStep = null
     result.steps = steps
     result.creepAmount = creepAmount
+    result.bossWave = bossWave
     return result
 
 constant NEXT_WAVE = new SoundDefinition(Sounds.questNew)
@@ -166,6 +179,8 @@ public class Wave
   var expBounty = 0
 
   var creepAmount = 0
+
+  var bossWave = false
 
   var isDone = false
 
@@ -183,6 +198,7 @@ public class Wave
         nextStep()
 
   function finish()
+    onFinishListener.onFinish(this)
     printTimed("|cff1f9913>> Wave cleared!", 10.)
     WAVE_FINISHED.play()
 
@@ -200,4 +216,4 @@ public class Wave
           AFTER_WAVE_RESTORATION_SOUND.play(1, 30)
           flashEffect(Abilities.replenishHealthCasterOverhead, heroUnit.getPos())
           heroUnit.addHP(heroUnit.getMaxHP() * 0.45)
-          heroUnit.addMana(heroUnit.getMaxMana() * 0.25)
+          heroUnit.addMana(heroUnit.getMaxMana() * 0.3)

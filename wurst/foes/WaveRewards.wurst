@@ -4,6 +4,7 @@ import GameProperties
 import PlayerData
 import HashMap
 import Wave
+import Boss
 import StandardTextTags
 
 var expPerUnit = 0
@@ -12,11 +13,17 @@ var expPull = 0
 var goldPerUnit = 0
 var goldPull = 0
 
+var bossWave = false
+
 init
   EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
     let u = EventData.getDyingUnit()
+    var bossWaveCondition = true
 
-    if u.getOwner() == ENEMY_PLAYER
+    if bossWave
+      bossWaveCondition = u.isBoss()
+    
+    if bossWaveCondition and u.getOwner() == ENEMY_PLAYER
       // That condition means that if exp for 2 units is bigger then overall pull,
       // which means that there is not enough exp for 2 units in pull,
       // then there is only 1 unit left with some exp leftovers from division
@@ -33,22 +40,25 @@ init
         
       if goldPerUnit * 2 > goldPull
         pData.forEach() (player p, PlayerData playerData) ->
-          if playerData.getHero().have
-            p.addGold(goldPull)
+          p.addGold(goldPull)
         createGoldBountyTextTag(u, goldPull)
         goldPull -= goldPull
       else
         pData.forEach() (player p, PlayerData playerData) ->
-          if playerData.getHero().have
-            p.addGold(goldPerUnit)
+          p.addGold(goldPerUnit)
         createGoldBountyTextTag(u, goldPerUnit)
         goldPull -= goldPerUnit
+      
+      if u.isBoss()
+        bossList.remove(u)
   
   onWaveStart() (Wave wave) ->
     let creepAmount = wave.creepAmount
     let waveExp = wave.expBounty
     let waveGold = wave.goldBounty
 
+    bossWave = wave.bossWave
+    
     expPull = waveExp + (waveExp * 0.5 * (8-pData.size())/7).round()
     goldPull = waveGold + (waveGold * 0.5 * (8-pData.size())/7).round()
 

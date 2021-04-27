@@ -7,9 +7,17 @@ interface BossIsDead
 
 public BossIsDead onBossDefeat
 
+public constant bossList = new LinkedList<unit>
+
+public function unit.isBoss() returns bool
+  return bossList.has(this)
+
 public class Boss extends UnitEntity
   construct(int typId, vec3 pos, angle ang)
     super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
     actor.setAnimation("birth")
 
-    EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH, () -> onBossDefeat.execute())
+    bossList.add(actor)
+
+    EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
+      onBossDefeat.execute()
