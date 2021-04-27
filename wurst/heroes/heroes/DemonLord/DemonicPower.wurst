@@ -4,6 +4,7 @@ import HeroSpellConstants
 import ClosureEvents
 import BonusHandler
 import DemonLordIds
+import TooltipFactory
 
 RealLevelClosure CLEAVE_PERCENT = lvl -> 0.35 + .1 * (lvl-1)
 RealLevelClosure STR_BONUS = lvl -> 4. * lvl
@@ -26,7 +27,7 @@ init
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Demonic Power")
-  ..addTooltipProperty("Cleave Percent", lvl -> (CLEAVE_PERCENT.run(lvl) * 100).round().toString() + "%")
+  ..addTooltipProperty("Cleave Percent", lvl -> (CLEAVE_PERCENT.run(lvl) * 100).percRound())
   ..addTooltipProperty("Bonus Strength", lvl -> STR_BONUS.run(lvl))
   ..tooltipStopListen()
 

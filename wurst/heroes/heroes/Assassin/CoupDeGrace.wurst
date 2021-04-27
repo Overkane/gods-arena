@@ -5,6 +5,7 @@ import PassiveAbilityPreset
 import DamageSystem
 import MapIcons
 import ClosureEvents
+import TooltipFactory
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -57,7 +58,7 @@ init
 
   ..tooltipStartListen()
   ..setName("Coup De Grace")
-  ..addTooltipProperty("Critical Strike Chance", CRITICAL_CHANCE)
-  ..addTooltipProperty("Damage Multiplayer", CRITICAL_MULT)
+  ..addTooltipProperty("Critical Strike Chance", lvl -> CRITICAL_CHANCE.run(lvl).percRound())
+  ..addTooltipProperty("Damage Multiplayer", lvl -> (CRITICAL_MULT.run(lvl) * 100).percRound())
   ..addTooltipProperty("Backstab Chance Multiplayer", BACKSTAB_MULT)
   ..tooltipStopListen()

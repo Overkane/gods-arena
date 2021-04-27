@@ -9,6 +9,7 @@ import HeroSpellConstants
 import PassiveAbilityPreset
 import DummyStatCaster
 import Orders
+import TooltipFactory
 
 public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
 public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
@@ -62,7 +63,7 @@ init
 
   ..tooltipStartListen()
   ..setName("Holy Smite")
-  ..addTooltipProperty("Chance", CHANCE)
+  ..addTooltipProperty("Chance", lvl -> CHANCE.run(lvl).percRound())
   ..addTooltipProperty("Damage", DAMAGE)
   ..presetAreaofEffect(RADIUS)
   ..addTooltipProperty("Stun Duration", STUN_DURATION)

@@ -6,6 +6,7 @@ import ClosureEvents
 import DemonLordIds
 import HeroSpellConstants
 import Icons
+import TooltipFactory
 
 RealLevelClosure DAMAGE_DECREASE = lvl -> 0.25 + 0.1 * (lvl-1)
 RealLevelClosure DURATION = lvl -> 10
@@ -38,7 +39,7 @@ init
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Howl of Terror")
-  ..addTooltipProperty("Damage Decrease", lvl -> (DAMAGE_DECREASE.run(lvl) * 100).toString(0) + "%")
+  ..addTooltipProperty("Damage Decrease", lvl -> (DAMAGE_DECREASE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Bonus Strength", STR_BONUS)
   ..addTooltipProperty("HP Recovered", HP_RECOVERY)
   ..presetAreaofEffect(lvl -> 400)

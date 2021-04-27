@@ -7,6 +7,7 @@ import UnitIds
 import DamageEvent
 import Orders
 import BonusHandler
+import TooltipFactory
 
 public constant CRAB_DEFENSE_ID = compiletime(ABIL_ID_GEN.next())
 public constant CRABLING_ID = compiletime(UNIT_ID_GEN.next())
@@ -44,7 +45,7 @@ init
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Crab Defense")
-  ..addTooltipProperty("Chance to spawn", SPELL_CHANCE)
+  ..addTooltipProperty("Chance to spawn", lvl -> (SPELL_CHANCE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Crab Damage", CRAB_DAMAGE)
   ..tooltipStopListen()
 

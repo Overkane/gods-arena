@@ -8,6 +8,7 @@ import Buff
 import HeroSpellConstants
 import PassiveAbilityPreset
 import DummyStatCaster
+import TooltipFactory
 
 public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -44,7 +45,7 @@ init
 
     ..tooltipStartListen()
     ..addTooltipProperty("Extra Damage", DAMAGE)
-    ..addTooltipProperty("Chance",  lvl -> (CHANCE.run(lvl) * 100).toString(0) + "%")
+    ..addTooltipProperty("Chance",  lvl -> (CHANCE.run(lvl) * 100).percRound())
     ..setName("Critical Arrow")
     ..tooltipStopListen()
 

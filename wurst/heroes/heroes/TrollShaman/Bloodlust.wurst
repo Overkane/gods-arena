@@ -2,6 +2,7 @@ package Bloodlust
 import AbilityTooltipGenerator
 import HeroSpellConstants
 import Icons
+import TooltipFactory
 
 public constant BLOODLUST_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -22,8 +23,8 @@ constant RealLevelClosure DURATION = lvl -> 12.
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Bloodlust")
-  ..addTooltipProperty("Attack Speed Bonus", lvl -> (AS_BONUS.run(lvl)*100).round().toString() + "%")
-  ..addTooltipProperty("Movespeed Bonus", lvl -> (MS_BONUS.run(lvl)*100).round().toString() + "%")
+  ..addTooltipProperty("Attack Speed Bonus", lvl -> (AS_BONUS.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Movespeed Bonus", lvl -> (MS_BONUS.run(lvl) * 100).percRound())
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
   ..presetManaCost(lvl -> 75 + 25 * lvl)

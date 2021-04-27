@@ -5,6 +5,7 @@ import HeroSpellConstants
 import ClosureEvents
 import CustomStatSystem
 import PassiveAbilityPreset
+import TooltipFactory
 
 public constant KILLER_REFLEXES_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -35,5 +36,5 @@ init
   
   ..tooltipStartListen()
   ..setName("Killer Reflexes")
-  ..addTooltipProperty("Evasion", lvl -> EVASION.run(lvl).toString() + "%")
+  ..addTooltipProperty("Evasion", lvl -> EVASION.run(lvl).percRound())
   ..tooltipStopListen()

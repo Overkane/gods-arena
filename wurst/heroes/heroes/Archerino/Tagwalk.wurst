@@ -69,7 +69,7 @@ init
     ..presetHotkey("W")
     ..setName("Tag Walk")
     ..addTooltipProperty("Walk Duration", WALK_DURATION)
-    ..addTooltipProperty("Damage Reduction", lvl -> 0.75)
+    ..addTooltipProperty("Damage Reduction", lvl -> "75%")
     
     ..presetManaCost(lvl -> 50 + 20 * lvl)
     ..presetCooldown(lvl -> 21. - 2. * lvl)

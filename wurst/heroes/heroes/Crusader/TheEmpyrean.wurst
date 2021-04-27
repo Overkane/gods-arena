@@ -4,6 +4,7 @@ import AbilityTooltipGenerator
 import TheEmpyreanBuff
 import Entity
 import HeroSpellConstants
+import TooltipFactory
 
 public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -42,7 +43,7 @@ init
   ..addTooltipProperty("Additional Damage", DAMAGE)
   ..addTooltipProperty("Attack Speed Slow", ATTACK_SPEED_SLOW)
   ..addTooltipProperty("Healing Seal Additional Radius", DAMAGE)
-  ..addTooltipProperty("Holy Smite Proc Chance", HOLY_SMITE_PROC_CHANCE)
+  ..addTooltipProperty("Holy Smite Proc Chance", lvl -> HOLY_SMITE_PROC_CHANCE.run(lvl).percRound())
   ..addTooltipProperty("Divine Blessing Multiplayer", DIVINE_BLESSING_MULT)
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 125 + 25 * lvl)

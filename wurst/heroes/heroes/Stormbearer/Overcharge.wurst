@@ -3,6 +3,7 @@ import Icons
 import AbilityTooltipGenerator
 import ClosureEvents
 import OverchargeBuff
+import TooltipFactory
 
 public constant OVERCHARGE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -28,7 +29,7 @@ init
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.NONE)
   ..setName("Overcharge")
-  ..addTooltipProperty("Magic Damage Multiplier", BONUS_SP)
+  ..addTooltipProperty("Magic Damage Multiplier", lvl -> (BONUS_SP.run(lvl)*100).percRound())
   ..addTooltipProperty("Overcharge Duration", DURATION)
   ..presetManaCost(lvl -> 50)
   ..presetCooldown(lvl -> 35.)

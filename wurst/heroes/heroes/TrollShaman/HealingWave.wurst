@@ -1,6 +1,7 @@
 package HealingWave
 import AbilityTooltipGenerator
 import HeroSpellConstants
+import TooltipFactory
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -20,7 +21,7 @@ constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 2 + lvl
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Healing Wave")
   ..addTooltipProperty("Heal Power", HEAL_POWER)
-  ..addTooltipProperty("Heal Reduction per Bounce", lvl -> (HEAL_REDUCTION.run(lvl) * 100).round().toString() + "%")
+  ..addTooltipProperty("Heal Reduction per Bounce", lvl -> (HEAL_REDUCTION.run(lvl) * 100).percRound())
   ..addTooltipProperty("Number of Targets", NUMBER_OF_TARGETS)
   ..presetAreaofEffect(lvl -> 500)
   ..presetCastRange(lvl -> 600)

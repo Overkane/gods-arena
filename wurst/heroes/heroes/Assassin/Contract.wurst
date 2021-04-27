@@ -8,6 +8,7 @@ import ContractBuff
 import DamageSystem
 import Buff
 import StandardTextTags
+import TooltipFactory
 
 public constant CONTRACT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -50,7 +51,7 @@ init
             let bounty = BOUNTY * u.getLevel()
         
             u.getOwner().addGold(bounty)
-            createGoldBountyTextTag(tunit, bounty, u.getOwner())
+            createGoldBountyTextTag(tunit, bounty, u.getOwner()) // TODO OVERLAPS WITH USUAL GOLD BOUNTY TEXT
       
   DamageEvent.addUnreducedListener(DamageEvents.START castTo int) ->
     let sunit = DamageEvent.getSource()
@@ -73,7 +74,7 @@ init
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.NONE)
   ..setName("Contract")
-  ..addTooltipProperty("Bonus Physical Damage", lvl -> BONUS_AP.toString() + "%")
+  ..addTooltipProperty("Bonus Physical Damage", lvl -> BONUS_AP.percRound())
   ..addTooltipProperty("Additional Bounty", lvl -> BOUNTY.toString() + " * [Hero Level]")
   ..presetAreaofEffect(lvl -> AOE)
   ..presetCooldown(lvl -> 50.)

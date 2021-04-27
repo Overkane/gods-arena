@@ -1,6 +1,7 @@
 package MirrorImage
 import AbilityTooltipGenerator
 import HeroSpellConstants
+import TooltipFactory
 
 public constant MIRROR_IMAGE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -20,8 +21,8 @@ RealLevelClosure DURATION = lvl -> 30.
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Mirror Image")
   ..presetNumberofImages(lvl -> 2 + (lvl / 3).toInt())
-  ..addTooltipProperty("Damage Dealt", lvl -> (DAMAGE_DEALT.run(lvl) * 100).round().toString() + "%")
-  ..addTooltipProperty("Damage Taken", lvl -> (DAMAGE_TAKEN.run(lvl) * 100).round().toString() + "%")
+  ..addTooltipProperty("Damage Dealt", lvl -> (DAMAGE_DEALT.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Damage Taken", lvl -> (DAMAGE_TAKEN.run(lvl) * 100).percRound())
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 90 + 10 * lvl)
   ..presetCooldown(lvl -> 15)

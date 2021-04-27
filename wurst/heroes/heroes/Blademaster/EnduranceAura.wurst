@@ -1,6 +1,7 @@
 package EnduranceAura
 import AbilityTooltipGenerator
 import HeroSpellConstants
+import TooltipFactory
 
 public constant ENDURANCE_AURA_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -18,8 +19,8 @@ constant RealLevelClosure MS_BONUS = lvl -> 0.05 * lvl
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Endurance Aura")
-  ..addTooltipProperty("Attack Speed Increase", lvl -> (AS_BONUS.run(lvl) * 100).round().toString() + "%")
-  ..addTooltipProperty("Movement Speed Increase", lvl -> (MS_BONUS.run(lvl) * 100).round().toString() + "%")
+  ..addTooltipProperty("Attack Speed Increase", lvl -> (AS_BONUS.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Movement Speed Increase", lvl -> (MS_BONUS.run(lvl) * 100).percRound())
   ..tooltipStopListen()
 
   ..presetAttackSpeedIncrease(AS_BONUS)
