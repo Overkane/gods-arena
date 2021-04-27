@@ -1,0 +1,55 @@
+package GameStatistic
+import ClosureTimers
+import TimerUtils
+import PlayerData
+import HashMap
+
+multiboard mboard
+
+init
+  doAfter(0.25) ->
+    initMultiboard()
+
+public function initMultiboard()
+  mboard = CreateMultiboard()
+  ..setTitle("Gods' Arena")
+  ..setColumnCount(7)
+  ..setRowCount(1)
+  mboard.getItem(0, 0).setValue("Player")
+  mboard.getItem(0, 1).setValue("Kills")
+  mboard.getItem(0, 2).setValue("Deaths")
+  mboard.getItem(0, 3).setValue("Physical")
+  mboard.getItem(0, 4).setValue("Spell")
+  mboard.getItem(0, 5).setValue("Taken")
+  mboard.getItem(0, 6).setValue("Points")
+
+  update()
+  mboard.display(true)
+  getTimer().startPeriodic(0.5, () -> update())
+
+function update()
+  mboard
+  ..setRowCount(pData.size()+1)
+  ..setItemsStyle(true, false)
+  ..setItemsWidth(0.055)
+  ..setColumnWidth(0, 0.08)
+
+  var i = 1
+  for p in pData
+    let playerData = pData.get(p)
+
+    mboard.getItem(i, 0)..setValue(p.getNameColored())
+    
+    mboard.getItem(i, 1)..setValue(playerData.getKills().toString())
+    
+    mboard.getItem(i, 2)..setValue(playerData.getDeaths().toString())
+    
+    mboard.getItem(i, 3)..setValue(playerData.getPhysDamage().toString())
+    
+    mboard.getItem(i, 4)..setValue(playerData.getSpellDamage().toString())
+    
+    mboard.getItem(i, 5)..setValue(playerData.getDamageTaken().toString())
+
+    mboard.getItem(i, 6)..setValue(playerData.getArenaPoints().toString())
+    
+    i++

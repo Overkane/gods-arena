@@ -4,6 +4,9 @@ import Hero
 import Players
 import HashMap
 
+// Arena points conversion ratio to honor points
+public constant ARENA_POINTS_THRESHOLD = 500
+
 public constant pData = new IterableMap<player, PlayerData>
 
 public function player.getData() returns PlayerData
@@ -22,6 +25,14 @@ public function maybe_hero.ifPresent(MaybeHeroIfPresent ifPresent)
 public class PlayerData
   private player p
   private maybe_hero maybeHero
+  // Game statistic
+  private var kills = 0
+  private var deaths = 0
+  private var physDamage = 0
+  private var spellDamage = 0
+  private var damageTaken = 0
+  private var arenaPoints = 0
+  private var arenaPointsForConvertation = 0
 
   construct (player p)
     this.p = p
@@ -33,6 +44,58 @@ public class PlayerData
 
   function getHero() returns maybe_hero
     return this.maybeHero
+
+  function addKill()
+    kills++
+
+  function getKills() returns int
+    return kills
+
+  function addDeath()
+    deaths++
+
+  function getDeaths() returns int
+    return deaths
+
+  function addPhysDamage(int value)
+    physDamage += value
+
+  function getPhysDamage() returns int
+    return physDamage
+
+  function clearPhysDamage()
+    physDamage = 0
+
+  function addSpellDamage(int value)
+    spellDamage += value
+
+  function getSpellDamage() returns int
+    return spellDamage
+
+  function clearSpellDamage()
+    spellDamage = 0
+
+  function addDamageTaken(int value)
+    damageTaken += value
+
+  function getDamageTaken() returns int
+    return damageTaken
+
+  function clearDamageTaken()
+    damageTaken = 0
+
+  function addArenaPoints(int value)
+    arenaPoints += value
+    arenaPointsForConvertation += value
+
+    if arenaPointsForConvertation >= ARENA_POINTS_THRESHOLD
+      let honorPoints = (arenaPointsForConvertation / ARENA_POINTS_THRESHOLD).floor()
+      p.addLumber(honorPoints)
+
+      arenaPointsForConvertation = arenaPointsForConvertation - honorPoints * ARENA_POINTS_THRESHOLD
+
+  function getArenaPoints() returns int
+    return arenaPoints
 
   ondestroy
     pData.remove(p)

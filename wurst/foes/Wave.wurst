@@ -186,6 +186,12 @@ public class Wave
 
   function spawn()
     onStartListener.onStart(this)
+    // Clears game statistic for wave
+    for p in pData
+      pData.get(p)
+      ..clearPhysDamage()
+      ..clearSpellDamage()
+      ..clearDamageTaken()
     printTimed("|cffceac15>> The wave begins!", 10.)
     NEXT_WAVE.play()
     nextStep()

@@ -1,0 +1,44 @@
+package GameStatisticCounters
+import ClosureEvents
+import DamageSystem
+import GameProperties
+import PlayerData
+import Wave
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_DEATH) -> 
+    let dunit = EventData.getDyingUnit()
+    let kunit = EventData.getKillingUnit()
+    let kunitOwner = kunit.getOwner() 
+    let dunitOwner = dunit.getOwner() 
+
+    if dunitOwner== ENEMY_PLAYER and pData.has(kunitOwner)
+      pData.get(kunitOwner)
+      ..addKill()
+      ..addArenaPoints(5)
+
+    else if pData.has(dunitOwner) 
+      pData.get(dunitOwner).getHero().ifPresent() (h) ->
+        if dunit == h.actor
+          pData.get(dunitOwner)
+          ..addDeath()
+          ..addArenaPoints(-50)
+    
+  DamageEvent.addListener() -> 
+    let damageType = DamageEvent.getType()
+    let tunit = DamageEvent.getTarget()
+    let sunit = DamageEvent.getSource()
+    
+    if DamageEvent.getAmount() > 0
+      if sunit.getOwner() == ENEMY_PLAYER and pData.has(tunit.getOwner())
+        pData.get(tunit.getOwner()).addDamageTaken(DamageEvent.getAmount().round())
+      else if pData.has(sunit.getOwner())
+        if damageType == DamageType.ATTACK
+          pData.get(sunit.getOwner()).addPhysDamage(DamageEvent.getAmount().round())
+        else if damageType == DamageType.SPELL or damageType == DamageType.CODE 
+          pData.get(sunit.getOwner()).addSpellDamage(DamageEvent.getAmount().round())
+
+  onWaveFinish() (Wave wave) ->
+    for p in pData
+      pData.get(p)
+      ..addArenaPoints(100)
