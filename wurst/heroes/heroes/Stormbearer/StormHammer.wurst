@@ -11,7 +11,7 @@ import DummyStatCaster
 public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())
 public constant STORM_HAMMER_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure CHAIN_LIGHTNING_DAMAGE = lvl -> 25. + 20. * (lvl-1)
+RealLevelClosure CHAIN_LIGHTNING_DAMAGE = lvl -> 35. + 40. * (lvl-1)
 IntLevelClosure CHAIN_LIGHTNING_NUMBER_OF_TARGETS = lvl -> 3 + lvl
 RealLevelClosure CHARGE_DURATION = lvl -> 4.5 + 0.5 * lvl
 
