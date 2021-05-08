@@ -5,16 +5,17 @@ import FText
 
 init
     DamageEvent.addListener(99) ->
-        let target = DamageEvent.getTarget()
+        if DamageEvent.getAmount() > 0
+            let target = DamageEvent.getTarget()
 
-        if target.getOwner() == ENEMY_PLAYER
-            if DamageEvent.getType() == DamageType.ATTACK
-                createFText(target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-20, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 6,
-                    0.85, vec2(0, 0.045), colorA(233, 116, 122, 255), DamageEvent.getSource().getOwner())
+            if target.getOwner() == ENEMY_PLAYER
+                if DamageEvent.getType() == DamageType.ATTACK
+                    createFText(target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 6,
+                        0.85, vec2(0, 0.045), colorA(233, 116, 122, 255), DamageEvent.getSource().getOwner())
+                else
+                    createFText(target.getPos().withTerrainZ(45) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 6,
+                        0.85, vec2(0, 0.045), colorA(57, 97, 207, 255), DamageEvent.getSource().getOwner())
             else
-                createFText(target.getPos().withTerrainZ(45) + vec3(GetRandomReal(-20, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 6,
-                    0.85, vec2(0, 0.045), colorA(57, 97, 207, 255), DamageEvent.getSource().getOwner())
-        else
-            createFText(target.getPos().withTerrainZ(45) + vec3(GetRandomReal(-20, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 6 + SquareRoot(DamageEvent.getAmount()) / 8,
-                0.85, vec2(0, 0.045), colorA(146, 29, 29, 255), target.getOwner())
+                createFText(target.getPos().withTerrainZ(45) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 6 + SquareRoot(DamageEvent.getAmount()) / 8,
+                    0.85, vec2(0, 0.045), colorA(146, 29, 29, 255), target.getOwner())
         
