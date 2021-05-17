@@ -4,7 +4,7 @@ import HeroSpellConstants
 
 public constant VODOO_SPIRITS_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DAMAGE = lvl -> 40. + 40. * (lvl-1)
+constant RealLevelClosure DAMAGE = lvl -> 45. + 45. * (lvl-1)
 constant RealLevelClosure DURATION = lvl -> 18.
 
 @compiletime function genAbility()

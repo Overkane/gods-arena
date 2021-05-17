@@ -11,7 +11,7 @@ import Tagwalk
 
 public constant ARROW_VOLLEY_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DAMAGE = lvl -> 95. + 165 * lvl
+constant RealLevelClosure DAMAGE = lvl -> 110. + 165 * lvl
 
 init
     EventListener.onPointCast(ARROW_VOLLEY_ID) (caster, target) ->

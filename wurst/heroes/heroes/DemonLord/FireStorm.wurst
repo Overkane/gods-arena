@@ -10,7 +10,7 @@ import HeroSpellConstants
 import Reference
 
 RealLevelClosure DURATION = lvl -> 3
-RealLevelClosure DAMAGE = lvl -> 150. * lvl
+RealLevelClosure DAMAGE = lvl -> 125. * lvl
 RealLevelClosure COOLDOWN = lvl -> 14.
 IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 3 * lvl
 RealLevelClosure BONUS_DURATION = lvl -> 5. + lvl

@@ -5,9 +5,9 @@ import TooltipFactory
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HEAL_POWER = lvl -> 175. + 90. * (lvl-1)
-constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.25 - 0.03 * lvl
-constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 2 + lvl
+constant RealLevelClosure HEAL_POWER = lvl -> 125. + 125. * (lvl-1)
+constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.2
+constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 4
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Calls forth a wave of energy that heals a target and bounces to nearby allies. Each bounce heals less damage.")
