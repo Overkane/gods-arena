@@ -31,6 +31,9 @@ public class PlayerData
   private var physDamage = 0
   private var spellDamage = 0
   private var damageTaken = 0
+  private var overallPhysDamage = 0
+  private var overallSpellDamage = 0
+  private var overallDamageTaken = 0
   private var arenaPoints = 0
   private var arenaPointsForConvertation = 0
 
@@ -59,27 +62,39 @@ public class PlayerData
 
   function addPhysDamage(int value)
     physDamage += value
+    overallPhysDamage += value
 
   function getPhysDamage() returns int
     return physDamage
+
+  function getOverallPhysDamage() returns int
+    return overallPhysDamage
 
   function clearPhysDamage()
     physDamage = 0
 
   function addSpellDamage(int value)
     spellDamage += value
+    overallSpellDamage += value
 
   function getSpellDamage() returns int
     return spellDamage
+
+  function getOverallSpellDamage() returns int
+    return overallSpellDamage
 
   function clearSpellDamage()
     spellDamage = 0
 
   function addDamageTaken(int value)
     damageTaken += value
+    overallDamageTaken += value
 
   function getDamageTaken() returns int
     return damageTaken
+
+  function getOverallDamageTaken() returns int
+    return overallDamageTaken
 
   function clearDamageTaken()
     damageTaken = 0

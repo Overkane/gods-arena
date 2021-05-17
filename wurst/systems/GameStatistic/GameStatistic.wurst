@@ -1,55 +1,101 @@
 package GameStatistic
-import ClosureTimers
+import FrameMultiboard
+import FrameMultiboardButton
+import CustomStatSystem
 import TimerUtils
 import PlayerData
 import HashMap
+import LinkedList
 
-multiboard mboard
+FrameMultiboard mboard
 
-init
-  doAfter(0.25) ->
-    initMultiboard()
+public constant playerMboardMap = new HashMap<player, FrameMultiboard>
 
 public function initMultiboard()
-  mboard = CreateMultiboard()
-  ..setTitle("Gods' Arena")
-  ..setColumnCount(7)
+  mboard = new FrameMultiboard(FRAMEPOINT_TOP, vec2(0.4, 0.53))
+  ..setColumnCount(10)
   ..setRowCount(1)
-  mboard.getItem(0, 0).setValue("Player")
-  mboard.getItem(0, 1).setValue("Kills")
-  mboard.getItem(0, 2).setValue("Deaths")
-  mboard.getItem(0, 3).setValue("Physical")
-  mboard.getItem(0, 4).setValue("Spell")
-  mboard.getItem(0, 5).setValue("Taken")
-  mboard.getItem(0, 6).setValue("Points")
+  ..setPadding(vec2(0.01, 0.01))
+
+  mboard.setItemValue(0, 0, "Player")
+  mboard.setItemValue(0, 1, "Kills")
+  mboard.setItemValue(0, 2, "Deaths")
+  mboard.setItemValue(0, 3, "Phys.D.")
+  mboard.setItemValue(0, 4, "Spell D.")
+  mboard.setItemValue(0, 5, "D. Taken")
+  mboard.setItemValue(0, 6, "Full Phys. D.")
+  mboard.setItemValue(0, 7, "Spell D.")
+  mboard.setItemValue(0, 8, "Taken D.")
+  mboard.setItemValue(0, 9, "Points")
+
+  for p in pData
+    let statsMboard = new FrameMultiboard(FRAMEPOINT_TOP, mboard.multiboardFrame, FRAMEPOINT_BOTTOM, vec2(0, 0))
+    ..setColumnCount(6)
+    ..setRowCount(4)
+    ..setPadding(vec2(0.01, 0.01))
+    ..setItemsSize(0.08, 0.018)
+
+    statsMboard.setItemValue(0, 0, "Bonus Attack D.")
+    statsMboard.setItemValue(0, 1, "AP")
+    statsMboard.setItemValue(0, 2, "AP Crit")
+    statsMboard.setItemValue(0, 3, "AP Chance")
+    statsMboard.setItemValue(0, 4, "Lifesteal")
+    statsMboard.setItemValue(0, 5, "Evasion")
+    statsMboard.setItemValue(2, 0, "Bonus Spell D.")
+    statsMboard.setItemValue(2, 1, "SP")
+    statsMboard.setItemValue(2, 2, "SP Power")
+    statsMboard.setItemValue(2, 3, "SP Crit")
+    statsMboard.setItemValue(2, 4, "Spell Lifesteal")
+
+    playerMboardMap.put(p, statsMboard)
+    
+    let mboards = new LinkedList<FrameMultiboard>..add(mboard)..add(statsMboard)
+    let toggleMultiboardButton = new ToggleMultiboardButton(mboards, "Game Stats (G)")
+    pData.forEach() (player p, PlayerData value) ->
+      toggleMultiboardButton
+      ..addHotkeyForPlayer(p, OSKEY_G)
+      ..show(p)
+
+    destroy mboards
 
   update()
-  mboard.display(true)
   getTimer().startPeriodic(0.5, () -> update())
 
 function update()
   mboard
   ..setRowCount(pData.size()+1)
-  ..setItemsStyle(true, false)
-  ..setItemsWidth(0.055)
-  ..setColumnWidth(0, 0.08)
+  ..setItemsSize(0.06, 0.018)
+  ..setColumnWidth(0, 0.06)
 
   var i = 1
   for p in pData
     let playerData = pData.get(p)
 
-    mboard.getItem(i, 0)..setValue(p.getNameColored())
-    
-    mboard.getItem(i, 1)..setValue(playerData.getKills().toString())
-    
-    mboard.getItem(i, 2)..setValue(playerData.getDeaths().toString())
-    
-    mboard.getItem(i, 3)..setValue(playerData.getPhysDamage().toString())
-    
-    mboard.getItem(i, 4)..setValue(playerData.getSpellDamage().toString())
-    
-    mboard.getItem(i, 5)..setValue(playerData.getDamageTaken().toString())
+    mboard.setItemValue(i, 0, p.getNameColored())
+    mboard.setItemValue(i, 1, playerData.getKills().toString())
+    mboard.setColumnWidth(1, 0.04)
+    mboard.setItemValue(i, 2, playerData.getDeaths().toString())
+    mboard.setColumnWidth(2, 0.04)
+    mboard.setItemValue(i, 3, playerData.getPhysDamage().toString())
+    mboard.setItemValue(i, 4, playerData.getSpellDamage().toString())
+    mboard.setItemValue(i, 5, playerData.getDamageTaken().toString())
+    mboard.setItemValue(i, 6, playerData.getOverallPhysDamage().toString())
+    mboard.setItemValue(i, 7, playerData.getOverallSpellDamage().toString())
+    mboard.setItemValue(i, 8, playerData.getOverallDamageTaken().toString())
+    mboard.setItemValue(i, 9, playerData.getArenaPoints().toString())
 
-    mboard.getItem(i, 6)..setValue(playerData.getArenaPoints().toString())
+    playerData.getHero().ifPresent() (h) ->
+      let statsMboard = playerMboardMap.get(p)
+      statsMboard.setItemValue(1, 0, h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString())
+      statsMboard.setItemValue(1, 1, h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString())
+      statsMboard.setItemValue(1, 2, h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString())
+      statsMboard.setItemValue(1, 3, h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString())
+      statsMboard.setItemValue(1, 4, h.actor.getStat(CustomUnitStats.LIFESTEAL).toString())
+      statsMboard.setItemValue(1, 5, h.actor.getStat(CustomUnitStats.EVASION).toString())
+      statsMboard.setItemValue(3, 0, h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString())
+      statsMboard.setItemValue(3, 1, h.actor.getStat(CustomUnitStats.SPELL_POWER).toString())
+      statsMboard.setItemValue(3, 2, h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString())
+      statsMboard.setItemValue(3, 3, h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString())
+      statsMboard.setItemValue(3, 4, h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString())
     
     i++

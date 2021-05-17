@@ -7,7 +7,7 @@ import HeroPickMenu
 import Arenas
 import ClosureTimers
 import DamageEvent
-import CustomStatSystem
+import GameStatistic
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
@@ -38,7 +38,7 @@ function initPickTimer()
 function initChatCommands()
   pData.forEach() (player p, PlayerData playerData) ->
     // Admin commands
-    if p.getName() == "Overkane" or p.getName() == "Frotty" or p.getName() == "Local Player"
+    if p.getName() == "Overkane" or p.getName() == "Frotty" or p.getName() == "Local Player" or p.getName() == "Игрок"
       CreateTrigger()
       ..registerPlayerChatEvent(p, "-l", true)
       ..addAction() ->
@@ -61,32 +61,6 @@ function initChatCommands()
             print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
             print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
             print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
-    // General commands
-    CreateTrigger()
-    ..registerPlayerChatEvent(p, "-stats", true)
-    ..addAction() ->
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Bonus Attack Damage: " + h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Attack Power: " + h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Attack Crit Power: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Attack Crit Chance: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Lifesteal: " + h.actor.getStat(CustomUnitStats.LIFESTEAL).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Bonus Spell Damage: " + h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Spell Power: " + h.actor.getStat(CustomUnitStats.SPELL_POWER).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Spell Crit Power: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Spell Crit Chance: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Spell Lifesteal: " + h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString(), 5, GetTriggerPlayer())
-      pData.get(GetTriggerPlayer()).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Evasion: " + h.actor.getStat(CustomUnitStats.EVASION).toString(), 5, GetTriggerPlayer())
 
 init
   nullTimer() ->
@@ -99,5 +73,6 @@ init
     initHeroPickMenu()
     initItemShop()
     initChatCommands()
+    initMultiboard()
     doAfter(5) ->
       BlzChangeMinimapTerrainTex("originalMap.blp")
