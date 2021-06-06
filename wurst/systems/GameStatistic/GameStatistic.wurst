@@ -5,97 +5,108 @@ import CustomStatSystem
 import TimerUtils
 import PlayerData
 import HashMap
-import LinkedList
 
-FrameMultiboard mboard
+FrameMultiboard mboardMain
+public ToggleMultiboardButton toggleMultiboardButton
 
-public constant playerMboardMap = new HashMap<player, FrameMultiboard>
+FrameMultiboard mboardStats
+public ToggleMultiboardButton toggleStatMultiboardButton
 
 public function initMultiboard()
-  mboard = new FrameMultiboard(FRAMEPOINT_TOP, vec2(0.4, 0.53))
+  mboardMain = new FrameMultiboard(FRAMEPOINT_TOP, vec2(0.4, 0.53))
   ..setColumnCount(10)
   ..setRowCount(1)
   ..setPadding(vec2(0.01, 0.01))
 
-  mboard.setItemValue(0, 0, "Player")
-  mboard.setItemValue(0, 1, "Kills")
-  mboard.setItemValue(0, 2, "Deaths")
-  mboard.setItemValue(0, 3, "Phys.D.")
-  mboard.setItemValue(0, 4, "Spell D.")
-  mboard.setItemValue(0, 5, "D. Taken")
-  mboard.setItemValue(0, 6, "Full Phys. D.")
-  mboard.setItemValue(0, 7, "Spell D.")
-  mboard.setItemValue(0, 8, "Taken D.")
-  mboard.setItemValue(0, 9, "Points")
+  mboardMain.setItemValue(0, 0, "Player")
+  mboardMain.setItemValue(0, 1, "Kills")
+  mboardMain.setItemValue(0, 2, "Deaths")
+  mboardMain.setItemValue(0, 3, "Phys.D.")
+  mboardMain.setItemValue(0, 4, "Spell D.")
+  mboardMain.setItemValue(0, 5, "D. Taken")
+  mboardMain.setItemValue(0, 6, "Full Phys. D.")
+  mboardMain.setItemValue(0, 7, "Spell D.")
+  mboardMain.setItemValue(0, 8, "Taken D.")
+  mboardMain.setItemValue(0, 9, "Points")
 
-  for p in pData
-    let statsMboard = new FrameMultiboard(FRAMEPOINT_TOP, mboard.multiboardFrame, FRAMEPOINT_BOTTOM, vec2(0, 0))
-    ..setColumnCount(6)
-    ..setRowCount(4)
-    ..setPadding(vec2(0.01, 0.01))
-    ..setItemsSize(0.08, 0.018)
+  toggleMultiboardButton = new ToggleMultiboardButton(mboardMain, "Game Stats (G)")
+  ..setSize(0.12, 0.032)
+  ..setPoint(FRAMEPOINT_BOTTOM, vec2(0.46, 0.138))
 
-    statsMboard.setItemValue(0, 0, "Bonus Attack D.")
-    statsMboard.setItemValue(0, 1, "AP")
-    statsMboard.setItemValue(0, 2, "AP Crit")
-    statsMboard.setItemValue(0, 3, "AP Chance")
-    statsMboard.setItemValue(0, 4, "Lifesteal")
-    statsMboard.setItemValue(0, 5, "Evasion")
-    statsMboard.setItemValue(2, 0, "Bonus Spell D.")
-    statsMboard.setItemValue(2, 1, "SP")
-    statsMboard.setItemValue(2, 2, "SP Power")
-    statsMboard.setItemValue(2, 3, "SP Crit")
-    statsMboard.setItemValue(2, 4, "Spell Lifesteal")
+  pData.forEach() (player p, PlayerData value) ->
+    toggleMultiboardButton
+    ..addHotkeyForPlayer(p, OSKEY_G)
 
-    playerMboardMap.put(p, statsMboard)
-    
-    let mboards = new LinkedList<FrameMultiboard>..add(mboard)..add(statsMboard)
-    let toggleMultiboardButton = new ToggleMultiboardButton(mboards, "Game Stats (G)")
-    pData.forEach() (player p, PlayerData value) ->
-      toggleMultiboardButton
-      ..addHotkeyForPlayer(p, OSKEY_G)
-      ..show(p)
+  mboardStats = new FrameMultiboard(FRAMEPOINT_TOP, vec2(0.4, 0.53))
+  ..setColumnCount(12)
+  ..setRowCount(1)
+  ..setPadding(vec2(0.01, 0.01))
+  ..setItemsSize(0.08, 0.018)
 
-    destroy mboards
+  mboardStats.setItemValue(0, 0, "Player")
+  mboardStats.setItemValue(0, 1, "BAD")
+  mboardStats.setItemValue(0, 2, "AP")
+  mboardStats.setItemValue(0, 3, "ACP")
+  mboardStats.setItemValue(0, 4, "ACC")
+  mboardStats.setItemValue(0, 5, "L")
+  mboardStats.setItemValue(0, 6, "E")
+  mboardStats.setItemValue(0, 7, "BSD")
+  mboardStats.setItemValue(0, 8, "SP")
+  mboardStats.setItemValue(0, 9, "SCP")
+  mboardStats.setItemValue(0, 10, "SCC")
+  mboardStats.setItemValue(0, 11, "SL")
+
+  toggleStatMultiboardButton = new ToggleMultiboardButton(mboardStats, "Hero Stats (Y)")
+  ..setSize(0.12, 0.032)
+  ..setPoint(FRAMEPOINT_BOTTOM, vec2(0.358, 0.138))
+
+  pData.forEach() (player p, PlayerData value) ->
+    toggleStatMultiboardButton
+    ..addHotkeyForPlayer(p, OSKEY_Y)
 
   update()
   getTimer().startPeriodic(0.5, () -> update())
 
 function update()
-  mboard
+  mboardMain
   ..setRowCount(pData.size()+1)
   ..setItemsSize(0.06, 0.018)
-  ..setColumnWidth(0, 0.06)
+  ..setColumnWidth(0, 0.07)
+
+  mboardStats
+  ..setRowCount(pData.size()+1)
+  ..setItemsSize(0.06, 0.018)
+  ..setColumnWidth(0, 0.07)
 
   var i = 1
   for p in pData
     let playerData = pData.get(p)
 
-    mboard.setItemValue(i, 0, p.getNameColored())
-    mboard.setItemValue(i, 1, playerData.getKills().toString())
-    mboard.setColumnWidth(1, 0.04)
-    mboard.setItemValue(i, 2, playerData.getDeaths().toString())
-    mboard.setColumnWidth(2, 0.04)
-    mboard.setItemValue(i, 3, playerData.getPhysDamage().toString())
-    mboard.setItemValue(i, 4, playerData.getSpellDamage().toString())
-    mboard.setItemValue(i, 5, playerData.getDamageTaken().toString())
-    mboard.setItemValue(i, 6, playerData.getOverallPhysDamage().toString())
-    mboard.setItemValue(i, 7, playerData.getOverallSpellDamage().toString())
-    mboard.setItemValue(i, 8, playerData.getOverallDamageTaken().toString())
-    mboard.setItemValue(i, 9, playerData.getArenaPoints().toString())
+    mboardMain.setItemValue(i, 0, p.getNameColored())
+    mboardMain.setItemValue(i, 1, playerData.getKills().toString())
+    mboardMain.setColumnWidth(1, 0.04)
+    mboardMain.setItemValue(i, 2, playerData.getDeaths().toString())
+    mboardMain.setColumnWidth(2, 0.04)
+    mboardMain.setItemValue(i, 3, playerData.getPhysDamage().toString())
+    mboardMain.setItemValue(i, 4, playerData.getSpellDamage().toString())
+    mboardMain.setItemValue(i, 5, playerData.getDamageTaken().toString())
+    mboardMain.setItemValue(i, 6, playerData.getOverallPhysDamage().toString())
+    mboardMain.setItemValue(i, 7, playerData.getOverallSpellDamage().toString())
+    mboardMain.setItemValue(i, 8, playerData.getOverallDamageTaken().toString())
+    mboardMain.setItemValue(i, 9, playerData.getArenaPoints().toString())
 
     playerData.getHero().ifPresent() (h) ->
-      let statsMboard = playerMboardMap.get(p)
-      statsMboard.setItemValue(1, 0, h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString())
-      statsMboard.setItemValue(1, 1, h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString())
-      statsMboard.setItemValue(1, 2, h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString())
-      statsMboard.setItemValue(1, 3, h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString())
-      statsMboard.setItemValue(1, 4, h.actor.getStat(CustomUnitStats.LIFESTEAL).toString())
-      statsMboard.setItemValue(1, 5, h.actor.getStat(CustomUnitStats.EVASION).toString())
-      statsMboard.setItemValue(3, 0, h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString())
-      statsMboard.setItemValue(3, 1, h.actor.getStat(CustomUnitStats.SPELL_POWER).toString())
-      statsMboard.setItemValue(3, 2, h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString())
-      statsMboard.setItemValue(3, 3, h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString())
-      statsMboard.setItemValue(3, 4, h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString())
+      mboardStats.setItemValue(i, 0, p.getNameColored())
+      mboardStats.setItemValue(i, 1, h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString())
+      mboardStats.setItemValue(i, 2, h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString())
+      mboardStats.setItemValue(i, 3, h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString())
+      mboardStats.setItemValue(i, 4, h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString())
+      mboardStats.setItemValue(i, 5, h.actor.getStat(CustomUnitStats.LIFESTEAL).toString())
+      mboardStats.setItemValue(i, 6, h.actor.getStat(CustomUnitStats.EVASION).toString())
+      mboardStats.setItemValue(i, 7, h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString())
+      mboardStats.setItemValue(i, 8, h.actor.getStat(CustomUnitStats.SPELL_POWER).toString())
+      mboardStats.setItemValue(i, 9, h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString())
+      mboardStats.setItemValue(i, 10, h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString())
+      mboardStats.setItemValue(i, 11, h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString())
     
     i++

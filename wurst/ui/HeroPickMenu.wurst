@@ -11,6 +11,7 @@ import SoundUtils
 import ItemShopUI
 import DemonLordIds
 import CustomStatSystem
+import GameStatistic
 
 public HeroPickUI heroPickUI
 
@@ -94,7 +95,11 @@ class HeroPickUI
         p.setCameraPosition(h.actor.getPos())
         pickedIcon.disable()
         heroPickFrame.hide(p)
+
         toggleShopButton.show(p, h.actor)
+        toggleMultiboardButton.show(p)
+        toggleStatMultiboardButton.show(p)
+
         shop.showToUnit(h.actor)
 
         h.actor.addAbility(SELL_ID)
