@@ -1,4 +1,4 @@
-package Arena3Creeps
+package Arena3Waves
 import UnitIds
 import Wave
 

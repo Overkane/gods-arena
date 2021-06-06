@@ -1,9 +1,9 @@
 package Arenas
 import Arena
-import Arena1Creeps
-import Arena2Creeps
 import ClosureTimers
-import Arena3Creeps
+import Arena1Waves
+import Arena2Waves
+import Arena3Waves
 
 public function startArenas()
   Arena.first.start(false)

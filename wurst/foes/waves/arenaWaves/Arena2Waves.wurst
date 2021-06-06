@@ -1,4 +1,4 @@
-package Arena2Creeps
+package Arena2Waves
 import UnitIds
 import Wave
 import ObjEditingCommons

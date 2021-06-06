@@ -1,4 +1,4 @@
-package Arena1Creeps
+package Arena1Waves
 import UnitIds
 import Wave
 import ObjectIds
@@ -21,9 +21,9 @@ function wave_1() returns Wave
   ..goldBounty(80)
 
   ..creep(UnitIds.timberwolf)
-  ..hp(550)
+  ..hp(350)
   ..damage(8)
-  ..amount(10)
+  ..amount(20)
 
   ..wait(10)
 
