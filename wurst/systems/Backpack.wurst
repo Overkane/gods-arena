@@ -1,0 +1,58 @@
+package Backpack
+import ObjectIdGenerator
+import Players
+import ClosureEvents
+import ClosureTimers
+import ItemShopUI
+import Icons
+import UnitIds
+import AbilityIds
+import HeroPreset
+import PlayerData
+
+constant BACKPACK_ID = compiletime(HERO_ID_GEN.next())
+constant backpacks = new LinkedList<unit>
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_SELECTED) -> 
+    let selectedUnit = EventData.getTriggerUnit()
+
+    if selectedUnit.hasAbility(AbilityIds.inventory)
+      shop.showToUnit(selectedUnit)
+
+  doPeriodically(1) (CallbackPeriodic cb) ->
+    updateBackpackPos()
+
+  onPlayerLeave() p ->
+    for backpack in backpacks
+      if backpack.getOwner() == p
+        backpacks.remove(backpack)
+        break
+
+function updateBackpackPos()
+  for backpack in backpacks
+    pData.get(backpack.getOwner()).getHero().ifPresent() (h) ->
+      backpack.setPos(h.actor.getPos())
+
+public class Backpack
+  constant unit backpackUnit
+
+  construct(player p)
+    backpackUnit = createUnit(p, BACKPACK_ID, vec2(0, 0), angle(0))
+    backpacks.add(backpackUnit)
+
+@compiletime function genBackpackDefinition()
+  new HeroPreset(BACKPACK_ID, UnitIds.circleofpower, "Backpack")
+  ..addProperName("Backpack")
+  ..setIconGameInterface(Icons.bTNPackBeast)
+  ..setLevel(50)
+  ..addNormalAbility(AbilityIds.invulnerable)
+  ..setAttacksEnabled(0)
+  ..setArmorType(ArmorType.Divine)
+  ..setModelFile("")
+  ..setScalingValue(0.)
+  ..setSelectionScale(0)
+  ..setCollisionSize(0.)
+  ..setSightRadiusDay(0)
+  ..setSightRadiusNight(0)
+  ..buildHero()
