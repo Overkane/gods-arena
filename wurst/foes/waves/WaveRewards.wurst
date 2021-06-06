@@ -59,8 +59,8 @@ init
 
     bossWave = wave.bossWave
     
-    expPull = waveExp + (waveExp * 0.5 * (8-pData.size())/7).round()
-    goldPull = waveGold + (waveGold * 0.5 * (8-pData.size())/7).round()
+    expPull = waveExp + (waveExp * (8-pData.size())/7).round()
+    goldPull = waveGold + (waveGold * (8-pData.size())/7).round()
 
     expPerUnit = (expPull / creepAmount).toInt()
     goldPerUnit = (goldPull / creepAmount).toInt()
