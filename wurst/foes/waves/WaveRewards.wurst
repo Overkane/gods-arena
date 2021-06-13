@@ -24,30 +24,35 @@ init
       bossWaveCondition = u.isBoss()
     
     if bossWaveCondition and u.getOwner() == ENEMY_PLAYER
-      // That condition means that if exp for 2 units is bigger then overall pull,
-      // which means that there is not enough exp for 2 units in pull,
-      // then there is only 1 unit left with some exp leftovers from division
-      if expPerUnit * 2 > expPull
-        pData.forEach() (player p, PlayerData playerData) ->
-          if playerData.getHero().have
-            playerData.getHero().hero.addXp(expPull, true)
-        expPull -= expPull
-      else
-        pData.forEach() (player p, PlayerData playerData) ->
-          if playerData.getHero().have
-            playerData.getHero().hero.addXp(expPerUnit, true)
-        expPull -= expPerUnit
-        
-      if goldPerUnit * 2 > goldPull
-        pData.forEach() (player p, PlayerData playerData) ->
-          p.addGold(goldPull)
-        createGoldBountyTextTag(u, goldPull)
-        goldPull -= goldPull
-      else
-        pData.forEach() (player p, PlayerData playerData) ->
-          p.addGold(goldPerUnit)
-        createGoldBountyTextTag(u, goldPerUnit)
-        goldPull -= goldPerUnit
+
+      // TODO condition to fix messages with 0 exp and gold rewards, cuz
+      // Foes summons give exp and gold from pull.
+      if expPull != 0
+        // That condition means that if exp for 2 units is bigger then overall pull,
+        // which means that there is not enough exp for 2 units in pull,
+        // then there is only 1 unit left with some exp leftovers from division
+        if expPerUnit * 2 > expPull
+          pData.forEach() (player p, PlayerData playerData) ->
+            if playerData.getHero().have
+              playerData.getHero().hero.addXp(expPull, true)
+          expPull -= expPull
+        else
+          pData.forEach() (player p, PlayerData playerData) ->
+            if playerData.getHero().have
+              playerData.getHero().hero.addXp(expPerUnit, true)
+          expPull -= expPerUnit
+          
+      if goldPull != 0  
+        if goldPerUnit * 2 > goldPull
+          pData.forEach() (player p, PlayerData playerData) ->
+            p.addGold(goldPull)
+          createGoldBountyTextTag(u, goldPull)
+          goldPull -= goldPull
+        else
+          pData.forEach() (player p, PlayerData playerData) ->
+            p.addGold(goldPerUnit)
+          createGoldBountyTextTag(u, goldPerUnit)
+          goldPull -= goldPerUnit
       
       if u.isBoss()
         bossList.remove(u)
