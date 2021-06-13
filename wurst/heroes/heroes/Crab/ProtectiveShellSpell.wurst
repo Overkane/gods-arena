@@ -11,7 +11,6 @@ import HeroSpellConstants
 
 public constant SHELL_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 25. + 65. * lvl
 constant RealLevelClosure SPELL_REGEN = lvl -> 3. + 6. * lvl
 constant RealLevelClosure SPELL_ARMOR = lvl -> 7. + 3. * lvl
 // constant RealLevelClosure REDUCE_DMG = lvl -> 0. * lvl
@@ -36,7 +35,6 @@ init
         forUnitsInRange(caster.getPos(), SPELL_AOE) (target) ->
             if target.isEnemyOf(owner)
                 InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, lvl, OrderIds.cripple, target)
-                caster.damageTarget(target, SPELL_DMG.run(lvl))
 
         doAfter(SPELL_DURATION) ->
             iceEffect.destr()
