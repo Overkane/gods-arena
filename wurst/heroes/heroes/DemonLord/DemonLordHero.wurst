@@ -21,4 +21,5 @@ import DemonLordIds
   ..setTintingColorBlue(125)
   ..setTintingColorRed(155)
   ..setTintingColorGreen(125)
+  ..setCollisionSize(24)
   ..buildHero()
