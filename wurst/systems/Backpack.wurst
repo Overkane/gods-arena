@@ -9,16 +9,22 @@ import UnitIds
 import AbilityIds
 import HeroPreset
 import PlayerData
+import HashMap
 
 constant BACKPACK_ID = compiletime(HERO_ID_GEN.next())
-constant backpacks = new LinkedList<unit>
+
+public constant backpacks = new IterableMap<unit, Backpack>
 
 init
   EventListener.add(EVENT_PLAYER_UNIT_SELECTED) -> 
     let selectedUnit = EventData.getTriggerUnit()
 
     if selectedUnit.hasAbility(AbilityIds.inventory)
+      let shopWasVisible = shop.itemShopFrame.isVisible()
       shop.showToUnit(selectedUnit)
+      // showToUnit() opens shop for now, so need to return shop in its initial state before unit selection
+      if not shopWasVisible
+        shop.toggleView(selectedUnit.getOwner(), selectedUnit)
 
   doPeriodically(1) (CallbackPeriodic cb) ->
     updateBackpackPos()
@@ -36,10 +42,12 @@ function updateBackpackPos()
 
 public class Backpack
   constant unit backpackUnit
+  constant unit backpackHero
 
-  construct(player p)
+  construct(player p, unit hero)
     backpackUnit = createUnit(p, BACKPACK_ID, vec2(0, 0), angle(0))
-    backpacks.add(backpackUnit)
+    backpacks.put(backpackUnit, this)
+    backpackHero = hero
 
 @compiletime function genBackpackDefinition()
   new HeroPreset(BACKPACK_ID, UnitIds.circleofpower, "Backpack")
