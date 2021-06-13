@@ -9,7 +9,7 @@ public constant CRAB_STAMPEDE_ID = compiletime(ABIL_ID_GEN.next())
 RealLevelClosure DURATION = lvl -> 5. + lvl * 2
 
 @compiletime function genAbil()
-    let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Calls brothers to crush his enemies.")
+    let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Nearby crawfish heath the call of the Crab and crush everything in their path.")
     new AbilityDefinitionBeastMasterStampede(CRAB_STAMPEDE_ID)
     ..presetIcon(Icons.bTNSpiderCrab)
     ..registerTooltipGenerator(tooltip)
