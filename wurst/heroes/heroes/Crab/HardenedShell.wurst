@@ -2,10 +2,11 @@ package HardenedShell
 import AbilityTooltipGenerator
 import HeroSpellConstants
 import Icons
+import TooltipFactory
 
 public constant HARD_SHELL_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure SPELL_CHANCE = lvl -> 0.35 + 0.05 * lvl
+constant RealLevelClosure SPELL_CHANCE = lvl -> 35. + 5. * lvl
 constant RealLevelClosure IGNORED_DAMAGE = lvl -> 5. + 20 * lvl
 
 @compiletime function genAbility()
@@ -18,13 +19,15 @@ constant RealLevelClosure IGNORED_DAMAGE = lvl -> 5. + 20 * lvl
   ..presetHotkey("E")
   ..presetIncludeRangedDamage(lvl -> true)
   ..presetIncludeMeleeDamage(lvl -> true)
+  ..presetMinimumDamage(lvl -> 1)
   ..setRequirements("")
 
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Hardened Shell")
-  ..presetChancetoReduceDamage(SPELL_CHANCE)
+  ..addTooltipProperty("Chance to Reduce Damage",  lvl -> SPELL_CHANCE.run(lvl).percRound())
   ..presetIgnoredDamage(IGNORED_DAMAGE)
   ..tooltipStopListen()
-
+  
+  ..presetChancetoReduceDamage(SPELL_CHANCE)
 
