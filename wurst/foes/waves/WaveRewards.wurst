@@ -5,7 +5,8 @@ import PlayerData
 import HashMap
 import Wave
 import Boss
-import StandardTextTags
+import GeneralFunctions
+import FText
 
 var expPerUnit = 0
 var expPull = 0
@@ -46,12 +47,12 @@ init
         if goldPerUnit * 2 > goldPull
           pData.forEach() (player p, PlayerData playerData) ->
             p.addGold(goldPull)
-          createGoldBountyTextTag(u, goldPull)
+          createBountyTextTag(u, goldPull)
           goldPull -= goldPull
         else
           pData.forEach() (player p, PlayerData playerData) ->
             p.addGold(goldPerUnit)
-          createGoldBountyTextTag(u, goldPerUnit)
+          createBountyTextTag(u, goldPerUnit)
           goldPull -= goldPerUnit
       
       if u.isBoss()
