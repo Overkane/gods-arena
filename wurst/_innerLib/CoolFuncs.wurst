@@ -1,0 +1,4 @@
+package CoolFuncs
+
+public function player.defeat(string message)
+  CustomDefeatBJ(this, message)

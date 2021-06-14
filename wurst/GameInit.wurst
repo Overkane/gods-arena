@@ -8,6 +8,7 @@ import Arenas
 import ClosureTimers
 import DamageEvent
 import GameStatistic
+import CoolFuncs
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
@@ -36,31 +37,39 @@ function initPickTimer()
     startArenas()
 
 function initChatCommands()
-  pData.forEach() (player p, PlayerData playerData) ->
-    // Admin commands
-    if p.getName() == "Overkane" or p.getName() == "Frotty" or p.getName() == "Local Player" or p.getName() == "Игрок"
-      CreateTrigger()
-      ..registerPlayerChatEvent(p, "-l", true)
-      ..addAction() ->
-        pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.setLevel(50, false))
-      CreateTrigger()
-      ..registerPlayerChatEvent(p, "-r", true)
-      ..addAction() ->
-        pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.setMana(h.actor.getMaxMana()))
-        pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.setHP(h.actor.getMaxHP()))
-        pData.get(GetTriggerPlayer()).getHero().ifPresent(h -> h.actor.resetCooldown())
-      CreateTrigger()
-      ..registerPlayerChatEvent(p, "-g", true)
-      ..addAction() ->
-        GetTriggerPlayer().setGold(99999)
-      CreateTrigger()
-      ..registerPlayerChatEvent(p, "-d", true)
-      ..addAction() ->
+  EventListener.add(EVENT_PLAYER_CHAT_FILTER) () ->
+    let message = EventData.getChatMessage()
+    let p = EventData.getTriggerPlayer()
+    let isCreator = p.getName() == "Overkane" or p.getName() == "Frotty" or p.getName() == "Local Player" or p.getName() == "Игрок"
+
+    if isCreator
+      // Refresh command
+      if message == "-r"
+        pData.get(p).getHero().ifPresent(h -> h.actor.setMana(h.actor.getMaxMana()))
+        pData.get(p).getHero().ifPresent(h -> h.actor.setHP(h.actor.getMaxHP()))
+        pData.get(p).getHero().ifPresent(h -> h.actor.resetCooldown())
+      // Damage debug command
+      else if message == "-d"
         DamageEvent.addListener() ->
           if DamageEvent.getSource().isAllyOf(players[0])
             print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
             print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
             print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
+      else if message.startsWith("-gold ")
+        let goldAmount = message.ltrim("-gold ").toInt()
+        p.addGold(goldAmount)
+      else if message.startsWith("-lvl ")
+        let heroLevel = message.ltrim("-lvl ").toInt()
+        pData.get(p).getHero().ifPresent(h -> h.actor.setLevel(heroLevel, false))
+
+    if p == players[0]
+      if message.startsWith("-kick ")
+        let playerNumber = message.charAt(6).toInt()
+        let kickedPlayer = players[playerNumber - 1]
+
+        if kickedPlayer.isIngame() and kickedPlayer != ENEMY_PLAYER
+          kickedPlayer.defeat("You was kicked.")
+
 
 init
   nullTimer() ->
