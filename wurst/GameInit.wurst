@@ -70,6 +70,9 @@ function initChatCommands()
         if kickedPlayer.isIngame() and kickedPlayer != ENEMY_PLAYER
           kickedPlayer.defeat("You was kicked.")
 
+    if message.startsWith("-z ")
+      let zoomValue = message.ltrim("-z ").toReal()
+      p.setCameraField(CAMERA_FIELD_TARGET_DISTANCE, zoomValue, 0.3)
 
 init
   nullTimer() ->
