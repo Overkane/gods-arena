@@ -1,9 +1,19 @@
 package Hero
 import Entity
+import HashMap
+
+public constant heroUnitMap = new IterableMap<unit, Hero>
+public constant heroUnitList = new LinkedList<unit>
 
 public class Hero extends UnitEntity
   construct(player p, int typId, vec3 pos, angle ang)
     super(createUnit(p, typId, pos.toVec2(), ang))
+    heroUnitMap.put(this.actor, this)
+    heroUnitList.add(this.actor)
 
   function addXp(int toAdd, boolean showEyeCandy)
     AddHeroXP(this.actor, toAdd, showEyeCandy)
+
+  ondestroy
+    heroUnitMap.remove(this.actor)
+    heroUnitList.remove(this.actor)

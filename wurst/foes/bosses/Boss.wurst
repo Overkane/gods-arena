@@ -1,6 +1,6 @@
 package Boss
 import Entity
-import GameProperties
+import GameConstants
 
 interface BossIsDead
   abstract function execute()
