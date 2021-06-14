@@ -1,6 +1,6 @@
 package Creep
 import Entity
-import GameProperties
+import GameConstants
 
 interface AllCreepsDead
   abstract function execute()

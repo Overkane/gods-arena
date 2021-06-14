@@ -1,6 +1,6 @@
 package HardenedShell
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import Icons
 import TooltipFactory
 
@@ -14,6 +14,7 @@ constant RealLevelClosure IGNORED_DAMAGE = lvl -> 5. + 20 * lvl
   new AbilityDefinitionHardenedSkin(HARD_SHELL_ID)
   ..presetIcon(Icons.pASBTNGenericSpellImmunity)
   ..registerTooltipGenerator(tooltip)
+  ..setRequiredLevel(1)
   ..presetButtonPosNormal(2, 2)
   ..presetButtonPosResearch(2, 0)
   ..presetHotkey("E")

@@ -1,7 +1,7 @@
 package KillerReflexes
 import AbilityTooltipGenerator
 import Icons
-import HeroSpellConstants
+import GameConstants
 import ClosureEvents
 import CustomStatSystem
 import PassiveAbilityPreset

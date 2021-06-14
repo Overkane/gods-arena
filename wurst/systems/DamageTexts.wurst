@@ -1,6 +1,6 @@
 package DamageTexts
 import DamageEvent
-import GameProperties
+import GameConstants
 import FText
 
 init

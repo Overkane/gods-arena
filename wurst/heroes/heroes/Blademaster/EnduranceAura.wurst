@@ -1,6 +1,6 @@
 package EnduranceAura
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import TooltipFactory
 
 public constant ENDURANCE_AURA_ID = compiletime(ABIL_ID_GEN.next())

@@ -1,6 +1,6 @@
 package Cataclysm
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import DemonLordIds
 
 RealLevelClosure DURATION = lvl -> 0.3

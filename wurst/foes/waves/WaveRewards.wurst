@@ -1,6 +1,6 @@
 package WaveRewards
 import ClosureEvents
-import GameProperties
+import GameConstants
 import PlayerData
 import HashMap
 import Wave

@@ -5,7 +5,7 @@ import StandardTextTags
 import Tagwalk
 import Orders
 import Buff
-import HeroSpellConstants
+import GameConstants
 import PassiveAbilityPreset
 import DummyStatCaster
 import TooltipFactory

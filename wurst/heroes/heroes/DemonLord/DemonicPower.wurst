@@ -1,6 +1,6 @@
 package DemonicPower
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import ClosureEvents
 import BonusHandler
 import DemonLordIds

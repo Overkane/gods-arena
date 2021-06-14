@@ -1,6 +1,6 @@
 package CrabDefense
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import Icons
 import PassiveAbilityPreset
 import UnitIds

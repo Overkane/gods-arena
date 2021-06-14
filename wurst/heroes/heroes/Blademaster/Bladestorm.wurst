@@ -1,6 +1,6 @@
 package Bladestorm
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 
 public constant BLADESTORM_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -19,7 +19,7 @@ RealLevelClosure DURATION = lvl -> 5. + lvl
   ..tooltipStartListen()
   ..setLevels(ULTIMATE_SPELL_LEVELS)
   ..setName("Bladestorm")
-  ..presetDamagePerSecond(lvl -> 90. + 120. * lvl)
+  ..presetDamagePerSecond(lvl -> 100. + 120. * lvl)
   ..presetAreaofEffect(lvl -> 225)
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 90 + 30 * lvl)

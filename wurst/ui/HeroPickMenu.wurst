@@ -6,7 +6,7 @@ import HashMap
 import Heroes
 import PlayerData
 import Hero
-import GameProperties
+import GameConstants
 import SoundUtils
 import ItemShopUI
 import DemonLordIds

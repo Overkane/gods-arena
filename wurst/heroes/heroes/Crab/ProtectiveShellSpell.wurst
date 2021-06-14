@@ -7,7 +7,7 @@ import InstantDummyCaster
 import Orders
 import ClosureTimers
 import BonusHandler
-import HeroSpellConstants
+import GameConstants
 
 public constant SHELL_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())

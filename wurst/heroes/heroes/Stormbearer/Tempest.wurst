@@ -1,7 +1,7 @@
 package Tempest
 import Icons
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 
 public constant TEMPEST_ID = compiletime(ABIL_ID_GEN.next())
 

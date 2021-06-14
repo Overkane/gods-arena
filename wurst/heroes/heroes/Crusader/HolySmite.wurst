@@ -5,7 +5,7 @@ import ClosureForGroups
 import AbilityTooltipGenerator
 import StunAbilityPreset
 import TheEmpyreanBuff
-import HeroSpellConstants
+import GameConstants
 import PassiveAbilityPreset
 import DummyStatCaster
 import Orders
@@ -15,7 +15,7 @@ public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
 public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure CHANCE = lvl -> 19.
-RealLevelClosure DAMAGE = lvl -> 55. + 35 * (lvl-1)
+RealLevelClosure DAMAGE = lvl -> 80. + 80 * (lvl-1)
 RealLevelClosure RADIUS = lvl -> 225
 RealLevelClosure STUN_DURATION = lvl -> 0.3
 

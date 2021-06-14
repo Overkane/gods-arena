@@ -4,7 +4,7 @@ import AbilityTooltipGenerator
 import BuffIds
 import ClosureEvents
 import DemonLordIds
-import HeroSpellConstants
+import GameConstants
 import Icons
 import TooltipFactory
 

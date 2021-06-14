@@ -5,7 +5,7 @@ import PresetBuffs
 import Abilities
 import AttachmentPoints
 import ClosureEvents
-import HeroSpellConstants
+import GameConstants
 
 public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
 

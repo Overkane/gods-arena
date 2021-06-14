@@ -5,7 +5,7 @@ import StormHammerBuff
 import Buff
 import OrderIds
 import ClosureEvents
-import HeroSpellConstants
+import GameConstants
 import DummyStatCaster
 
 public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())

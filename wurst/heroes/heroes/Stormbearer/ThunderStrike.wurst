@@ -1,6 +1,6 @@
 package ThunderStrike
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 
 public constant THUNDER_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
 

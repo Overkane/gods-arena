@@ -1,6 +1,6 @@
 package Bloodlust
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import Icons
 import TooltipFactory
 
@@ -14,6 +14,7 @@ constant RealLevelClosure DURATION = lvl -> 12.
   let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Increases a friendly unit's attack rate and movement speed.")
   new AbilityDefinitionBloodlustCreep(BLOODLUST_ID)
   ..registerTooltipGenerator(tooltip)
+  ..setRequiredLevel(1)
   ..presetIcon(Icons.bTNBloodLust)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosTurnOff(1, 2)

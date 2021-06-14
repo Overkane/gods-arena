@@ -1,6 +1,6 @@
 package MirrorImage
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import TooltipFactory
 
 public constant MIRROR_IMAGE_ID = compiletime(ABIL_ID_GEN.next())
