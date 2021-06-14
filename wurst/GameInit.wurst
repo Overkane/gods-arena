@@ -7,7 +7,7 @@ import HeroPickMenu
 import Arenas
 import ClosureTimers
 import DamageEvent
-import GameStatistic
+// import GameStatistic
 import CoolFuncs
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
@@ -74,7 +74,6 @@ function initChatCommands()
 init
   nullTimer() ->
     initFrames()
-    startEntityLoop()
     initPlayers()
     initPlayersGold()
     initVision()
@@ -82,6 +81,7 @@ init
     initHeroPickMenu()
     initItemShop()
     initChatCommands()
-    initMultiboard()
+    startEntityLoop()
+    // initMultiboard()
     doAfter(5) ->
       BlzChangeMinimapTerrainTex("originalMap.blp")

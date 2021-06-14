@@ -11,7 +11,7 @@ import SoundUtils
 import ItemShopUI
 import DemonLordIds
 import CustomStatSystem
-import GameStatistic
+// import GameStatistic
 import Backpack
 
 public HeroPickUI heroPickUI
@@ -100,8 +100,8 @@ class HeroPickUI
         heroPickFrame.hide(p)
 
         toggleShopButton.show(p, h.actor)
-        toggleMultiboardButton.show(p)
-        toggleStatMultiboardButton.show(p)
+        // toggleMultiboardButton.show(p)
+        // toggleStatMultiboardButton.show(p)
 
         shop.showToUnit(h.actor)
 
