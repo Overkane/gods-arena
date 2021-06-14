@@ -5,7 +5,7 @@ import AbilityTooltipGenerator
 import DivineBlessingBuff
 import TheEmpyreanBuff
 import ClosureEvents
-import HeroSpellConstants
+import GameConstants
 
 public constant DIVINE_BLESSING_ID = compiletime(ABIL_ID_GEN.next())
 

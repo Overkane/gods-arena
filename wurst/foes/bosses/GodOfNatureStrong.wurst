@@ -1,6 +1,6 @@
 package GodOfNatureStrong
 import Entity
-import GameProperties
+import GameConstants
 import Boss
 import AbilityTooltipGenerator
 import ClosureTimers

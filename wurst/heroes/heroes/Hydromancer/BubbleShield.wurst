@@ -1,6 +1,6 @@
 package BubbleShield
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import Icons
 import ClosureEvents
 import BubbleShieldBuff

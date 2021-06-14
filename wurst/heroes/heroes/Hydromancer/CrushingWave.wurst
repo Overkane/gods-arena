@@ -1,6 +1,6 @@
 package CrushingWave
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 
 public constant CRUSHING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 

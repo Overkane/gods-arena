@@ -1,7 +1,7 @@
 package CrabStampede
 import AbilityTooltipGenerator
 import Icons
-import HeroSpellConstants
+import GameConstants
 import Units
 
 public constant CRAB_STAMPEDE_ID = compiletime(ABIL_ID_GEN.next())

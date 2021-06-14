@@ -4,7 +4,7 @@ import ClosureTimers
 import Reference
 
 import PlayerData
-import GameProperties
+import GameConstants
 
 var ended = false
 

@@ -1,17 +1,18 @@
 package GodOfNature
-import Entity
-import GameProperties
+import GameConstants
 import Boss
 import AbilityTooltipGenerator
 import ClosureTimers
 import OrderIds
 import BonusHandler
-import PlayerData
 import ClosureForGroups
 import Assets
 import SoundUtils
 import InstantDummyCaster
+import Projectile
 import HornOfTheGod
+import Hero
+import DummyDamage
 
 constant ROOTS_ID = compiletime(ABIL_ID_GEN.next())
 constant WISP_HEAL_ID = compiletime(ABIL_ID_GEN.next())
@@ -25,6 +26,7 @@ constant GOD_OF_NATURE_ID = compiletime(UNIT_ID_GEN.next())
 constant WISP_ID = compiletime(UNIT_ID_GEN.next())
 constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
 vec2 array WISP_SPAWN_POINTS = [gg_rct_Arena1.getRightTop(), gg_rct_Arena1.getLeftTop(), gg_rct_Arena1.getLeftBot(), gg_rct_Arena1.getRightBot()]
+vec2 array ROOTS_PROJECTILES_SPAWN_POINTS = [gg_rct_Arena1.getRightTop(), gg_rct_Arena1.getLeftTop(), gg_rct_Arena1.getLeftBot(), gg_rct_Arena1.getRightBot()]
 
 constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.doom)
 
@@ -79,16 +81,23 @@ public class GodOfNature extends Boss
       u.issueTargetOrder(WISP_HEAL_DEF.getOrderString(), actor)
 
   function entangleRoots()
-    pData.forEach() (player key, PlayerData value) ->
-      if value.getHero().have
-        let heroPos = value.getHero().hero.getPos().toVec2()
-        let targetCircle = addEffect(Buildings.circleOfPower1, heroPos)
+    for i = 0 to 3
+      let target = heroUnitList..shuffle().getFirst()
+      let projectile = new Projectile(ROOTS_PROJECTILES_SPAWN_POINTS[i].toVec3(), 60, ENEMY_PLAYER, ROOTS_PROJECTILES_SPAWN_POINTS[i].toVec3().angleTo2d(target.getPos()), Abilities.chimaeraAcidMissile)
 
-        doAfter(3) ->
-          targetCircle.destr()
-          forUnitsInRange(heroPos, 160) (unit u) ->
-            if u.isEnemyOf(ENEMY_PLAYER) and not u.isIllusion()
-              InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
+      projectile
+      ..setRanged(5000)
+      ..setTarget(target.getPos3Zero(), 18.)
+      .onHit() hitTarget ->
+        if hitTarget.getOwner().isEnemyOf(ENEMY_PLAYER) and hitTarget.isAlive()
+          InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, hitTarget)
+          new DummyDamage()
+          ..attacker(ENEMY_PLAYER)
+          ..target(target)
+          ..amount(250)
+          ..attackType(ATTACK_TYPE_CHAOS)
+          ..apply(true)
+          destroy projectile
 
 init
   EventListener.onTargetCast(WISP_HEAL_ID) (unit caster, unit target) ->
@@ -122,6 +131,6 @@ init
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()
-  ..setDamageperSecond(1, 250)
-  ..setDurationHero(3, 3.5)
-  ..setDurationNormal(3, 3.5)
+  ..setLevels(1)
+  ..setDurationHero(1, 3)
+  ..setDurationNormal(1, 3)

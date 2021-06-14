@@ -3,7 +3,7 @@ import Icons
 import AbilityTooltipGenerator
 import TheEmpyreanBuff
 import Entity
-import HeroSpellConstants
+import GameConstants
 import TooltipFactory
 
 public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())

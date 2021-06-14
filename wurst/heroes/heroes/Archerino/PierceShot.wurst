@@ -6,7 +6,7 @@ import AbilityTooltipGenerator
 import Tagwalk
 import Orders
 import BonusHandler
-import HeroSpellConstants
+import GameConstants
 import Buff
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())

@@ -18,6 +18,7 @@ public class PassiveAbilityPreset extends AbilityDefinitionCriticalStrikecreep
 
 	function setup(int lvls)
 		this.lvls = lvls
+		setRequiredLevel(1)
 		tooltipStartListen()
 		setLevels(lvls)
 		tooltipStopListen(false)

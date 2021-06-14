@@ -1,5 +1,5 @@
 package PlayerData
-import GameProperties
+import GameConstants
 import Hero
 import Players
 import HashMap

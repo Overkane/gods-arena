@@ -4,8 +4,7 @@ import Icons
 import Projectile
 import Abilities
 import ClosureForGroups
-import HeroSpellConstants
-import GameProperties
+import GameConstants
 import Buff
 import Tagwalk
 

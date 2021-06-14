@@ -5,7 +5,7 @@ import ClosureForGroups
 import AbilityTooltipGenerator
 import TheEmpyreanBuff
 import ClosureEvents
-import HeroSpellConstants
+import GameConstants
 
 public constant HEALING_SEAL_ID = compiletime(ABIL_ID_GEN.next())
 

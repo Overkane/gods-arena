@@ -6,12 +6,12 @@ import HashMap
 import Heroes
 import PlayerData
 import Hero
-import GameProperties
+import GameConstants
 import SoundUtils
 import ItemShopUI
 import DemonLordIds
 import CustomStatSystem
-import GameStatistic
+// import GameStatistic
 import Backpack
 
 public HeroPickUI heroPickUI
@@ -91,7 +91,7 @@ class HeroPickUI
       if playerSelection.has(p)
         let pickedIcon = playerSelection.getAndRemove(p)
         let h = new Hero(p, pickedIcon.heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
-        let backpack = new Backpack(p).backpackUnit
+        let backpack = new Backpack(p, h.actor).backpackUnit
         
         pData.get(p).setHero(h)
         p.selectSingle(h.actor)
@@ -100,8 +100,8 @@ class HeroPickUI
         heroPickFrame.hide(p)
 
         toggleShopButton.show(p, h.actor)
-        toggleMultiboardButton.show(p)
-        toggleStatMultiboardButton.show(p)
+        // toggleMultiboardButton.show(p)
+        // toggleStatMultiboardButton.show(p)
 
         shop.showToUnit(h.actor)
 

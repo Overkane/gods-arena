@@ -1,7 +1,7 @@
 package GameStatisticCounters
 import ClosureEvents
 import DamageSystem
-import GameProperties
+import GameConstants
 import PlayerData
 import Wave
 

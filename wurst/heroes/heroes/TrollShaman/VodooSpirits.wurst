@@ -1,6 +1,6 @@
 package VodooSpirits
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 
 public constant VODOO_SPIRITS_ID = compiletime(ABIL_ID_GEN.next())
 

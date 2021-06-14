@@ -1,6 +1,6 @@
 package ArmorCut
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import Icons
 import ClosureEvents
 import ArmorCutBuff
@@ -19,6 +19,7 @@ init
   let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Reduces a target enemy unit's armor.")
   new AbilityDefinitionFaerieFire(ARMOR_CUT_ID)
   ..registerTooltipGenerator(tooltip)
+  ..setRequiredLevel(1)
   ..presetIcon(Icons.bTNCurse)
   ..setIconTurnOff(Icons.bTNCurse)
   ..setIconNormal(Icons.bTNCurse)

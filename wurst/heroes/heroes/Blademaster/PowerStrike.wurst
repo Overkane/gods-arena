@@ -1,6 +1,6 @@
 package PowerStrike
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 import Icons
 
 public constant POWER_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
@@ -12,6 +12,7 @@ RealLevelClosure CHANCE_TO_STOMP = lvl -> 15. + 5. * lvl
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives a chance that an attack will deal bonus damage to nearby units.")
   new AbilityDefinitionPulverizecreep(POWER_STRIKE_ID)
   ..registerTooltipGenerator(tooltip)
+  ..setRequiredLevel(1)
   ..presetIcon(Icons.bTNSmash)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)

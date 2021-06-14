@@ -6,7 +6,7 @@ import ClosureForGroups
 import ClosureTimers
 import DamageEvent
 import DemonLordIds
-import HeroSpellConstants
+import GameConstants
 import Reference
 
 RealLevelClosure DURATION = lvl -> 3
@@ -48,6 +48,7 @@ init
     + "The Demon Lord temporarily gains strength based on the number of struck foes.")
   new AbilityDefinitionBerserk(FIRE_STORM_ID)
   ..registerTooltipGenerator(tooltip)
+  ..setRequiredLevel(1)
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
   ..presetHotkey("Q")

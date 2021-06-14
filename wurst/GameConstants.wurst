@@ -1,0 +1,11 @@
+package GameConstants
+
+public constant ENEMY_PLAYER = players[8]
+public constant HERO_PICK_TIME = 30.0
+public constant HERO_PICK_RECT = Rect(-288, -416, 288, 64)
+
+// Spell related
+public constant NORMAL_SPELL_LEVELS = 5
+public constant ULTIMATE_SPELL_LEVELS = 3
+public constant ULTIMATE_LEVEL_REQ = 6
+public constant ULTIMATE_LEVEL_SKIP_REQ = 3

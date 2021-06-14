@@ -7,8 +7,8 @@ import LinkedList
 import ContractBuff
 import DamageSystem
 import Buff
-import StandardTextTags
 import TooltipFactory
+import GeneralFunctions
 
 public constant CONTRACT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -44,14 +44,15 @@ init
         let bounty = BOUNTY * sunit.getLevel()
         
         sunit.getOwner().addGold(bounty)
-        createGoldBountyTextTag(tunit, bounty, sunit.getOwner())
+        
+        createBountyTextTag(tunit, bounty, sunit.getOwner())
       else
         forUnitsInRange(tunit.getPos(), 225) (unit u) ->
           if u.hasAbility(CONTRACT_ID)
             let bounty = BOUNTY * u.getLevel()
         
             u.getOwner().addGold(bounty)
-            createGoldBountyTextTag(tunit, bounty, u.getOwner()) // TODO OVERLAPS WITH USUAL GOLD BOUNTY TEXT
+            createBountyTextTag(tunit, bounty, u.getOwner())
       
   DamageEvent.addUnreducedListener(DamageEvents.START castTo int) ->
     let sunit = DamageEvent.getSource()

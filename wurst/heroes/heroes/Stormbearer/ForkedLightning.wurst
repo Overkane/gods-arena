@@ -1,6 +1,6 @@
 package ForkedLightning
 import AbilityTooltipGenerator
-import HeroSpellConstants
+import GameConstants
 
 public constant FORKED_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -11,6 +11,7 @@ IntLevelClosure NUMBER_OF_TARGETS = lvl -> 3 + 2 * lvl
   let tooltip = new AbilityTooltipGenerator("Calls forth a cone of lightning.")
   new AbilityDefinitionSeaWitchForkedLightning(FORKED_LIGHTNING_ID)
   ..registerTooltipGenerator(tooltip)
+  ..setRequiredLevel(1)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)
   ..presetHotkey("W")
