@@ -14,6 +14,14 @@ init
     "GooS - potion icons\n"
   )
 
+  new Quest(false)
+  ..setIcon(Icons.bTNTome)
+  ..setTitle("Commands")
+  ..setDescription(
+    "-kick [player number] - kicks player with given number (only red player)\n" + 
+    "-z [number] - sets camera distance\n"
+  )
+
   new Quest(true)
   ..setIcon(Icons.bTNRacoon)
   ..setTitle("About")
