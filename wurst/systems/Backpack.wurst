@@ -1,61 +1,58 @@
 package Backpack
 import ObjectIdGenerator
-import Players
-import ClosureEvents
+import HeroPreset
 import ClosureTimers
 import ItemShopUI
 import Icons
 import UnitIds
 import AbilityIds
-import HeroPreset
 import PlayerData
-import HashMap
+import Entity
 
 constant BACKPACK_ID = compiletime(HERO_ID_GEN.next())
 
-public constant backpacks = new IterableMap<unit, Backpack>
+public constant backpackUnits = new LinkedList<unit>
 
 init
-  EventListener.add(EVENT_PLAYER_UNIT_SELECTED) -> 
-    let selectedUnit = EventData.getTriggerUnit()
+  // TODO cause desync for now
+  // EventListener.add(EVENT_PLAYER_UNIT_SELECTED) -> 
+  //   let selectedUnit = EventData.getTriggerUnit()
 
-    if selectedUnit.hasAbility(AbilityIds.inventory)
-      let shopWasVisible = shop.itemShopFrame.isVisible()
-      shop.showToUnit(selectedUnit)
-      // showToUnit() opens shop for now, so need to return shop in its initial state before unit selection
-      if not shopWasVisible
-        shop.toggleView(selectedUnit.getOwner(), selectedUnit)
+  //   if selectedUnit.hasAbility(AbilityIds.inventory)
+  //     let shopWasVisible = shop.itemShopFrame.isVisible(selectedUnit.getOwner())
+  //     shop.showToUnit(selectedUnit)
+  //     // showToUnit() opens shop for now, so need to return shop in its initial state before unit selection
+  //     if not shopWasVisible
+  //       shop.toggleView(selectedUnit.getOwner(), selectedUnit)
 
   doPeriodically(1) (CallbackPeriodic cb) ->
     updateBackpackPos()
 
-  onPlayerLeave() p ->
-    for backpack in backpacks
-      if backpack.getOwner() == p
-        backpacks.remove(backpack)
-        break
-
 function updateBackpackPos()
-  for backpack in backpacks
-    pData.get(backpack.getOwner()).getHero().ifPresent() (h) ->
-      backpack.setPos(h.actor.getPos())
+  for backpack in backpackUnits
+    let heroUnit = pData.get(backpack.getOwner()).getHero().hero.actor
+    if heroUnit.isAlive()
+      backpack.setPos(heroUnit.getPos())
 
-public class Backpack
-  constant unit backpackUnit
+public class Backpack extends UnitEntity
   constant unit backpackHero
 
   construct(player p, unit hero)
-    backpackUnit = createUnit(p, BACKPACK_ID, vec2(0, 0), angle(0))
-    backpacks.put(backpackUnit, this)
+    super(createUnit(p, BACKPACK_ID, vec2(0, 0), angle(0)))
+    backpackUnits.add(this.actor)
     backpackHero = hero
+
+  ondestroy
+    backpackUnits.remove(this.actor)
 
 @compiletime function genBackpackDefinition()
   new HeroPreset(BACKPACK_ID, UnitIds.circleofpower, "Backpack")
-  ..addProperName("Backpack")
+  ..setName("Backpack")
   ..setIconGameInterface(Icons.bTNPackBeast)
-  ..setLevel(50)
+  ..hideHeroDeathMsg(true)
+  ..hideHeroMinimapDisplay(true)
+  ..setHideMinimapDisplay(true)
   ..addNormalAbility(AbilityIds.invulnerable)
-  ..setAttacksEnabled(0)
   ..setArmorType(ArmorType.Divine)
   ..setModelFile("")
   ..setScalingValue(0.)

@@ -2,7 +2,9 @@ package PlayerData
 import GameConstants
 import Hero
 import Players
+import initlater Backpack
 import HashMap
+import Entity
 
 // Arena points conversion ratio to honor points
 public constant ARENA_POINTS_THRESHOLD = 500
@@ -123,6 +125,11 @@ public function initPlayers()
 
   onPlayerLeave() p ->
     destroy p.getData()
+    for backpack in backpackUnits
+      if backpack.getOwner() == p
+        destroy backpack.getEntity()
+        break
+        
     printTimed(p.getNameColored() + " has left the game", 15.)
     SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (humanPlayers.size() / 8.))
 
