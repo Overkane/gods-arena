@@ -7,21 +7,21 @@ import BubbleShieldBuff
 
 public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HP_REGEN = lvl -> 8. + 8. * (lvl-1)
-constant RealLevelClosure SHIELD_DURABILITY = lvl -> 175. * lvl
+constant RealLevelClosure HP_HEAL = lvl -> 30. * lvl
+constant RealLevelClosure SHIELD_DURABILITY = lvl -> 150. * lvl
 constant RealLevelClosure DURATION = lvl -> 8.
 
 init
   EventListener.onTargetCast(BUBBLE_SHIELD_ID) (unit caster, unit target) ->
     let lvl = caster.getAbilityLevel(BUBBLE_SHIELD_ID)
-    let spellHPRegen = HP_REGEN.run(lvl)
+    let healAmount = HP_HEAL.run(lvl) * BUFF_ANIM_PERIOD
     let shieldDurability = SHIELD_DURABILITY.run(lvl)
     let spellDuration = DURATION.run(lvl)
 
-    new BubbleShieldBuff(spellDuration, shieldDurability, spellHPRegen).apply(target)
+    new BubbleShieldBuff(spellDuration, shieldDurability, healAmount).apply(target)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Applies a bubble shield to the target, which increases its hp regeneration and blocks some amount of damage. The effect ends when the shield is destroyed or the duration exceeded.")
+  let tooltip = new AbilityTooltipGenerator("Applies a bubble shield to the target, which heals it and blocks some amount of damage. The effect ends when the shield is destroyed or the duration exceeded.")
   new ChannelAbilityPreset(BUBBLE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetIcon(Icons.bTNNeutralManaShield)
   ..presetButtonPosNormal(2, 2)
@@ -34,10 +34,10 @@ init
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.UNIT)
   ..setName("Bubble Shield")
-  ..addTooltipProperty("Bonus HP Regeneration", HP_REGEN)
+  ..addTooltipProperty("Heal per sec", HP_HEAL)
   ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 70 + 20 * lvl)
-  ..presetCooldown(lvl -> 15. - lvl)
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
+  ..presetCooldown(lvl -> 15.)
   ..tooltipStopListen()

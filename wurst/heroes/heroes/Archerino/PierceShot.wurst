@@ -21,7 +21,7 @@ class TreantEntity extends UnitEntity
         super(createUnit(owner, TREANT_ID, target.getPos(), angle(0))
         ..setTimedLife(12.)
         ..issueTargetOrderById(OrderIds.attack, target)
-        ..addBonus(Bonus.DAMAGE, lvl * 35.)
+        ..addBonus(Bonus.DAMAGE, lvl * 30.)
         ..addBonus(Bonus.LIFE, 95. * lvl))
 
 
