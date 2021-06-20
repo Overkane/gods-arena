@@ -5,13 +5,19 @@ rect gg_rct_HeroPickArea= null
 rect gg_rct_Arena1SpawnPoint= null
 rect gg_rct_Arena2= null
 rect gg_rct_Arena2Center= null
-trigger gg_trg_rect_vars= null
 rect gg_rct_Arena3= null
 rect gg_rct_Arena3Center= null
 rect gg_rct_Arena3Spawn1= null
 rect gg_rct_Arena3Spawn2= null
 rect gg_rct_Arena3Spawn3= null
 rect gg_rct_Arena3Spawn4= null
+rect gg_rct_Arena4= null
+rect gg_rct_Arena4Center= null
+rect gg_rct_Arena3SpawnTL= null
+rect gg_rct_Arena3SpawnTR= null
+rect gg_rct_Arena3SpawnBR= null
+rect gg_rct_Arena3SpawnBL= null
+trigger gg_trg_rect_vars= null
 
 
 //JASSHelper struct globals:
@@ -67,6 +73,12 @@ function CreateRegions takes nothing returns nothing
     set gg_rct_Arena3Spawn2=Rect(6816.0, 1152.0, 7104.0, 1472.0)
     set gg_rct_Arena3Spawn3=Rect(6784.0, - 2144.0, 7072.0, - 1824.0)
     set gg_rct_Arena3Spawn4=Rect(3168.0, - 2112.0, 3456.0, - 1792.0)
+    set gg_rct_Arena4=Rect(9984.0, - 2816.0, 14624.0, 1696.0)
+    set gg_rct_Arena4Center=Rect(11904.0, - 768.0, 12672.0, 0.0)
+    set gg_rct_Arena3SpawnTL=Rect(10208.0, 1216.0, 10560.0, 1536.0)
+    set gg_rct_Arena3SpawnTR=Rect(14144.0, 1248.0, 14496.0, 1568.0)
+    set gg_rct_Arena3SpawnBR=Rect(14080.0, - 2656.0, 14432.0, - 2336.0)
+    set gg_rct_Arena3SpawnBL=Rect(10144.0, - 2656.0, 10496.0, - 2336.0)
 endfunction
 
 //***************************************************************************
@@ -400,7 +412,7 @@ endfunction
 
 //===========================================================================
 function main takes nothing returns nothing
-    call SetCameraBounds(- 3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), - 7680.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 7424.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), - 3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 7424.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), - 7680.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+    call SetCameraBounds(- 3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), - 15872.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 15616.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), - 3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 15616.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), - 15872.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
     call SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
     call NewSoundEnvironment("Default")
     call SetAmbientDaySound("LordaeronSummerDay")
