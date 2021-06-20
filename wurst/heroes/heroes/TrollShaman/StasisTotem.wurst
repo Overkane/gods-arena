@@ -1,0 +1,65 @@
+package StasisTotem
+import AbilityTooltipGenerator
+import Icons
+import GameConstants
+import ClosureEvents
+import ClosureTimers
+import ClosureForGroups
+import Units
+import StunAbilityPreset
+import InstantDummyCaster
+import OrderIds
+import SoundUtils
+
+public constant STASIS_TOTEM_ID = compiletime(ABIL_ID_GEN.next())
+public constant STASIS_TOTEM_STUN_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure TOTEM_DURATION = lvl -> 4. + lvl
+constant RealLevelClosure STUN_INTERVAL = lvl -> 1
+constant RealLevelClosure STUN_DURATION = lvl -> 0.25 + 0.05 * lvl
+constant RealLevelClosure AOE = lvl -> 350
+
+constant SOUND = new SoundDefinition(Sounds.stasisTotem1)
+
+init
+  EventListener.onPointCast(STASIS_TOTEM_ID) (unit caster, vec2 target) ->
+    let lvl = caster.getAbilityLevel(STASIS_TOTEM_ID)
+    let totemDuration = TOTEM_DURATION.run(lvl)
+    let stunInverval = STUN_INTERVAL.run(lvl)
+    let areaOfEffect = AOE.run(lvl)
+
+    let totem = addEffect(Units.stasisTotem, target)..setYaw(angle(45))
+
+    doPeriodicallyTimed(stunInverval, totemDuration) (CallbackCounted cb) ->
+      SOUND.play()
+      forUnitsInRange(target, areaOfEffect) (unit u) ->
+        if u.getOwner() == ENEMY_PLAYER and u.isAlive()
+          InstantDummyCaster.castTarget(caster.getOwner(), STASIS_TOTEM_STUN_ID, 1, OrderIds.thunderbolt, u)
+        
+    doAfter(totemDuration) -> 
+      totem.destr()
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Hero places a totem, which stuns enemies around it.")
+  new ChannelAbilityPreset(STASIS_TOTEM_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..presetIcon(Icons.bTNStasisTrap)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("W")
+  ..presetOption(Option.TARGETIMAGE, true)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.POINT)
+  ..setName("Stasis Totem")
+  ..addTooltipProperty("Totem Duration", TOTEM_DURATION)
+  ..addTooltipProperty("Stun Inverval", STUN_INTERVAL)
+  ..addTooltipProperty("Stun Duration", STUN_DURATION)
+  ..presetAreaofEffect(AOE)
+  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
+  ..presetCooldown(lvl -> 18)
+  ..tooltipStopListen()
+
+  new StunAbilityPreset(STASIS_TOTEM_STUN_ID, NORMAL_SPELL_LEVELS)
+  ..presetDurationHero(STUN_DURATION)
+  ..presetDurationNormal(STUN_DURATION)

@@ -1,0 +1,72 @@
+package RestorationRitual
+import AbilityTooltipGenerator
+import GameConstants
+import Icons
+import ClosureEvents
+import ClosureTimers
+import ClosureForGroups
+import RestorationRitualBuff
+import TooltipFactory
+import Abilities
+import LinkedList
+
+public constant RESTORATION_RITUAL_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure PERC_HP = lvl -> 3. * lvl
+constant RealLevelClosure PERC_MP = lvl -> 2. * lvl
+constant RealLevelClosure DURATION = lvl -> 10.
+constant RealLevelClosure AOE = lvl -> 650
+
+constant castingUnits = new LinkedList<unit>
+
+init
+  EventListener.onCast(RESTORATION_RITUAL_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(RESTORATION_RITUAL_ID)
+    let hpPercRestore = PERC_HP.run(lvl) * BUFF_ANIM_PERIOD / 100
+    let mpPercRestore = PERC_MP.run(lvl) * BUFF_ANIM_PERIOD / 100
+    let duration = DURATION.run(lvl)
+    let aoe = AOE.run(lvl)
+
+    castingUnits.add(caster)
+
+    doPeriodicallyTimed(BUFF_ANIM_PERIOD, duration) (CallbackCounted cb) ->
+      if castingUnits.has(caster)
+        forUnitsInRange(caster.getPos(), aoe) (unit u) ->
+          if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive() and u != caster
+            new RestorationRitualBuff(BUFF_ANIM_PERIOD, hpPercRestore, mpPercRestore).apply(u)
+      else 
+        cb.stop()
+
+  EventListener.add(EVENT_PLAYER_UNIT_SPELL_ENDCAST) -> 
+    if EventData.getSpellAbilityId() == RESTORATION_RITUAL_ID
+      castingUnits.remove(EventData.getTriggerUnit())
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero performs a ritual to restore his allies hp and mp.")
+  new ChannelAbilityPreset(RESTORATION_RITUAL_ID, ULTIMATE_SPELL_LEVELS, false, tooltip)
+  ..presetIcon(Icons.bTNBigBadVoodooSpell)
+  ..presetButtonPosNormal(3, 2)
+  ..presetButtonPosResearch(3, 0)
+  ..presetHotkey("R")
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  ..setArtCaster(Abilities.voodooAura)
+  ..presetOption(Option.VISIBLE, true)
+  ..presetDisableOtherAbilities(lvl -> false)
+  ..presetFollowThroughTime(DURATION)
+  ..presetBaseOrderID(lvl -> "restorationRitual")
+  
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..setName("Restoration Ritual")
+  ..addTooltipProperty("Channeling", lvl -> "")
+  ..addTooltipProperty("HP% Restore per sec", lvl -> PERC_HP.run(lvl).percRound())
+  ..addTooltipProperty("MP% Restore per sec", lvl -> PERC_MP.run(lvl).percRound())
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 150 + 50 * lvl)
+  ..presetCooldown(lvl -> 100)
+  ..presetAreaofEffect(AOE)
+  ..tooltipStopListen()
+  
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)

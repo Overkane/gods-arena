@@ -1,0 +1,20 @@
+package RestorationRitualBuff
+import public PresetBuffs
+import Assets
+
+constant buffTuple = compiletime(createDummyBuffObject("Restoration Ritual", "Restores hp and mp",  Icons.bTNBigBadVoodooSpell, Abilities.voodooAuraTarget, AttachmentPoints.overhead))
+
+public class RestorationRitualBuff extends NormalBuff
+  private real hpPercReg
+  private real mpPercReg 
+
+  construct(real dur, real hpPercReg, real mpPercReg)
+    super(dur, buffTuple)
+    this.hpPercReg = hpPercReg
+    this.mpPercReg = mpPercReg
+    
+  override function update()
+    super.update()
+    target.addHP(target.getMaxHP() * hpPercReg)
+    target.addMana(target.getMaxMana() * mpPercReg)
+    

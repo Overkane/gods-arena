@@ -5,7 +5,7 @@ import TooltipFactory
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HEAL_POWER = lvl -> 125. + 125. * (lvl-1)
+constant RealLevelClosure HEAL_POWER = lvl -> 100. + 100. * (lvl-1)
 constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.2
 constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 4 + lvl
 

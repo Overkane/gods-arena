@@ -3,9 +3,10 @@ import UnitIds
 import HeroPreset
 import ObjectIdGenerator
 import HealingWave
+import StasisTotem
 import Bloodlust
 import BouncingChakram
-import VodooSpirits
+import RestorationRitual
 import ObjectIds
 
 public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
@@ -14,9 +15,11 @@ public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
   new HeroPreset(TROLL_SHAMAN_ID, UnitIds.shadowhunter, "Troll Shaman")
   ..addProperName("Trall")
   ..addHeroAbility(HEALING_WAVE_ID)
-  ..addHeroAbility(BLOODLUST_ID)
+  ..addHeroAbility(STASIS_TOTEM_ID)
   ..addHeroAbility(BOUNCING_CHAKRAM_ID)
-  ..addHeroAbility(VODOO_SPIRITS_ID)
+  ..addHeroAbility(RESTORATION_RITUAL_ID)
+  ..addNormalAbility(BLOODLUST_ID)
+  ..setPrimaryAttribute("INT")
   ..setStartingStrength(16)
   ..setStrengthPerLevel(1.7)
   ..setStartingAgility(18)

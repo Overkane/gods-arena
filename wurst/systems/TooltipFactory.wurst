@@ -11,6 +11,9 @@ public enum AbilityType
 public function real.percRound() returns string
   return (this.toString(0) + "%")
 
+public function real.percRound(int percision) returns string
+  return (this.toString(percision) + "%")
+
 // To avoid redundant toString() calls.
 public function real.color(color which) returns string
   return this.toString().color(which)
