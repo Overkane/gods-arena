@@ -5,19 +5,7 @@ import AbilityTooltipGenerator
 
 public constant SEA_AURA_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure MANA_REGENERATION = lvl -> 0.5 * lvl
-// constant RealLevelClosure MANA_RESTORATION = lvl -> 0.1
-
-// constant AOE = 600.
-
-// init 
-//   EventListener.onCast(SEA_AURA_ID) (unit caster) ->
-//     let lvl = caster.getAbilityLevel(SEA_AURA_ID)
-//     let manaRestoration = MANA_RESTORATION.run(lvl)
-
-//     forUnitsInRange(caster.getPos(), AOE) (unit u) ->
-//       if u.isAllyOf(caster.getOwner())
-//         u.addMana(u.getMaxMana() * manaRestoration)
+constant RealLevelClosure MANA_REGENERATION = lvl -> 1. * lvl
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Passively provides additional mana regeneration to nearby friendly units.")
@@ -30,7 +18,5 @@ constant RealLevelClosure MANA_REGENERATION = lvl -> 0.5 * lvl
   ..tooltipStartListen()
   ..setLevels(1)
   ..setName("Sea Aura")
-  // ..addTooltipProperty("Mana Restoration", MANA_RESTORATION)
   ..presetManaRegenerationIncrease(MANA_REGENERATION)
-  // ..presetAreaofEffect(lvl -> AOE)
   ..tooltipStopListen()

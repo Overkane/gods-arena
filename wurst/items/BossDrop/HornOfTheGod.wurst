@@ -6,9 +6,16 @@ import BuffObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import BuffIds
+import TooltipFactory
 
 constant ARMOR_AURA_ID = compiletime(ABIL_ID_GEN.next())
 constant ARMOR_AURA_BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant ARMOR = 8
+constant ARMOR_AOE = 900
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Protection Aura", 
+  "Provides " + ARMOR.color(COLOR_GOLD) + " in " + ARMOR_AOE.color(COLOR_GOLD) + " AoE.")
 
 public constant HORN_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 ..setName("Horn of the God")
@@ -18,7 +25,7 @@ public constant HORN_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 ..setTintingColor2Green(165)
 ..setTintingColor3Blue(32)
 ..setDroppedWhenCarrierDies(true)
-..setGoldCost(1)
+..setGoldCost(500)
 ..addBonus(Bonus.STRENGTH, 15)
 ..addBonus(Bonus.AGILITY, 15)
 ..addBonus(Bonus.INTELLIGENCE, 15)
@@ -30,6 +37,7 @@ public constant HORN_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
   new AbilityDefinitionItemAuraDevotion(ARMOR_AURA_ID)
   ..presetIcon(Icons.bTNHornOfFog)
   ..setArmorBonus(1, 8)
+  ..setAreaofEffect(1, ARMOR_AOE.toReal())
   ..setBuffs(1, ARMOR_AURA_BUFF_ID.toRawCode())
 
   new BuffDefinition(ARMOR_AURA_BUFF_ID, BuffIds.devotionAura)

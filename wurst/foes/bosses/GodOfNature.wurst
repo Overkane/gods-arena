@@ -107,6 +107,15 @@ init
     caster.kill()
 
 @compiletime function genAbility()
+  new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegrove)
+  ..setAcquisitionRange(99999)
+  ..setName("God of Nature")
+  ..setAttack1DamageBase(100)
+  ..setAttack1AttackType(AttackType.Chaos)
+  ..setDefenseBase(15)
+  ..setHitPointsMaximumBase(37500)
+  ..setScalingValue(2.6)
+
   new UnitDefinition(WISP_ID, UnitIds.wisp)
   ..setHitPointsMaximumBase(500)
   ..setArmorType(ArmorType.Unarmored)
@@ -120,14 +129,6 @@ init
   ..setDefenseBase(0)
   ..setSpeedBase(350)
   ..setHitPointsMaximumBase(500)
-
-  new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegrove)
-  ..setAcquisitionRange(99999)
-  ..setName("God of Nature")
-  ..setAttack1DamageBase(100)
-  ..setDefenseBase(15)
-  ..setHitPointsMaximumBase(37500)
-  ..setScalingValue(2.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()

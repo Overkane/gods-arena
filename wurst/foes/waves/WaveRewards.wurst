@@ -6,7 +6,6 @@ import HashMap
 import Wave
 import Boss
 import GeneralFunctions
-import FText
 
 var expPerUnit = 0
 var expPull = 0

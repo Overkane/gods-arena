@@ -67,7 +67,6 @@ init
   ..addTooltipProperty("Bonus strength duration", BONUS_DURATION)
   ..presetAreaofEffect(lvl -> 250)
   ..presetCastRange(lvl -> 600)
-  ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 65)
   ..presetCooldown(COOLDOWN)
   ..tooltipStopListen()

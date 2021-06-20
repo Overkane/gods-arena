@@ -69,6 +69,6 @@ init
   ..addTooltipProperty("Stun Duration", STUN_DURATION)
   ..tooltipStopListen()
 
-  new StunAbilityPreset(HOLY_SMITE_STUN_ID, 5)
+  new StunAbilityPreset(HOLY_SMITE_STUN_ID, NORMAL_SPELL_LEVELS)
   ..presetDurationHero(STUN_DURATION)
   ..presetDurationNormal(STUN_DURATION)

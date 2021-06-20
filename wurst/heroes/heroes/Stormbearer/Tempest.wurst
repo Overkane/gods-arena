@@ -24,6 +24,7 @@ RealLevelClosure DURATION = lvl -> 10.
   ..tooltipStartListen()
   ..setLevels(ULTIMATE_SPELL_LEVELS)
   ..setName("Tempest")
+  ..addTooltipProperty("Channeling", lvl -> "")
   ..addTooltipProperty("Damage per lightning", DAMAGE)
   ..presetDamageInterval(DAMAGE_INTERVAL)
   ..presetAreaofEffect(AOE)
