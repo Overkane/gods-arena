@@ -1,0 +1,20 @@
+package MeditationBuff
+import public PresetBuffs
+import Assets
+
+constant buffTuple = compiletime(createDummyBuffObject("Meditation", "Restores hp and mp",  Icons.bTNSleep))
+
+public class MeditationBuff extends NormalBuff
+  private real hpPercReg
+  private real mpPercReg 
+
+  construct(real dur, real hpPercReg, real mpPercReg)
+    super(dur, buffTuple)
+    this.hpPercReg = hpPercReg
+    this.mpPercReg = mpPercReg
+    
+  override function update()
+    super.update()
+    target.addHP(target.getMaxHP() * hpPercReg)
+    target.addMana(target.getMaxMana() * mpPercReg)
+    

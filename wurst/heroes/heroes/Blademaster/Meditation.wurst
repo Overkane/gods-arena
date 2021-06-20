@@ -1,0 +1,106 @@
+package Meditation
+import AbilityTooltipGenerator
+import GameConstants
+import Icons
+import ClosureEvents
+import ClosureTimers
+import MeditationBuff
+import TooltipFactory
+import LinkedList
+import Abilities
+import InstantDummyCaster
+import OrderIds
+import BuffIds
+import AttachmentPoints
+
+public constant MEDITATION_ID = compiletime(ABIL_ID_GEN.next())
+public constant MEDITATION_DAMAGE_ID = compiletime(ABIL_ID_GEN.next())
+public constant MEDITATION_DAMAGE_BUFF_ID = compiletime(BUFF_ID_GEN.next())
+
+constant RealLevelClosure PERC_HP = lvl -> 1. + 2 * lvl
+constant RealLevelClosure PERC_MP = lvl -> 1. + 1 * lvl
+constant RealLevelClosure MEDITATION_DURATION = lvl -> 8.
+constant RealLevelClosure DAMAGE_BUFF = lvl -> 25. * lvl
+constant RealLevelClosure DAMAGE_DURATION = lvl -> 30.
+
+constant castingUnits = new LinkedList<unit>
+
+init
+  EventListener.onCast(MEDITATION_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(MEDITATION_ID)
+    let hpPercRestore = PERC_HP.run(lvl) * BUFF_ANIM_PERIOD / 100
+    let mpPercRestore = PERC_MP.run(lvl) * BUFF_ANIM_PERIOD / 100
+    let duration = MEDITATION_DURATION.run(lvl)
+
+    castingUnits.add(caster)
+
+    doPeriodicallyTimed(BUFF_ANIM_PERIOD, duration) (CallbackCounted cb) ->
+      if castingUnits.has(caster)
+        new MeditationBuff(BUFF_ANIM_PERIOD, hpPercRestore, mpPercRestore).apply(caster)
+      else 
+        cb.stop()
+
+  EventListener.add(EVENT_PLAYER_UNIT_SPELL_ENDCAST) -> 
+    if EventData.getSpellAbilityId() == MEDITATION_ID
+      castingUnits.remove(EventData.getTriggerUnit())
+
+  EventListener.add(EVENT_PLAYER_UNIT_SPELL_FINISH) -> 
+    if EventData.getSpellAbilityId() == MEDITATION_ID
+      let caster = EventData.getTriggerUnit()
+      let lvl = caster.getAbilityLevel(MEDITATION_ID)
+
+      InstantDummyCaster.castTarget(caster.getOwner(), MEDITATION_DAMAGE_ID, lvl, OrderIds.innerfire, caster)
+
+  DamageEvent.addListener() -> 
+    let tunit = DamageEvent.getTarget()
+
+    if tunit.hasBuff(MeditationBuff.typeId) and DamageEvent.getAmount() > 0
+      tunit.issueImmediateOrderById(OrderIds.stop)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero meditate and restores his hp and mp over time. "
+    + "Any received damage during meditation interrupts it. If meditation was fully completed, hero gets attack damage buff for some time.")
+  new ChannelAbilityPreset(MEDITATION_ID, NORMAL_SPELL_LEVELS, false, tooltip)
+  ..registerTooltipGenerator(tooltip)
+  ..presetIcon(Icons.bTNSleep)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("W")
+  ..setArtCaster(Abilities.healTarget)
+  ..presetOption(Option.VISIBLE, true)
+  ..presetDisableOtherAbilities(lvl -> false)
+  ..presetFollowThroughTime(MEDITATION_DURATION)
+  ..presetBaseOrderID(lvl -> "meditation")
+  
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Meditation")
+  ..addTooltipProperty("Channeling", lvl -> "")
+  ..addTooltipProperty("HP% Restore per sec", lvl -> PERC_HP.run(lvl).percRound())
+  ..addTooltipProperty("MP% Restore per sec", lvl -> PERC_MP.run(lvl).percRound())
+  ..addTooltipProperty("Meditation Duration", MEDITATION_DURATION)
+  ..addTooltipProperty("Additional Damage", lvl -> DAMAGE_BUFF.run(lvl).percRound())
+  ..addTooltipProperty("Damage Buff Duration", DAMAGE_DURATION)
+  ..presetManaCost(lvl -> 0)
+  ..presetCooldown(lvl -> 60)
+  ..tooltipStopListen()
+
+  ..presetDurationNormal(MEDITATION_DURATION)
+  ..presetDurationHero(MEDITATION_DURATION)
+
+  new AbilityDefinitionInnerFireCreep(MEDITATION_DAMAGE_ID)
+  ..setDummyAbility()
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..presetDamageIncrease(lvl -> DAMAGE_BUFF.run(lvl)/100)
+  ..presetDefenseIncrease(lvl -> 0)
+  ..presetDurationNormal(DAMAGE_DURATION)
+  ..presetDurationHero(DAMAGE_DURATION)
+  ..presetBuffs(lvl -> MEDITATION_DAMAGE_BUFF_ID.toRawCode())
+
+  new BuffDefinition(MEDITATION_DAMAGE_BUFF_ID, BuffIds.innerFire)
+  ..setIcon(Icons.bTNSleep)
+  ..setTooltipNormal(1, "Meditation")
+  ..setTooltipNormalExtended(1, "After a rest unit has increased damage.")
+  ..setArtTarget(1, Abilities.berserkertarget)
+  ..setTargetAttachmentPoint0(1, AttachmentPoints.origin)
