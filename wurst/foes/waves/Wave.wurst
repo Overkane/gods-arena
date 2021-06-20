@@ -9,7 +9,7 @@ import SoundUtils
 import Abilities
 import Funcs
 import GodOfNature
-import GodOfNatureStrong
+import GodOfWater
 
 constant AFTER_WAVE_RESTORATION_SOUND = new SoundDefinition(Sounds.restorationPotion)
 
@@ -80,7 +80,7 @@ class BossStep extends WaveStep
     if bossNumber == 1
       new GodOfNature(wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
     else if bossNumber == 2
-      new GodOfNatureStrong(wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
+      new GodOfWater(wave.spawnPoint.execute().toVec3(), GetRandomReal(0, 360).fromDeg())
     next.execute()
 
 public class WaveBuilder

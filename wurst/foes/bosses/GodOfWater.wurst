@@ -1,0 +1,133 @@
+package GodOfWater
+import GameConstants
+import Boss
+import AbilityTooltipGenerator
+import ClosureTimers
+import OrderIds
+import BonusHandler
+import ClosureForGroups
+import Assets
+import SoundUtils
+import Projectile
+import HelmOfTheGod
+import Hero
+import InstantDummyCaster
+import DummyCaster
+
+constant GOD_OF_WATER_ID = compiletime(UNIT_ID_GEN.next())
+
+constant WATER_TENTACLE_ID = compiletime(UNIT_ID_GEN.next())
+constant SUMMON_WATER_TENTACLE_ID = compiletime(ABIL_ID_GEN.next())
+
+constant WAVES_ID = compiletime(ABIL_ID_GEN.next())
+
+constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.doom)
+
+public class GodOfWater extends Boss
+  let castQueue = new LinkedList<int>
+
+  construct(vec3 pos, angle ang)
+    super(GOD_OF_WATER_ID, pos, ang)
+    actor.addItemById(HELM_OF_THE_GOD_ITEM.getNewId())
+    BOSS_MUSIC_THEME.play()
+    new SoundDefinition(Sounds.nagaRoyalGuardReady1).play()
+    doPeriodically(6) cb ->
+      if actor.isAlive()
+        castBossSpell()
+      else
+        destroy cb
+
+    EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
+      forUnitsAll() (unit u) ->
+        if u.getTypeId() == WATER_TENTACLE_ID or u.getTypeId() == WAVES_ID
+          u.kill()
+      BOSS_MUSIC_THEME.play(0, 0)
+
+  function castBossSpell()
+    if castQueue.isEmpty()
+      for i = 0 to 2
+        castQueue.add(i)
+      castQueue.shuffle()
+    actor.setAnimation("cast")
+    let rand = castQueue.pop()
+    switch rand
+      case 0
+        waterTentacles()
+      case 1
+        summonWaves()
+      case 2
+        waterEmpower()
+
+  function waterEmpower()
+    actor.addBonus(Bonus.ATTACKSPEED, 10)
+
+  function summonWaves()
+    new DummyCaster()
+    ..owner(ENEMY_PLAYER)
+    ..origin(actor.getPos())
+    ..castPoint(WAVES_ID, 1, OrderIds.stampede, actor.getPos().polarOffset(actor.getFacingAngle(), 10))
+
+  function waterTentacles()
+    let aliveHeroes = heroUnitList.filter((unit t) -> t.isAlive())..shuffle()
+
+    if aliveHeroes.size() > 0
+      for i = 0 to (aliveHeroes.size() / 2).floor()
+        InstantDummyCaster.castPoint(ENEMY_PLAYER, SUMMON_WATER_TENTACLE_ID, 1, OrderIds.ward, aliveHeroes.get(i).getPos())
+
+    destroy aliveHeroes
+
+init 
+  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+    let dunit = EventData.getDyingUnit()
+
+    if dunit.getTypeId() == WATER_TENTACLE_ID
+      bossList.getFirst().addBonus(Bonus.DAMAGE, 5)
+    
+
+@compiletime function genAbility()
+  new UnitDefinition(GOD_OF_WATER_ID, UnitIds.waterelemental3)
+  ..setAcquisitionRange(99999)
+  ..setName("God of Water")
+  ..setModelFile("WaterElemental.mdx")
+  ..setAttack1ProjectileArt(Abilities.crushingWaveDamage)
+  ..setAttack1CooldownTime(2)
+  ..setAttack1DamageBase(200)
+  ..setAttack1Range(650)
+  ..setAttack1AttackType(AttackType.Chaos)
+  ..setArmorType(ArmorType.Hero)
+  ..setDefenseBase(20)
+  ..setSpeedBase(330)
+  ..setNormalAbilities(commaList(AbilityIds.inventory))
+  ..setHitPointsMaximumBase(80000)
+  ..setScalingValue(2.8)
+
+  new UnitDefinition(WATER_TENTACLE_ID, UnitIds.tentacle)
+  ..setName("Water Tentacle")
+  ..setAttack1DamageBase(99)
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(1)
+  ..setModelFile("Water Tentacle")
+  ..setHitPointsMaximumBase(1500)
+  ..setArmorType(ArmorType.Medium)
+  ..setDefenseBase(5)
+  ..setTargetedAs(TargetsAllowed.ground)
+  ..setNormalAbilities("")
+
+  new AbilityDefinitionShadowHunterSerpentWard(SUMMON_WATER_TENTACLE_ID)
+  ..setDummyAbility()
+  ..setLevels(1)
+  ..setSummonedUnitType(1, WATER_TENTACLE_ID.toRawCode())
+  ..setDurationNormal(1, 60)
+
+  new AbilityDefinitionBeastMasterStampede(WAVES_ID)
+  ..setDummyAbility()
+  ..setLevels(1)
+  ..setBeastsPerSecond(1, 10)
+  ..setBeastCollisionRadius(1, 50)
+  ..setDamageAmount(1, 150)
+  ..setMissileArt(Abilities.waterElementalMissile)
+  ..setDurationNormal(1, 6)
+  ..setAreaofEffect(1, 2200)
+  ..setEffectSound("")
+  ..setEffectSoundLooping(Sounds.monsoonRainLoop)
+  ..setArtSpecial("")

@@ -1,0 +1,44 @@
+package HelmOfTheGod
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ClosureEvents
+import ObjectIdGenerator
+import ObjectIds
+import TooltipFactory
+
+constant RESTORATION_ID = compiletime(ABIL_ID_GEN.next())
+constant PERC_HP = 50
+constant PERC_MP = 50
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Restoration", 
+  "Restores "+ PERC_HP.colorPerc(COLOR_GOLD) +" hp and "+ PERC_MP.colorPerc(COLOR_GOLD) +" mp.")
+
+public constant HELM_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
+..setName("Helm of the God")
+..setInterfaceIcon(Icons.bTNHelmutPurple)
+..setScalingValue(2.)
+..setTintingColor1Red(218)
+..setTintingColor2Green(165)
+..setTintingColor3Blue(32)
+..setActivelyUsed(true)
+..setDroppedWhenCarrierDies(true)
+..setGoldCost(800)
+..addBonus(Bonus.STRENGTH, 20)
+..addBonus(Bonus.AGILITY, 20)
+..addBonus(Bonus.INTELLIGENCE, 20)
+..setAbilities(commaList(RESTORATION_ID))
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+init 
+  EventListener.onCast(RESTORATION_ID) (unit caster) ->
+    caster.addHP(caster.getMaxHP() * PERC_HP/100)
+    caster.addMana(caster.getMaxMana() * PERC_MP/100)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionItemRestore(RESTORATION_ID)
+  ..presetHitPointsRestored(lvl -> 0)
+  ..presetManaPointsRestored(lvl -> 0)
+  ..presetCooldown(lvl -> 100)
