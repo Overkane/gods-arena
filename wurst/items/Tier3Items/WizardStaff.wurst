@@ -12,7 +12,7 @@ constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 500
 constant FIREBOLT_STUN = 0.75
 
-constant SPELL_POWER = 50
+constant SPELL_POWER = 35
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Fire Bolt", 

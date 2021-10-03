@@ -2,12 +2,19 @@ package MoonAmulet
 import RecipeItem
 import MapIcons
 import CustomStatSystem
+import TooltipFactory
+
+constant SPELL_POWER = 10
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Spell Power", 
+  "Increases user " + "Spell Power".color(COLOR_GOLD) + " by " + SPELL_POWER.colorPerc(COLOR_GOLD) + ".")
 
 public constant MOON_AMULET_ITEM = compiletime(new RecipeItem()
 ..setName("Moon Amulet")
 ..setInterfaceIcon(MapIcons.bTNMoonAmulet)
 ..setGoldCost(125)
-..onPickup(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, 0.15))
-..onDrop(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, -0.15)) 
-..generateTooltip("+15%".color(COLOR_GOLD) + " Spell Power")
+..onPickup(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, SPELL_POWER/100))
+..onDrop(actor -> actor.addStat(CustomUnitStats.SPELL_POWER, -SPELL_POWER/100)) 
+..generateTooltip(ABIL_TOOLTIP)
 )..register()

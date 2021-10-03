@@ -26,9 +26,11 @@ public enum CustomUnitStats
 
 // Additive stats value is calculated just by addition
 constant additiveStats = new LinkedList<CustomUnitStats>
+..add(CustomUnitStats.ATTACK_POWER)
 ..add(CustomUnitStats.BONUS_ATTACK_DAMAGE)
 ..add(CustomUnitStats.ATTACK_CRIT_POWER)
 ..add(CustomUnitStats.LIFESTEAL)
+..add(CustomUnitStats.SPELL_POWER)
 ..add(CustomUnitStats.BONUS_SPELL_DAMAGE)
 ..add(CustomUnitStats.SPELL_CRIT_POWER)
 ..add(CustomUnitStats.SPELL_LIFESTEAL)
@@ -36,9 +38,7 @@ constant additiveStats = new LinkedList<CustomUnitStats>
 // Multiplicative stats value is calculated by formula — 1 - ((1 - x) * (1 - y) * ...)
 // where x, y and etc are stats in the list
 constant multiplicativeStats = new LinkedList<CustomUnitStats>
-..add(CustomUnitStats.ATTACK_POWER)
 ..add(CustomUnitStats.ATTACK_CRIT_CHANCE)
-..add(CustomUnitStats.SPELL_POWER)
 ..add(CustomUnitStats.SPELL_CRIT_CHANCE)
 ..add(CustomUnitStats.EVASION)
   
