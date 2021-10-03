@@ -1,4 +1,4 @@
-package Credits
+package Quests
 import Quest
 import Icons
 
