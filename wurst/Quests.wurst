@@ -20,7 +20,7 @@ init
   ..setIcon(Icons.bTNTome)
   ..setTitle("Commands")
   ..setDescription(
-    "-kick [player number] - kicks player with given number (only red player)\n" + 
+    "-kick [player number] - kicks player with given number (available only for red player)\n" + 
     "-z [number] - sets camera distance\n"
   )
 
@@ -28,7 +28,19 @@ init
   ..setIcon(Icons.bTNRacoon)
   ..setTitle("About")
   ..setDescription(
-    "Beat the creep waves and the god of each arena to win!\n" + 
-    "You will revive after each round.\n" +
-    "Use the hotkey TAB to toggle the shop display.\n"
+    "Beat the creep waves and the god of each arena to win!\n" +
+    "If all heroes die, then you lose."
+  )
+
+  new Quest(true)
+  ..setIcon(Icons.bTNSelectHeroOn)
+  ..setTitle("Tips")
+  ..setDescription(
+    "General:\n" +
+    "- You will revive after each round, but only with portion of your max HP and MP.\n" +
+    "- After round is completed, you will regain portion of your max HP and MP.\n" +
+    "\nShop:\n" +
+    "- Use the hotkey TAB to toggle the shop display.\n" +
+    "- You can sell items in your inventory with your hero sell ability (hotkey - 'F') for 50% of initial price.\n" +
+    "- Zero recipe cost in the shop means item will be assembled automatically when all required items will be in the inventory.\n"
   )
