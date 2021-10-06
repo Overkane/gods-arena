@@ -9,6 +9,7 @@ import ClosureTimers
 import DamageEvent
 // import GameStatistic
 import GeneralFunctions
+import SaveLoadSystem
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
@@ -85,6 +86,7 @@ init
     initItemShop()
     initChatCommands()
     startEntityLoop()
+    initSaveLoadSystem()
     // initMultiboard()
     doAfter(5) ->
       BlzChangeMinimapTerrainTex("originalMap.blp")
