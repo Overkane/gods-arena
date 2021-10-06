@@ -5,6 +5,7 @@ import HashMap
 import LinkedList
 import UnitIndexer
 import Orders
+import PlayerData
 
 class AggroEntry
     unit source
@@ -18,7 +19,7 @@ constant aggroMap = new HashMap<unit, LinkedList<AggroEntry>>()
 
 init
     DamageEvent.addListener() -> 
-        let source = DamageEvent.getSource()
+        var source = DamageEvent.getSource()
         let target = DamageEvent.getTarget()
         let sourceOwner = source.getOwner()
         let targetOwner = target.getOwner()
@@ -27,6 +28,10 @@ init
             if not aggroMap.has(target)
                 aggroMap.put(target, new LinkedList<AggroEntry>())
             
+            if source.hasAbility(LOCUST_ID)
+                let pdata = pData.get(sourceOwner)
+                source = pdata.getHero().hero.actor
+
             let aggroList = aggroMap.get(target)
             let first = aggroList.getFirst()
             var found = false
@@ -44,9 +49,7 @@ init
             if first != aggroList.getFirst()
                 target.issueTargetOrderById(OrderIds.attack, source)
                 
-
             
-
     onUnitDeindex() ->
         let u = getIndexingUnit()
         let aggro = aggroMap.getAndRemove(u)

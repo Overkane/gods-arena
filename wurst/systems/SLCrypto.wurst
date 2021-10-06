@@ -1,11 +1,11 @@
-package Crypto
+package SLCrypto
 
-constant c2s = ["", "", "", "", "", "", "", "", "", "\t", "\n", "", "", "\r", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "\\", "]", "^", "_", "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~", ""]
-let ht = InitHashtable()
+constant c2s2 = ["", "", "", "", "", "", "", "", "", "\t", "\n", "", "", "\r", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "\\", "]", "^", "_", "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~", ""]
+let ht2 = InitHashtable()
 
 
-var w3pro_string_key = [21, 32, 11, 2, 4, 17]
-@noinline public function decrypt(string text) returns string
+var string_key = [21, 32, 11, 2, 4, 17]
+@noinline public function sl_decrypt(string text) returns string
     var output = ""
     var i = 0
     for letter in text
@@ -13,7 +13,7 @@ var w3pro_string_key = [21, 32, 11, 2, 4, 17]
         // print(lval)
 
         if (lval == 32 and letter == " ") or (lval > 32 and lval < 127)
-            var rval = (lval + w3pro_string_key[i])
+            var rval = (lval + string_key[i])
             // print(rval)
             if rval < 32
                 rval += (127 - 32)
@@ -24,19 +24,19 @@ var w3pro_string_key = [21, 32, 11, 2, 4, 17]
         else
             output += letter
         i++
-        if i >= w3pro_string_key.length
+        if i >= string_key.length
             i = 0
 
     return output
 
-@noinline public function encrypt(string text) returns string
+@noinline public function sl_encrypt(string text) returns string
     var output = ""
     var i = 0
     for letter in text
         let lval = letter.toChar().toInt()
         // print(lval)
         if (lval == 32 and letter == " ") or (lval > 32 and lval < 127)
-            var rval = (lval - w3pro_string_key[i])
+            var rval = (lval - string_key[i])
             // print(rval)
             if rval < 32
                 rval += (127 - 32)
@@ -48,18 +48,18 @@ var w3pro_string_key = [21, 32, 11, 2, 4, 17]
         else
             output += letter
         i++
-        if i >= w3pro_string_key.length
+        if i >= string_key.length
             i = 0
 
     return output
 
 
-@noinline function w3pro_decrypt_string(string s) returns string
+@noinline function sl_decrypt_string(string s) returns string
     let hash = s.getHash()
-    if not ht.hasString(hash, 0)
-        ht.saveString(hash, 0, decrypt(s))
+    if not ht2.hasString(hash, 0)
+        ht2.saveString(hash, 0, sl_decrypt(s))
 
-    return ht.loadString(hash, 0)
+    return ht2.loadString(hash, 0)
 
 int array s2c
 constant MAX_INDEX = '~' + 1
@@ -74,14 +74,14 @@ tuple charr(int c)
     else if "\\" == s
         return charr('\')
     let a = s2c[s.getHash() div 0x1F0748 + 0x3EA]
-    if s != c2s[a]
+    if s != c2s2[a]
         return charr(a + 32)
     return charr(a)
 
 @noinline function charr.toString() returns string
     if this.c > MAX_INDEX
         return ""
-    return c2s[this.c]
+    return c2s2[this.c]
 
 @noinline function charr.toInt() returns int
     return this.c
@@ -91,21 +91,21 @@ tuple charr(int c)
 
 init
     dasdgvas()
-    w3pro_decrypt_string("w3p")
+    sl_decrypt_string("w3p")
 
 @compiletime function dasdgvas()
     s2cInit2()
 
 @noinline function s2cInit2()
     for i = 0 to MAX_INDEX
-        if c2s[i].toUpperCase() == c2s[i]
-            s2c[StringHash(c2s[i]) div 0x1F0748 + 0x3EA] = i
+        if c2s2[i].toUpperCase() == c2s2[i]
+            s2c[StringHash(c2s2[i]) div 0x1F0748 + 0x3EA] = i
 
 
 @Test
 @noinline function foo()
     let text = "aaaaaaaaaaaa"
-    let encr = encrypt(text)
-    let descr = decrypt(encr)
+    let encr = sl_encrypt(text)
+    let descr = sl_decrypt(encr)
 
     text.assertEquals(descr)

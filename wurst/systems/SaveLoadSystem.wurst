@@ -2,7 +2,7 @@ package SaveLoadSystem
 import PlayerData
 import SaveLoadData
 import ClosureEvents
-import Crypto
+import SLCrypto
 
 constant FILE_NAME = "Gods' Arena/{0}/PlayerData"
 
@@ -10,7 +10,7 @@ public function initSaveLoadSystem()
   pData.forEach() (player p, PlayerData playerData) ->
     p.loadData(FILE_NAME.format(p.getName())) (status, data) ->
       if status == LoadStatus.SUCCESS
-        let dataString = decrypt(data.getUnsafeString())
+        let dataString = sl_decrypt(data.getUnsafeString())
 
         p..print("You successfully loaded " + dataString + " honor points.")
         ..addLumber(dataString.toInt())
@@ -34,10 +34,10 @@ public function initSaveLoadSystem()
                 p.print("Your save file has more honor points than you want to save. Saving is aborted.")
               else
                 p..print("You successfully saved " + honorPoints.toString() + " honor points.")
-                ..saveData(fileName, encrypt(honorPoints.toString()))
+                ..saveData(fileName, sl_encrypt(honorPoints.toString()))
             else
               p..print("You successfully saved " + honorPoints.toString() + " honor points.")
-              ..saveData(fileName, encrypt(honorPoints.toString())) 
+              ..saveData(fileName, sl_encrypt(honorPoints.toString())) 
         else 
           p.print("You don't have enough points to save.")
 

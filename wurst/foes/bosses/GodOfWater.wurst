@@ -71,7 +71,7 @@ public class GodOfWater extends Boss
     let aliveHeroes = heroUnitList.filter((unit t) -> t.isAlive())..shuffle()
 
     if aliveHeroes.size() > 0
-      for i = 0 to (aliveHeroes.size() / 2).floor()
+      for i = 0 to aliveHeroes.size()
         InstantDummyCaster.castPoint(ENEMY_PLAYER, SUMMON_WATER_TENTACLE_ID, 1, OrderIds.ward, aliveHeroes.get(i).getPos())
 
     destroy aliveHeroes
@@ -91,14 +91,14 @@ init
   ..setModelFile("WaterElemental.mdx")
   ..setAttack1ProjectileArt(Abilities.crushingWaveDamage)
   ..setAttack1CooldownTime(2)
-  ..setAttack1DamageBase(200)
+  ..setAttack1DamageBase(275)
   ..setAttack1Range(650)
   ..setAttack1AttackType(AttackType.Chaos)
   ..setArmorType(ArmorType.Hero)
   ..setDefenseBase(20)
   ..setSpeedBase(330)
   ..setNormalAbilities(commaList(AbilityIds.inventory))
-  ..setHitPointsMaximumBase(80000)
+  ..setHitPointsMaximumBase(100000)
   ..setScalingValue(2.8)
 
   new UnitDefinition(WATER_TENTACLE_ID, UnitIds.tentacle)
