@@ -88,5 +88,5 @@ init
     startEntityLoop()
     initSaveLoadSystem()
     // initMultiboard()
-    doAfter(5) ->
+    doAfter(1) ->
       BlzChangeMinimapTerrainTex("originalMap.blp")
