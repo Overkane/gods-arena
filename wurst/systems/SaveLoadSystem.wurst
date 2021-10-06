@@ -1,0 +1,58 @@
+package SaveLoadSystem
+import PlayerData
+import SaveLoadData
+// import Json
+
+public function initSaveLoadSystem()
+  pData.forEach() (player p, PlayerData playerData) ->
+    p.loadData("Gods' Arena/" + p.getName() + "/PlayerData") (status, data) ->
+      if status == LoadStatus.SUCCESS
+        let dataString = data.getUnsafeString()
+
+        p..print("You successfully loaded " + dataString + " honor points.")
+        ..addLumber(dataString.toInt())
+      else
+        p.print("Save file is not found.")
+
+    CreateTrigger()
+    ..registerPlayerChatEvent(p, "-save", true)
+    ..addAction() ->
+      let p = GetTriggerPlayer()
+      let arenaPoints = pData.get(p).getArenaPoints()
+
+      if arenaPoints >= ARENA_POINTS_THRESHOLD
+        let honorPoints = (arenaPoints / ARENA_POINTS_THRESHOLD).floor()
+      
+        p.loadData("Gods' Arena/" + p.getName() + "/PlayerData") (status, data) ->
+          if status == LoadStatus.SUCCESS
+            let dataString = data.getUnsafeString()
+
+            if dataString.toInt() >= honorPoints
+              p.print("Your save file has more honor points than you want to save. Saving is aborted.")
+            else
+              p..print("You successfully saved " + honorPoints.toString() + " honor points.")
+              ..saveData("Gods' Arena/" + GetTriggerPlayer().getName() + "/PlayerData", honorPoints.toString())
+          else
+            p..print("You successfully saved " + honorPoints.toString() + " honor points.")
+            ..saveData("Gods' Arena/" + GetTriggerPlayer().getName() + "/PlayerData", honorPoints.toString()) 
+      else 
+        p.print("You don't have enough points to save.")
+
+      // let pName = new Property("Player", p.getName())
+      // let honorBadge = new Property("HonorBadge", "5")
+      
+      // var jsonString = new BigString()
+
+      // let json = new Json()..addProperty(pName)..addProperty(honorBadge).addToBigString(jsonString)
+    
+    // No load command for now to not abuse TODO
+    // CreateTrigger()
+    // ..registerPlayerChatEvent(p, "-load", true)
+    // ..addAction() ->
+    //   GetTriggerPlayer().loadData("Gods' Arena/" + GetTriggerPlayer().getName() + "/PlayerData") (status, data) ->
+    //     if status == LoadStatus.SUCCESS
+    //       print("Success")
+    //       // Log.info("Loaded: " + data.readStringUnsafe())
+    //     else
+    //       print("Save file is not found")
+    //       print((status castTo int).toString())
