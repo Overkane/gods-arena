@@ -26,7 +26,7 @@ public constant STEEL_AXE_ITEM = compiletime(new RecipeItem()
 
 public constant STEEL_AXE_RECIPE = new ItemRecipe()
 ..gold(90)
-..setRequiredItems(IRON_AXE_ITEM.getNewId(), IRON_SWORD_ITEM.getNewId())
+..setRequiredItems(IRON_AXE_ITEM, IRON_SWORD_ITEM)
 ..setResultItem(STEEL_AXE_ITEM)
 
 @compiletime function genItemAbils()

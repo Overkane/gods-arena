@@ -38,7 +38,7 @@ constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 
 public constant MASK_OF_MADNESS_RECIPE = new ItemRecipe()
 ..gold(125)
-..setRequiredItems(MASK_OF_DEATH_ITEM.getNewId(), GLOVES_OF_HASTE_ITEM.getNewId())
+..setRequiredItems(MASK_OF_DEATH_ITEM, GLOVES_OF_HASTE_ITEM)
 ..setResultItem(MASK_OF_MADNESS_ITEM)
 
 @compiletime function genItemAbils()

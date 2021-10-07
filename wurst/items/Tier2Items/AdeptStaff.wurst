@@ -39,7 +39,7 @@ public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 
 public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
 ..gold(190)
-..setRequiredItems(APPRENTICE_STAFF_ITEM.getNewId(), MOON_AMULET_ITEM.getNewId())
+..setRequiredItems(APPRENTICE_STAFF_ITEM, MOON_AMULET_ITEM)
 ..setResultItem(ADEPT_STAFF_ITEM)
 
 @compiletime function genItemAbils()

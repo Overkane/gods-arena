@@ -37,7 +37,7 @@ public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 
 public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
 ..gold(120)
-..setRequiredItems(NINJA_CLOAK_ITEM.getNewId(), ASSASSINS_BLADE_ITEM.getNewId())
+..setRequiredItems(NINJA_CLOAK_ITEM, ASSASSINS_BLADE_ITEM)
 ..setResultItem(CLOAK_OF_SHADOWS_ITEM)
 
 @compiletime function genItemAbils()

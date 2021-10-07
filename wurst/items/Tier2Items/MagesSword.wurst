@@ -35,6 +35,6 @@ end)
 
 public constant MAGES_SWORD_RECIPE = new ItemRecipe()
 ..gold(175)
-..setRequiredItems(STEEL_SWORD_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId())
+..setRequiredItems(STEEL_SWORD_ITEM, SAPPHIRE_ITEM)
 ..setResultItem(MAGES_SWORD_ITEM)
 

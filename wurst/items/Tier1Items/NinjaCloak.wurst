@@ -25,5 +25,5 @@ public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
 
 public constant NINJA_CLOAK_RECIPE = new ItemRecipe()
 ..gold(0)
-..setRequiredItems(TALISMAN_OF_EVASION_ITEM.getNewId(), EMERALD_ITEM.getNewId(), VITALITY_STONE_ITEM.getNewId())
+..setRequiredItems(TALISMAN_OF_EVASION_ITEM, EMERALD_ITEM, VITALITY_STONE_ITEM)
 ..setResultItem(NINJA_CLOAK_ITEM)

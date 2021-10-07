@@ -28,7 +28,7 @@ public constant MANTLE_OF_PROTECTION_ITEM = compiletime(new RecipeItem()
 
 public constant MANTLE_OF_PROTECTION_RECIPE = new ItemRecipe()
 ..gold(90)
-..setRequiredItems(ROBE_OF_THE_MAGE_ITEM.getNewId(), SIMPLE_ARMOR_ITEM.getNewId())
+..setRequiredItems(ROBE_OF_THE_MAGE_ITEM, SIMPLE_ARMOR_ITEM)
 ..setResultItem(MANTLE_OF_PROTECTION_ITEM)
 
 @compiletime function genItemAbils()

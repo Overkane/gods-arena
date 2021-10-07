@@ -34,7 +34,7 @@ public constant SHAMAN_STAFF_ITEM = compiletime(new RecipeItem()
 
 public constant SHAMAN_STAFF_RECIPE = new ItemRecipe()
 ..gold(220)
-..setRequiredItems(APPRENTICE_STAFF_ITEM.getNewId(), SHAMAN_CLAWS_ITEM.getNewId())
+..setRequiredItems(APPRENTICE_STAFF_ITEM, SHAMAN_CLAWS_ITEM)
 ..setResultItem(SHAMAN_STAFF_ITEM)
 
 @compiletime function genItemAbils()
