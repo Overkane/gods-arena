@@ -9,7 +9,7 @@ import TooltipFactory
 
 public constant KILLER_REFLEXES_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure EVASION = lvl -> 20. + 5 * (lvl-1)
+RealLevelClosure EVASION = lvl -> 10. + 5 * (lvl-1)
 constant ACTIVE_BONUS = 2.
 
 init

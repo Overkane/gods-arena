@@ -32,6 +32,7 @@ RealLevelClosure DURATION = lvl -> 5. + lvl * 2
     ..addTooltipProperty("Duration", DURATION)
     ..presetManaCost(lvl -> 90 + 50 * lvl)
     ..presetCooldown(lvl -> 95)
+    ..presetCastRange(lvl -> 1000.)
     ..tooltipStopListen()
   
     ..presetDurationNormal(DURATION)
