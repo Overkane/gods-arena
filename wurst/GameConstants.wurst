@@ -10,5 +10,7 @@ public constant ULTIMATE_SPELL_LEVELS = 3
 public constant ULTIMATE_LEVEL_REQ = 6
 public constant ULTIMATE_LEVEL_SKIP_REQ = 3
 
+public constant REFUND_VALUE = 0.8
+
 public function player.isHuman() returns boolean
     return this.getId() < 8

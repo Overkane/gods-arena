@@ -6,9 +6,11 @@ import ItemShopMenu
 import ToggleShopButton
 import ClosureEvents
 import ChannelAbilityPreset
+import GameConstants
 import RecipeItem
 import Icons
 import SoundUtils
+import TooltipFactory
 
 public constant SELL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -96,7 +98,7 @@ public function initItemShop()
 
       ITEM_SOLD.playForPlayer(caster.getOwner())
       tItem.remove()
-      caster.getOwner().addGold((itemCost * 0.5).round())
+      caster.getOwner().addGold((itemCost * REFUND_VALUE).round())
     else
       CANT_SOLD_ITEM.playForPlayer(caster.getOwner())
       print("Can sell items only from inventory.")
@@ -108,7 +110,7 @@ public function initItemShop()
   ..presetButtonPosNormal(2, 1)
   ..presetHotkey("F")
   ..setTooltipNormal(1, "Sell")
-  ..setTooltipNormalExtended(1, "Select item from inventory to sell it for 50% of initial price.")
+  ..setTooltipNormalExtended(1, "Select item from inventory to sell it for "+ (REFUND_VALUE * 100).percRound() +" of initial price.")
   ..presetTargetsAllowed(lvl -> TargetsAllowed.item_t)
   ..setArtEffect("")
   ..setArtCaster("")
