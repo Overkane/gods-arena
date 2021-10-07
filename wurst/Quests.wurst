@@ -1,6 +1,8 @@
 package Quests
 import Quest
 import Icons
+import GameConstants
+import TooltipFactory
 
 init
   new Quest(false)
@@ -41,6 +43,6 @@ init
     "- After round is completed, you will regain portion of your max HP and MP.\n" +
     "\nShop:\n" +
     "- Use the hotkey TAB to toggle the shop display.\n" +
-    "- You can sell items in your inventory with your hero sell ability (hotkey - 'F') for 50% of initial price.\n" +
+    "- You can sell items in your inventory with your hero sell ability (hotkey - 'F') for " + (REFUND_VALUE * 100).percRound() + " of initial price.\n" +
     "- Zero recipe cost in the shop means item will be assembled automatically when all required items will be in the inventory.\n"
   )

@@ -19,6 +19,6 @@ buildMapData:
       subTitle: Gods' Arena v0.9.6
       text: "Try to survive the arena of the gods.\n\n Some tips:\n Press TAB to toggle\
         \ the shop.\n\n You can sell items in your inventory with your hero sell ability\
-        \ (hotkey - F) for 50% of initial price.\n\n You will be revived at the end\
+        \ (hotkey - F).\n\n You will be revived at the end\
         \ of each round, but not with full HP and MP.\n\n You will restore a bit of\
         \ HP and MP at the end of each round if you survived."
