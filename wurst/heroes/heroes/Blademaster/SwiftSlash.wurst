@@ -19,7 +19,7 @@ public constant SWIFT_SLASH_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure RAW_DAMAGE = lvl -> 100. * lvl
 constant RealLevelClosure AGI_DAMAGE = lvl -> 0.5 + 0.25 * lvl
 
-let HIT_SOUND = new SoundDefinition(Sounds.metalHeavySliceFlesh1)
+// let HIT_SOUND = new SoundDefinition(Sounds.metalHeavySliceFlesh1)
 
 init
   EventListener.onPointCast(SWIFT_SLASH_ID) (unit caster, vec2 target) ->
@@ -54,7 +54,7 @@ init
               let duration = ARMOR_CUT_DURATION.run(armorCutLvl)
               new ArmorCutBuff(duration, armorReduction).apply(u)
 
-            HIT_SOUND.play()
+            // HIT_SOUND.play()
 
         caster.setPos(nextPointPos)
       else
@@ -79,5 +79,5 @@ init
   ..addTooltipProperty("Damage", lvl -> RAW_DAMAGE.run(lvl).toString() + " + " + (AGI_DAMAGE.run(lvl)*100).percRound() + " of agility")
   ..presetCastRange(lvl -> 600)
   ..presetManaCost(lvl -> 65)
-  ..presetCooldown(lvl -> 3. - 2. * lvl)
+  ..presetCooldown(lvl -> 13. - lvl)
   ..tooltipStopListen()
