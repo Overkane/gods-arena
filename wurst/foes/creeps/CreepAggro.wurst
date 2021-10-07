@@ -24,7 +24,7 @@ init
         let sourceOwner = source.getOwner()
         let targetOwner = target.getOwner()
 
-        if targetOwner == ENEMY_PLAYER and sourceOwner != targetOwner
+        if targetOwner == ENEMY_PLAYER and sourceOwner.isHuman() and not target.isType(UNIT_TYPE_PEON)
             if not aggroMap.has(target)
                 aggroMap.put(target, new LinkedList<AggroEntry>())
             
@@ -32,22 +32,23 @@ init
                 let pdata = pData.get(sourceOwner)
                 source = pdata.getHero().hero.actor
 
-            let aggroList = aggroMap.get(target)
-            let first = aggroList.getFirst()
-            var found = false
-            for aggro in aggroList
-                if aggro.source == source
-                    aggro.aggro += DamageEvent.getAmount().toInt()
-                    found = true
-                    break
+            if source != null
+                let aggroList = aggroMap.get(target)
+                let first = aggroList.getFirst()
+                var found = false
+                for aggro in aggroList
+                    if aggro.source == source
+                        aggro.aggro += DamageEvent.getAmount().toInt()
+                        found = true
+                        break
 
-            if not found
-                aggroList.add(new AggroEntry(source, DamageEvent.getAmount().toInt()))
+                if not found
+                    aggroList.add(new AggroEntry(source, DamageEvent.getAmount().toInt()))
 
-            aggroList.sortWith((a, b) -> b.aggro - a.aggro)
+                aggroList.sortWith((a, b) -> b.aggro - a.aggro)
 
-            if first != aggroList.getFirst()
-                target.issueTargetOrderById(OrderIds.attack, source)
+                if first != aggroList.getFirst()
+                    target.issueTargetOrderById(OrderIds.attack, source)
                 
             
     onUnitDeindex() ->
