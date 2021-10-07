@@ -15,7 +15,7 @@ init
     EventListener.onCast(CRAB_HEAL_ID) caster ->
         let lvl = caster.getAbilityLevel(CRAB_HEAL_ID)
         let owner = caster.getOwner()
-
+        flashEffect(Abilities.purificationTarget, caster.getPos())
         var count = new Reference<int>(0)
         forUnitsOfPlayer(owner) (unit u) ->
             if u.getTypeId() == CRABLING_ID
@@ -31,8 +31,8 @@ init
 function genAbility()
     new ChannelAbilityPreset(CRAB_HEAL_ID, NORMAL_SPELL_LEVELS, true, 
         new AbilityTooltipGenerator("The crab consumes all of its alive |cffce951acrablings|r to gain health."))
-    ..presetButtonPosNormal(0, 2)
-    ..presetButtonPosResearch(0, 0)
+    ..presetButtonPosNormal(1, 2)
+    ..presetButtonPosResearch(1, 0)
     ..presetIcon(Icons.bTNCoralBed)
 
     ..tooltipStartListen()
