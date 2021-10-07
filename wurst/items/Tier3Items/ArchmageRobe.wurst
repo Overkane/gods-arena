@@ -40,7 +40,7 @@ public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
 
 public constant ARCHMAGE_ROBE_RECIPE = new ItemRecipe()
 ..gold(250)
-..setRequiredItems(MANTLE_OF_PROTECTION_ITEM.getNewId(), RING_OF_SPELL_LIFESTEAL_ITEM.getNewId())
+..setRequiredItems(MANTLE_OF_PROTECTION_ITEM, RING_OF_SPELL_LIFESTEAL_ITEM)
 ..setResultItem(ARCHMAGE_ROBE_ITEM)
 
 @compiletime function genItemAbils()

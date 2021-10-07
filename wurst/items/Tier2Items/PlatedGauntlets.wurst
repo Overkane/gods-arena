@@ -16,5 +16,5 @@ public constant PLATED_GAUNTLETS_ITEM = compiletime(new RecipeItem()
 
 public constant PLATED_GAUNTLETS_RECIPE = new ItemRecipe()
 ..gold(290)
-..setRequiredItems(POWER_GLOVES_ITEM.getNewId(), ASSASSINS_BLADE_ITEM.getNewId())
+..setRequiredItems(POWER_GLOVES_ITEM, ASSASSINS_BLADE_ITEM)
 ..setResultItem(PLATED_GAUNTLETS_ITEM)

@@ -94,7 +94,7 @@ public function initItemShop()
     let tItem = GetSpellTargetItem()..setUserData(-1) 
     
     if caster.hasItem(tItem)
-      let itemCost = tItem.getRecipeItem().goldCost
+      let itemCost = tItem.getRecipeItem().goldWorth
 
       ITEM_SOLD.playForPlayer(caster.getOwner())
       tItem.remove()

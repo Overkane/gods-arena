@@ -27,7 +27,7 @@ public constant ORB_OF_MAGIC_ITEM = compiletime(new RecipeItem()
 
 public constant ORB_OF_MAGIC_RECIPE = new ItemRecipe()
 ..gold(100)
-..setRequiredItems(SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId(), SAPPHIRE_ITEM.getNewId())
+..setRequiredItems(SAPPHIRE_ITEM, SAPPHIRE_ITEM, SAPPHIRE_ITEM, SAPPHIRE_ITEM, SAPPHIRE_ITEM, SAPPHIRE_ITEM)
 ..setResultItem(ORB_OF_MAGIC_ITEM)
 
 init

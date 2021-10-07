@@ -26,7 +26,7 @@ public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 
 public constant THORNMAIL_RECIPE = new ItemRecipe()
 ..gold(135)
-..setRequiredItems(SIMPLE_ARMOR_ITEM.getNewId(), HEART_AMULET_ITEM.getNewId(), IRON_SWORD_ITEM.getNewId())
+..setRequiredItems(SIMPLE_ARMOR_ITEM, HEART_AMULET_ITEM, IRON_SWORD_ITEM)
 ..setResultItem(THORNMAIL_ITEM)
 
 init

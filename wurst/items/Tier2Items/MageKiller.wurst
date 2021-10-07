@@ -36,7 +36,7 @@ public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 
 public constant MAGE_KILLER_RECIPE = new ItemRecipe()
 ..gold(195)
-..setRequiredItems(STEEL_SWORD_ITEM.getNewId(), ASSASSINS_BLADE_ITEM.getNewId())
+..setRequiredItems(STEEL_SWORD_ITEM, ASSASSINS_BLADE_ITEM)
 ..setResultItem(MAGE_KILLER_ITEM)
 
 @compiletime function genItemAbils()

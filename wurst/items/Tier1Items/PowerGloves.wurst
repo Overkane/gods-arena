@@ -12,5 +12,5 @@ public constant POWER_GLOVES_ITEM = compiletime(new RecipeItem()
 
 public constant POWER_GLOVES_RECIPE = new ItemRecipe()
 ..gold(120)
-..setRequiredItems(GLOVES_OF_HASTE_ITEM.getNewId(), GLOVES_OF_HASTE_ITEM.getNewId())
+..setRequiredItems(GLOVES_OF_HASTE_ITEM, GLOVES_OF_HASTE_ITEM)
 ..setResultItem(POWER_GLOVES_ITEM)

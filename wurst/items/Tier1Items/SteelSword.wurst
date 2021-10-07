@@ -34,5 +34,5 @@ end)
 
 public constant STEEL_SWORD_RECIPE = new ItemRecipe()
 ..gold(90)
-..setRequiredItems(CLAWS_OF_ATTACK_ITEM.getNewId(), IRON_SWORD_ITEM.getNewId())
+..setRequiredItems(CLAWS_OF_ATTACK_ITEM, IRON_SWORD_ITEM)
 ..setResultItem(STEEL_SWORD_ITEM)

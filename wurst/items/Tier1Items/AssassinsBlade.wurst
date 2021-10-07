@@ -14,5 +14,5 @@ public constant ASSASSINS_BLADE_ITEM = compiletime(new RecipeItem()
 
 public constant ASSASINS_BLADE_RECIPE = new ItemRecipe()
 ..gold(90)
-..setRequiredItems(IRON_SWORD_ITEM.getNewId(), EMERALD_ITEM.getNewId())
+..setRequiredItems(IRON_SWORD_ITEM, EMERALD_ITEM)
 ..setResultItem(ASSASSINS_BLADE_ITEM)

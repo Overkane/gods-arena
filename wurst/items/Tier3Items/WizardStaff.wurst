@@ -38,7 +38,7 @@ public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
 
 public constant WIZARD_STAFF_RECIPE = new ItemRecipe()
 ..gold(290)
-..setRequiredItems(ADEPT_STAFF_ITEM.getNewId())
+..setRequiredItems(ADEPT_STAFF_ITEM)
 ..setResultItem(WIZARD_STAFF_ITEM)
 
 @compiletime function genItemAbils()

@@ -39,7 +39,7 @@ public constant LIGHTNING_SHIELD_ITEM = compiletime(new RecipeItem()
 
 public constant LIGHTNING_SHIELD_RECIPE = new ItemRecipe()
 ..gold(210)
-..setRequiredItems(SIMPLE_ARMOR_ITEM.getNewId(), IRON_SHIELD_ITEM.getNewId())
+..setRequiredItems(SIMPLE_ARMOR_ITEM, IRON_SHIELD_ITEM)
 ..setResultItem(LIGHTNING_SHIELD_ITEM)
 
 init 

@@ -28,7 +28,7 @@ public constant MACE_ITEM = compiletime(new RecipeItem()
 
 public constant MACE_RECIPE = new ItemRecipe()
 ..gold(90)
-..setRequiredItems(IRON_AXE_ITEM.getNewId(), IRON_AXE_ITEM.getNewId())
+..setRequiredItems(IRON_AXE_ITEM, IRON_AXE_ITEM)
 ..setResultItem(MACE_ITEM)
 
 @compiletime function genItemAbils()
