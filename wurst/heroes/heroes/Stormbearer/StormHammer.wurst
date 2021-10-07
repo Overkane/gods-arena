@@ -49,8 +49,8 @@ init
   ..addTooltipProperty("Chain Lightning Damage", CHAIN_LIGHTNING_DAMAGE)
   ..addTooltipProperty("Chain Lightning Number of Targets", CHAIN_LIGHTNING_NUMBER_OF_TARGETS)
   ..addTooltipProperty("Charge Duration", CHARGE_DURATION)
-  ..presetManaCost(lvl -> 90 + 10 * lvl)
-  ..presetCooldown(lvl -> 20. - lvl)
+  ..presetManaCost(lvl -> 90 + 25 * lvl)
+  ..presetCooldown(lvl -> 20. - lvl * 2)
   ..tooltipStopListen()
 
   new AbilityDefinitionFarseerChainLightning(STORM_HAMMER_CHAIN_LIGHTNING_ID)

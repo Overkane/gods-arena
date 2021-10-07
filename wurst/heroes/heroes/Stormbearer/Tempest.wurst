@@ -7,7 +7,7 @@ public constant TEMPEST_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure DAMAGE = lvl -> 50. + 60. * (lvl-1)
 RealLevelClosure DAMAGE_INTERVAL = lvl -> 1
-RealLevelClosure AOE = lvl -> 350. + 50. * (lvl-1)
+RealLevelClosure AOE = lvl -> 350. + 75. * (lvl-1)
 RealLevelClosure DURATION = lvl -> 10.
 
 @compiletime function genAbility()
