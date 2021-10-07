@@ -1,9 +1,8 @@
 package ContractBuff
 import PresetBuffs
 import Assets
-import MapModels
 
-public constant buffTuple = compiletime(createDummyBuffObject("Contract Target", "This unit is target of the contract",  Icons.bTNSnazzyScrollPurple, MapModels.redSnipeTarget, AttachmentPoints.overhead))
+public constant buffTuple = compiletime(createDummyBuffObject("Contract Target", "This unit is the target of the Assassin's contract",  Icons.bTNSnazzyScrollPurple, Objects.potofGold, AttachmentPoints.overhead))
 
 public class ContractBuff extends NormalBuff
 

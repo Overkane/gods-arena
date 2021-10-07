@@ -8,6 +8,6 @@ public function createBountyTextTag(unit u, int bounty)
   createFText(u.getPos().withTerrainZ(35) + vec3(GetRandomReal(-40, 0), GetRandomReal(-40, 0), 0), "+" + bounty.toString(), 9,
       3., vec2(0, 0.03), colorA(255, 220, 0, 255))
 
-public function createBountyTextTag(unit u, int bounty, player p)
-  createFText(u.getPos().withTerrainZ(35) + vec3(GetRandomReal(-40, 0), GetRandomReal(-40, 0), 0), "+" + bounty.toString(), 9,
+public function createBountyTextTag(unit u, int bounty, player p, real offset)
+  createFText(u.getPos().withTerrainZ(offset) + vec3(GetRandomReal(-40, 0), GetRandomReal(-40, 0), 0), "+" + bounty.toString(), 9,
       3., vec2(0, 0.03), colorA(255, 220, 0, 255), p)

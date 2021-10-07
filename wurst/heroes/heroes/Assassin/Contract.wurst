@@ -45,14 +45,14 @@ init
         
         sunit.getOwner().addGold(bounty)
         
-        createBountyTextTag(tunit, bounty, sunit.getOwner())
+        createBountyTextTag(tunit, bounty, sunit.getOwner(), 60)
       else
         forUnitsInRange(tunit.getPos(), 225) (unit u) ->
           if u.hasAbility(CONTRACT_ID)
             let bounty = BOUNTY * u.getLevel()
         
             u.getOwner().addGold(bounty)
-            createBountyTextTag(tunit, bounty, u.getOwner())
+            createBountyTextTag(tunit, bounty, u.getOwner(), 60)
       
   DamageEvent.addUnreducedListener(DamageEvents.START castTo int) ->
     let sunit = DamageEvent.getSource()
