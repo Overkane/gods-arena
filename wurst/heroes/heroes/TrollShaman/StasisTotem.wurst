@@ -9,17 +9,15 @@ import Units
 import StunAbilityPreset
 import InstantDummyCaster
 import OrderIds
-import SoundUtils
+import Abilities
 
 public constant STASIS_TOTEM_ID = compiletime(ABIL_ID_GEN.next())
 public constant STASIS_TOTEM_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure TOTEM_DURATION = lvl -> 4. + lvl
+constant RealLevelClosure TOTEM_DURATION = lvl -> 4. + (lvl / 2).floor()
 constant RealLevelClosure STUN_INTERVAL = lvl -> 1
 constant RealLevelClosure STUN_DURATION = lvl -> 0.25 + 0.05 * lvl
-constant RealLevelClosure AOE = lvl -> 350
-
-constant SOUND = new SoundDefinition(Sounds.stasisTotem1)
+constant RealLevelClosure AOE = lvl -> 300
 
 init
   EventListener.onPointCast(STASIS_TOTEM_ID) (unit caster, vec2 target) ->
@@ -31,7 +29,7 @@ init
     let totem = addEffect(Units.stasisTotem, target)..setYaw(angle(45))
 
     doPeriodicallyTimed(stunInverval, totemDuration) (CallbackCounted cb) ->
-      SOUND.play()
+      flashEffect(Abilities.thunderclapCaster, target)
       forUnitsInRange(target, areaOfEffect) (unit u) ->
         if u.getOwner() == ENEMY_PLAYER and u.isAlive()
           InstantDummyCaster.castTarget(caster.getOwner(), STASIS_TOTEM_STUN_ID, 1, OrderIds.thunderbolt, u)
@@ -57,7 +55,7 @@ init
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
   ..presetManaCost(lvl -> 50 + 25 * lvl)
-  ..presetCooldown(lvl -> 18)
+  ..presetCooldown(lvl -> 22. - lvl)
   ..tooltipStopListen()
 
   new StunAbilityPreset(STASIS_TOTEM_STUN_ID, NORMAL_SPELL_LEVELS)
