@@ -3,7 +3,6 @@ import PresetBuffs
 import Assets
 import SoundUtils
 import CustomStatSystem
-import BonusHandler
 
 constant buffTuple1 = compiletime(createDummyBuffObject("Overcharge Buff", "Hero deals increased magic damage",  Icons.bTNControlMagic))
 constant buffTuple2 = compiletime(createDummyBuffObject("Overcharge Debuff", "Hero deals decreased magic damage",  Icons.bTNControlMagic))
