@@ -12,14 +12,15 @@ import InstantDummyCaster
 import OrderIds
 import BuffIds
 import AttachmentPoints
+import UnitAnimations
 
 public constant MEDITATION_ID = compiletime(ABIL_ID_GEN.next())
 public constant MEDITATION_DAMAGE_ID = compiletime(ABIL_ID_GEN.next())
 public constant MEDITATION_DAMAGE_BUFF_ID = compiletime(BUFF_ID_GEN.next())
 
-constant RealLevelClosure PERC_HP = lvl -> 1. + 2 * lvl
+constant RealLevelClosure PERC_HP = lvl -> 3. * lvl
 constant RealLevelClosure PERC_MP = lvl -> 1. + 1 * lvl
-constant RealLevelClosure MEDITATION_DURATION = lvl -> 8.
+constant RealLevelClosure MEDITATION_DURATION = lvl -> 5.5
 constant RealLevelClosure DAMAGE_BUFF = lvl -> 25. * lvl
 constant RealLevelClosure DAMAGE_DURATION = lvl -> 30.
 
@@ -33,6 +34,8 @@ init
     let duration = MEDITATION_DURATION.run(lvl)
 
     castingUnits.add(caster)
+
+    caster.setAnimation(UnitAnimations.HeroBladeMaster.standcinematic.idx)
 
     doPeriodicallyTimed(BUFF_ANIM_PERIOD, duration) (CallbackCounted cb) ->
       if castingUnits.has(caster)

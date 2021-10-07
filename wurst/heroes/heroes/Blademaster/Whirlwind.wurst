@@ -1,0 +1,51 @@
+package Whirlwind
+import AbilityTooltipGenerator
+import GameConstants
+import PassiveAbilityPreset
+import TooltipFactory
+import ClosureForGroups
+import MapIcons
+import UnitAnimations
+import DamageSystem
+
+public constant WHIRLWIND_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure CHANCE = lvl -> 17. + 1 * (lvl-1)
+constant RealLevelClosure DAMAGE = lvl -> 0.5 + 0.1 * (lvl-1)
+constant RealLevelClosure RADIUS = lvl -> 250.
+
+init 
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(WHIRLWIND_ID)
+      let lvl = sunit.getAbilityLevel(WHIRLWIND_ID)
+
+      let spellChance = CHANCE.run(lvl)
+
+      if spellChance >= GetRandomInt(1, 100)
+        let tunit = DamageEvent.getTarget()
+        let spellDamage = DAMAGE.run(lvl)
+        let spellRadius = RADIUS.run(lvl)
+
+        sunit.setAnimation((UnitAnimations.HeroBladeMaster.attackWalkStandSpin.idx))
+
+        forUnitsInRange(tunit.getPos(), spellRadius) target ->
+          if target.isEnemyOf(sunit) and target.isAlive()
+            DamageEvent.setNextDamageFromCode()
+            sunit.damageTarget(target, DamageEvent.getAmount() * spellDamage)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "On attack there is a chance that hero will deal percent of his damage to enemies nearby.")
+  new PassiveAbilityPreset(WHIRLWIND_ID, NORMAL_SPELL_LEVELS, tooltip)
+  ..presetIcon(MapIcons.pASBTNWhirlwind)
+  ..presetButtonPosNormal(2, 2)
+  ..presetButtonPosResearch(2, 0)
+  ..presetHotkey("E")
+
+  ..tooltipStartListen()
+  ..setName("Whirlwind")
+  ..addTooltipProperty("Chance", lvl -> CHANCE.run(lvl).percRound())
+  ..addTooltipProperty("Damage", lvl -> (DAMAGE.run(lvl) * 100).percRound())
+  ..presetAreaofEffect(RADIUS)
+  ..tooltipStopListen()

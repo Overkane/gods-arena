@@ -1,0 +1,83 @@
+package SwiftSlash
+import AbilityTooltipGenerator
+import GameConstants
+import Icons
+import ClosureEvents
+import ClosureTimers
+import MeditationBuff
+import TooltipFactory
+import HashSet
+import OrderIds
+import ArmorCut
+import UnitAnimations
+import TerrainUtils
+import ClosureForGroups
+import SoundUtils
+
+public constant SWIFT_SLASH_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure RAW_DAMAGE = lvl -> 100. * lvl
+constant RealLevelClosure AGI_DAMAGE = lvl -> 0.5 + 0.25 * lvl
+
+let HIT_SOUND = new SoundDefinition(Sounds.metalHeavySliceFlesh1)
+
+init
+  EventListener.onPointCast(SWIFT_SLASH_ID) (unit caster, vec2 target) ->
+    let lvl = caster.getAbilityLevel(SWIFT_SLASH_ID)  
+    let rawDamage = RAW_DAMAGE.run(lvl) 
+    let agiDamageMult = AGI_DAMAGE.run(lvl)
+    
+    let distance = caster.getPos().distanceTo(target)  
+    var distanceTraveled = 0.
+    let distancePerTick = 40.
+    let damagedTargets = new HashSet<unit>
+
+    caster.setAnimation(UnitAnimations.HeroBladeMaster.standcinematic.idx)
+    caster.setVertexColor(255, 255, 255, 100)
+
+    doPeriodically(0.05) (CallbackPeriodic cb) ->
+      caster.pause()
+      
+      let nextPointPos = caster.getPos().moveTowards(target, distancePerTick)
+      distanceTraveled += distancePerTick
+
+      if nextPointPos.isTerrainWalkable() and distanceTraveled <= distance
+        forUnitsInRange(caster.getPos(), 225) (unit u) ->
+          if not damagedTargets.has(u) and u.isAlive() and u.getOwner() == ENEMY_PLAYER
+            damagedTargets.add(u)
+            DamageEvent.setNextDamageFromCode()
+            caster.damageTarget(u, rawDamage + caster.getAgi(true) * agiDamageMult)
+
+            if caster.hasAbility(ARMOR_CUT_ID)
+              let armorCutLvl = caster.getAbilityLevel(ARMOR_CUT_ID)
+              let armorReduction = ARMOR_CUT_ARMOR_REDUCE.run(armorCutLvl)
+              let duration = ARMOR_CUT_DURATION.run(armorCutLvl)
+              new ArmorCutBuff(duration, armorReduction).apply(u)
+
+            HIT_SOUND.play()
+
+        caster.setPos(nextPointPos)
+      else
+        caster.unpause()
+        caster.issueImmediateOrderById(OrderIds.stop)
+        caster.setVertexColor(255, 255, 255, 255)
+        destroy cb
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all the enemies on his way. Also applies debuff of 'Armor Cut' ability")
+  new ChannelAbilityPreset(SWIFT_SLASH_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..registerTooltipGenerator(tooltip)
+  ..presetIcon(Icons.bTNWindWalkOn)
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetHotkey("Q")
+  
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.POINT)
+  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setName("Swift Slash")
+  ..addTooltipProperty("Damage", lvl -> RAW_DAMAGE.run(lvl).toString() + " + " + (AGI_DAMAGE.run(lvl)*100).percRound() + " of agility")
+  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 65)
+  ..presetCooldown(lvl -> 3. - 2. * lvl)
+  ..tooltipStopListen()

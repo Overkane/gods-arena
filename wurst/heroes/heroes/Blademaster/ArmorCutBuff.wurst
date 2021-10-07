@@ -1,9 +1,19 @@
 package ArmorCutBuff
 import PresetBuffs
 import Assets
+import BonusHandler
 
 constant buffTuple = compiletime(createDummyBuffObject("Armor Cut", "Unit's armor is decreased.",  Icons.bTNCurse))
 
-public class ArmorCutBuff extends NormalBuff
-  construct(real dur)
+public class ArmorCutBuff extends StackingBuff
+  var armorReduction = 0.
+
+  construct(real dur, real armorReduction)
     super(dur, buffTuple)
+    this.armorReduction = armorReduction
+
+  override function onApply()
+    target.addBonus(Bonus.ARMOR, -armorReduction)
+
+  override function onEnd()
+    target.addBonus(Bonus.ARMOR, armorReduction)

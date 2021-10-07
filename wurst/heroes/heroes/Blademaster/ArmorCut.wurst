@@ -2,42 +2,44 @@ package ArmorCut
 import AbilityTooltipGenerator
 import GameConstants
 import Icons
-import ClosureEvents
-import ArmorCutBuff
+import TooltipFactory
+import public ArmorCutBuff
+import PassiveAbilityPreset
+import DamageEvent
 
 public constant ARMOR_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DURATION = lvl -> 8.
+public constant RealLevelClosure ARMOR_CUT_CHANCE = lvl -> 15.
+public constant RealLevelClosure ARMOR_CUT_ARMOR_REDUCE = lvl -> 2.
+public constant RealLevelClosure ARMOR_CUT_DURATION = lvl -> 20.
 
 init 
-  EventListener.onTargetCast(ARMOR_CUT_ID) (unit caster, unit target) ->
-    let lvl = caster.getAbilityLevel(ARMOR_CUT_ID)
-    let duration = DURATION.run(lvl)
-    new ArmorCutBuff(duration).apply(target)
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+
+    if sunit.hasAbility(ARMOR_CUT_ID) and DamageEvent.getType() == DamageType.ATTACK 
+      let lvl = sunit.getAbilityLevel(ARMOR_CUT_ID)
+      let chance = ARMOR_CUT_CHANCE.run(lvl)
+
+      if chance >= GetRandomInt(1, 100)
+        let tunit = DamageEvent.getTarget()
+        let armorReduction = ARMOR_CUT_ARMOR_REDUCE.run(lvl)
+        let duration = ARMOR_CUT_DURATION.run(lvl)
+
+        new ArmorCutBuff(duration, armorReduction).apply(tunit)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Reduces a target enemy unit's armor.")
-  new AbilityDefinitionFaerieFire(ARMOR_CUT_ID)
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero cuts his foes armor, reducing its armor for a duration. Stacks.")
+  new PassiveAbilityPreset(ARMOR_CUT_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
-  ..setRequiredLevel(1)
-  ..presetIcon(Icons.bTNCurse)
-  ..setIconTurnOff(Icons.bTNCurse)
-  ..setIconNormal(Icons.bTNCurse)
-  ..presetButtonPosNormal(0, 2)
-  ..presetButtonPosResearch(0, 0)
-  ..presetHotkey("Q")
+  ..presetIcon(Icons.pASBTNCriticalStrike)
+  ..presetButtonPosNormal(1, 1)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("D")
   
   ..tooltipStartListen()
-  ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Armor Cut")
-  ..presetDefenseReduction(lvl -> 3 + 2 * lvl)
-  ..addTooltipProperty("Duration", DURATION)
-  ..presetCastRange(lvl -> 300)
-  ..presetManaCost(lvl -> 35)
-  ..presetCooldown(lvl -> 9)
+  ..addTooltipProperty("Armor Reduction Chance", lvl -> ARMOR_CUT_CHANCE.run(lvl).percRound())
+  ..addTooltipProperty("Armor Reduction", ARMOR_CUT_ARMOR_REDUCE)
+  ..addTooltipProperty("Duration", ARMOR_CUT_DURATION)
   ..tooltipStopListen()
-  
-  ..presetBuffs(lvl -> "none")
-  ..presetDurationNormal(DURATION)
-  ..presetDurationHero(DURATION)
-  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies))

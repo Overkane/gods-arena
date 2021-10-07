@@ -3,19 +3,21 @@ import UnitIds
 import HeroPreset
 import ObjectIdGenerator
 import ArmorCut
+import SwiftSlash
 import Meditation
-import EnduranceAura
-import Bladestorm
+import Whirlwind
+import BattleTrance
 
 public constant BLADEMASTER_ID = compiletime(HERO_ID_GEN.next())
 
 @compiletime function genHero()
   new HeroPreset(BLADEMASTER_ID, UnitIds.blademaster, "Blademaster")
   ..addProperName("Futsunushi")
-  ..addHeroAbility(ARMOR_CUT_ID)
+  ..addHeroAbility(SWIFT_SLASH_ID)
   ..addHeroAbility(MEDITATION_ID)
-  ..addHeroAbility(ENDURANCE_AURA_ID)
-  ..addHeroAbility(BLADESTORM_ID)
+  ..addHeroAbility(WHIRLWIND_ID)
+  ..addHeroAbility(BATTLE_TRANCE_ID)
+  ..addNormalAbility(ARMOR_CUT_ID)
   ..setStartingStrength(18)
   ..setStrengthPerLevel(1.8)
   ..setStartingAgility(26)

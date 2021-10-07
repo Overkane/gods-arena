@@ -1,0 +1,43 @@
+package BattleTrance
+import AbilityTooltipGenerator
+import GameConstants
+import Icons
+import BattleTranceBuff
+import ClosureEvents
+
+public constant BATTLE_TRANCE_ID = compiletime(ABIL_ID_GEN.next())
+
+RealLevelClosure DURATION = lvl -> 10.
+RealLevelClosure BONUS_AS = lvl -> 125. * lvl
+
+init 
+  EventListener.onCast(BATTLE_TRANCE_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(BATTLE_TRANCE_ID)
+    let bonusAS = BONUS_AS.run(lvl)
+    let duration = DURATION.run(lvl)
+
+    new BattleTranceBuff(duration, bonusAS).apply(caster)
+    
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "After a delay hero gets huge bonus to attackspeed. After buff ends hero gets reversed buff for a half of original buff duration.")
+  new ChannelAbilityPreset(BATTLE_TRANCE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  ..presetIcon(Icons.bTNMirrorImage)
+  ..presetButtonPosNormal(3, 2)
+  ..presetButtonPosResearch(3, 0)
+  ..presetCastingTime(lvl -> 1)
+  ..presetHotkey("R")
+
+  ..tooltipStartListen()
+  ..setName("Battle Trance")
+  ..addTooltipProperty("Bonus Attackspeed", BONUS_AS)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 100)
+  ..presetCooldown(lvl -> 45)
+  ..tooltipStopListen()
+
+  ..presetDurationNormal(DURATION)
+  ..presetDurationHero(DURATION)
+
+
