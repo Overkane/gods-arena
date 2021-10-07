@@ -127,6 +127,7 @@ public function initPlayers()
     destroy p.getData()
     for backpack in backpackUnits
       if backpack.getOwner() == p
+        destroy backpack.getEntity()
         break
         
     printTimed(p.getNameColored() + " has left the game", 15.)
