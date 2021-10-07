@@ -21,7 +21,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 public constant S_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Small Healing Potion")
   ..setInterfaceIcon(MapIcons.bTNSmallHealingPotion)
-  ..setGoldCost(30)
+  ..setGoldCost(25)
   ..setNumberofCharges(1)
   ..setMaxStack(5)
   ..setActivelyUsed(true)

@@ -9,7 +9,7 @@ public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure HP_HEAL = lvl -> 30. * lvl
 constant RealLevelClosure SHIELD_DURABILITY = lvl -> 150. * lvl
-constant RealLevelClosure DURATION = lvl -> 8.
+constant RealLevelClosure DURATION = lvl -> 8. + lvl
 
 init
   EventListener.onTargetCast(BUBBLE_SHIELD_ID) (unit caster, unit target) ->
@@ -38,6 +38,6 @@ init
   ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 50 + 25 * lvl)
-  ..presetCooldown(lvl -> 15.)
+  ..presetManaCost(lvl -> 40 + 35 * lvl)
+  ..presetCooldown(lvl -> 13. - lvl * 2)
   ..tooltipStopListen()

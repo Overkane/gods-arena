@@ -361,7 +361,7 @@ function wave_9() returns Wave
   ..scale(2)
 
   ..creep(UnitIds.druidoftheclaw)
-  ..hp(4000)
+  ..hp(4500)
   ..damage(90)
   ..attackrate(0.85)
   ..amount(8)

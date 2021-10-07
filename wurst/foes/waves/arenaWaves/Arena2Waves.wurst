@@ -100,6 +100,13 @@ function wave_3() returns Wave
 
   ..wait(15)
 
+  ..creep(UnitIds.seaturtle)
+  ..hp(4500)
+  ..damage(85)
+  ..amount(11)
+
+  ..wait(15)
+
   ..creep(UnitIds.dragonturtle)
   ..hp(9500)
   ..damage(185)
@@ -149,6 +156,14 @@ function wave_4() returns Wave
   ..hp(11450)
   ..damage(218)
   ..amount(5)
+
+  ..wait(20)
+
+  ..creep(UnitIds.hydra)
+  ..hp(41450)
+  ..damage(318)
+  ..attackrate(0.85)
+  ..amount(1)
 
   .build()
 
