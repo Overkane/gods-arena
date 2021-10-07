@@ -19,7 +19,6 @@ constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
 public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Arcanite Sword")
 ..setInterfaceIcon(Icons.bTNArcaniteMelee)
-..setGoldCost(110)
 ..addBonus(Bonus.DAMAGE, 80)
 ..onPickup(actor -> begin
   actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, ATTACK_CRIT_CHANCE/100)
