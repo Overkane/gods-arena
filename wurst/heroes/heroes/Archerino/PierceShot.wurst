@@ -27,8 +27,7 @@ class TreantEntity extends UnitEntity
 
 init
     EventListener.onPointCast(PIERCESHOT_ID) (caster, target) ->
-        let casterEntity = caster.getEntity()
-        let projectile = new Projectile(casterEntity.getPos(), 86, caster.getOwner(), casterEntity.getPos().angleTo2d(target), Abilities.ballistaMissile)
+        let projectile = new Projectile(caster.getPos().toVec3(), 86, caster.getOwner(), caster.getPos().angleTo(target), Abilities.ballistaMissile)
         let lvl = caster.getAbilityLevel(PIERCESHOT_ID)
         projectile
             ..setRanged(1200)
@@ -39,7 +38,7 @@ init
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
                 DamageEvent.setNextDamageFromCode()
-                let dmg = SPELL_DAMAGE.run(lvl)
+                let dmg = SPELL_DAMAGE.run(lvl) 
                 caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
                 Knockback3.add(hitTarget, 350. + dmg, projectile.getXYAngle(), 45 .fromDeg())
 
