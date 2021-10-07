@@ -27,7 +27,6 @@ constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
 public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 ..setName("Mage Killer")
 ..setInterfaceIcon(MapIcons.bTNDarkShaft)
-..setGoldCost(110)
 ..addBonus(Bonus.DAMAGE, 65)
 ..addBonus(Bonus.AGILITY, 15)
 ..setAbilities(commaList(CRITICAL_STRIKE_ID, FEEDBACK_ID))

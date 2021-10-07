@@ -17,7 +17,6 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 public constant ORB_OF_MAGIC_ITEM = compiletime(new RecipeItem()
   ..setName("Orb of Magic")
   ..setInterfaceIcon(Icons.bTNCrystalBall)
-  ..setGoldCost(1000)
   ..setActivelyUsed(true)
   ..addBonus(Bonus.INTELLIGENCE, 50)
   ..setAbilities(ORB_OF_MAGIC_ID.toRawCode())
