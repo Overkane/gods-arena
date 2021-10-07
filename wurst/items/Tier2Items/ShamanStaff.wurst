@@ -42,7 +42,7 @@ public constant SHAMAN_STAFF_RECIPE = new ItemRecipe()
   ..setWardUnitType(1, HEALING_WARD_UNIT_ID.toRawCode())
   ..setDurationNormal(1, HEALING_WARD_DURATION.toReal())
   ..setManaCost(1, 125)
-  ..setCooldown(1, 60)
+  ..setCooldown(1, 65)
 
   new UnitDefinition(HEALING_WARD_UNIT_ID, UnitIds.healingward)
   ..setNormalAbilities(HEALING_WARD_AURA_ID.toRawCode())

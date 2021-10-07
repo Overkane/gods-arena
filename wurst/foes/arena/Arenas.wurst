@@ -34,4 +34,4 @@ init
           spawnLoc = gg_rct_Arena3Spawn4.getCenter()
       return spawnLoc
     end)
-    ..setWaves(ARENA3_WAVE_1, ARENA3_WAVE_2)
+    ..setWaves(ARENA3_WAVE_1, ARENA3_WAVE_2, ARENA3_WAVE_3, ARENA3_WAVE_4)
