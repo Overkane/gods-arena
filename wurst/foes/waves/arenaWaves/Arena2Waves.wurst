@@ -82,7 +82,7 @@ function wave_2() returns Wave
   ..hp(12500)
   ..mana(5000)
   ..attackrate(0.35)
-  ..damage(195)
+  ..damage(235)
   ..armor(11)
   ..amount(2)
 
@@ -96,7 +96,7 @@ function wave_3() returns Wave
   ..creep(UnitIds.seaturtle)
   ..hp(4500)
   ..damage(85)
-  ..amount(12)
+  ..amount(22)
 
   ..wait(15)
 
@@ -111,7 +111,7 @@ function wave_3() returns Wave
   ..creep(UnitIds.sludgeflinger)
   ..hp(4250)
   ..damage(290)
-  ..attackrate(1.15)
+  ..attackrate(1.05)
   ..armor(9)
   ..amount(8)
   ..scale(1.1)
@@ -162,7 +162,8 @@ function wave_5() returns Wave
   ..damage(248)
   ..attackrate(0.75)
   ..amount(2)
-  ..armorType(ArmorType.Hero)
+  ..armorType(ArmorType.Fortified)
+  ..armor(15)
 
   ..wait(5)
 

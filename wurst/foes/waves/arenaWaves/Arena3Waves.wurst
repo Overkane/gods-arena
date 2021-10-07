@@ -5,6 +5,7 @@ import Wave
 public constant ARENA3_WAVE_1 = compiletime(wave_1())
 public constant ARENA3_WAVE_2 = compiletime(wave_2())
 public constant ARENA3_WAVE_3 = compiletime(wave_3())
+public constant ARENA3_WAVE_4 = compiletime(wave_4())
 
 function wave_1() returns Wave
   return new WaveBuilder()
@@ -33,7 +34,7 @@ function wave_1() returns Wave
   ..creep(UnitIds.militia)
   ..hp(6400)
   ..damage(188)
-  ..amount(32)
+  ..amount(42)
   ..scale(1.05)
 
   .build()
@@ -60,24 +61,24 @@ function wave_2() returns Wave
   ..creep(UnitIds.spellbreaker)
   ..hp(25000)
   ..damage(666)
-  ..attackrate(0.25)
-  ..amount(10)
-  ..scale(1.15)
+  ..attackrate(0.45)
+  ..amount(2)
+  ..scale(1.55)
 
   ..creep(UnitIds.sorceress)
   ..hp(25000)
   ..damage(333)
-  ..attackrate(0.12)
-  ..scale(1.25)
-  ..amount(10)
+  ..attackrate(0.32)
+  ..scale(1.45)
+  ..amount(2)
 
   ..wait(25)
 
   ..creep(UnitIds.paladin)
-  ..hp(25000)
+  ..hp(55000)
   ..damage(628)
-  ..attackrate(0.12)
-  ..scale(1.25)
+  ..attackrate(0.52)
+  ..scale(1.95)
   ..amount(1)
 
   .build()
@@ -85,11 +86,67 @@ function wave_2() returns Wave
 function wave_3() returns Wave
   return new WaveBuilder()
 
+  ..creep(UnitIds.paladin)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(15)
+
+  ..creep(UnitIds.paladin)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(15)
+
+  ..creep(UnitIds.paladin)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(10)
+
+  ..creep(UnitIds.paladin)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(10)
+
+  ..creep(UnitIds.paladin)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(5)
+
+  ..creep(UnitIds.paladin)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  .build()
+
+function wave_4() returns Wave
+  return new WaveBuilder()
+
   ..creep(UnitIds.thecaptain)
   ..hp(12000)
-  ..damage(288)
-  ..amount(20)
-  ..scale(1.15)
-
+  ..damage(788)
+  ..amount(4)
+  ..scale(2.15)
 
   .build()
