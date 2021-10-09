@@ -7,3 +7,4 @@ GuardReturnTime=10000.0
 MaxGuardDistance=100000.0
 MaxHeroLevel=50
 AgiDefenseBonus=0.25
+DefenseArmor=0.05
