@@ -3,7 +3,7 @@ import PresetBuffs
 import Assets
 import BonusHandler
 
-constant buffTuple = compiletime(createDummyBuffObject("Armor Cut", "Unit's armor is decreased.",  Icons.bTNCurse))
+constant buffTuple = compiletime(createDummyBuffObject("Armor Cut", "Unit's armor is decreased.",  Icons.pASBTNCriticalStrike))
 
 public class ArmorCutBuff extends StackingBuff
   var armorReduction = 0.

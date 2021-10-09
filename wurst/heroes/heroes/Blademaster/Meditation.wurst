@@ -61,7 +61,7 @@ init
       tunit.issueImmediateOrderById(OrderIds.stop)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero meditate and restores his hp and mp over time. "
+  let tooltip = new AbilityTooltipGenerator("Hero meditates and restores his hp and mp over time. "
     + "Any received damage during meditation interrupts it. If meditation was fully completed, hero gets attack damage buff for some time.")
   new ChannelAbilityPreset(MEDITATION_ID, NORMAL_SPELL_LEVELS, false, tooltip)
   ..registerTooltipGenerator(tooltip)

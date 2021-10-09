@@ -10,7 +10,7 @@ import DamageSystem
 
 public constant WHIRLWIND_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure CHANCE = lvl -> 17. + 1 * (lvl-1)
+constant RealLevelClosure CHANCE = lvl -> 17. + 1 * ((lvl-1) / 2).floor()
 constant RealLevelClosure DAMAGE = lvl -> 0.5 + 0.1 * (lvl-1)
 constant RealLevelClosure RADIUS = lvl -> 250.
 

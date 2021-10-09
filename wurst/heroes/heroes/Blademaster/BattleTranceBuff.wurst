@@ -9,30 +9,54 @@ constant buffTuple2 = compiletime(createDummyBuffObject("Battle Trance Debuff", 
 
 public class BattleTranceBuff extends NormalBuff
   constant ON_APPLY_SOUND = new SoundDefinition(Sounds.bloodlustTarget)
+  constant originalDuration = 0.
+  constant baseAttackCooldownTime = 0.
   constant bonusAS = 0.
+  constant bonusMS = 0.
+  constant attackCooldownTime = 0.
 
-  construct(real dur, real bonusAS)
+  construct(real dur, real bonusAS, real bonusMS, real attackCooldownTime)
     super(dur, buffTuple1)
+
+    originalDuration = dur
+
+    this.baseAttackCooldownTime = target.getAttackCooldown(1)
+    
     this.bonusAS = bonusAS
+    this.bonusMS = bonusMS
+    this.attackCooldownTime = attackCooldownTime
     this.duration = dur
     
   override function onApply()
-    ON_APPLY_SOUND.play()  
-    target.addBonus(Bonus.ATTACKSPEED, bonusAS)
+    ON_APPLY_SOUND.play()
+    target
+    ..addBonus(Bonus.ATTACKSPEED, bonusAS)
+    ..setMoveSpeed(target.getMoveSpeed() + bonusMS)
+    ..setAttackCooldown(attackCooldownTime, 1)
 
   override function onEnd()
-    target.addBonus(Bonus.ATTACKSPEED, -bonusAS)
-    new BattleTranceBuff(duration / 2, bonusAS).apply(target)
+    target
+    ..addBonus(Bonus.ATTACKSPEED, -bonusAS)
+    ..setMoveSpeed(target.getMoveSpeed() - bonusMS)
+    ..setAttackCooldown(baseAttackCooldownTime, 1)
+
+    new BattleTranceDebuff(originalDuration / 2, bonusAS, bonusMS).apply(target)
 
 public class BattleTranceDebuff extends NormalBuff
   constant bonusAS = 0.
+  constant bonusMS = 0.
 
-  construct(real dur, real bonusAS)
+  construct(real dur, real bonusAS, real bonusMS)
     super(dur, buffTuple2)
     this.bonusAS = bonusAS
+    this.bonusMS = bonusMS
 
   override function onApply()
-    target.addBonus(Bonus.ATTACKSPEED, -bonusAS)
+    target
+    ..addBonus(Bonus.ATTACKSPEED, -bonusAS)
+    ..setMoveSpeed(target.getMoveSpeed() - bonusMS)
 
   override function onEnd()
-    target.addBonus(Bonus.ATTACKSPEED, bonusAS)
+    target
+    ..addBonus(Bonus.ATTACKSPEED, bonusAS)
+    ..setMoveSpeed(target.getMoveSpeed() + bonusMS)

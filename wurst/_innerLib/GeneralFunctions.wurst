@@ -1,5 +1,6 @@
 package GeneralFunctions
 import FText
+import TerrainUtils
 
 public function player.defeat(string message)
   CustomDefeatBJ(this, message)
@@ -11,3 +12,39 @@ public function createBountyTextTag(unit u, int bounty)
 public function createBountyTextTag(unit u, int bounty, player p, real offset)
   createFText(u.getPos().withTerrainZ(offset) + vec3(GetRandomReal(-40, 0), GetRandomReal(-40, 0), 0), "+" + bounty.toString(), 9,
       3., vec2(0, 0.03), colorA(255, 220, 0, 255), p)
+
+// Copies function from TerrainUtils, but takes parameter to make tested item ghost
+// so it consider units to be walkable.
+constant MAX_RANGE_SQ = 10. .squared()
+constant DUMMY_ITEM_ID = 'wolg'
+let dummyItem = createItem(DUMMY_ITEM_ID, ZERO2)..setVisible(false)
+let itemSearchRect = Rect(0., 0., 128., 128.)
+item array hiddenItems
+int hiddenItemsCount = 0
+public function vec2.isTerrainWalkable(bool applyGhostAbility) returns boolean
+  if applyGhostAbility
+    dummyItem.setpa
+    // dummyItem.addAbility(GHOST_VIS_ID)
+  // Hide any items in the area to avoid conflicts with our item
+  itemSearchRect.moveTo(this)
+  EnumItemsInRect(itemSearchRect, null) ->
+    if GetEnumItem().isVisible()
+      hiddenItems[hiddenItemsCount] = GetEnumItem()
+      hiddenItems[hiddenItemsCount].setVisible(false)
+      hiddenItemsCount++
+
+  // Try to move the test item and get its coords
+  dummyItem.setPos(this) // Unhides the item
+  let tempPos = dummyItem.getPos()
+  dummyItem.setVisible(false) // Hide it again
+
+  // Unhide any items hidden at the start
+  while hiddenItemsCount > 0
+    hiddenItemsCount--
+    hiddenItems[hiddenItemsCount].setVisible(true)
+    hiddenItems[hiddenItemsCount] = null
+
+  if applyGhostAbility
+    dummyItem.removeAbility(GHOST_VIS_ID)
+
+  return (tempPos.x - this.x) * (tempPos.x - this.x) + (tempPos.y-this.y) * (tempPos.y - this.y) <= MAX_RANGE_SQ and not this.isTerrainPathable(PATHING_TYPE_WALKABILITY)

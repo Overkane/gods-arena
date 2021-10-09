@@ -7,19 +7,24 @@ import ClosureEvents
 
 public constant BATTLE_TRANCE_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DURATION = lvl -> 10.
-RealLevelClosure BONUS_AS = lvl -> 125. * lvl
+constant RealLevelClosure DURATION = lvl -> 10.
+constant RealLevelClosure BONUS_AS = lvl -> 50. * lvl
+constant RealLevelClosure BONUS_MS = lvl -> 50. * lvl
+constant RealLevelClosure ATTACK_COOLDOWN_TIME = lvl -> 1.7 - 0.1 * lvl
 
 init 
   EventListener.onCast(BATTLE_TRANCE_ID) (unit caster) ->
     let lvl = caster.getAbilityLevel(BATTLE_TRANCE_ID)
     let bonusAS = BONUS_AS.run(lvl)
+    let bonusMS = BONUS_MS.run(lvl)
+    let attackCooldownTime = ATTACK_COOLDOWN_TIME.run(lvl)
     let duration = DURATION.run(lvl)
 
-    new BattleTranceBuff(duration, bonusAS).apply(caster)
+    new BattleTranceBuff(duration, bonusAS, bonusMS, attackCooldownTime).apply(caster)
     
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "After a delay hero gets huge bonus to attackspeed. After buff ends hero gets reversed buff for a half of original buff duration.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "After a delay hero gets bonus to attackspeed, movement speed and get decreased base attack cooldown. " +
+    "After buff ends hero gets reversed buff for a half of original buff duration.")
   new ChannelAbilityPreset(BATTLE_TRANCE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
@@ -32,9 +37,11 @@ init
   ..tooltipStartListen()
   ..setName("Battle Trance")
   ..addTooltipProperty("Bonus Attackspeed", BONUS_AS)
+  ..addTooltipProperty("Bonus Movespeed", BONUS_MS)
+  ..addTooltipProperty("Base Attack Cooldown", lvl -> ATTACK_COOLDOWN_TIME.run(lvl).toString(1))
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 100)
-  ..presetCooldown(lvl -> 45)
+  ..presetManaCost(lvl -> 75 + 25 * lvl)
+  ..presetCooldown(lvl -> 60)
   ..tooltipStopListen()
 
   ..presetDurationNormal(DURATION)
