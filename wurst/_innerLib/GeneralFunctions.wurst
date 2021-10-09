@@ -23,8 +23,7 @@ item array hiddenItems
 int hiddenItemsCount = 0
 public function vec2.isTerrainWalkable(bool applyGhostAbility) returns boolean
   if applyGhostAbility
-    dummyItem.setpa
-    // dummyItem.addAbility(GHOST_VIS_ID)
+    dummyItem.addAbility(GHOST_VIS_ID)
   // Hide any items in the area to avoid conflicts with our item
   itemSearchRect.moveTo(this)
   EnumItemsInRect(itemSearchRect, null) ->
