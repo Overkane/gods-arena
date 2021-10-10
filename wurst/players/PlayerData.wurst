@@ -3,6 +3,7 @@ import GameConstants
 import Hero
 import Players
 import initlater Backpack
+import initlater HonorShop
 import HashMap
 import Entity
 
@@ -128,6 +129,11 @@ public function initPlayers()
     for backpack in backpackUnits
       if backpack.getOwner() == p
         destroy backpack.getEntity()
+        break
+
+    for honorShop in honorShopUnits
+      if honorShop.getOwner() == p
+        destroy honorShop.getEntity()
         break
         
     printTimed(p.getNameColored() + " has left the game", 15.)

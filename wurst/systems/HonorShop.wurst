@@ -1,0 +1,229 @@
+package HonorShop
+import ObjectIdGenerator
+import UnitObjEditing
+import ClosureTimers
+import Icons
+import UnitIds
+import AbilityIds
+import UpgradeObjEditing
+import PlayerData
+import TooltipFactory
+import BonusHandler
+import CustomStatSystem
+import ObjectIds
+import Entity
+
+constant HONOR_SHOP_ID = compiletime(HERO_ID_GEN.next())
+constant HONOR_SHOP_UPGRADE_LEVELS = 10
+
+constant UPG_MIGHT = compiletime(UPGD_ID_GEN.next())
+constant MIGHT_STR = 1.
+constant MIGHT_AD = 2.
+constant MIGHT_ACP = 0.5
+
+constant UPG_ENDURANCE = compiletime(UPGD_ID_GEN.next())
+constant END_HP = 30.
+constant END_HPREG = 0.5
+constant END_ARMOR = 0.5
+
+constant UPG_DEXTERITY = compiletime(UPGD_ID_GEN.next())
+constant DEX_AGI = 1.
+constant DEX_AP = 1.
+constant DEX_EV = 0.5
+
+constant UPG_QUICKNESS = compiletime(UPGD_ID_GEN.next())
+constant QUICK_AS = 2.5
+constant QUICK_MS = 2.5
+constant QUIKC_LS = 0.5
+
+constant UPG_MIND = compiletime(UPGD_ID_GEN.next())
+constant MIND_INT = 1.
+constant MIND_SP = 1.
+constant MIND_SCP = 0.5
+
+constant UPG_WISDOM = compiletime(UPGD_ID_GEN.next())
+constant WISD_MANA = 17.
+constant WISD_MANAREG = 0.2
+constant WISD_SL = 0.5
+
+constant UPG_LUCK = compiletime(UPGD_ID_GEN.next())
+constant LUCK_ACC = 1.
+constant LUCK_SCC = 1.
+constant LUCK_EV = 1.
+
+public constant honorShopUnits = new LinkedList<unit>
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_RESEARCH_FINISH) -> 
+    pData.get(EventData.getTriggerPlayer()).getHero().ifPresent() (h) ->
+      let heroUnit = h.actor
+
+      if EventData.getResearchedType() == UPG_MIGHT
+        heroUnit.addBonus(Bonus.STRENGTH, MIGHT_STR)
+        heroUnit.addBonus(Bonus.DAMAGE, MIGHT_AD)
+        heroUnit.addStat(CustomUnitStats.ATTACK_CRIT_POWER, MIGHT_ACP/100)
+
+      if EventData.getResearchedType() == UPG_ENDURANCE
+        heroUnit.addBonus(Bonus.LIFE, END_HP)
+        heroUnit.addBonus(Bonus.LIFEREGEN, END_HPREG)
+        heroUnit.addBonus(Bonus.ARMOR, END_ARMOR)
+
+      else if EventData.getResearchedType() == UPG_DEXTERITY
+        heroUnit.addBonus(Bonus.AGILITY, DEX_AGI)
+        heroUnit.addStat(CustomUnitStats.ATTACK_POWER, DEX_AP/100)
+        heroUnit.addStat(CustomUnitStats.EVASION, DEX_EV/100)
+
+      else if EventData.getResearchedType() == UPG_QUICKNESS
+        heroUnit.addBonus(Bonus.ATTACKSPEED, QUICK_AS)
+        heroUnit.setMoveSpeed(heroUnit.getMoveSpeed() + QUICK_MS)
+        heroUnit.addStat(CustomUnitStats.LIFESTEAL, QUIKC_LS/100)
+
+      else if EventData.getResearchedType() == UPG_MIND
+        heroUnit.addBonus(Bonus.INTELLIGENCE, MIND_INT)
+        heroUnit.addStat(CustomUnitStats.SPELL_POWER, MIND_SP/100)
+        heroUnit.addStat(CustomUnitStats.SPELL_CRIT_POWER, MIND_SCP/100)
+
+      else if EventData.getResearchedType() == UPG_WISDOM
+        heroUnit.addBonus(Bonus.MANA, WISD_MANA)
+        heroUnit.addBonus(Bonus.MANAREGEN, WISD_MANAREG)
+        heroUnit.addStat(CustomUnitStats.SPELL_LIFESTEAL, WISD_SL/100)
+
+      else if EventData.getResearchedType() == UPG_LUCK
+        heroUnit.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, LUCK_ACC/100)
+        heroUnit.addStat(CustomUnitStats.SPELL_CRIT_CHANCE, LUCK_SCC/100)
+        heroUnit.addStat(CustomUnitStats.EVASION, LUCK_EV/100)
+
+  doPeriodically(1) (CallbackPeriodic cb) ->
+    updateHonorShopPos()
+
+function updateHonorShopPos()
+  for backpack in honorShopUnits
+    let heroUnit = pData.get(backpack.getOwner()).getHero().hero.actor
+    if heroUnit.isAlive()
+      backpack.setPos(heroUnit.getPos())
+
+public class HonorShop extends UnitEntity
+  constant unit unitOwner
+
+  construct(player p, unit hero)
+    super(createUnit(p, HONOR_SHOP_ID, vec2(0, 0), angle(0)))
+    honorShopUnits.add(actor)
+    unitOwner = hero
+
+  ondestroy
+    honorShopUnits.remove(actor)
+
+@compiletime function gen()
+  new BuildingAndHeroDefinition(HONOR_SHOP_ID, UnitIds.circleofpower)
+  ..setName("Honor Shop")
+  ..setProperNames("Honor Shop")
+  ..setIconGameInterface(Icons.bTNMedalionOfCourage)
+  ..setHideMinimapDisplay(true)
+  ..setNormalAbilities(AbilityIds.invulnerable.toRawCode())
+  ..setResearchesAvailable(commaList(UPG_MIGHT, UPG_ENDURANCE, UPG_DEXTERITY, UPG_QUICKNESS, UPG_MIND, UPG_WISDOM, UPG_LUCK))
+  ..setArmorType(ArmorType.Divine)
+  ..setModelFile("")
+  ..setScalingValue(0.)
+  ..setSelectionScale(0)
+  ..setCollisionSize(0.)
+  ..setSightRadiusDay(0)
+  ..setSightRadiusNight(0)
+
+  // Upgrades for honor shop
+  new UpgradeDefinition(UPG_MIGHT)
+  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
+  ..setButtonPositionX(0)
+  ..setButtonPositionY(0)
+  ..setLumberCostBase(1)
+  ..setTimeBase(1)
+  ..presetHotkey(lvl -> "Q")
+  ..presetIcon(lvl -> Icons.bTNDeathPact)
+  ..presetName(lvl -> "Might")
+  ..presetTooltip(lvl -> "Might")
+  ..presetTooltipExtended(lvl -> "Increases " + "strength".color(COLOR_GOLD) + " by " + MIGHT_STR.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "attack damage".color(COLOR_GOLD) + " by " + MIGHT_AD.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "attack crit power".color(COLOR_GOLD) + " by " + MIGHT_ACP.colorPerc(COLOR_GOLD) + ".")
+
+  new UpgradeDefinition(UPG_ENDURANCE)
+  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
+  ..setButtonPositionX(0)
+  ..setButtonPositionY(1)
+  ..setLumberCostBase(1)
+  ..setTimeBase(1)
+  ..presetHotkey(lvl -> "A")
+  ..presetIcon(lvl -> Icons.bTNClayFigurine)
+  ..presetName(lvl -> "Endurance")
+  ..presetTooltip(lvl -> "Endurance")
+  ..presetTooltipExtended(lvl -> "Increases " + "hit points".color(COLOR_GOLD) + " by " + END_HP.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "armor".color(COLOR_GOLD) + " by " + END_ARMOR.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "hit points regeneration".color(COLOR_GOLD) + " by " + END_HPREG.color(COLOR_GOLD) + ".")
+
+  new UpgradeDefinition(UPG_DEXTERITY)
+  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
+  ..setButtonPositionX(1)
+  ..setButtonPositionY(0)
+  ..setLumberCostBase(1)
+  ..setTimeBase(1)
+  ..presetHotkey(lvl -> "W")
+  ..presetIcon(lvl -> Icons.bTNEvasion)
+  ..presetName(lvl -> "Dexterity")
+  ..presetTooltip(lvl -> "Dexterity")
+  ..presetTooltipExtended(lvl -> "Increases " + "agility".color(COLOR_GOLD) + " by " + DEX_AGI.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "attack power".color(COLOR_GOLD) + " by " + DEX_AP.colorPerc(COLOR_GOLD) + ".\n" +
+    "Increases " + "evasion".color(COLOR_GOLD) + " by " + DEX_EV.colorPerc(COLOR_GOLD) + ".")
+
+  new UpgradeDefinition(UPG_QUICKNESS)
+  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
+  ..setButtonPositionX(1)
+  ..setButtonPositionY(1)
+  ..setLumberCostBase(1)
+  ..setTimeBase(1)
+  ..presetHotkey(lvl -> "S")
+  ..presetIcon(lvl -> Icons.bTNBootsOfSpeed)
+  ..presetName(lvl -> "Quickness")
+  ..presetTooltip(lvl -> "Quickness")
+  ..presetTooltipExtended(lvl -> "Increases " + "attack speed".color(COLOR_GOLD) + " by " + QUICK_AS.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "movement speed".color(COLOR_GOLD) + " by " + QUICK_MS.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "lifesteal".color(COLOR_GOLD) + " by " + QUIKC_LS.colorPerc(COLOR_GOLD) + ".")
+
+  new UpgradeDefinition(UPG_MIND)
+  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
+  ..setButtonPositionX(2)
+  ..setButtonPositionY(0)
+  ..setLumberCostBase(1)
+  ..setTimeBase(1)
+  ..presetHotkey(lvl -> "E")
+  ..presetIcon(lvl -> Icons.bTNInvisibility)
+  ..presetName(lvl -> "Mind")
+  ..presetTooltip(lvl -> "Mind")
+  ..presetTooltipExtended(lvl -> "Increases " + "intelligence".color(COLOR_GOLD) + " by " + MIND_INT.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "spell power".color(COLOR_GOLD) + " by " + MIND_SP.colorPerc(COLOR_GOLD) + ".\n" +
+    "Increases " + "spell crit power".color(COLOR_GOLD) + " by " + MIND_SCP.colorPerc(COLOR_GOLD) + ".")
+
+  new UpgradeDefinition(UPG_WISDOM)
+  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
+  ..setButtonPositionX(2)
+  ..setButtonPositionY(1)
+  ..setLumberCostBase(1)
+  ..setTimeBase(1)
+  ..presetHotkey(lvl -> "D")
+  ..presetIcon(lvl -> Icons.bTNBansheeMaster)
+  ..presetName(lvl -> "Wisdom")
+  ..presetTooltip(lvl -> "Wisdom")
+  ..presetTooltipExtended(lvl -> "Increases " + "mana".color(COLOR_GOLD) + " by " + WISD_MANA.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "mana regeneration".color(COLOR_GOLD) + " by " + WISD_MANAREG.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "spell lifesteal".color(COLOR_GOLD) + " by " + WISD_SL.colorPerc(COLOR_GOLD) + ".")
+
+  new UpgradeDefinition(UPG_LUCK)
+  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
+  ..setButtonPositionX(3)
+  ..setButtonPositionY(0)
+  ..setLumberCostBase(1)
+  ..setTimeBase(1)
+  ..presetHotkey(lvl -> "R")
+  ..presetIcon(lvl -> Icons.bTNPriestMaster)
+  ..presetName(lvl -> "Luck")
+  ..presetTooltip(lvl -> "Luck")
+  ..presetTooltipExtended(lvl -> "Increases " + "attack crit chance".color(COLOR_GOLD) + " by " + LUCK_ACC.colorPerc(COLOR_GOLD) + ".\n" +
+    "Increases " + "spell crit chance".color(COLOR_GOLD) + " by " + LUCK_SCC.colorPerc(COLOR_GOLD) + ".\n" +
+    "Increases " + "evasion".color(COLOR_GOLD) + " by " + LUCK_EV.colorPerc(COLOR_GOLD) + ".")

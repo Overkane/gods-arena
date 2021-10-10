@@ -11,8 +11,8 @@ import SoundUtils
 import ItemShopUI
 import DemonLordIds
 import CustomStatSystem
-// import GameStatistic
 import Backpack
+import HonorShop
 
 public HeroPickUI heroPickUI
 
@@ -92,6 +92,7 @@ class HeroPickUI
         let pickedIcon = playerSelection.getAndRemove(p)
         let h = new Hero(p, pickedIcon.heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
         let backpack = new Backpack(p, h.actor).actor
+        new HonorShop(p, h.actor)
         
         pData.get(p).setHero(h)
         p.selectSingle(h.actor)
