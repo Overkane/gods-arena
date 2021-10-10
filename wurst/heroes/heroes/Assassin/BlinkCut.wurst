@@ -9,6 +9,7 @@ import ClosureTimers
 import ClosureEvents
 import LinkedList
 import GameConstants
+import MapModels
 
 public constant BLINK_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -45,7 +46,7 @@ init
           caster.setAnimation(UnitAnimations.HeroWarden.attack1.idx)
           caster.damageTarget(unitList.getFirst(), damagePerStrike)
           flashEffect(Abilities.blinkCaster, caster.getPos())
-          flashEffect("Ephemeral Cut Midnight.mdx", unitList.getFirst(), AttachmentPoints.chest)
+          flashEffect(MapModels.midnightCut, unitList.getFirst(), AttachmentPoints.chest)
           numberOfStrikes -= 1
 
           if numberOfStrikes == 0

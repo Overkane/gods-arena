@@ -14,6 +14,8 @@ import GeneralFunctions
 import ClosureForGroups
 import SoundUtils
 import LinkedList
+import MapModels
+import AttachmentPoints
 
 public constant SWIFT_SLASH_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -55,6 +57,7 @@ init
               damagedTargets.add(u)
               DamageEvent.setNextDamageFromCode()
               caster.damageTarget(u, rawDamage + caster.getAgi(true) * agiDamageMult)
+              flashEffect(MapModels.redCut, u, AttachmentPoints.chest)
 
               if caster.hasAbility(ARMOR_CUT_ID)
                 let armorCutLvl = caster.getAbilityLevel(ARMOR_CUT_ID)

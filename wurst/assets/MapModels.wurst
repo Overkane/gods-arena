@@ -1,4 +1,5 @@
 package MapModels
 
 public class MapModels
-
+  static constant redCut = "Models/Ephemeral Cut Red.mdx" // Mythic
+  static constant midnightCut = "Models/Ephemeral Cut Midnight.mdx" // Mythic
