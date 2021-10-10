@@ -1,0 +1,12 @@
+[CustomSkin]
+LumberIcon=ReplaceableTextures\PassiveButtons\PASmedalionofcourage.blp
+AllianceLumberDisabled=ReplaceableTextures\CommandButtonsDisabled\DISPASmedalionofcourage.blp
+ToolTipLumberIcon=ReplaceableTextures\PassiveButtons\PASmedalionofcourage.blp
+
+[FrameDef]
+COLON_LUMBER=Honor Points:
+LUMBER=Honor Points
+RESOURCE_UBERTIP_LUMBER=Can be obtained in various ways.
+
+[Errors]
+Nolumber=Not enough honor points.

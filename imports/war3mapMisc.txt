@@ -8,3 +8,5 @@ MaxGuardDistance=100000.0
 MaxHeroLevel=50
 AgiDefenseBonus=0.25
 DefenseArmor=0.05
+MaxUnitSpeed=522.0
+MinUnitSpeed=75.0
