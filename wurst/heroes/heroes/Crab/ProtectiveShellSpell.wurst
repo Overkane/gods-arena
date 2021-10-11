@@ -8,6 +8,7 @@ import Orders
 import ClosureTimers
 import BonusHandler
 import GameConstants
+import CreepAggro
 
 public constant SHELL_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
@@ -35,6 +36,7 @@ init
         forUnitsInRange(caster.getPos(), SPELL_AOE) (target) ->
             if target.isEnemyOf(owner)
                 InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, lvl, OrderIds.cripple, target)
+                caster.addAggro(target, 50 + lvl * 50)
 
         doAfter(SPELL_DURATION) ->
             iceEffect.destr()
@@ -46,7 +48,7 @@ init
 
 @compiletime
 function genAbility()
-    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases regeneration and reduces attack damage of nearby enemies."))
+    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases regeneration but taunts nearby enemies."))
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNShimmerWeed)

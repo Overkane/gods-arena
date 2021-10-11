@@ -17,6 +17,29 @@ class AggroEntry
 
 constant aggroMap = new HashMap<unit, LinkedList<AggroEntry>>()
 
+public function unit.addAggro(unit target, int amount)
+    let source = this
+    if not aggroMap.has(target)
+        aggroMap.put(target, new LinkedList<AggroEntry>())
+
+    if source != null
+        let aggroList = aggroMap.get(target)
+        let first = aggroList.getFirst()
+        var found = false
+        for aggro in aggroList
+            if aggro.source == source
+                aggro.aggro += amount
+                found = true
+                break
+
+        if not found
+            aggroList.add(new AggroEntry(source, amount))
+
+        aggroList.sortWith((a, b) -> b.aggro - a.aggro)
+
+        if first != aggroList.getFirst()
+            target.issueTargetOrderById(OrderIds.attack, source)
+
 init
     DamageEvent.addListener() -> 
         var source = DamageEvent.getSource()
@@ -25,30 +48,12 @@ init
         let targetOwner = target.getOwner()
 
         if targetOwner == ENEMY_PLAYER and sourceOwner.isHuman() and not target.isType(UNIT_TYPE_PEON)
-            if not aggroMap.has(target)
-                aggroMap.put(target, new LinkedList<AggroEntry>())
-            
             if source.hasAbility(LOCUST_ID)
                 let pdata = pData.get(sourceOwner)
                 source = pdata.getHero().hero.actor
 
-            if source != null
-                let aggroList = aggroMap.get(target)
-                let first = aggroList.getFirst()
-                var found = false
-                for aggro in aggroList
-                    if aggro.source == source
-                        aggro.aggro += DamageEvent.getAmount().toInt()
-                        found = true
-                        break
-
-                if not found
-                    aggroList.add(new AggroEntry(source, DamageEvent.getAmount().toInt()))
-
-                aggroList.sortWith((a, b) -> b.aggro - a.aggro)
-
-                if first != aggroList.getFirst()
-                    target.issueTargetOrderById(OrderIds.attack, source)
+            source.addAggro(target, DamageEvent.getAmount().toInt())
+            
                 
             
     onUnitDeindex() ->
