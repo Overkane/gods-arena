@@ -1,52 +1,48 @@
 package HonorShop
-import ObjectIdGenerator
-import UnitObjEditing
 import ClosureTimers
 import Icons
 import UnitIds
-import AbilityIds
-import UpgradeObjEditing
 import PlayerData
 import TooltipFactory
 import BonusHandler
 import CustomStatSystem
-import ObjectIds
 import Entity
+import AbilityTooltipGenerator
 
 constant HONOR_SHOP_ID = compiletime(HERO_ID_GEN.next())
-constant HONOR_SHOP_UPGRADE_LEVELS = 10
+constant HONOR_SHOP_UPGRADE_LEVELS = 11
 
-constant UPG_MIGHT = compiletime(UPGD_ID_GEN.next())
+constant ABIL_MIGHT = compiletime(ABIL_ID_GEN.next())
 constant MIGHT_STR = 1.
 constant MIGHT_AD = 2.
 constant MIGHT_ACP = 0.5
 
-constant UPG_ENDURANCE = compiletime(UPGD_ID_GEN.next())
+constant ABIL_ENDURANCE = compiletime(ABIL_ID_GEN.next())
 constant END_HP = 30.
 constant END_HPREG = 0.5
 constant END_ARMOR = 0.5
 
-constant UPG_DEXTERITY = compiletime(UPGD_ID_GEN.next())
+constant ABIL_DEXTERITY = compiletime(ABIL_ID_GEN.next())
 constant DEX_AGI = 1.
 constant DEX_AP = 1.
 constant DEX_EV = 0.5
 
-constant UPG_QUICKNESS = compiletime(UPGD_ID_GEN.next())
+constant ABIL_QUICKNESS = compiletime(ABIL_ID_GEN.next())
 constant QUICK_AS = 2.5
 constant QUICK_MS = 2.5
 constant QUIKC_LS = 0.5
 
-constant UPG_MIND = compiletime(UPGD_ID_GEN.next())
+constant ABIL_MIND = compiletime(ABIL_ID_GEN.next())
 constant MIND_INT = 1.
 constant MIND_SP = 1.
 constant MIND_SCP = 0.5
 
-constant UPG_WISDOM = compiletime(UPGD_ID_GEN.next())
+constant ABIL_WISDOM = compiletime(ABIL_ID_GEN.next())
 constant WISD_MANA = 17.
 constant WISD_MANAREG = 0.2
 constant WISD_SL = 0.5
 
-constant UPG_LUCK = compiletime(UPGD_ID_GEN.next())
+constant ABIL_LUCK = compiletime(ABIL_ID_GEN.next())
 constant LUCK_ACC = 1.
 constant LUCK_SCC = 1.
 constant LUCK_EV = 1.
@@ -54,53 +50,170 @@ constant LUCK_EV = 1.
 public constant honorShopUnits = new LinkedList<unit>
 
 init
-  EventListener.add(EVENT_PLAYER_UNIT_RESEARCH_FINISH) -> 
-    pData.get(EventData.getTriggerPlayer()).getHero().ifPresent() (h) ->
-      let heroUnit = h.actor
+  // EventListener.onCast(ABIL_MIGHT) (unit caster) ->
+  //   let p = EventData.getTriggerPlayer()
+    
+  //   pData.get(p).getHero().ifPresent() (h) ->
+  //     let heroUnit = h.actor
+  //     let caster = EventData.getTriggerUnit()
+  //     let spellId = EventData.getSpellAbilityId()
+  //     if p.getLumber() < 1
+  //       printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+  //     else
+  //       p.addLumber(-1)
+        
+  //       heroUnit.addBonus(Bonus.STRENGTH, MIGHT_STR)
+  //       heroUnit.addBonus(Bonus.DAMAGE, MIGHT_AD)
+  //       heroUnit.addStat(CustomUnitStats.ATTACK_CRIT_POWER, MIGHT_ACP/100)
+        
+  //       caster.incAbilityLevel(spellId)
+  //       if caster.getAbilityLevel(spellId) == 11
+  //         caster.disableAbility(spellId, true, false)
+        
+  // EventListener.onCast(ABIL_ENDURANCE) (unit caster) ->
+  //   let p = EventData.getTriggerPlayer()
+    
+  //   pData.get(p).getHero().ifPresent() (h) ->
+  //     let heroUnit = h.actor
+  //     let caster = EventData.getTriggerUnit()
+  //     let spellId = EventData.getSpellAbilityId()
+  //     if p.getLumber() < 1
+  //       printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+  //     else
+  //       p.addLumber(-1)
 
-      if EventData.getResearchedType() == UPG_MIGHT
-        heroUnit.addBonus(Bonus.STRENGTH, MIGHT_STR)
-        heroUnit.addBonus(Bonus.DAMAGE, MIGHT_AD)
-        heroUnit.addStat(CustomUnitStats.ATTACK_CRIT_POWER, MIGHT_ACP/100)
+  //     heroUnit.addBonus(Bonus.LIFE, END_HP)
+  //     heroUnit.addBonus(Bonus.LIFEREGEN, END_HPREG)
+  //     heroUnit.addBonus(Bonus.ARMOR, END_ARMOR)
 
-      if EventData.getResearchedType() == UPG_ENDURANCE
-        heroUnit.addBonus(Bonus.LIFE, END_HP)
-        heroUnit.addBonus(Bonus.LIFEREGEN, END_HPREG)
-        heroUnit.addBonus(Bonus.ARMOR, END_ARMOR)
+  //     caster.incAbilityLevel(spellId)
+  //     if caster.getAbilityLevel(spellId) == 11
+  //       caster.disableAbility(spellId, true, false)
 
-      else if EventData.getResearchedType() == UPG_DEXTERITY
-        heroUnit.addBonus(Bonus.AGILITY, DEX_AGI)
-        heroUnit.addStat(CustomUnitStats.ATTACK_POWER, DEX_AP/100)
-        heroUnit.addStat(CustomUnitStats.EVASION, DEX_EV/100)
+  //     else if spellId == ABIL_DEXTERITY
+  //       if p.getLumber() < 1
+  //         printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+  //       else
+  //         p.addLumber(-1)
+        
 
-      else if EventData.getResearchedType() == UPG_QUICKNESS
-        heroUnit.addBonus(Bonus.ATTACKSPEED, QUICK_AS)
-        heroUnit.setMoveSpeed(heroUnit.getMoveSpeed() + QUICK_MS)
-        heroUnit.addStat(CustomUnitStats.LIFESTEAL, QUIKC_LS/100)
 
-      else if EventData.getResearchedType() == UPG_MIND
-        heroUnit.addBonus(Bonus.INTELLIGENCE, MIND_INT)
-        heroUnit.addStat(CustomUnitStats.SPELL_POWER, MIND_SP/100)
-        heroUnit.addStat(CustomUnitStats.SPELL_CRIT_POWER, MIND_SCP/100)
 
-      else if EventData.getResearchedType() == UPG_WISDOM
-        heroUnit.addBonus(Bonus.MANA, WISD_MANA)
-        heroUnit.addBonus(Bonus.MANAREGEN, WISD_MANAREG)
-        heroUnit.addStat(CustomUnitStats.SPELL_LIFESTEAL, WISD_SL/100)
+  EventListener.add(EVENT_PLAYER_UNIT_SPELL_FINISH) ->
+    let p = EventData.getTriggerPlayer()
+    
+    if pData.has(p)
+      pData.get(p).getHero().ifPresent() (h) ->
+        let heroUnit = h.actor
+        let caster = EventData.getTriggerUnit()
+        let spellId = EventData.getSpellAbilityId()
 
-      else if EventData.getResearchedType() == UPG_LUCK
-        heroUnit.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, LUCK_ACC/100)
-        heroUnit.addStat(CustomUnitStats.SPELL_CRIT_CHANCE, LUCK_SCC/100)
-        heroUnit.addStat(CustomUnitStats.EVASION, LUCK_EV/100)
+        if spellId == ABIL_MIGHT
+          if p.getLumber() < 1
+            printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+          else
+            p.addLumber(-1)
+            
+            heroUnit.addBonus(Bonus.STRENGTH, MIGHT_STR)
+            heroUnit.addBonus(Bonus.DAMAGE, MIGHT_AD)
+            heroUnit.addStat(CustomUnitStats.ATTACK_CRIT_POWER, MIGHT_ACP/100)
+            
+            caster.incAbilityLevel(spellId)
+            if caster.getAbilityLevel(spellId) == 11
+              caster.disableAbility(spellId, true, false)
+
+        if spellId == ABIL_ENDURANCE
+          if p.getLumber() < 1
+            printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+          else
+            p.addLumber(-1)
+
+            heroUnit.addBonus(Bonus.LIFE, END_HP)
+            heroUnit.addBonus(Bonus.LIFEREGEN, END_HPREG)
+            heroUnit.addBonus(Bonus.ARMOR, END_ARMOR)
+
+            caster.incAbilityLevel(spellId)
+            if caster.getAbilityLevel(spellId) == 11
+              caster.disableAbility(spellId, true, false)
+
+        else if spellId == ABIL_DEXTERITY
+          if p.getLumber() < 1
+            printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+          else
+            p.addLumber(-1)
+
+            heroUnit.addBonus(Bonus.AGILITY, DEX_AGI)
+            heroUnit.addStat(CustomUnitStats.ATTACK_POWER, DEX_AP/100)
+            heroUnit.addStat(CustomUnitStats.EVASION, DEX_EV/100)
+
+            caster.incAbilityLevel(spellId)
+            if caster.getAbilityLevel(spellId) == 11
+              caster.disableAbility(spellId, true, false)
+
+        else if spellId == ABIL_QUICKNESS
+          if p.getLumber() < 1
+            printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+          else
+            p.addLumber(-1)
+
+            heroUnit.addBonus(Bonus.ATTACKSPEED, QUICK_AS)
+            heroUnit.setMoveSpeed(heroUnit.getMoveSpeed() + QUICK_MS)
+            heroUnit.addStat(CustomUnitStats.LIFESTEAL, QUIKC_LS/100)
+
+            caster.incAbilityLevel(spellId)
+            if caster.getAbilityLevel(spellId) == 11
+              caster.disableAbility(spellId, true, false)
+
+        else if spellId == ABIL_MIND
+          if p.getLumber() < 1
+            printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+          else
+            p.addLumber(-1)
+
+            heroUnit.addBonus(Bonus.INTELLIGENCE, MIND_INT)
+            heroUnit.addStat(CustomUnitStats.SPELL_POWER, MIND_SP/100)
+            heroUnit.addStat(CustomUnitStats.SPELL_CRIT_POWER, MIND_SCP/100)
+
+            caster.incAbilityLevel(spellId)
+            if caster.getAbilityLevel(spellId) == 11
+              caster.disableAbility(spellId, true, false)
+
+        else if spellId == ABIL_WISDOM
+          if p.getLumber() < 1
+            printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+          else
+            p.addLumber(-1)
+
+            heroUnit.addBonus(Bonus.MANA, WISD_MANA)
+            heroUnit.addBonus(Bonus.MANAREGEN, WISD_MANAREG)
+            heroUnit.addStat(CustomUnitStats.SPELL_LIFESTEAL, WISD_SL/100)
+
+            caster.incAbilityLevel(spellId)
+            if caster.getAbilityLevel(spellId) == 11
+              caster.disableAbility(spellId, true, false)
+
+        else if spellId == ABIL_LUCK
+          if p.getLumber() < 1
+            printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+          else
+            p.addLumber(-1)
+
+            heroUnit.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, LUCK_ACC/100)
+            heroUnit.addStat(CustomUnitStats.SPELL_CRIT_CHANCE, LUCK_SCC/100)
+            heroUnit.addStat(CustomUnitStats.EVASION, LUCK_EV/100)
+
+            caster.incAbilityLevel(spellId)
+            if caster.getAbilityLevel(spellId) == 11
+              caster.disableAbility(spellId, true, false)
 
   doPeriodically(1) (CallbackPeriodic cb) ->
     updateHonorShopPos()
 
 function updateHonorShopPos()
-  for backpack in honorShopUnits
-    let heroUnit = pData.get(backpack.getOwner()).getHero().hero.actor
+  for honorShop in honorShopUnits
+    let heroUnit = pData.get(honorShop.getOwner()).getHero().hero.actor
     if heroUnit.isAlive()
-      backpack.setPos(heroUnit.getPos())
+      honorShop.setPos(heroUnit.getPos())
 
 public class HonorShop extends UnitEntity
   constant unit unitOwner
@@ -119,8 +232,11 @@ public class HonorShop extends UnitEntity
   ..setProperNames("Honor Shop")
   ..setIconGameInterface(Icons.bTNMedalionOfCourage)
   ..setHideMinimapDisplay(true)
-  ..setNormalAbilities(AbilityIds.invulnerable.toRawCode())
-  ..setResearchesAvailable(commaList(UPG_MIGHT, UPG_ENDURANCE, UPG_DEXTERITY, UPG_QUICKNESS, UPG_MIND, UPG_WISDOM, UPG_LUCK))
+  ..setNormalAbilities(commaList(AbilityIds.invulnerable, 
+    ABIL_MIGHT, ABIL_ENDURANCE, 
+    ABIL_DEXTERITY, ABIL_QUICKNESS, 
+    ABIL_MIND, ABIL_WISDOM, 
+    ABIL_LUCK))
   ..setArmorType(ArmorType.Divine)
   ..setModelFile("")
   ..setScalingValue(0.)
@@ -130,100 +246,107 @@ public class HonorShop extends UnitEntity
   ..setSightRadiusNight(0)
 
   // Upgrades for honor shop
-  new UpgradeDefinition(UPG_MIGHT)
-  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
-  ..setButtonPositionX(0)
-  ..setButtonPositionY(0)
-  ..setLumberCostBase(1)
-  ..setTimeBase(1)
-  ..presetHotkey(lvl -> "Q")
-  ..presetIcon(lvl -> Icons.bTNDeathPact)
-  ..presetName(lvl -> "Might")
-  ..presetTooltip(lvl -> "Might")
-  ..presetTooltipExtended(lvl -> "Increases " + "strength".color(COLOR_GOLD) + " by " + MIGHT_STR.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "attack damage".color(COLOR_GOLD) + " by " + MIGHT_AD.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "attack crit power".color(COLOR_GOLD) + " by " + MIGHT_ACP.colorPerc(COLOR_GOLD) + ".")
+  var tooltip = new AbilityTooltipGenerator("Increases " + "Strength".color(COLOR_GOLD) + " by " + MIGHT_STR.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Attack Damage (AD)".color(COLOR_GOLD) + " by " + MIGHT_AD.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Attack Crit Power (ACP)".color(COLOR_GOLD) + " by " + MIGHT_ACP.colorPerc(COLOR_GOLD) + ".")
+  new ChannelAbilityPreset(ABIL_MIGHT, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(0, 0)
+  ..presetHotkey("Q")
+  ..presetIcon(Icons.bTNDeathPact)
+  ..tooltipStartListen()
+  ..setName("Might")
+  ..addTooltipProperty("Honor Points Cost", lvl -> "1")
+  ..addTooltipProperty("Bonus Strength", lvl -> MIGHT_STR * (lvl-1))
+  ..addTooltipProperty("Bonus AD", lvl -> MIGHT_AD * (lvl-1))
+  ..addTooltipProperty("Bonus ACP (%)", lvl -> MIGHT_ACP * (lvl-1))
+  ..tooltipStopListen()
 
-  new UpgradeDefinition(UPG_ENDURANCE)
-  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
-  ..setButtonPositionX(0)
-  ..setButtonPositionY(1)
-  ..setLumberCostBase(1)
-  ..setTimeBase(1)
-  ..presetHotkey(lvl -> "A")
-  ..presetIcon(lvl -> Icons.bTNClayFigurine)
-  ..presetName(lvl -> "Endurance")
-  ..presetTooltip(lvl -> "Endurance")
-  ..presetTooltipExtended(lvl -> "Increases " + "hit points".color(COLOR_GOLD) + " by " + END_HP.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "armor".color(COLOR_GOLD) + " by " + END_ARMOR.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "hit points regeneration".color(COLOR_GOLD) + " by " + END_HPREG.color(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Hit Points (HP)".color(COLOR_GOLD) + " by " + END_HP.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Armor".color(COLOR_GOLD) + " by " + END_ARMOR.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Hit Point Regeneration (HPR)".color(COLOR_GOLD) + " by " + END_HPREG.color(COLOR_GOLD) + ".")
+  new ChannelAbilityPreset(ABIL_ENDURANCE, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(0, 1)
+  ..presetHotkey("A")
+  ..presetIcon(Icons.bTNClayFigurine)
+  ..tooltipStartListen()
+  ..setName("Endurance")
+  ..addTooltipProperty("Honor Points Cost", lvl -> "1")
+  ..addTooltipProperty("Bonus HP", lvl -> END_HP * (lvl-1))
+  ..addTooltipProperty("Bonus Armor", lvl -> END_ARMOR * (lvl-1))
+  ..addTooltipProperty("Bonus HPR", lvl -> END_HPREG * (lvl-1))
+  ..tooltipStopListen()
 
-  new UpgradeDefinition(UPG_DEXTERITY)
-  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
-  ..setButtonPositionX(1)
-  ..setButtonPositionY(0)
-  ..setLumberCostBase(1)
-  ..setTimeBase(1)
-  ..presetHotkey(lvl -> "W")
-  ..presetIcon(lvl -> Icons.bTNEvasion)
-  ..presetName(lvl -> "Dexterity")
-  ..presetTooltip(lvl -> "Dexterity")
-  ..presetTooltipExtended(lvl -> "Increases " + "agility".color(COLOR_GOLD) + " by " + DEX_AGI.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "attack power".color(COLOR_GOLD) + " by " + DEX_AP.colorPerc(COLOR_GOLD) + ".\n" +
-    "Increases " + "evasion".color(COLOR_GOLD) + " by " + DEX_EV.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Agility".color(COLOR_GOLD) + " by " + DEX_AGI.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Attack Power (AP)".color(COLOR_GOLD) + " by " + DEX_AP.colorPerc(COLOR_GOLD) + ".\n" +
+    "Increases " + "Evasion".color(COLOR_GOLD) + " by " + DEX_EV.colorPerc(COLOR_GOLD) + ".")
+  new ChannelAbilityPreset(ABIL_DEXTERITY, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(1, 0)
+  ..presetHotkey("W")
+  ..presetIcon(Icons.bTNEvasion)
+  ..tooltipStartListen()
+  ..setName("Dexterity")
+  ..addTooltipProperty("Honor Points Cost", lvl -> "1")
+  ..addTooltipProperty("Bonus Agility", lvl -> DEX_AGI * (lvl-1))
+  ..addTooltipProperty("Bonus AP (%)", lvl -> DEX_AP * (lvl-1))
+  ..addTooltipProperty("Bonus Evasion (%)", lvl -> DEX_EV * (lvl-1))
+  ..tooltipStopListen()
 
-  new UpgradeDefinition(UPG_QUICKNESS)
-  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
-  ..setButtonPositionX(1)
-  ..setButtonPositionY(1)
-  ..setLumberCostBase(1)
-  ..setTimeBase(1)
-  ..presetHotkey(lvl -> "S")
-  ..presetIcon(lvl -> Icons.bTNBootsOfSpeed)
-  ..presetName(lvl -> "Quickness")
-  ..presetTooltip(lvl -> "Quickness")
-  ..presetTooltipExtended(lvl -> "Increases " + "attack speed".color(COLOR_GOLD) + " by " + QUICK_AS.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "movement speed".color(COLOR_GOLD) + " by " + QUICK_MS.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "lifesteal".color(COLOR_GOLD) + " by " + QUIKC_LS.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Attack Speed (AS)".color(COLOR_GOLD) + " by " + QUICK_AS.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Movement Speed (MS)".color(COLOR_GOLD) + " by " + QUICK_MS.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Lifesteal".color(COLOR_GOLD) + " by " + QUIKC_LS.colorPerc(COLOR_GOLD) + ".")
+  new ChannelAbilityPreset(ABIL_QUICKNESS, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(1, 1)
+  ..presetHotkey("S")
+  ..presetIcon(Icons.bTNBootsOfSpeed)
+  ..tooltipStartListen()
+  ..setName("Quickness")
+  ..addTooltipProperty("Honor Points Cost", lvl -> "1")
+  ..addTooltipProperty("Bonus AS", lvl -> QUICK_AS * (lvl-1))
+  ..addTooltipProperty("Bonus MS", lvl -> QUICK_MS * (lvl-1))
+  ..addTooltipProperty("Bonus Lifesteal (%)", lvl -> QUIKC_LS * (lvl-1))
+  ..tooltipStopListen()
 
-  new UpgradeDefinition(UPG_MIND)
-  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
-  ..setButtonPositionX(2)
-  ..setButtonPositionY(0)
-  ..setLumberCostBase(1)
-  ..setTimeBase(1)
-  ..presetHotkey(lvl -> "E")
-  ..presetIcon(lvl -> Icons.bTNInvisibility)
-  ..presetName(lvl -> "Mind")
-  ..presetTooltip(lvl -> "Mind")
-  ..presetTooltipExtended(lvl -> "Increases " + "intelligence".color(COLOR_GOLD) + " by " + MIND_INT.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "spell power".color(COLOR_GOLD) + " by " + MIND_SP.colorPerc(COLOR_GOLD) + ".\n" +
-    "Increases " + "spell crit power".color(COLOR_GOLD) + " by " + MIND_SCP.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Intelligence".color(COLOR_GOLD) + " by " + MIND_INT.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Spell Power (SP)".color(COLOR_GOLD) + " by " + MIND_SP.colorPerc(COLOR_GOLD) + ".\n" +
+    "Increases " + "Spell Crit Power (SCP)".color(COLOR_GOLD) + " by " + MIND_SCP.colorPerc(COLOR_GOLD) + ".")
+  new ChannelAbilityPreset(ABIL_MIND, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(2, 0)
+  ..presetHotkey("E")
+  ..presetIcon(Icons.bTNInvisibility)
+  ..tooltipStartListen()
+  ..setName("Mind")
+  ..addTooltipProperty("Honor Points Cost", lvl -> "1")
+  ..addTooltipProperty("Bonus Intelligence", lvl -> MIND_INT * (lvl-1))
+  ..addTooltipProperty("Bonus SP (%)", lvl -> MIND_SP * (lvl-1))
+  ..addTooltipProperty("Bonus SCP (%)", lvl -> MIND_SCP * (lvl-1))
+  ..tooltipStopListen()
+  
+  tooltip = new AbilityTooltipGenerator("Increases " + "Mana".color(COLOR_GOLD) + " by " + WISD_MANA.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Mana Regeneration (MR)".color(COLOR_GOLD) + " by " + WISD_MANAREG.color(COLOR_GOLD) + ".\n" +
+    "Increases " + "Spell Lifesteal (SL)".color(COLOR_GOLD) + " by " + WISD_SL.colorPerc(COLOR_GOLD) + ".")
+  new ChannelAbilityPreset(ABIL_WISDOM, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(2, 1)
+  ..presetHotkey("D")
+  ..presetIcon(Icons.bTNBansheeMaster)
+  ..tooltipStartListen()
+  ..setName("Wisdom")
+  ..addTooltipProperty("Honor Points Cost", lvl -> "1")
+  ..addTooltipProperty("Bonus Mana", lvl -> WISD_MANA * (lvl-1))
+  ..addTooltipProperty("Bonus MR", lvl -> (WISD_MANAREG * (lvl-1)).toString(1))
+  ..addTooltipProperty("Bonus SL (%)", lvl -> WISD_SL * (lvl-1))
+  ..tooltipStopListen()
 
-  new UpgradeDefinition(UPG_WISDOM)
-  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
-  ..setButtonPositionX(2)
-  ..setButtonPositionY(1)
-  ..setLumberCostBase(1)
-  ..setTimeBase(1)
-  ..presetHotkey(lvl -> "D")
-  ..presetIcon(lvl -> Icons.bTNBansheeMaster)
-  ..presetName(lvl -> "Wisdom")
-  ..presetTooltip(lvl -> "Wisdom")
-  ..presetTooltipExtended(lvl -> "Increases " + "mana".color(COLOR_GOLD) + " by " + WISD_MANA.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "mana regeneration".color(COLOR_GOLD) + " by " + WISD_MANAREG.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "spell lifesteal".color(COLOR_GOLD) + " by " + WISD_SL.colorPerc(COLOR_GOLD) + ".")
-
-  new UpgradeDefinition(UPG_LUCK)
-  ..setLevels(HONOR_SHOP_UPGRADE_LEVELS)
-  ..setButtonPositionX(3)
-  ..setButtonPositionY(0)
-  ..setLumberCostBase(1)
-  ..setTimeBase(1)
-  ..presetHotkey(lvl -> "R")
-  ..presetIcon(lvl -> Icons.bTNPriestMaster)
-  ..presetName(lvl -> "Luck")
-  ..presetTooltip(lvl -> "Luck")
-  ..presetTooltipExtended(lvl -> "Increases " + "attack crit chance".color(COLOR_GOLD) + " by " + LUCK_ACC.colorPerc(COLOR_GOLD) + ".\n" +
-    "Increases " + "spell crit chance".color(COLOR_GOLD) + " by " + LUCK_SCC.colorPerc(COLOR_GOLD) + ".\n" +
-    "Increases " + "evasion".color(COLOR_GOLD) + " by " + LUCK_EV.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Attack Crit Chance (ACC)".color(COLOR_GOLD) + " by " + LUCK_ACC.colorPerc(COLOR_GOLD) + ".\n" +
+    "Increases " + "Spell Crit Chance (SCC)".color(COLOR_GOLD) + " by " + LUCK_SCC.colorPerc(COLOR_GOLD) + ".\n" +
+    "Increases " + "Evasion".color(COLOR_GOLD) + " by " + LUCK_EV.colorPerc(COLOR_GOLD) + ".")
+  new ChannelAbilityPreset(ABIL_LUCK, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(3, 0)
+  ..presetHotkey("R")
+  ..presetIcon(Icons.bTNPriestMaster)
+  ..tooltipStartListen()
+  ..setName("Luck")
+  ..addTooltipProperty("Honor Points Cost", lvl -> "1")
+  ..addTooltipProperty("Bonus ACC (%)", lvl -> LUCK_ACC * (lvl-1))
+  ..addTooltipProperty("Bonus SCC (%)", lvl -> LUCK_SCC * (lvl-1))
+  ..addTooltipProperty("Bonus Evasion (%)", lvl -> LUCK_EV * (lvl-1))
+  ..tooltipStopListen()
