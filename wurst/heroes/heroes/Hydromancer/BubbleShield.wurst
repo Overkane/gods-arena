@@ -7,9 +7,9 @@ import BubbleShieldBuff
 
 public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HP_HEAL = lvl -> 30. * lvl
+constant RealLevelClosure HP_HEAL = lvl -> 10. + 20 * lvl
 constant RealLevelClosure SHIELD_DURABILITY = lvl -> 150. * lvl
-constant RealLevelClosure DURATION = lvl -> 8. + lvl
+constant RealLevelClosure DURATION = lvl -> 8. + (lvl/2).floor()
 
 init
   EventListener.onTargetCast(BUBBLE_SHIELD_ID) (unit caster, unit target) ->
@@ -17,11 +17,11 @@ init
     let healAmount = HP_HEAL.run(lvl) * BUFF_ANIM_PERIOD
     let shieldDurability = SHIELD_DURABILITY.run(lvl)
     let spellDuration = DURATION.run(lvl)
-
+    
     new BubbleShieldBuff(spellDuration, shieldDurability, healAmount).apply(target)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Applies a bubble shield to the target, which heals it and blocks some amount of damage. The effect ends when the shield is destroyed or the duration exceeded.")
+  let tooltip = new AbilityTooltipGenerator("Applies a bubble shield to the target, which heals it and blocks some amount of damage. The effect ends when the shield is destroyed or the duration exceeded. If applied on water elemental, then doubles its base damage.")
   new ChannelAbilityPreset(BUBBLE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetIcon(Icons.bTNNeutralManaShield)
   ..presetButtonPosNormal(2, 2)
@@ -39,5 +39,6 @@ init
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
   ..presetManaCost(lvl -> 40 + 35 * lvl)
-  ..presetCooldown(lvl -> 13. - lvl * 2)
+  ..presetCooldown(lvl -> 12. - lvl)
   ..tooltipStopListen()
+  

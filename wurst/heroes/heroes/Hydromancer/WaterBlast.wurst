@@ -7,20 +7,24 @@ import ClosureForGroups
 import SoundUtils
 import DamageEvent
 import WaterBlastBuff
+import MapModels
+import WaterElemental
+import TooltipFactory
 
 public constant WATER_BLAST_ID = compiletime(ABIL_ID_GEN.next())
 
 constant SOUND = new SoundDefinition(Sounds.crushingWaveTarget1)
 
-constant RealLevelClosure DAMAGE = lvl -> 100. + 100. * (lvl-1)
+constant RealLevelClosure DAMAGE = lvl -> 85. + 85. * (lvl-1)
+constant RealLevelClosure BONUS_INT_DAMAGE = lvl -> 0.5 * lvl
 constant RealLevelClosure SLOW = lvl -> 30. + 5. * (lvl-1)
-constant RealLevelClosure SLOW_DURATION = lvl -> 3 + 0.5 * lvl
-constant RealLevelClosure AOE = lvl -> 200. + 25 * lvl
+constant RealLevelClosure SLOW_DURATION = lvl -> 2.5 + 0.5 * lvl
+constant RealLevelClosure AOE = lvl -> 300.
 
 init 
   EventListener.onPointCast(WATER_BLAST_ID) (unit caster, vec2 target) ->
     let lvl = caster.getAbilityLevel(WATER_BLAST_ID)
-    let spellDamage = DAMAGE.run(lvl)
+    let spellDamage = DAMAGE.run(lvl) + BONUS_INT_DAMAGE.run(lvl) * caster.getInt(true)
     let spellAOE = AOE.run(lvl)
     let buffSlow = SLOW.run(lvl)
     let buffDuration = SLOW_DURATION.run(lvl)
@@ -31,15 +35,18 @@ init
         new WaterBlastBuff(buffDuration, buffSlow).apply(u)
         DamageEvent.setNextDamageFromCode()
         caster.damageTarget(u, spellDamage)
+      else if u.isAlive() and WATER_ELEM_LIST.has(u.getTypeId()) and u.isAllyOf(caster.getOwner())
+        new WaterBlastBuff(buffDuration, -buffSlow).apply(u)
+        u.addHP(spellDamage)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius and slows them.")
+  let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius and slows them. Heals and speed up ally water elementals instead.")
   new ChannelAbilityPreset(WATER_BLAST_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetIcon(Icons.bTNOrbOfFrost)
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
   ..presetHotkey("Q")
-  ..setArtEffect("WaterBlast.mdx")
+  ..setArtEffect(MapModels.waterBlast)
   ..setEffectSound(Sounds.crushingWaveTarget1)
   ..presetOption(Option.TARGETIMAGE, true)
 
@@ -47,10 +54,11 @@ init
   ..presetTargetTypes(Targettype.POINT)
   ..setName("Water Blast")
   ..addTooltipProperty("Damage", DAMAGE)
+  ..addTooltipProperty("Bonus Intelligence Damage", lvl -> (BONUS_INT_DAMAGE.run(lvl)*100).percRound())
   ..addTooltipProperty("Slow", lvl -> SLOW.run(lvl).toString())
   ..addTooltipProperty("Duration", SLOW_DURATION)
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
   ..presetManaCost(lvl -> 80 + 15 * lvl)
-  ..presetCooldown(lvl -> 16. - lvl)
+  ..presetCooldown(lvl -> 8.)
   ..tooltipStopListen()

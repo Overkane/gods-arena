@@ -46,7 +46,7 @@ init
           caster.setAnimation(UnitAnimations.HeroWarden.attack1.idx)
           caster.damageTarget(unitList.getFirst(), damagePerStrike)
           flashEffect(Abilities.blinkCaster, caster.getPos())
-          flashEffect(MapModels.midnightCut, unitList.getFirst(), AttachmentPoints.chest)
+          flashEffect(MapModels.ephemeralCutMidnight, unitList.getFirst(), AttachmentPoints.chest)
           numberOfStrikes -= 1
 
           if numberOfStrikes == 0

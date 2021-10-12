@@ -57,7 +57,7 @@ init
               damagedTargets.add(u)
               DamageEvent.setNextDamageFromCode()
               caster.damageTarget(u, rawDamage + caster.getAgi(true) * agiDamageMult)
-              flashEffect(MapModels.redCut, u, AttachmentPoints.chest)
+              flashEffect(MapModels.ephemeralCutRed, u, AttachmentPoints.chest)
 
               if caster.hasAbility(ARMOR_CUT_ID)
                 let armorCutLvl = caster.getAbilityLevel(ARMOR_CUT_ID)
@@ -91,7 +91,8 @@ init
   ..presetTargetTypes(Targettype.POINT)
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Swift Slash")
-  ..addTooltipProperty("Damage", lvl -> RAW_DAMAGE.run(lvl).round().toString() + " + " + (AGI_DAMAGE.run(lvl)*100).percRound() + " of agility")
+  ..addTooltipProperty("Damage", lvl -> RAW_DAMAGE.run(lvl).round().toString())
+  ..addTooltipProperty("Bonus Agility Damage", lvl -> (AGI_DAMAGE.run(lvl)*100).percRound())
   ..presetCastRange(lvl -> 650. + 50. * lvl)
   ..presetManaCost(lvl -> 60 + 5 * lvl)
   ..presetCooldown(lvl -> 12. - lvl)

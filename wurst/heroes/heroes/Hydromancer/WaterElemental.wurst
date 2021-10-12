@@ -5,6 +5,7 @@ import GameConstants
 import ClosureEvents
 import LinkedList
 import ClosureTimers
+import CustomStatSystem
 
 public constant WATER_ELEMENTAL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -14,12 +15,12 @@ constant WATER_ELEMENTAL_3 = compiletime(UNIT_ID_GEN.next())
 constant WATER_ELEMENTAL_4 = compiletime(UNIT_ID_GEN.next())
 constant WATER_ELEMENTAL_5 = compiletime(UNIT_ID_GEN.next())
 
-constant SUMMON_LIST = new LinkedList<int>..add(WATER_ELEMENTAL_1, WATER_ELEMENTAL_2, WATER_ELEMENTAL_3, WATER_ELEMENTAL_4, WATER_ELEMENTAL_5)
+public constant WATER_ELEM_LIST = new LinkedList<int>..add(WATER_ELEMENTAL_1, WATER_ELEMENTAL_2, WATER_ELEMENTAL_3, WATER_ELEMENTAL_4, WATER_ELEMENTAL_5)
 constant SUMMON_GROUP = new LinkedList<unit>
 
 constant RealLevelClosure DURATION = lvl -> 0
 constant IntLevelClosure MAX_SUMMON_COUNT = lvl -> 1 + (lvl/3).round()
-constant StringLevelClosure SUMMON_TYPE = lvl -> SUMMON_LIST.get(lvl-1).toRawCode()
+constant StringLevelClosure WATER_ELEM_TYPE = lvl -> WATER_ELEM_LIST.get(lvl-1).toRawCode()
 
 init 
   nullTimer() ->
@@ -37,8 +38,23 @@ init
       if SUMMON_GROUP.size() >= maxSummonCount
         SUMMON_GROUP.dequeue().kill()
 
+    EventListener.add(EVENT_PLAYER_UNIT_SUMMON) -> 
+      let summon = EventData.getSummonedUnit()
+
+      if WATER_ELEM_LIST.has(summon.getTypeId())
+        let casterSP = 1 + EventData.getSummoningUnit().getStat(CustomUnitStats.SPELL_POWER)
+        let newBaseDamage = (summon.getBaseDamage(0) * casterSP).round()
+        let newMaxHP = (summon.getMaxHP() * casterSP).round()
+        let newArmor = summon.getArmor() * casterSP
+
+        summon
+        ..setBaseDamage(newBaseDamage, 0)
+        ..setMaxHP(newMaxHP)
+        ..setArmor(newArmor)
+        ..addHP(summon.getMaxHP()) // Need to heal unit, since it won't have full max hp after set it.
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Summons a water elemental to attack hero enemies. Max amount of elementals depends on ability level. If max amount is reached, then on spell cast the oldest one will be killed.")
+  let tooltip = new AbilityTooltipGenerator("Summons a water elemental to attack hero enemies. Max amount of elementals depends on ability level. If max amount is reached, then on spell cast the oldest one will be killed. Water elementals base damage, armor and max hp scale with hero spell power.")
   new AbilityDefinitionArchMageSummonWaterElemental(WATER_ELEMENTAL_ID)
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(1, 2)
@@ -54,7 +70,7 @@ init
 
   ..presetDurationNormal(DURATION)
   ..presetDurationNormal(DURATION)
-  ..presetSummonedUnitType(SUMMON_TYPE)
+  ..presetSummonedUnitType(WATER_ELEM_TYPE)
   ..presetCooldown(lvl -> 2)
   
   new UnitDefinition(WATER_ELEMENTAL_1, UnitIds.waterelemental1)
