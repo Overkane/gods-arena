@@ -8,6 +8,7 @@ import BonusHandler
 import CustomStatSystem
 import Entity
 import AbilityTooltipGenerator
+import HeroPreset
 
 constant HONOR_SHOP_ID = compiletime(HERO_ID_GEN.next())
 constant HONOR_SHOP_UPGRADE_LEVELS = 11
@@ -50,55 +51,6 @@ constant LUCK_EV = 1.
 public constant honorShopUnits = new LinkedList<unit>
 
 init
-  // EventListener.onCast(ABIL_MIGHT) (unit caster) ->
-  //   let p = EventData.getTriggerPlayer()
-    
-  //   pData.get(p).getHero().ifPresent() (h) ->
-  //     let heroUnit = h.actor
-  //     let caster = EventData.getTriggerUnit()
-  //     let spellId = EventData.getSpellAbilityId()
-  //     if p.getLumber() < 1
-  //       printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
-  //     else
-  //       p.addLumber(-1)
-        
-  //       heroUnit.addBonus(Bonus.STRENGTH, MIGHT_STR)
-  //       heroUnit.addBonus(Bonus.DAMAGE, MIGHT_AD)
-  //       heroUnit.addStat(CustomUnitStats.ATTACK_CRIT_POWER, MIGHT_ACP/100)
-        
-  //       caster.incAbilityLevel(spellId)
-  //       if caster.getAbilityLevel(spellId) == 11
-  //         caster.disableAbility(spellId, true, false)
-        
-  // EventListener.onCast(ABIL_ENDURANCE) (unit caster) ->
-  //   let p = EventData.getTriggerPlayer()
-    
-  //   pData.get(p).getHero().ifPresent() (h) ->
-  //     let heroUnit = h.actor
-  //     let caster = EventData.getTriggerUnit()
-  //     let spellId = EventData.getSpellAbilityId()
-  //     if p.getLumber() < 1
-  //       printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
-  //     else
-  //       p.addLumber(-1)
-
-  //     heroUnit.addBonus(Bonus.LIFE, END_HP)
-  //     heroUnit.addBonus(Bonus.LIFEREGEN, END_HPREG)
-  //     heroUnit.addBonus(Bonus.ARMOR, END_ARMOR)
-
-  //     caster.incAbilityLevel(spellId)
-  //     if caster.getAbilityLevel(spellId) == 11
-  //       caster.disableAbility(spellId, true, false)
-
-  //     else if spellId == ABIL_DEXTERITY
-  //       if p.getLumber() < 1
-  //         printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
-  //       else
-  //         p.addLumber(-1)
-        
-
-
-
   EventListener.add(EVENT_PLAYER_UNIT_SPELL_FINISH) ->
     let p = EventData.getTriggerPlayer()
     
@@ -227,10 +179,11 @@ public class HonorShop extends UnitEntity
     honorShopUnits.remove(actor)
 
 @compiletime function gen()
-  new BuildingAndHeroDefinition(HONOR_SHOP_ID, UnitIds.circleofpower)
-  ..setName("Honor Shop")
+  new HeroPreset(HONOR_SHOP_ID, UnitIds.circleofpower, "Honor Shop")
   ..setProperNames("Honor Shop")
   ..setIconGameInterface(Icons.bTNMedalionOfCourage)
+  ..hideHeroDeathMsg(true)
+  ..hideHeroMinimapDisplay(true)
   ..setHideMinimapDisplay(true)
   ..setNormalAbilities(commaList(AbilityIds.invulnerable, 
     ABIL_MIGHT, ABIL_ENDURANCE, 
@@ -244,6 +197,7 @@ public class HonorShop extends UnitEntity
   ..setCollisionSize(0.)
   ..setSightRadiusDay(0)
   ..setSightRadiusNight(0)
+  ..buildHero()
 
   // Upgrades for honor shop
   var tooltip = new AbilityTooltipGenerator("Increases " + "Strength".color(COLOR_GOLD) + " by " + MIGHT_STR.color(COLOR_GOLD) + ".\n" +
