@@ -97,7 +97,7 @@ public class GodOfNature extends Boss
           ..amount(250)
           ..attackType(ATTACK_TYPE_CHAOS)
           ..apply(true)
-          destroy projectile
+          projectile.terminate()
 
 init
   EventListener.onTargetCast(WISP_HEAL_ID) (unit caster, unit target) ->
