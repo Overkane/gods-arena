@@ -8,23 +8,13 @@ import UnitIds
 import AbilityIds
 import PlayerData
 import Entity
+import Framehandle
 
 constant BACKPACK_ID = compiletime(HERO_ID_GEN.next())
 
 public constant backpackUnits = new LinkedList<unit>
 
 init
-  // TODO cause desync for now
-  // EventListener.add(EVENT_PLAYER_UNIT_SELECTED) -> 
-  //   let selectedUnit = EventData.getTriggerUnit()
-
-  //   if selectedUnit.hasAbility(AbilityIds.inventory)
-  //     let shopWasVisible = shop.itemShopFrame.isVisible(selectedUnit.getOwner())
-  //     shop.showToUnit(selectedUnit)
-  //     // showToUnit() opens shop for now, so need to return shop in its initial state before unit selection
-  //     if not shopWasVisible
-  //       shop.toggleView(selectedUnit.getOwner(), selectedUnit)
-
   doPeriodically(1) (CallbackPeriodic cb) ->
     updateBackpackPos()
 
@@ -35,25 +25,24 @@ function updateBackpackPos()
       backpack.setPos(heroUnit.getPos())
 
 public class Backpack extends UnitEntity
-  constant unit backpackHero
+  constant unit unitOwner
 
   construct(player p, unit hero)
     super(createUnit(p, BACKPACK_ID, vec2(0, 0), angle(0)))
-    backpackUnits.add(this.actor)
-    backpackHero = hero
+    backpackUnits.add(actor)
+    unitOwner = hero
 
   ondestroy
-    backpackUnits.remove(this.actor)
+    backpackUnits.remove(actor)
 
-@compiletime function genBackpackDefinition()
+@compiletime function gen()
   new HeroPreset(BACKPACK_ID, UnitIds.circleofpower, "Backpack")
-  ..setName("Backpack")
+  ..addProperName("Backpack")
   ..setIconGameInterface(Icons.bTNPackBeast)
   ..hideHeroDeathMsg(true)
   ..hideHeroMinimapDisplay(true)
   ..setHideMinimapDisplay(true)
   ..addNormalAbility(AbilityIds.invulnerable)
-  ..setLevel(50)
   ..setArmorType(ArmorType.Divine)
   ..setModelFile("")
   ..setScalingValue(0.)
