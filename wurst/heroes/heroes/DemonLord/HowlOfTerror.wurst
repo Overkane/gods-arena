@@ -6,6 +6,7 @@ import ClosureEvents
 import DemonLordIds
 import GameConstants
 import Icons
+import StandardTextTags
 import TooltipFactory
 
 RealLevelClosure DAMAGE_DECREASE = lvl -> 0.25 + 0.1 * (lvl-1)
@@ -18,9 +19,14 @@ init
     let killer = EventData.getKillingUnit()
     if killer.getTypeId() == DEMON_LORD_ID and EventData.getTriggerUnit().hasAbility(BuffIds.howlofTerror)
       let level = killer.getAbilityLevel(HOWL_OF_TERROR_ID)
-      killer.addStr(STR_BONUS.run(level))
+      let str_bonus = STR_BONUS.run(level)
+      let killer_pos = killer.getPos()
+      killer.addStr(str_bonus)
       killer.addHP(HP_RECOVERY.run(level))
-      flashEffect(Abilities.deathCoilMissile, killer.getPos())
+      standardTextTag(killer_pos, "+" + str_bonus.toString())
+        ..setColor(255, 0, 0, 255)
+        ..setVisibility(localPlayer == killer.getOwner())
+      flashEffect(Abilities.deathCoilMissile, killer_pos)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(

@@ -1,0 +1,56 @@
+package Obliterator
+import AbilityTooltipGenerator
+import ClosureForGroups
+import ClosureTimers
+import CreepAggro
+import DemonLordIds
+import HashMap
+import Icons
+
+constant IntLevelClosure BONUS_STRENGTH = _ -> 50
+constant IntLevelClosure CREEP_AGGRO = _ -> 200
+constant RealLevelClosure CREEP_AGGRO_RANGE = _ -> 400.
+constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .5
+
+constant DEMON_LORD_STR_BONUSES = new HashMap<unit, int>()
+
+function int.toCustomUnitTypeString() returns string
+  return "custom_" + this.toRawCode()
+
+init
+  doPeriodically(1.) _ ->
+    forUnitsOfType(OBLITERATOR_ID.toCustomUnitTypeString()) u ->
+      if not DEMON_LORD_STR_BONUSES.has(u)
+        DEMON_LORD_STR_BONUSES.put(u, 0)
+
+      let wants = (u.getHP() / u.getMaxHP()) < BONUS_HEALTH_THRESHOLD.run(1)
+      let wants_bonus = wants ? BONUS_STRENGTH.run(1) : 0
+      let curr_bonus = DEMON_LORD_STR_BONUSES.get(u)
+
+      if curr_bonus != wants_bonus
+        u.addStr(wants_bonus - curr_bonus)
+        print(wants_bonus - curr_bonus)
+        DEMON_LORD_STR_BONUSES.put(u, wants_bonus)
+
+      if wants
+        forUnitsInRange(u.getPos(), CREEP_AGGRO_RANGE.run(1)) fog ->
+          if fog.isEnemyOf(u)
+            u.setAggro(fog, CREEP_AGGRO.run(1))
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(
+    Targettype.PASSIVE,
+    "Passively grants bonus strength and nearby creep aggro when the Demon Lord has less than 50% HP."
+  )
+  new AbilityDefinitionArchMageBrillianceAura(OBLITERATOR_ID)
+  ..presetTargetsAllowed(_ -> "none")
+  ..registerTooltipGenerator(tooltip)
+  ..presetButtonPosNormal(1, 1)
+  ..presetButtonPosResearch(1, 0)
+  ..setIconNormal(Icons.pASBTNFireRocks)
+  ..addTooltipProperty("Bonus Strength", BONUS_STRENGTH)
+  ..addTooltipProperty("Creep Aggro", CREEP_AGGRO)
+  ..addTooltipProperty("Creep Aggro Range", CREEP_AGGRO_RANGE)
+  ..addTooltipProperty("Health Threshold", BONUS_HEALTH_THRESHOLD)
+  ..setLevels(1)
+  ..setName("Obliterator")
