@@ -4,6 +4,7 @@ import public DamageEvent
 import public CustomStatSystem
 import PlayerData
 import GameConstants
+import CustomHeal
 
 public enum DamageEvents
   START // First listener, where can be set stats for next listeners
@@ -80,7 +81,7 @@ init
       
       if lifestealAmount != 0
         let healValue = DamageEvent.getAmount() * lifestealAmount
-        sunit.addHP(healValue)
+        sunit.healTarget(sunit, healValue, false)
 
     else if damageType == DamageType.SPELL or damageType == DamageType.CODE
       var attacker = sunit
@@ -90,5 +91,5 @@ init
       
       if lifestealAmount != 0
         let healValue = DamageEvent.getAmount() * lifestealAmount
-        attacker.addHP(healValue)
+        attacker.healTarget(attacker, healValue, false)
     
