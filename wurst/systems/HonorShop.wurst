@@ -185,11 +185,14 @@ public class HonorShop extends UnitEntity
   ..hideHeroDeathMsg(true)
   ..hideHeroMinimapDisplay(true)
   ..setHideMinimapDisplay(true)
-  ..setNormalAbilities(commaList(AbilityIds.invulnerable, 
-    ABIL_MIGHT, ABIL_ENDURANCE, 
-    ABIL_DEXTERITY, ABIL_QUICKNESS, 
-    ABIL_MIND, ABIL_WISDOM, 
-    ABIL_LUCK))
+  ..addNormalAbility(AbilityIds.invulnerable)
+  ..addNormalAbility(ABIL_MIGHT)
+  ..addNormalAbility(ABIL_ENDURANCE)
+  ..addNormalAbility(ABIL_DEXTERITY)
+  ..addNormalAbility(ABIL_QUICKNESS)
+  ..addNormalAbility(ABIL_MIND)
+  ..addNormalAbility(ABIL_WISDOM)
+  ..addNormalAbility(ABIL_LUCK)
   ..setArmorType(ArmorType.Divine)
   ..setModelFile("")
   ..setScalingValue(0.)
