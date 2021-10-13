@@ -8,6 +8,7 @@ import GameConstants
 import Icons
 import TooltipFactory
 import CustomHeal
+import DamageEvent
 
 RealLevelClosure DAMAGE_DECREASE = lvl -> 0.25 + 0.1 * (lvl-1)
 RealLevelClosure DURATION = lvl -> 10
@@ -15,13 +16,17 @@ IntLevelClosure STR_BONUS = lvl -> (0.5 * (lvl - 1)).floor() + 1 // 1, 1, 2, 2, 
 RealLevelClosure HP_RECOVERY = lvl -> 100.0 + 50 * (lvl-1)
 
 init
-  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
-    let killer = EventData.getKillingUnit()
-    if killer.getTypeId() == DEMON_LORD_ID and EventData.getTriggerUnit().hasAbility(BuffIds.howlofTerror)
-      let level = killer.getAbilityLevel(HOWL_OF_TERROR_ID)
-      killer.addStr(STR_BONUS.run(level))
-      killer.healTarget(killer, HP_RECOVERY.run(level))
-      flashEffect(Abilities.deathCoilMissile, killer.getPos())
+  DamageEvent.addListener() ->
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if tunit.getHP() <= DamageEvent.getAmount() // Seems there is no buffs on died units so need to check death preemptively
+      and sunit.getTypeId() == DEMON_LORD_ID and tunit.hasAbility(BuffIds.howlofTerror)
+
+      let level = sunit.getAbilityLevel(HOWL_OF_TERROR_ID)
+      sunit.addStr(STR_BONUS.run(level))
+      sunit.healTarget(sunit, HP_RECOVERY.run(level))
+      flashEffect(Abilities.deathCoilMissile, sunit.getPos())
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
