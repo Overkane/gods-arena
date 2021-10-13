@@ -12,6 +12,7 @@ import Icons
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant TEMP_GROUP = CreateGroup()
+unit tempUnit = null
 constant RealLevelClosure HEAL_POWER = lvl -> 100. + 100. * (lvl-1)
 constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.2
 constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 4 + lvl
@@ -25,7 +26,8 @@ function bounceHeal(unit caster, unit lastTarget, real heal, real reduction, gro
   let healAmount = heal * reduction
   let foundRef = new Reference<unit>(null)
   TEMP_GROUP.add(targets)
-  forNearestUnit(lastTarget.getPos(), 500, Filter(() -> GetFilterUnit().getHP() < GetFilterUnit().getMaxHP() and not TEMP_GROUP.has(GetFilterUnit()))) u ->
+  tempUnit = caster
+  forNearestUnit(lastTarget.getPos(), 500, Filter(() -> GetFilterUnit().isAllyOf(tempUnit) and GetFilterUnit().getHP() < GetFilterUnit().getMaxHP() and not TEMP_GROUP.has(GetFilterUnit()))) u ->
     foundRef.val = u
 
   TEMP_GROUP.clear()
@@ -58,6 +60,7 @@ init
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
   ..presetIcon(Icons.bTNHealingWave)
+  ..presetTargetsAllowed(lvl -> TargetsAllowed.allies)
   ..presetHotkey("Q")
   
   ..tooltipStartListen()
