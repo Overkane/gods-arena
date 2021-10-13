@@ -53,6 +53,49 @@ endfunction
 
 //***************************************************************************
 //*
+//*  Unit Creation
+//*
+//***************************************************************************
+
+//===========================================================================
+function CreateUnitsForPlayer0 takes nothing returns nothing
+    local player p= Player(0)
+    local unit u
+    local integer unitID
+    local trigger t
+    local real life
+
+    set u=BlzCreateUnitWithSkin(p, 'hfoo', - 183.8, 59.9, 276.238, 'hfoo')
+    set life=GetUnitState(u, UNIT_STATE_LIFE)
+    call SetUnitState(u, UNIT_STATE_LIFE, 0.10 * life)
+    set u=BlzCreateUnitWithSkin(p, 'hfoo', - 3.6, 98.0, 249.441, 'hfoo')
+    set life=GetUnitState(u, UNIT_STATE_LIFE)
+    call SetUnitState(u, UNIT_STATE_LIFE, 0.10 * life)
+    set u=BlzCreateUnitWithSkin(p, 'hfoo', 167.2, 111.5, 105.120, 'hfoo')
+    set life=GetUnitState(u, UNIT_STATE_LIFE)
+    call SetUnitState(u, UNIT_STATE_LIFE, 0.10 * life)
+    set u=BlzCreateUnitWithSkin(p, 'hfoo', 153.5, - 40.8, 116.711, 'hfoo')
+    set life=GetUnitState(u, UNIT_STATE_LIFE)
+    call SetUnitState(u, UNIT_STATE_LIFE, 0.10 * life)
+endfunction
+
+//===========================================================================
+function CreatePlayerBuildings takes nothing returns nothing
+endfunction
+
+//===========================================================================
+function CreatePlayerUnits takes nothing returns nothing
+    call CreateUnitsForPlayer0()
+endfunction
+
+//===========================================================================
+function CreateAllUnits takes nothing returns nothing
+    call CreatePlayerBuildings()
+    call CreateUnitsForPlayer0() // INLINED!!
+endfunction
+
+//***************************************************************************
+//*
 //*  Regions
 //*
 //***************************************************************************
@@ -419,6 +462,7 @@ function main takes nothing returns nothing
     call SetAmbientNightSound("LordaeronSummerNight")
     call SetMapMusic("Music", true, 0)
     call CreateRegions()
+    call CreateAllUnits()
     call InitBlizzard()
 
 

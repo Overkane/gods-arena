@@ -18,7 +18,7 @@ init
     let shieldDurability = SHIELD_DURABILITY.run(lvl)
     let spellDuration = DURATION.run(lvl)
     
-    new BubbleShieldBuff(spellDuration, shieldDurability, healAmount).apply(target)
+    new BubbleShieldBuff(caster, spellDuration, shieldDurability, healAmount).apply(target)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Applies a bubble shield to the target, which heals it and blocks some amount of damage. The effect ends when the shield is destroyed or the duration exceeded. If applied on water elemental, then doubles its base damage.")

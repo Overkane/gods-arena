@@ -8,6 +8,7 @@ import ClosureEvents
 import SmallHealingPotion
 import TooltipFactory
 import MapIcons
+import CustomHeal
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_HEAL = 750
@@ -35,9 +36,9 @@ init
     let percHeal = caster.getMaxHP() * PERC_HEAL/100
     
     if FLAT_HEAL > percHeal
-      caster.addHP(FLAT_HEAL.toReal())
+      neutralHeal(caster, FLAT_HEAL.toReal())
     else
-      caster.addHP(percHeal)
+      neutralHeal(caster, percHeal)
 
 @compiletime function genItemAbils()
   new AbilityDefinitionItemHealLesser(HEAL_ID)

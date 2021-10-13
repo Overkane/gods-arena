@@ -6,6 +6,7 @@ import AbilityTooltipGenerator
 import GameConstants
 import CrabDefense
 import Reference
+import CustomHeal
 
 public constant CRAB_HEAL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -24,7 +25,7 @@ init
                 count.val++
 
         let heal = count.into() * SPELL_REGEN.run(lvl)
-        caster.addHP(heal.toReal())
+        caster.healTarget(caster, heal.toReal())
 
 
 @compiletime

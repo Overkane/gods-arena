@@ -6,6 +6,7 @@ import ClosureEvents
 import ObjectIdGenerator
 import ObjectIds
 import TooltipFactory
+import CustomHeal
 
 constant RESTORATION_ID = compiletime(ABIL_ID_GEN.next())
 constant PERC_HP = 50
@@ -34,7 +35,7 @@ public constant HELM_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 
 init 
   EventListener.onCast(RESTORATION_ID) (unit caster) ->
-    caster.addHP(caster.getMaxHP() * PERC_HP/100)
+    neutralHeal(caster, caster.getMaxHP() * PERC_HP/100)
     caster.addMana(caster.getMaxMana() * PERC_MP/100)
 
 @compiletime function genItemAbils()
