@@ -84,25 +84,15 @@ function initChatCommands()
     else if message == "-stats"
       pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Bonus Attack Damage: " + h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Attack Power: " + h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Attack Crit Power: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Attack Crit Chance: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Lifesteal: " + h.actor.getStat(CustomUnitStats.LIFESTEAL).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Bonus Spell Damage: " + h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Spell Power: " + h.actor.getStat(CustomUnitStats.SPELL_POWER).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Spell Crit Power: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Spell Crit Chance: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Spell Lifesteal: " + h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString(), 5, p)
-      pData.get(p).getHero().ifPresent() (h) ->
         printTimedToPlayer("Evasion: " + h.actor.getStat(CustomUnitStats.EVASION).toString(), 5, p)
 
 init
