@@ -33,9 +33,11 @@ function initChatCommands()
     if isCreator
       // Refresh command
       if message == "-r"
-        pData.get(p).getHero().ifPresent(h -> h.actor.setMana(h.actor.getMaxMana()))
-        pData.get(p).getHero().ifPresent(h -> h.actor.setHP(h.actor.getMaxHP()))
-        pData.get(p).getHero().ifPresent(h -> h.actor.resetCooldown())
+        pData.get(p).getHero().ifPresent() h ->
+          h.actor
+          ..setMana(h.actor.getMaxMana())
+          ..setHP(h.actor.getMaxHP())
+          ..resetCooldown()
       // Damage debug command
       else if message == "-d"
         DamageEvent.addListener() ->
@@ -68,17 +70,18 @@ function initChatCommands()
       p.setCameraField(CAMERA_FIELD_TARGET_DISTANCE, zoomValue, 0.3)
     else if message == "-stats"
       pData.get(p).getHero().ifPresent() (h) ->
-        printTimedToPlayer("Bonus Attack Damage: " + h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString(), 5, p)
-        printTimedToPlayer("Attack Power: " + h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString(), 5, p)
-        printTimedToPlayer("Attack Crit Power: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString(), 5, p)
-        printTimedToPlayer("Attack Crit Chance: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString(), 5, p)
-        printTimedToPlayer("Lifesteal: " + h.actor.getStat(CustomUnitStats.LIFESTEAL).toString(), 5, p)
-        printTimedToPlayer("Bonus Spell Damage: " + h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString(), 5, p)
-        printTimedToPlayer("Spell Power: " + h.actor.getStat(CustomUnitStats.SPELL_POWER).toString(), 5, p)
-        printTimedToPlayer("Spell Crit Power: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString(), 5, p)
-        printTimedToPlayer("Spell Crit Chance: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString(), 5, p)
-        printTimedToPlayer("Spell Lifesteal: " + h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString(), 5, p)
-        printTimedToPlayer("Evasion: " + h.actor.getStat(CustomUnitStats.EVASION).toString(), 5, p)
+        p
+        ..print("Bonus Attack Damage: " + h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString(), 5)
+        ..print("Attack Power: " + h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString(), 5)
+        ..print("Attack Crit Power: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString(), 5)
+        ..print("Attack Crit Chance: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString(), 5)
+        ..print("Lifesteal: " + h.actor.getStat(CustomUnitStats.LIFESTEAL).toString(), 5)
+        ..print("Bonus Spell Damage: " + h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString(), 5)
+        ..print("Spell Power: " + h.actor.getStat(CustomUnitStats.SPELL_POWER).toString(), 5)
+        ..print("Spell Crit Power: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString(), 5)
+        ..print("Spell Crit Chance: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString(), 5)
+        ..print("Spell Lifesteal: " + h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString(), 5)
+        ..print("Evasion: " + h.actor.getStat(CustomUnitStats.EVASION).toString(), 5)
 
 init
   nullTimer() ->

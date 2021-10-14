@@ -37,9 +37,9 @@ public class GameSetupDialog
   construct()
     pData.forEach() (player p, PlayerData value) ->
       if p == players[0]
-        printTimedToPlayer("You have " + COLOR_GOLD.toColorString() + PREGAME_MAX_DURATION.toString() + "|r seconds to choose game modes.", 5, p)
+        p.print("You have " + COLOR_GOLD.toColorString() + PREGAME_MAX_DURATION.toString() + "|r seconds to choose game modes.", 5)
       else
-        printTimedToPlayer("Please wait while " + players[0].getNameColored() + " chooses game modes.", 5, p)
+        p.print("Please wait while " + players[0].getNameColored() + " chooses game modes.", 5)
               
       createFrame("HeroPickMenuBackdrop", dialogFrame, 0, 0).setAllPoints(dialogFrame)
 
