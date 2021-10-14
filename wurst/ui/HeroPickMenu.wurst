@@ -13,14 +13,34 @@ import DemonLordIds
 import CustomStatSystem
 import Backpack
 import HonorShop
+import LinkedList
 
 public HeroPickUI heroPickUI
 
+constant BONUS_GOLD_FOR_RANDOM = 20
+
 constant playerSelection = new IterableMap<player, HeroIcon>
+constant heroPool = new LinkedList<int>
+..add(HYDROMANCER_ID)
+..add(TROLL_SHAMAN_ID)
+..add(STORMBEARER_ID)
+..add(BLADEMASTER_ID)
+..add(CRUSADER_ID)
+..add(ASSASSIN_ID)
+..add(DEMON_LORD_ID)
+..add(ARCHER_ID)
+..add(CRAB_ID)
 
 public function initHeroPickMenu()
   heroPickUI = new HeroPickUI()
   addHeroIcons()
+
+public function giveRandomHeroes()
+  heroPool.shuffle()
+
+  pData.forEach() (player p, PlayerData value) ->
+    createHero(heroPool.pop(), p)
+    p.addGold(BONUS_GOLD_FOR_RANDOM)
 
 function addHeroIcons()
   heroPickUI
@@ -51,6 +71,26 @@ function addHeroIcons()
   ..addHeroIcon(
     new HeroIcon(CRAB_ID, Icons.bTNLobstrokkBlue, Icons.dISBTNLobstrokkBlue)
     ..addTooltip("Crab", "Why do things keep evolving into crabs?"))
+
+function createHero(int heroId, player owner)
+  let h = new Hero(owner, heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
+  let backpack = new Backpack(owner, h.actor).actor
+  new HonorShop(owner, h.actor)
+  
+  pData.get(owner).setHero(h)
+  owner.selectSingle(h.actor)
+  owner.setCameraPosition(h.actor.getPos())
+
+  toggleShopButton.show(owner, h.actor)
+
+  shop.showToUnit(h.actor)
+
+  h.actor.addAbility(SELL_ID)
+  backpack.addAbility(SELL_ID)
+
+  // Setting starting stats for heroes
+  h.actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.5)
+  h.actor.addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.5)
 
 class HeroPickUI
   private var heroIconCounter = 0
@@ -90,28 +130,10 @@ class HeroPickUI
 
       if playerSelection.has(p)
         let pickedIcon = playerSelection.getAndRemove(p)
-        let h = new Hero(p, pickedIcon.heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
-        let backpack = new Backpack(p, h.actor).actor
-        new HonorShop(p, h.actor)
-        
-        pData.get(p).setHero(h)
-        p.selectSingle(h.actor)
-        p.setCameraPosition(h.actor.getPos())
         pickedIcon.disable()
         heroPickFrame.hide(p)
 
-        toggleShopButton.show(p, h.actor)
-        // toggleMultiboardButton.show(p)
-        // toggleStatMultiboardButton.show(p)
-
-        shop.showToUnit(h.actor)
-
-        h.actor.addAbility(SELL_ID)
-        backpack.addAbility(SELL_ID)
-
-        // Setting starting stats for heroes
-        h.actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.5)
-        h.actor.addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.5)
+        createHero(pickedIcon.heroId, p)
 
         playerSelection.forEach() (player key, HeroIcon value) ->
           if value == pickedIcon

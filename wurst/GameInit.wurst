@@ -3,14 +3,12 @@ import GameConstants
 import EntityManagement
 import PlayerData
 import ItemShopUI
-import HeroPickMenu
-import Arenas
 import ClosureTimers
 import DamageEvent
-// import GameStatistic
 import GeneralFunctions
 import SaveLoadSystem
 import CustomStatSystem
+import GameSetupDialog
 
 constant arena1Rect = Rect(-2272, -1760, 2560, 1760)
 
@@ -19,24 +17,11 @@ function initFrames()
   if loadingResult == false
     print("SOMETHING WENT WRONG WITH MyFiles.toc")
 
-function initPlayersGold()
-  pData.forEach() (player p, PlayerData playerData) ->
-    p.setGold(185)
-
-function initVision()
-  SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (pData.size() / 8.))
+function initEnemyVision()
   createVision(ENEMY_PLAYER, playableMapRect, true).start()
 
-function initPickTimer()
-  let heroPickTimer = getTimer()
-  let heroPickTimerDialog = heroPickTimer.createTimerDialog()
-  heroPickTimerDialog
-    ..setTitle("Hero pick phase ends in:")
-    ..display(true)
-
-  heroPickTimer.doAfter(HERO_PICK_TIME) ->
-    heroPickTimerDialog.destr()
-    startArenas()
+function initEnemyHandicap()
+  SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (pData.size() / 8.))
 
 function initChatCommands()
   EventListener.add(EVENT_PLAYER_CHAT_FILTER) () ->
@@ -99,14 +84,12 @@ init
   nullTimer() ->
     initFrames()
     initPlayers()
-    initPlayersGold()
-    initVision()
-    initPickTimer()
-    initHeroPickMenu()
+    initEnemyVision()
+    initEnemyHandicap()
     initItemShop()
     initChatCommands()
     startEntityLoop()
     initSaveLoadSystem()
-    // initMultiboard()
+    initGameSetupDialog()
     doAfter(1) ->
       BlzChangeMinimapTerrainTex("originalMap.blp")
