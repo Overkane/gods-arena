@@ -19,9 +19,10 @@ public function unit.healTarget(unit target, real amount, boolean showEffect)
     let missingHp = target.getMaxHP() - target.getHP()
     realAmount = missingHp > realAmount ? realAmount : missingHp
 
-    target.addHP(realAmount)
-    if showEffect
-        target.addEffect(Abilities.healTarget, AttachmentPoints.chest)
-    
-    createFText(target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-30, 0), 0, 0), realAmount.toInt().toString(), 7 + SquareRoot(realAmount) / 6,
-                        0.95, vec2(0, 0.045), colorA(138, 235, 99, 255), this != null ? this.getOwner() : target.getOwner())
+    if realAmount > 0
+        target.addHP(realAmount)
+        if showEffect
+            target.addEffect(Abilities.healTarget, AttachmentPoints.chest)
+        
+        createFText(target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-30, 0), 0, 0), realAmount.toInt().toString(), 7 + SquareRoot(realAmount) / 6,
+                            0.95, vec2(0, 0.045), colorA(138, 235, 99, 255), this != null ? this.getOwner() : target.getOwner())
