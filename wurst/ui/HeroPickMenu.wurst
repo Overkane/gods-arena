@@ -89,8 +89,9 @@ function createHero(int heroId, player owner)
   backpack.addAbility(SELL_ID)
 
   // Setting starting stats for heroes
-  h.actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.5)
-  h.actor.addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.5)
+  h.actor
+  ..addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.25)
+  ..addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.25)
 
 class HeroPickUI
   private var heroIconCounter = 0
