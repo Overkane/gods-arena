@@ -46,7 +46,7 @@ constant WISD_SL = 0.5
 constant ABIL_LUCK = compiletime(ABIL_ID_GEN.next())
 constant LUCK_ACC = 1.
 constant LUCK_SCC = 1.
-constant LUCK_EV = 1.
+constant LUCK_EV = 0.5
 
 public constant honorShopUnits = new LinkedList<unit>
 

@@ -9,7 +9,7 @@ import AssassinsBlade
 import TooltipFactory
 import CustomStatSystem
 
-constant EVASION_CHANCE = 30
+constant EVASION_CHANCE = 15
 
 constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
 constant PHASE_STEP_DURATION = 5
