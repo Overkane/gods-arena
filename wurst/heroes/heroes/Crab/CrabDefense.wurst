@@ -27,7 +27,7 @@ init
         ..setAnimation("birth")
         ..issueTargetOrderById(OrderIds.attack, source)
         ..setTimedLife(7.5)
-        ..addBonus(Bonus.DAMAGE, target.getStr(true) * 0.25 * target.getStat(CustomUnitStats.SPELL_POWER))
+        ..addBonus(Bonus.DAMAGE, target.getStr(true) * 0.25 * (1 + target.getStat(CustomUnitStats.SPELL_POWER)))
         ..addAbility(LOCUST_ID)
         ..setXY(target.getPos())
 

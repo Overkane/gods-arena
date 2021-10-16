@@ -28,7 +28,7 @@ init
       let empyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
       empyreanMult = empyreanBuff.divineBlessingMult
 
-    empyreanMult *= caster.getStat(CustomUnitStats.SPELL_POWER)
+    empyreanMult *= (1 + caster.getStat(CustomUnitStats.SPELL_POWER))
 
     let bonusArmor = BONUS_ARMOR.run(lvl) * empyreanMult
     let bonusHpReg = BONUS_HP_REG.run(lvl) * empyreanMult
