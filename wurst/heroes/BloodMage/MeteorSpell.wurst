@@ -8,7 +8,7 @@ import AbilityTooltipGenerator
 import GameConstants
 
 public constant METEOR_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 40. + 50. * lvl
+constant RealLevelClosure SPELL_DMG = lvl -> 75. + 50. * lvl
 constant SPELL_AOE = 378.
 
 init
@@ -35,7 +35,7 @@ function genAbility()
     ..setName("Chaos Meteor")
     ..presetHotkey("Q")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 160 - lvl * 10)
+    ..presetManaCost(lvl -> 160 + lvl * 20)
     ..presetAreaofEffect(lvl -> SPELL_AOE)
-    ..presetCooldown(lvl -> 24. + lvl * 2)
+    ..presetCooldown(lvl -> 32. - lvl * 2)
     ..tooltipStopListen()

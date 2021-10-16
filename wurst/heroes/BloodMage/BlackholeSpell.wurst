@@ -8,7 +8,7 @@ import AbilityTooltipGenerator
 import GameConstants
 
 public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 25. * lvl
+constant RealLevelClosure SPELL_DMG = lvl -> 5 + 15. * lvl
 constant SPELL_AOE = 400.
 constant SPELL_FX = "BlackHole.mdx"
 constant SPELL_DURATION = 7.
@@ -48,7 +48,7 @@ function genAbility()
     ..setName("Black Hole")
     ..presetHotkey("W")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 75 + lvl * 40)
+    ..presetManaCost(lvl -> 65 + lvl * 40)
     ..presetAreaofEffect(lvl -> SPELL_AOE)
-    ..presetCooldown(lvl -> 25. - lvl)
+    ..presetCooldown(lvl -> 27. - lvl)
     ..tooltipStopListen()
