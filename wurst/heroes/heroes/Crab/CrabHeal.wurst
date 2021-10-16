@@ -10,7 +10,7 @@ import CustomHeal
 
 public constant CRAB_HEAL_ID = compiletime(ABIL_ID_GEN.next())
 
-constant IntLevelClosure SPELL_REGEN = lvl -> 10 + 15 * lvl
+constant IntLevelClosure SPELL_REGEN = lvl -> 15 + 15 * lvl
 
 init
     EventListener.onCast(CRAB_HEAL_ID) caster ->

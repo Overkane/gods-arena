@@ -24,7 +24,7 @@ init
         let lvl = caster.getAbilityLevel(SHELL_ABIL_ID)
         let owner = caster.getOwner()
 
-        let iceEffect = caster.addEffect(Doodads.ruins_Shells4, AttachmentPoints.origin)
+        let shellEffect = caster.addEffect(Doodads.ruins_Shells4, AttachmentPoints.origin)
         ..setScale(5.)
 
         let regen = SPELL_REGEN.run(lvl)
@@ -39,8 +39,10 @@ init
                 target.clearAggro()
                 caster.addAggro(target, 200 + lvl * 100)
 
+        doAfter(SPELL_DURATION - 1.) ->    
+            shellEffect.destr()
+            
         doAfter(SPELL_DURATION) ->
-            iceEffect.destr()
             caster..setPropWindow(caster.getDefaultPropWindow())
             ..addBonus(Bonus.LIFEREGEN, -regen)
             ..addBonus(Bonus.ARMOR, -armor)
@@ -49,7 +51,7 @@ init
 
 @compiletime
 function genAbility()
-    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases regeneration but taunts nearby enemies."))
+    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases defense but |cffb93939taunts|cr nearby enemies."))
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNShimmerWeed)
