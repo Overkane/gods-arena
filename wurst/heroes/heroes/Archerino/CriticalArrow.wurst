@@ -21,7 +21,7 @@ init
         let lvl = attacker.getAbilityLevel(CRIT_ARROW_ID)
         let isTagged = DamageEvent.getTarget().hasBuff(TagBuff.typeId)
         if DamageEvent.getType() == DamageType.ATTACK and lvl > 0 and (isTagged or GetRandomReal(0, 1) < CHANCE.run(lvl))
-            let damage = attacker.getAgi(true) * 1.6
+            let damage = 50 + attacker.getAgi(true) * 1.6
             DamageEvent.addAmount(damage)
             createCriticalStrikeTextTag(attacker, damage.toInt())
 
@@ -43,7 +43,7 @@ init
     ..presetHotkey("E")
 
     ..tooltipStartListen()
-    ..addTooltipProperty("Extra Damage", lvl -> "1.6 * Agility")
+    ..addTooltipProperty("Extra Damage", lvl -> "50 + 1.6 * Agility")
     ..addTooltipProperty("Chance",  lvl -> (CHANCE.run(lvl) * 100).percRound())
     ..setName("Critical Arrow")
     ..tooltipStopListen()

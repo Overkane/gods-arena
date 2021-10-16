@@ -71,8 +71,8 @@ init
     ..addTooltipProperty("Walk Duration", WALK_DURATION)
     ..addTooltipProperty("Damage Reduction", lvl -> "75%")
     
-    ..presetManaCost(lvl -> 50 + 20 * lvl)
-    ..presetCooldown(lvl -> 21. - 2. * lvl)
+    ..presetManaCost(lvl -> 40 + 10 * lvl)
+    ..presetCooldown(lvl -> 20. - 2. * lvl)
     ..tooltipStopListen()
     
     ..presetDurationHero(WALK_DURATION)
