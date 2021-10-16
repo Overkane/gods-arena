@@ -63,7 +63,7 @@ init
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
   ..presetIcon(Icons.bTNHealingWave)
-  ..presetTargetsAllowed(lvl -> TargetsAllowed.allies)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self))
   ..presetHotkey("Q")
   
   ..tooltipStartListen()
