@@ -11,10 +11,10 @@ import GameConstants
 
 public constant TIME_CHAMBER_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 0.01 + 0.02 * lvl
+constant RealLevelClosure SPELL_DMG = lvl -> 0.03 + 0.02 * lvl
 constant SPELL_AOE = 625.
 constant SPELL_PROC_AMOUNT = 6
-constant SPELL_CD = 55.
+constant SPELL_CD = 65.
 constant SPELL_COST = 325
 
 init
