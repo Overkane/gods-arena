@@ -17,6 +17,13 @@ class AggroEntry
 
 constant aggroMap = new HashMap<unit, LinkedList<AggroEntry>>()
 
+public function unit.clearAggro()
+    let aggroList = aggroMap.get(this)
+    if aggroList != null
+        for aggro in aggroList
+            destroy aggro
+        aggroList.clear()
+
 public function unit.addAggro(unit target, int amount)
     let source = this
     if not aggroMap.has(target)

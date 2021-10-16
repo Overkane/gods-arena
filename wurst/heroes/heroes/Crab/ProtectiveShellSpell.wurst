@@ -36,7 +36,8 @@ init
         forUnitsInRange(caster.getPos(), SPELL_AOE) (target) ->
             if target.isEnemyOf(owner)
                 InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, lvl, OrderIds.cripple, target)
-                caster.addAggro(target, 50 + lvl * 50)
+                target.clearAggro()
+                caster.addAggro(target, 200 + lvl * 100)
 
         doAfter(SPELL_DURATION) ->
             iceEffect.destr()
