@@ -3,6 +3,7 @@ import FText
 import Abilities
 import AttachmentPoints
 import CustomStatSystem
+import CoolNumbers
 
 public function neutralHeal(unit target, real amount)
     null.healTarget(target, amount)
@@ -24,5 +25,4 @@ public function unit.healTarget(unit target, real amount, boolean showEffect)
         if showEffect
             target.addEffect(Abilities.healTarget, AttachmentPoints.chest)
         
-        createFText(target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-30, 0), 0, 0), realAmount.toInt().toString(), 7 + SquareRoot(realAmount) / 6,
-                            0.95, vec2(0, 0.045), colorA(138, 235, 99, 255), this != null ? this.getOwner() : target.getOwner())
+        coolTextTag(this, target, realAmount.toInt(), colorA(138, 235, 99, 255), 7)

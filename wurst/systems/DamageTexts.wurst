@@ -2,6 +2,7 @@ package DamageTexts
 import DamageEvent
 import GameConstants
 import FText
+import CoolNumbers
 
 init
     DamageEvent.addListener(99) ->
@@ -10,12 +11,9 @@ init
 
             if target.getOwner() == ENEMY_PLAYER
                 if DamageEvent.getType() == DamageType.ATTACK
-                    createFText(target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 6,
-                        0.90, vec2(0, 0.045), colorA(233, 116, 122, 255), DamageEvent.getSource().getOwner())
+                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(233, 116, 122, 255), 7)
                 else
-                    createFText(target.getPos().withTerrainZ(45) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 6,
-                        0.90, vec2(0, 0.045), colorA(57, 97, 207, 255), DamageEvent.getSource().getOwner())
+                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(109, 57, 207, 255), 7)
             else
-                createFText(target.getPos().withTerrainZ(45) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 6 + SquareRoot(DamageEvent.getAmount()) / 8,
-                    0.90, vec2(0, 0.045), colorA(146, 29, 29, 255), target.getOwner())
+                coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(146, 29, 29, 255), 6)
         
