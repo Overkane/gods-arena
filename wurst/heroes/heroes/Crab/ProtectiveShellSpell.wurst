@@ -51,7 +51,7 @@ init
 
 @compiletime
 function genAbility()
-    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases defense but |cffb93939taunts|cr nearby enemies."))
+    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases defense but |cffb93939taunts|r nearby enemies."))
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNShimmerWeed)
