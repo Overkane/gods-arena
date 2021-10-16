@@ -6,7 +6,6 @@ import ClosureEvents
 import CustomStatSystem
 import PassiveAbilityPreset
 import TooltipFactory
-import BonusHandler
 
 public constant KILLER_REFLEXES_ID = compiletime(ABIL_ID_GEN.next())
 

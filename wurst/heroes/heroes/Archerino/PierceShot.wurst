@@ -44,7 +44,7 @@ init
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
                     new TreantEntity(projectile.owner, hitTarget, lvl)
-                    hitTarget.removeBuff(TagBuff.typeId)
+                    hitTarget.removeBuffById(TagBuff.typeId)
 
 
 @compiletime function genAbility()

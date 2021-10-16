@@ -31,7 +31,7 @@ init
                 ..caster(attacker)
                 ..castTarget(ENTANGLE_ID, lvl, OrderIds.entanglingroots, DamageEvent.getTarget())
 
-                DamageEvent.getTarget().removeBuff(TagBuff.typeId)
+                DamageEvent.getTarget().removeBuffById(TagBuff.typeId)
 
 
 
