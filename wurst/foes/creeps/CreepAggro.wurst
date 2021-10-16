@@ -63,7 +63,8 @@ init
         if targetOwner == ENEMY_PLAYER and sourceOwner.isHuman() and not target.isType(UNIT_TYPE_PEON)
             if source.hasAbility(LOCUST_ID)
                 let pdata = pData.get(sourceOwner)
-                source = pdata.getHero().hero.actor
+                if pdata != null
+                    source = pdata.getHero().hero.actor
 
             source.addAggro(target, DamageEvent.getAmount())
             
