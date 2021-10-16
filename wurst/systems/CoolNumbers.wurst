@@ -18,6 +18,10 @@ public function coolNumber(int amount) returns string
     if amount < 1000
         return amount.toString()
     else if amount < 1000000
-        return (amount / 1000).toString(1) + "K"
+        let thousands = (amount / 1000)
+        if (thousands - thousands.toInt()) < 0.1
+            return thousands.toInt().toString() + "K"
+
+        return thousands.toString(1) + "K"
 
     return (amount / 1000000).toString(1) + "M"
