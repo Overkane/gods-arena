@@ -20,7 +20,7 @@ init
                 if target.isEnemyOf(caster.getOwner()) and target.isAlive()
                     let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / SPELL_AOE
                     caster.damageTarget(target, SPELL_DMG.run(lvl))
-                    Knockback3.add(target, 1200 * knockBackDistance, spellTarget.angleTo(target.getPos()), (78).fromDeg())
+                    Knockback3.add(target, 200 + 1200 * knockBackDistance, spellTarget.angleTo(target.getPos()), (78).fromDeg())
                     flashEffect(Abilities.incinerateBuff, target, "origin")
 
 @compiletime

@@ -9,7 +9,7 @@ import GameConstants
 
 public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 5 + 15. * lvl
-constant SPELL_AOE = 400.
+constant SPELL_AOE = 320.
 constant SPELL_FX = "BlackHole.mdx"
 constant SPELL_DURATION = 7.
 
@@ -20,7 +20,7 @@ init
         let eff = addEffect(SPELL_FX, spellTarget.withTerrainZ(32))..setScale(0)
         
         doPeriodicallyCounted(0.05, 50) cb ->
-            eff.setScale(eff.getScale().lerp(2.0, 0.5))
+            eff.setScale(eff.getScale().lerp(1.5, 0.5))
 
         doAfter(0.3) ->
             doPeriodicallyCounted(0.6, (SPELL_DURATION / 0.6).toInt()) (CallbackCounted cb) ->
@@ -48,7 +48,7 @@ function genAbility()
     ..setName("Black Hole")
     ..presetHotkey("W")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 65 + lvl * 40)
+    ..presetManaCost(lvl -> 75 + lvl * 40)
     ..presetAreaofEffect(lvl -> SPELL_AOE)
-    ..presetCooldown(lvl -> 27. - lvl)
+    ..presetCooldown(lvl -> 29. - lvl)
     ..tooltipStopListen()
