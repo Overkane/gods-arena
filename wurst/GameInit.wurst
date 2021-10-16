@@ -85,6 +85,7 @@ function initChatCommands()
 
 init
   nullTimer() ->
+    SetMapFlag(MAP_LOCK_RESOURCE_TRADING, true)
     initFrames()
     initPlayers()
     initEnemyVision()
