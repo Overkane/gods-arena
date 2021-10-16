@@ -7,8 +7,8 @@ public constant SIPHON_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 0.05 * lvl
 constant RealLevelClosure SPELL_CAST_RANGE = lvl -> 700. + 100 * lvl
-constant SPELL_CD = 20.
-constant SPELL_COST = 40
+constant SPELL_CD = 17.
+constant SPELL_COST = 30
 
 
 
@@ -26,10 +26,8 @@ function genAbil()
     ..setLevels(NORMAL_SPELL_LEVELS)
     ..setName("Time Siphon")
     ..presetHotkey("E")
-    ..presetManaTransferredPerSecond(lvl -> 5. + 10 * lvl)
-    ..presetManaPointsDrained(lvl -> 500)
-    ..presetLifeTransferredPerSecond(lvl -> 5. + 10 * lvl)
-    ..presetHitPointsDrained(lvl -> 1000)
+    ..presetManaPointsDrained(lvl -> 100. * 50 * lvl)
+    ..presetHitPointsDrained(lvl -> 100. * 50 * lvl)
     ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies))
     ..presetDurationNormal(lvl -> 7)
     ..presetDurationHero(lvl -> 7)
