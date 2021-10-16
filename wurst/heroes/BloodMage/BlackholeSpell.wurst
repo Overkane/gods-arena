@@ -6,6 +6,7 @@ import ClosureForGroups
 import Knockback3
 import AbilityTooltipGenerator
 import GameConstants
+import DamageEvent
 
 public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 5 + 15. * lvl
@@ -26,6 +27,7 @@ init
             doPeriodicallyCounted(0.6, (SPELL_DURATION / 0.6).toInt()) (CallbackCounted cb) ->
                 forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
                     if target.isEnemyOf(caster.getOwner()) and target.isAlive()
+                        DamageEvent.setNextDamageFromCode()
                         caster.damageTarget(target, SPELL_DMG.run(lvl))
                         Knockback3.add(target, -600, spellTarget.angleTo(target.getPos()), (40).fromDeg())
 
