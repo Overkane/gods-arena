@@ -4,17 +4,11 @@ import HeroPreset
 import Assets
 import ChannelAbilityPreset
 import MeteorSpell
-import Hero
 import BlackholeSpell
 import TimeChamber
 import TimeSiphon
 
 public constant ELEMENTOR_ID = compiletime(HERO_ID_GEN.next())
-
-public class BloodmageHero extends Hero
-
-    construct(vec2 position, player owner)
-        super(owner, ELEMENTOR_ID, position.toVec3(), angle(0)) 
 
 @compiletime
 function genHero()

@@ -1,6 +1,7 @@
 package TimeSiphon
 import AbilityTooltipGenerator
 import GameConstants
+import Icons
 
 public constant SIPHON_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
@@ -14,13 +15,15 @@ constant SPELL_COST = 40
 
 @compiletime
 function genAbil()
-    new AbilityDefinitionSiphonManaCreep(SIPHON_ABIL_ID)
-    ..setLevels(NORMAL_SPELL_LEVELS)
-    ..presetButtonPosNormal(2, 1)
+    new AbilityDefinitionDrainLifeCreep(SIPHON_ABIL_ID)
+    ..presetButtonPosNormal(2, 2)
+    ..presetButtonPosResearch(2, 0)
+    ..presetIcon(Icons.bTNDrain)
     ..registerTooltipGenerator(new AbilityTooltipGenerator("The Manipulator siphons enegery from the target to himself, replenishing mana and hitpoints."))
     
     
     ..tooltipStartListen()
+    ..setLevels(NORMAL_SPELL_LEVELS)
     ..setName("Time Siphon")
     ..presetHotkey("E")
     ..presetManaTransferredPerSecond(lvl -> 10. + 10 * lvl)
