@@ -1,0 +1,34 @@
+package TimeSiphon
+import AbilityTooltipGenerator
+import GameConstants
+
+public constant SIPHON_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure SPELL_DMG = lvl -> 0.05 * lvl
+constant RealLevelClosure SPELL_CAST_RANGE = lvl -> 700. + 100 * lvl
+constant SPELL_CD = 20.
+constant SPELL_COST = 40
+
+
+
+
+@compiletime
+function genAbil()
+    new AbilityDefinitionSiphonManaCreep(SIPHON_ABIL_ID)
+    ..setLevels(NORMAL_SPELL_LEVELS)
+    ..presetButtonPosNormal(2, 1)
+    ..registerTooltipGenerator(new AbilityTooltipGenerator("The Manipulator siphons enegery from the target to himself, replenishing mana and hitpoints."))
+    
+    
+    ..tooltipStartListen()
+    ..setName("Time Siphon")
+    ..presetHotkey("E")
+    ..presetManaTransferredPerSecond(lvl -> 10. + 10 * lvl)
+    ..presetLifeTransferredPerSecond(lvl -> 10. + 10 * lvl)
+    ..presetDurationNormal(lvl -> 7)
+    ..presetDurationHero(lvl -> 7)
+    ..presetCastRange(SPELL_CAST_RANGE)
+    ..presetManaCost(lvl -> SPELL_COST + lvl * 10)
+    ..presetCooldown(lvl -> SPELL_CD)
+    ..tooltipStopListen()
+

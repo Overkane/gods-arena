@@ -7,7 +7,7 @@ import MeteorSpell
 import Hero
 import BlackholeSpell
 import TimeChamber
-import SpaceJump
+import TimeSiphon
 
 public constant ELEMENTOR_ID = compiletime(HERO_ID_GEN.next())
 
@@ -23,7 +23,7 @@ function genHero()
     ..addProperName("Kael")
     ..addHeroAbility(METEOR_ABIL_ID)
     ..addHeroAbility(BLACKHOLE_ABILITY_ID)
-    ..addHeroAbility(SPACE_JUMP_ABIL_ID)
+    ..addHeroAbility(SIPHON_ABIL_ID)
     ..addHeroAbility(TIME_CHAMBER_ABIL_ID)
     // ..addNormalAbility(SEA_AURA_ID)
     ..setStartingStrength(16)
