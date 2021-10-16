@@ -1,0 +1,66 @@
+package TimeChamber
+import AbilityTooltipGenerator
+import Icons
+import ClosureEvents
+import Abilities
+import ClosureTimers
+import ClosureForGroups
+import InstantDummyCaster
+import Orders
+import GameConstants
+
+public constant TIME_CHAMBER_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure SPELL_DMG = lvl -> 0.01 + 0.02 * lvl
+constant SPELL_AOE = 625.
+constant SPELL_PROC_AMOUNT = 6
+constant SPELL_CD = 55.
+constant SPELL_COST = 325
+
+init
+    EventListener.onCast(TIME_CHAMBER_ABIL_ID) caster ->
+        let spellTarget = EventData.getSpellTargetPos()
+        let spellLvl = caster.getAbilityLevel(TIME_CHAMBER_ABIL_ID)
+        let owner = caster.getOwner()
+
+        doPeriodicallyCounted(0.9, SPELL_PROC_AMOUNT) (CallbackCounted cb) ->
+            flashEffect(Abilities.massTeleportTo, spellTarget, 4)
+
+            forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
+                if target.isEnemyOf(owner)
+                    InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, spellLvl, OrderIds.slow, target)
+                    caster.damageTarget(target, SPELL_DMG.run(spellLvl) * target.getMaxHP())
+
+
+@compiletime
+function genAbil()
+    new ChannelAbilityPreset(TIME_CHAMBER_ABIL_ID, 3, true, new AbilityTooltipGenerator("Slows all enemies in the target area by the means of time travel."))
+    ..presetButtonPosNormal(3, 2)
+    ..presetIcon(Icons.bTNArcaneVault)
+    ..presetOption(Option.TARGETIMAGE, true)
+    ..presetCastRange(lvl -> 700)
+    ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+    ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+    ..presetButtonPosNormal(3, 2)
+    ..presetButtonPosResearch(3, 0)
+    ..presetHotkey("R")
+
+    ..tooltipStartListen()
+    ..presetTargetTypes(Targettype.POINT)
+    ..setName("Time Chamber")
+    ..presetHotkey("R")
+    ..addTooltipProperty("Damage", lvl -> SPELL_DMG.run(lvl).toString() + "%")
+    ..presetManaCost(lvl -> SPELL_COST + lvl * 10)
+    ..presetAreaofEffect(lvl -> SPELL_AOE)
+    ..presetCooldown(lvl -> SPELL_CD)
+    ..tooltipStopListen()
+
+    new AbilityDefinitionSlow(DUMMY_ABIL_ID)
+    ..setDummyAbility()
+    ..setLevels(3)
+    ..presetMovementSpeedFactor(lvl -> 9000)
+    ..presetAttackSpeedFactor(lvl -> 500)
+    ..presetDurationNormal(lvl -> 1)
+
+
+

@@ -1,0 +1,39 @@
+package BloodmageHero
+
+import HeroPreset
+import Assets
+import ChannelAbilityPreset
+import MeteorSpell
+import Hero
+import BlackholeSpell
+import TimeChamber
+import SpaceJump
+
+public constant ELEMENTOR_ID = compiletime(HERO_ID_GEN.next())
+
+public class BloodmageHero extends Hero
+
+    construct(vec2 position, player owner)
+        super(owner, ELEMENTOR_ID, position.toVec3(), angle(0)) 
+
+@compiletime
+function genHero()
+
+    new HeroPreset(ELEMENTOR_ID, UnitIds.bloodmage, "Elementor")
+    ..addProperName("Kael")
+    ..addHeroAbility(METEOR_ABIL_ID)
+    ..addHeroAbility(BLACKHOLE_ABILITY_ID)
+    ..addHeroAbility(SPACE_JUMP_ABIL_ID)
+    ..addHeroAbility(TIME_CHAMBER_ABIL_ID)
+    // ..addNormalAbility(SEA_AURA_ID)
+    ..setStartingStrength(16)
+    ..setStrengthPerLevel(1.6)
+    ..setStartingAgility(15)
+    ..setAgilityPerLevel(1.4)
+    ..setStartingIntelligence(24)
+    ..setIntelligencePerLevel(2.8)
+    ..setAttack1DamageNumberofDice(1)
+    ..setAttack1DamageSidesperDie(4)
+    ..setAttack1Range(500)
+    ..setCollisionSize(24)
+    ..buildHero()

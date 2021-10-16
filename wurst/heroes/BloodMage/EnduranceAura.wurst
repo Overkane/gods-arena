@@ -1,0 +1,17 @@
+package EnduranceAura
+import AbilityTooltipGenerator
+
+public constant ENDURANCE_AURA_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+
+
+@compiletime
+function genAbility()
+    new AbilityDefinitionTaurenChieftainEnduranceAura(ENDURANCE_AURA_ABIL_ID)
+    ..registerTooltipGenerator(new AbilityTooltipGenerator("Increases attack and movement speed of nearby allies. Yes, really."))
+    ..setLevels(4)
+    ..tooltipStartListen()
+    ..setName("Encurance Aura")
+    ..presetHotkey("E")
+    ..presetAttackSpeedIncrease(lvl -> 0.1 + 0.1 * lvl)
+    ..presetMovementSpeedIncrease(lvl -> 0.1 + 0.1 * lvl)
+    ..tooltipStopListen()

@@ -1,0 +1,54 @@
+package BlackholeSpell
+import ClosureEvents
+import Assets
+import ClosureTimers
+import ClosureForGroups
+import Knockback3
+import AbilityTooltipGenerator
+import GameConstants
+
+public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure SPELL_DMG = lvl -> 25. * lvl
+constant SPELL_AOE = 400.
+constant SPELL_FX = "BlackHole.mdx"
+constant SPELL_DURATION = 7.
+
+init
+    EventListener.onCast(BLACKHOLE_ABILITY_ID) caster ->
+        let spellTarget = EventData.getSpellTargetPos()
+        let lvl = caster.getAbilityLevel(BLACKHOLE_ABILITY_ID)
+        let eff = addEffect(SPELL_FX, spellTarget.withTerrainZ(32))..setScale(0)
+        
+        doPeriodicallyCounted(0.05, 50) cb ->
+            eff.setScale(eff.getScale().lerp(2.0, 0.5))
+
+        doAfter(0.3) ->
+            doPeriodicallyCounted(0.6, (SPELL_DURATION / 0.6).toInt()) (CallbackCounted cb) ->
+                forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
+                    if target.isEnemyOf(caster.getOwner()) and target.isAlive()
+                        caster.damageTarget(target, SPELL_DMG.run(lvl))
+                        Knockback3.add(target, -600, spellTarget.angleTo(target.getPos()), (40).fromDeg())
+
+
+        doAfter(SPELL_DURATION) ->
+            doPeriodicallyCounted(0.05, 50) cb ->
+                eff.setScale(eff.getScale().lerp(0.0, 0.5))
+                if cb.isLast()
+                    eff.destr()
+
+@compiletime
+function genAbility()
+    new ChannelAbilityPreset(BLACKHOLE_ABILITY_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A black hole to suck you dry."))
+    ..presetButtonPosNormal(1, 2)
+    ..presetIcon(Icons.bTNDeathAndDecay)
+    ..presetOption(Option.TARGETIMAGE, true)
+
+    ..tooltipStartListen()
+    ..presetTargetTypes(Targettype.POINT)
+    ..setName("Black Hole")
+    ..presetHotkey("W")
+    ..addTooltipProperty("Damage", SPELL_DMG)
+    ..presetManaCost(lvl -> 75 + lvl * 40)
+    ..presetAreaofEffect(lvl -> SPELL_AOE)
+    ..presetCooldown(lvl -> 25. - lvl)
+    ..tooltipStopListen()
