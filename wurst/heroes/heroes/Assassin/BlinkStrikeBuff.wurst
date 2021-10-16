@@ -1,0 +1,28 @@
+package BlinkStrikeBuff
+import PresetBuffs
+import Assets
+import BonusHandler
+
+constant buffTupleBuff = compiletime(createDummyBuffObject("Blink Strike Buff", "Unit's agility is increased.",  Icons.bTNShadowMeld))
+
+public class BlinkStrikeBuff extends StackingBuff
+  var bonusAgi = 0.
+  var addedAgi = 0.
+
+  construct(real dur, real bonusAgi)
+    super(dur, buffTupleBuff)
+    this.bonusAgi = bonusAgi
+
+  override function onApply()
+    addedAgi = target.getAgi(false) * bonusAgi
+    target.addBonus(Bonus.AGILITY, addedAgi)
+
+  override function onEnd()
+    target.addBonus(Bonus.AGILITY, -addedAgi)
+
+
+constant buffTupleDebuff = compiletime(createDummyBuffObject("Blink Strike Debuff", "Unit's the target of Blink Strike.",  Icons.bTNShadowMeld))
+
+public class BlinkStrikeDebuff extends NormalBuff
+  construct(real dur)
+    super(dur, buffTupleDebuff)

@@ -9,8 +9,8 @@ import TooltipFactory
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure CRITICAL_CHANCE = lvl -> 10. + 5. * (lvl-1)
-constant RealLevelClosure CRITICAL_MULT = lvl -> 1.8 + 0.4 * (lvl-1)
+constant RealLevelClosure CRITICAL_CHANCE = lvl -> 10. + 2.5 * (lvl-1)
+constant RealLevelClosure CRITICAL_MULT = lvl -> 1.5 + 0.5 * (lvl-1)
 constant RealLevelClosure BACKSTAB_MULT = lvl -> 2.
 
 constant CONE_ANGLE = 140.

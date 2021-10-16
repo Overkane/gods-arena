@@ -15,7 +15,7 @@ public constant CONTRACT_ID = compiletime(ABIL_ID_GEN.next())
 constant AOE = 500.
 constant DURATION = 15.
 constant BONUS_AP = 25.
-constant BOUNTY = 5
+constant BOUNTY = 4
 
 init 
   EventListener.onCast(CONTRACT_ID) (unit caster) ->
