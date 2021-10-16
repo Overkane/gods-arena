@@ -6,7 +6,7 @@ import Units
 
 public constant CRAB_STAMPEDE_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DURATION = lvl -> 5. + lvl * 2
+RealLevelClosure DURATION = lvl -> 5. + lvl * 3
 
 @compiletime function genAbil()
     let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Nearby crawfish heath the call of the Crab and crush everything in their path.")
@@ -27,11 +27,11 @@ RealLevelClosure DURATION = lvl -> 5. + lvl * 2
     ..tooltipStartListen()
     ..setLevels(ULTIMATE_SPELL_LEVELS)
     ..setName("Crab Stampede")
-    ..presetDamageAmount(lvl -> 40. + 35. * lvl)
+    ..presetDamageAmount(lvl -> 40. + 45. * lvl)
     ..presetBeastsPerSecond(lvl -> 2 + 2 * lvl)
     ..addTooltipProperty("Duration", DURATION)
-    ..presetManaCost(lvl -> 90 + 50 * lvl)
-    ..presetCooldown(lvl -> 95)
+    ..presetManaCost(lvl -> 90 + 40 * lvl)
+    ..presetCooldown(lvl -> 85)
     ..presetCastRange(lvl -> 1000.)
     ..tooltipStopListen()
   

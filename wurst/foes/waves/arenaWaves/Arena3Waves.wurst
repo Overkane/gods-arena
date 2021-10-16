@@ -164,5 +164,6 @@ function wave_4() returns Wave
   ..attackrate(0.25)
   ..amount(4)
   ..scale(2.45)
+  ..movespeed(350)
 
   .build()
