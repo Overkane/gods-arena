@@ -8,6 +8,7 @@ import Orders
 import BonusHandler
 import GameConstants
 import Buff
+import CustomStatSystem
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -17,12 +18,12 @@ constant RealLevelClosure SPELL_DAMAGE = lvl -> 75. + 85 * lvl
 
 class TreantEntity extends UnitEntity
 
-    construct(player owner, unit target, int lvl)
-        super(createUnit(owner, TREANT_ID, target.getPos(), angle(0))
-        ..setTimedLife(12.)
+    construct(unit owner, unit target, int lvl)
+        super(createUnit(owner.getOwner(), TREANT_ID, target.getPos(), angle(0))
+        ..setTimedLife(15.)
         ..issueTargetOrderById(OrderIds.attack, target)
-        ..addBonus(Bonus.DAMAGE, lvl * 30.)
-        ..addBonus(Bonus.LIFE, 95. * lvl))
+        ..addBonus(Bonus.DAMAGE, lvl * 30. * owner.getStat(CustomUnitStats.SPELL_POWER))
+        ..addBonus(Bonus.LIFE, 95. * lvl + (lvl - 1) * 50 * owner.getStat(CustomUnitStats.SPELL_POWER)))
 
 
 init
@@ -43,7 +44,7 @@ init
                 Knockback3.add(hitTarget, 350. + dmg, projectile.getXYAngle(), 45 .fromDeg())
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
-                    new TreantEntity(projectile.owner, hitTarget, lvl)
+                    new TreantEntity(caster, hitTarget, lvl)
                     hitTarget.removeBuffById(TagBuff.typeId)
 
 

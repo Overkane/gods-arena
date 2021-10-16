@@ -18,8 +18,9 @@ constant WATER_ELEMENTAL_5 = compiletime(UNIT_ID_GEN.next())
 public constant WATER_ELEM_LIST = new LinkedList<int>..add(WATER_ELEMENTAL_1, WATER_ELEMENTAL_2, WATER_ELEMENTAL_3, WATER_ELEMENTAL_4, WATER_ELEMENTAL_5)
 constant SUMMON_GROUP = new LinkedList<unit>
 
+constant SUMMON_COUNT = [1, 1, 2, 2, 3, 3]
 constant RealLevelClosure DURATION = lvl -> 0
-constant IntLevelClosure MAX_SUMMON_COUNT = lvl -> 1 + (lvl/3).round()
+constant IntLevelClosure MAX_SUMMON_COUNT = lvl -> SUMMON_COUNT[lvl]
 constant StringLevelClosure WATER_ELEM_TYPE = lvl -> WATER_ELEM_LIST.get(lvl-1).toRawCode()
 
 init 
@@ -79,18 +80,19 @@ init
   ..setDefenseBase(2)
   ..setHitPointsMaximumBase(350)
   new UnitDefinition(WATER_ELEMENTAL_2, UnitIds.waterelemental2)
-  ..setAttack1DamageBase(45)
+  ..setAttack1DamageBase(55)
   ..setAttack1Range(625)
   ..setDefenseBase(3)
   ..setHitPointsMaximumBase(450)
   new UnitDefinition(WATER_ELEMENTAL_3, UnitIds.waterelemental3)
-  ..setAttack1DamageBase(65)
+  ..setAttack1DamageBase(75)
   ..setAttack1Range(650)
   ..setHitPointsMaximumBase(750)
   ..setDefenseBase(4)
   new UnitDefinition(WATER_ELEMENTAL_4, UnitIds.seaelemental)
-  ..setAttack1DamageBase(80)
+  ..setAttack1DamageBase(85)
   ..setAttack1Range(675)
+  ..setAttack1CooldownTime(0.9)
   ..setHitPointsMaximumBase(1050)
   ..setArmorType(ArmorType.Large)
   ..setDefenseBase(6)
@@ -100,6 +102,7 @@ init
   new UnitDefinition(WATER_ELEMENTAL_5, UnitIds.seaelemental)
   ..setAttack1DamageBase(115)
   ..setAttack1Range(700)
+  ..setAttack1CooldownTime(0.75)
   ..setHitPointsMaximumBase(1550)
   ..setArmorType(ArmorType.Large)
   ..setDefenseBase(8)

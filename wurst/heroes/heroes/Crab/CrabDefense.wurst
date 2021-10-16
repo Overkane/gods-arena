@@ -8,6 +8,7 @@ import DamageEvent
 import Orders
 import BonusHandler
 import TooltipFactory
+import CustomStatSystem
 
 public constant CRAB_DEFENSE_ID = compiletime(ABIL_ID_GEN.next())
 public constant CRABLING_ID = compiletime(UNIT_ID_GEN.next())
@@ -26,7 +27,7 @@ init
         ..setAnimation("birth")
         ..issueTargetOrderById(OrderIds.attack, source)
         ..setTimedLife(7.5)
-        ..addBonus(Bonus.DAMAGE, target.getStr(true) * 0.25)
+        ..addBonus(Bonus.DAMAGE, target.getStr(true) * 0.25 * target.getStat(CustomUnitStats.SPELL_POWER))
         ..addAbility(LOCUST_ID)
         ..setXY(target.getPos())
 
