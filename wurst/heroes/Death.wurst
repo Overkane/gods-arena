@@ -19,6 +19,7 @@ init
           aliveCount.val += 1
       if aliveCount.into() == 0
         print(">> All Heroes died. You lost!".color(COLOR_GOLD))
+        print(">> Game will end momentarily.".color(COLOR_GOLD))
         ended = true
         doAfter(30.) ->
           EndGame(true)
