@@ -6,25 +6,28 @@ import LinkedList
 import UnitIndexer
 import Orders
 import PlayerData
+import GameTimer
 
 class AggroEntry
     unit source
-    int aggro = 0
+    var aggro = 0.
 
-    construct(unit source, int aggro)
+    construct(unit source, real aggro)
         this.source = source
         this.aggro = aggro
 
 constant aggroMap = new HashMap<unit, LinkedList<AggroEntry>>()
+constant lastAttackMap = new HashMap<unit, real>
 
 public function unit.clearAggro()
     let aggroList = aggroMap.get(this)
+    lastAttackMap.remove(this)
     if aggroList != null
         for aggro in aggroList
             destroy aggro
         aggroList.clear()
 
-public function unit.addAggro(unit target, int amount)
+public function unit.addAggro(unit target, real amount)
     let source = this
     if not aggroMap.has(target)
         aggroMap.put(target, new LinkedList<AggroEntry>())
@@ -37,15 +40,18 @@ public function unit.addAggro(unit target, int amount)
             if aggro.source == source
                 aggro.aggro += amount
                 found = true
-                break
+            else
+                aggro.aggro *= 0.9
 
         if not found
             aggroList.add(new AggroEntry(source, amount))
 
-        aggroList.sortWith((a, b) -> b.aggro - a.aggro)
-
-        if first != aggroList.getFirst()
+        aggroList.sortWith((a, b) -> (b.aggro - a.aggro).toInt())
+        
+        let lastAttack = lastAttackMap.get(target)
+        if first != aggroList.getFirst() and not lastAttackMap.has(target) or lastAttack < currentTime - 3
             target.issueTargetOrderById(OrderIds.attack, source)
+            lastAttackMap.put(target, currentTime)
 
 init
     DamageEvent.addListener() -> 
@@ -59,12 +65,13 @@ init
                 let pdata = pData.get(sourceOwner)
                 source = pdata.getHero().hero.actor
 
-            source.addAggro(target, DamageEvent.getAmount().toInt())
+            source.addAggro(target, DamageEvent.getAmount())
             
                 
             
     onUnitDeindex() ->
         let u = getIndexingUnit()
+        lastAttackMap.remove(u)
         let aggro = aggroMap.getAndRemove(u)
         if aggro != null
             for agg in aggro

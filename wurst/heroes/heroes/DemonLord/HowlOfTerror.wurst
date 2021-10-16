@@ -25,7 +25,7 @@ init
 
       forUnitsInRange(caster.getPos(), AOE) (unit u) ->
         u.clearAggro()
-        caster.addAggro(u, 300 * lvl)
+        caster.addAggro(u, 300. * lvl)
 
   DamageEvent.addListener() ->
     let sunit = DamageEvent.getSource()

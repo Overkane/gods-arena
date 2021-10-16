@@ -37,7 +37,7 @@ init
             if target.isEnemyOf(owner)
                 InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, lvl, OrderIds.cripple, target)
                 target.clearAggro()
-                caster.addAggro(target, 200 + lvl * 100)
+                caster.addAggro(target, 200. + lvl * 200)
 
         doAfter(SPELL_DURATION - 1.) ->    
             shellEffect.destr()
