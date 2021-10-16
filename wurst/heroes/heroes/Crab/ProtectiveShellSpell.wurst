@@ -15,7 +15,7 @@ constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_REGEN = lvl -> 3. + 6. * lvl
 constant RealLevelClosure SPELL_ARMOR = lvl -> 7. + 3. * lvl
 // constant RealLevelClosure REDUCE_DMG = lvl -> 0. * lvl
-constant SPELL_AOE = 256.
+constant SPELL_AOE = 320.
 constant SPELL_DURATION = 7.
 constant FLASH_EFFECT_DELAY = 0.9
 
