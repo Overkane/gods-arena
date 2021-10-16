@@ -38,7 +38,7 @@ init
 
 @compiletime
 function genAbility()
-    new ChannelAbilityPreset(BLACKHOLE_ABILITY_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A black hole to suck you dry."))
+    new ChannelAbilityPreset(BLACKHOLE_ABILITY_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A black hole that sucks nearby enemies into its center, dealing damage."))
     ..presetButtonPosNormal(1, 2)
     ..presetIcon(Icons.bTNDeathAndDecay)
     ..presetOption(Option.TARGETIMAGE, true)

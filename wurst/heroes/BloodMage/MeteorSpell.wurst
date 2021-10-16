@@ -25,7 +25,7 @@ init
 
 @compiletime
 function genAbility()
-    new ChannelAbilityPreset(METEOR_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A chunky meteor from the sky which burns your enmies with over 9000° Celsius. HOT DAMN."))
+    new ChannelAbilityPreset(METEOR_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A chunky meteor from the sky which crushes your enmies in a big area with over 9000° Celsius."))
     ..presetButtonPosNormal(0, 2)
     ..presetIcon(Icons.bTNInfernal)
     ..presetOption(Option.TARGETIMAGE, true)

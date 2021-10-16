@@ -19,7 +19,7 @@ function genAbil()
     ..presetButtonPosNormal(2, 2)
     ..presetButtonPosResearch(2, 0)
     ..presetIcon(Icons.bTNDrain)
-    ..registerTooltipGenerator(new AbilityTooltipGenerator("The Manipulator siphons enegery from the target to himself, replenishing mana and hitpoints."))
+    ..registerTooltipGenerator(new AbilityTooltipGenerator("The Elementor siphons enegery from the target to himself, replenishing mana and hitpoints."))
     
     
     ..tooltipStartListen()
