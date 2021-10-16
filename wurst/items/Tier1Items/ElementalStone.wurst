@@ -8,9 +8,9 @@ import Sapphire
 public constant ELEMENTAL_STONE_ITEM = compiletime(new RecipeItem()
 ..setName("Elemental Stone")
 ..setInterfaceIcon(MapIcons.btNElementalSpin)
-..addBonus(Bonus.STRENGTH, 15)
-..addBonus(Bonus.AGILITY, 15)
-..addBonus(Bonus.INTELLIGENCE, 15)
+..addBonus(Bonus.STRENGTH, 12)
+..addBonus(Bonus.AGILITY, 12)
+..addBonus(Bonus.INTELLIGENCE, 12)
 ..generateTooltip("")
 )..register()
 

@@ -6,7 +6,7 @@ public constant EMERALD_ITEM = compiletime(new RecipeItem()
 ..setName("Emerald")
 ..setInterfaceIcon(MapIcons.bTNEmerald)
 ..setGoldCost(90)
-..addBonus(Bonus.AGILITY, 8)
+..addBonus(Bonus.AGILITY, 6)
 ..generateTooltip("")
 )..register()
 

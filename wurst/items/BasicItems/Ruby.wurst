@@ -6,7 +6,7 @@ public constant RUBY_ITEM = compiletime(new RecipeItem()
 ..setName("Ruby")
 ..setInterfaceIcon(MapIcons.bTNRuby)
 ..setGoldCost(90)
-..addBonus(Bonus.STRENGTH, 8)
+..addBonus(Bonus.STRENGTH, 6)
 ..generateTooltip("")
 )..register()
 

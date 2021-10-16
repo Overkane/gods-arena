@@ -11,7 +11,7 @@ import MapIcons
 import CustomStatSystem
 
 constant CLEAVE_ID = compiletime(ABIL_ID_GEN.next())
-constant CLEAVE_PERC = 55
+constant CLEAVE_PERC = 35
 
 constant LIFESTEAL_VALUE = 25
 
@@ -37,7 +37,7 @@ public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant DRACULAS_AXE_RECIPE = new ItemRecipe()
-..gold(320)
+..gold(350)
 ..setRequiredItems(ARCANITE_AXE_ITEM, MASK_OF_DEATH_ITEM, ELEMENTAL_STONE_ITEM)
 ..setResultItem(DRACULAS_AXE_ITEM)
 
