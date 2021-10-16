@@ -6,6 +6,7 @@ import AbilityTooltipGenerator
 import TheEmpyreanBuff
 import ClosureEvents
 import GameConstants
+import CustomHeal
 
 public constant HEALING_SEAL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -31,7 +32,7 @@ init
     flashEffect(Abilities.holyBoltSpecialArt, tunit.getPos())
 
     if tunit.isAllyOf(caster)
-      tunit.setHP(tunit.getHP() + spellDamage)
+      caster.healTarget(tunit, spellDamage)
       forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isEnemyOf(caster) and target.isAlive()
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
@@ -43,7 +44,7 @@ init
       forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isAllyOf(caster)
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
-          target.setHP(target.getHP() + spellDamage)
+          caster.healTarget(target, spellDamage)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero heals an ally and deals damage to all enemies around it or deals damage to the enemy and heals allies around it.")

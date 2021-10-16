@@ -17,6 +17,9 @@ constant RealLevelClosure HEAL_POWER = lvl -> 100. + 100. * (lvl-1)
 constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.2
 constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 4 + lvl
 
+function fu() returns unit
+  return GetFilterUnit()
+
 function bounceHeal(unit caster, unit lastTarget, real heal, real reduction, group targets, int bounce)
   if bounce == 0
     targets.destr()
@@ -27,7 +30,7 @@ function bounceHeal(unit caster, unit lastTarget, real heal, real reduction, gro
   let foundRef = new Reference<unit>(null)
   TEMP_GROUP.add(targets)
   tempUnit = caster
-  forNearestUnit(lastTarget.getPos(), 500, Filter(() -> GetFilterUnit().isAllyOf(tempUnit) and GetFilterUnit().getHP() < GetFilterUnit().getMaxHP() and not TEMP_GROUP.has(GetFilterUnit()))) u ->
+  forNearestUnit(lastTarget.getPos(), 500, Filter(() -> fu().isAlive() and fu().isAllyOf(tempUnit) and fu().getHP() < fu().getMaxHP() and not TEMP_GROUP.has(fu()))) u ->
     foundRef.val = u
 
   TEMP_GROUP.clear()
