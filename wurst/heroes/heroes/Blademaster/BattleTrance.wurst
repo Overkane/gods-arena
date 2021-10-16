@@ -23,7 +23,7 @@ init
     new BattleTranceBuff(duration, bonusAS, bonusMS, attackCooldownTime).apply(caster)
     
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "After a delay hero gets bonus to attackspeed, movement speed and get decreased base attack cooldown. " +
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "After a delay the hero gets bonus to attackspeed, movement speed and get decreased base attack cooldown. " +
     "After buff ends hero gets reversed buff for a half of original buff duration.")
   new ChannelAbilityPreset(BATTLE_TRANCE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)

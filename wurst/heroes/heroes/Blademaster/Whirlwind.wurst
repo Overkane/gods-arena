@@ -36,7 +36,7 @@ init
             sunit.damageTarget(target, DamageEvent.getAmount() * spellDamage)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "On attack there is a chance that hero will deal percent of his damage to enemies nearby.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Adds a chance to execute a whirlwind on each attack, damaging enemies around the hero.")
   new PassiveAbilityPreset(WHIRLWIND_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..presetIcon(MapIcons.pASBTNWhirlwind)
   ..presetButtonPosNormal(2, 2)

@@ -35,7 +35,7 @@ init
       ..setMoveSpeed(u.getMoveSpeed() + bonusMS)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gets boost to the base agility, move speed and evasion.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gets boost to base agility, move speed and evasion.")
   new PassiveAbilityPreset(KILLER_REFLEXES_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.pASBTNEvasion)

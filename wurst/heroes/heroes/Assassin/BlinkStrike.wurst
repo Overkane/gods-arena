@@ -26,7 +26,7 @@ init
 
       let facingAngle = target.getFacingAngle()
       let backAngle = facingAngle - (180).fromDeg()
-      let backPos = target.getPos().polarOffset(backAngle, 20)
+      let backPos = target.getPos().polarOffset(backAngle, 24)
       
       caster
       ..setPos(backPos)
@@ -46,8 +46,8 @@ init
       killer.resetAbilityCooldown(BLINK_STRIKE_ID)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero blinks befind the target unit and gets temporary agility buff which is based on base agility.\n"
-  +"If targeted unit is died within " + ("Time to kill").color(COLOR_GOLD) + " time, then ability cooldown is reset. Agility buff stacks.")
+  let tooltip = new AbilityTooltipGenerator("Hero blinks behind the target unit and gets a temporary agility buff which is based on base agility.\n"
+  +"If the target unit is killed within " + ("Time to kill").color(COLOR_GOLD) + " time, the ability cooldown is reset. Agility buff stacks.")
   new ChannelAbilityPreset(BLINK_STRIKE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)
@@ -62,6 +62,6 @@ init
   ..addTooltipProperty("Agilitiy Buff Duration", AGI_BUFF_DURATION)
   ..addTooltipProperty("Time to kill", BLINK_STRKE_DEBUFF_DURATION)
   ..presetCastRange(lvl -> 800)
-  ..presetManaCost(lvl -> 20 + 5 * lvl)
-  ..presetCooldown(lvl -> 12)
+  ..presetManaCost(lvl -> 30 + 5 * lvl)
+  ..presetCooldown(lvl -> 22)
   ..tooltipStopListen()

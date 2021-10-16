@@ -79,7 +79,7 @@ init
           destroy cb
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all enemies on the way. Also applies Armor Cut to them.")
+  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all enemies on the way. Hit enemies receive current level of Armor Cut debuff if skilled.")
   new ChannelAbilityPreset(SWIFT_SLASH_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.bTNWindWalkOn)

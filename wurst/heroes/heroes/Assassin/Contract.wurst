@@ -64,8 +64,8 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Assassin takes a killing contract on random target in the AOE. " 
   + "She will deal additional damage to the contract target and if she kills it, she also will get additional bounty. "
-  + "If she won't kill the target, but will be in range 225 of it, then Assassin will get half of the bounty, otherwise she gets nothing. "
-  + "If there is not any appropriate target nearby skill cooldown will be reset.")
+  + "If she doesn't kill the target, but is in 225 range of it, then Assassin will get half of the bounty, otherwise nothing. "
+  + "If there is no appropriate target nearby, the spell cooldown will be reset.")
   new ChannelAbilityPreset(CONTRACT_ID, 1, true, tooltip)
   ..presetIcon(Icons.bTNSnazzyScrollPurple)
   ..presetButtonPosNormal(1, 1)
