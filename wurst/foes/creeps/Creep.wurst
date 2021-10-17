@@ -50,4 +50,5 @@ public class Creep extends UnitEntity
     actor.setPropWindow(0 .fromDeg())
 
   override function onGroundHit()
+    scaleVel(0.75)
     actor.setPropWindow(actor.getDefaultPropWindow())
