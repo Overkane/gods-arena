@@ -23,6 +23,7 @@ public enum CustomUnitStats
   SPELL_LIFESTEAL
   // Utility 
   EVASION
+  MAGIC_RESISTANCE
 
 // Additive stats value is calculated just by addition
 constant additiveStats = new LinkedList<CustomUnitStats>
@@ -41,6 +42,7 @@ constant multiplicativeStats = new LinkedList<CustomUnitStats>
 ..add(CustomUnitStats.ATTACK_CRIT_CHANCE)
 ..add(CustomUnitStats.SPELL_CRIT_CHANCE)
 ..add(CustomUnitStats.EVASION)
+..add(CustomUnitStats.MAGIC_RESISTANCE)
   
 public function unit.getStat(CustomUnitStats stat) returns real
   let allStats = new LinkedList<real>

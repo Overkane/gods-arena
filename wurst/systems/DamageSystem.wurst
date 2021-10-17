@@ -29,15 +29,16 @@ init
   DamageEvent.addUnreducedListener(DamageEvents.RELATIVE castTo int) ->
     let damageType = DamageEvent.getType()
     let sunit = DamageEvent.getSource()
-    var bonusDamage = 0.
+    var damage = 0.
 
     if damageType == DamageType.ATTACK
-      bonusDamage = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.ATTACK_POWER)
+      damage = DamageEvent.getAmount() + DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.ATTACK_POWER)
 
-    else if damageType == DamageType.SPELL or damageType == DamageType.CODE 
-      bonusDamage = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.SPELL_POWER)
+    else if damageType == DamageType.SPELL or damageType == DamageType.CODE
+      let tunit = DamageEvent.getTarget() 
+      damage = (1 - tunit.getStat(CustomUnitStats.MAGIC_RESISTANCE)) * (DamageEvent.getAmount() + DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.SPELL_POWER))
       
-    DamageEvent.addAmount(bonusDamage)
+    DamageEvent.setAmount(damage)
 
   DamageEvent.addUnreducedListener(DamageEvents.ABSOLUTE castTo int) ->
     let damageType = DamageEvent.getType()
