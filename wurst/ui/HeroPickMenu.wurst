@@ -15,6 +15,7 @@ import Backpack
 import HonorShop
 import LinkedList
 import ObjectIdGenerator
+import Reference
 
 public HeroPickUI heroPickUI
 
@@ -148,19 +149,24 @@ class HeroPickUI
       let p = GetTriggerPlayer()
 
       if playerSelection.has(p)
-        let pickedIcon = playerSelection.getAndRemove(p)
+        var pickedIcon = playerSelection.getAndRemove(p)
 
         heroPickFrame.hide(p)
 
         if pickedIcon.heroId == RANDOM_ID
           createRandomHero(p)
+          
+          let pickedIconRef = new Reference(pickedIcon)
+          pData.get(p).getHero().ifPresent() (Hero h) ->
+            pickedIconRef.val = HeroIcon.heroIconIdMap.get(h.actor.getTypeId())
+          pickedIcon = pickedIconRef.into()
         else
           createHero(pickedIcon.heroId, p)
 
-          pickedIcon.disable()
-          playerSelection.forEach() (player key, HeroIcon value) ->
-            if value == pickedIcon
-              playerSelection.remove(key)
+        pickedIcon.disable()
+        playerSelection.forEach() (player key, HeroIcon value) ->
+          if value == pickedIcon
+            playerSelection.remove(key)
       else
         p.print("Choose hero first!")
         didntSelectHeroSound.playForPlayer(p)
@@ -177,6 +183,7 @@ class HeroPickUI
     heroIcon.setIconPosition(iconPosition)
 
 class HeroIcon
+  static constant heroIconIdMap = new HashMap<int, HeroIcon>
   static private var globalIconContext = 0
 
   var heroId = 0
@@ -188,6 +195,7 @@ class HeroIcon
   private framehandle heroIcon = null
 
   construct(int heroId, string activeIcon, string disabledIcon)
+    heroIconIdMap.put(heroId, this)
     this.heroId = heroId
     this.activeIcon = activeIcon
     this.disabledIcon = disabledIcon
