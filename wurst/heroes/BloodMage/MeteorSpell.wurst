@@ -8,7 +8,7 @@ import DamageEvent
 import Entity
 
 public constant METEOR_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 75. + 50. * lvl
+constant RealLevelClosure SPELL_DMG = lvl -> 50. + 75. * lvl
 constant SPELL_AOE = 378.
 
 init
@@ -21,7 +21,7 @@ init
                     let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / SPELL_AOE
                     DamageEvent.setNextDamageFromCode()
                     caster.damageTarget(target, SPELL_DMG.run(lvl))
-                    target.getEntity().addVel(ZERO3.polarProject(1200 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (23).fromDeg()))
+                    target.getEntity().addVel(ZERO3.polarProject(1000 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (23).fromDeg()))
                     flashEffect(Abilities.incinerateBuff, target, "origin")
 
 @compiletime

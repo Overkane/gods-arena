@@ -39,7 +39,7 @@ init
                 target.clearAggro()
                 caster.addAggro(target, 200. + lvl * 200)
 
-        doAfter(SPELL_DURATION - 1.) ->    
+        doAfter(SPELL_DURATION - 4.) ->    
             shellEffect.destr()
             
         doAfter(SPELL_DURATION) ->
