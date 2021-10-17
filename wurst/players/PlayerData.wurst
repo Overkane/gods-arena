@@ -6,6 +6,7 @@ import initlater Backpack
 import initlater HonorShop
 import HashMap
 import Entity
+import initlater WaveRewards
 
 // Arena points conversion ratio to honor points
 public constant ARENA_POINTS_THRESHOLD = 500
@@ -137,5 +138,13 @@ public function initPlayers()
         break
         
     printTimed(p.getNameColored() + " has left the game", 15.)
+    printTimed("All players get " + expCompensationOnPlayerLeave.toString().color(COLOR_GOLD) + " experience and "
+      + goldCompensationOnPlayerLeave.toString().color(COLOR_GOLD) + " gold as compensation.", 15.)
+    
+    pData.forEach() (player p, PlayerData playerData) ->
+      p.addGold(goldCompensationOnPlayerLeave)
+      playerData.getHero().ifPresent() (Hero h) ->
+        h.addXp(expCompensationOnPlayerLeave, false)
+    
     SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (humanPlayers.size() / 8.))
 
