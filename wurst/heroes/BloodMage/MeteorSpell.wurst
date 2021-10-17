@@ -1,12 +1,11 @@
 package MeteorSpell
-import ClosureEvents
 import Assets
 import ClosureTimers
 import ClosureForGroups
-import Knockback3
 import AbilityTooltipGenerator
 import GameConstants
 import DamageEvent
+import Entity
 
 public constant METEOR_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 75. + 50. * lvl
@@ -22,7 +21,7 @@ init
                     let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / SPELL_AOE
                     DamageEvent.setNextDamageFromCode()
                     caster.damageTarget(target, SPELL_DMG.run(lvl))
-                    Knockback3.add(target, 200 + 1200 * knockBackDistance, spellTarget.angleTo(target.getPos()), (78).fromDeg())
+                    target.getEntity().addVel(ZERO3.polarProject(1200 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (23).fromDeg()))
                     flashEffect(Abilities.incinerateBuff, target, "origin")
 
 @compiletime

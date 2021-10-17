@@ -41,7 +41,7 @@ init
                 let dmg = SPELL_DAMAGE.run(lvl) 
                 DamageEvent.setNextDamageFromCode()
                 caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
-                Knockback3.add(hitTarget, 350. + dmg, projectile.getXYAngle(), 45 .fromDeg())
+                hitTarget.getEntity().addVel(ZERO3.polarProject(350. + dmg * ANIMATION_PERIOD, projectile.getXYAngle(), 45 .fromDeg()))
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
                     new TreantEntity(caster, hitTarget, lvl)

@@ -7,6 +7,7 @@ import Knockback3
 import AbilityTooltipGenerator
 import GameConstants
 import DamageEvent
+import Entity
 
 public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 5 + 15. * lvl
@@ -29,7 +30,7 @@ init
                     if target.isEnemyOf(caster.getOwner()) and target.isAlive()
                         DamageEvent.setNextDamageFromCode()
                         caster.damageTarget(target, SPELL_DMG.run(lvl))
-                        Knockback3.add(target, -600, spellTarget.angleTo(target.getPos()), (40).fromDeg())
+                        target.getEntity().addVel(ZERO3.polarProject(-600 * ANIMATION_PERIOD, spellTarget.angleTo(target.getPos()), (90).fromDeg()))
 
 
         doAfter(SPELL_DURATION) ->
@@ -50,7 +51,12 @@ function genAbility()
     ..setName("Black Hole")
     ..presetHotkey("W")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 75 + lvl * 40)
+    ..presetManaCost(lvl -> 85 + lvl * 20)
     ..presetAreaofEffect(lvl -> SPELL_AOE)
-    ..presetCooldown(lvl -> 29. - lvl)
+    ..presetCooldown(lvl -> 27. - lvl)
     ..tooltipStopListen()
+
+@test
+function f()
+    let z = ZERO3.polarProject(10, 0 .fromDeg(), 45 .fromDeg())
+    print(z.toString())
