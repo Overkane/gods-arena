@@ -9,6 +9,24 @@ public AllCreepsDead onAllCreepsDead
 
 public constant activeCreeps = new LinkedList<Creep>
 
+public function getPathingNormal(vec2 pos) returns vec2
+  let numberOfTests = 8
+  let radius = 64.
+  vec2 addedVecs = vec2(0, 0)
+  for int i = 1 to numberOfTests
+    let direction = vec2(0,0).polarOffset((i * 2 * bj_PI/numberOfTests).asAngleRadians(), radius)
+    let testPoint = pos + direction
+    if testPoint.isTerrainWalkable()
+      addedVecs += direction
+  return addedVecs.setLength(1.) * (-1.)
+
+public function getBounceVec(vec3 vel3, vec2 nor2) returns vec3
+  let nor3 = nor2.toVec3()
+  let pv3 = vel3.project(nor3)
+  vec2 pv2 = pv3.toVec2()
+  pv2 *= (-1.25)
+  return vel3 + pv2
+
 public class Creep extends UnitEntity
   construct(int typId, vec3 pos, angle ang)
     super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
@@ -21,3 +39,10 @@ public class Creep extends UnitEntity
         onAllCreepsDead.execute()
     end)
     
+  override function update()
+    if pos.toVec2().isTerrainWalkable()
+      vel *= (0.975)
+    else
+      let normal = getPathingNormal(pos.toVec2())
+      vel = getBounceVec(vel, normal)
+    super.update()
