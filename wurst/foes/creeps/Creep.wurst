@@ -1,6 +1,7 @@
 package Creep
 import Entity
 import GameConstants
+import PhysicsEntity
 
 interface AllCreepsDead
   abstract function execute()
@@ -28,6 +29,8 @@ public function getBounceVec(vec3 vel3, vec2 nor2) returns vec3
   return vel3 + pv2
 
 public class Creep extends UnitEntity
+  use PhysicsModule
+  
   construct(int typId, vec3 pos, angle ang)
     super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
     actor.setAnimation("birth")
@@ -40,9 +43,11 @@ public class Creep extends UnitEntity
     end)
     
   override function update()
-    if pos.toVec2().isTerrainWalkable()
-      vel *= (0.975)
-    else
-      let normal = getPathingNormal(pos.toVec2())
-      vel = getBounceVec(vel, normal)
     super.update()
+    physicsUpdate(this)
+
+  override function onEscapeGround()
+    actor.setPropWindow(0 .fromDeg())
+
+  override function onGroundHit()
+    actor.setPropWindow(actor.getDefaultPropWindow())
