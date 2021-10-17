@@ -14,6 +14,7 @@ import CustomStatSystem
 import Backpack
 import HonorShop
 import LinkedList
+import ObjectIdGenerator
 
 public HeroPickUI heroPickUI
 
@@ -31,17 +32,48 @@ constant heroPool = new LinkedList<int>
 ..add(ARCHER_ID)
 ..add(CRAB_ID)
 ..add(ELEMENTOR_ID)
+..shuffle()
+
+constant RANDOM_ID = compiletime(HERO_ID_GEN.next())
 
 public function initHeroPickMenu()
   heroPickUI = new HeroPickUI()
   addHeroIcons()
 
-public function giveRandomHeroes()
+public function createRandomHeroes()
   heroPool.shuffle()
 
   pData.forEach() (player p, PlayerData value) ->
-    createHero(heroPool.pop(), p)
-    p.addGold(BONUS_GOLD_FOR_RANDOM)
+    createRandomHero(p)
+
+function createRandomHero(player owner)
+  createHero(heroPool.pop(), owner)
+  owner.addGold(BONUS_GOLD_FOR_RANDOM)
+
+function createHero(int heroId, player owner)
+  // Removing hero from hero pool so it can't be get by random after.
+  heroPool.remove(heroId)
+
+  let h = new Hero(owner, heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
+  pData.get(owner).setHero(h)
+  
+  h.actor
+  ..addAbility(SELL_ID)
+  // Base custom stats for heroes
+  ..addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.25)
+  ..addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.25)
+  
+  owner
+  ..selectSingle(h.actor)
+  ..setCameraPosition(h.actor.getPos())
+  
+  new Backpack(owner, h.actor).actor
+  .addAbility(SELL_ID)
+  
+  new HonorShop(owner, h.actor)
+
+  toggleShopButton.show(owner, h.actor)
+  shop.showToUnit(h.actor)
 
 function addHeroIcons()
   heroPickUI
@@ -75,27 +107,9 @@ function addHeroIcons()
   ..addHeroIcon(
     new HeroIcon(ELEMENTOR_ID, Icons.bTNBLoodMage2, Icons.dISBTNBLoodMage2)
     ..addTooltip("Elementor", "Shapes the elements to his will, unleahing fearsome magic on his enemies."))
-
-function createHero(int heroId, player owner)
-  let h = new Hero(owner, heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
-  let backpack = new Backpack(owner, h.actor).actor
-  new HonorShop(owner, h.actor)
-  
-  pData.get(owner).setHero(h)
-  owner.selectSingle(h.actor)
-  owner.setCameraPosition(h.actor.getPos())
-
-  toggleShopButton.show(owner, h.actor)
-
-  shop.showToUnit(h.actor)
-
-  h.actor.addAbility(SELL_ID)
-  backpack.addAbility(SELL_ID)
-
-  // Setting starting stats for heroes
-  h.actor
-  ..addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.25)
-  ..addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.25)
+  ..addHeroIcon(
+    new HeroIcon(RANDOM_ID, Icons.bTNSelectHeroOn, Icons.dISBTNSelectHeroOn)
+    ..addTooltip("Random", "Get a random hero and a small gold bonus."))
 
 class HeroPickUI
   private var heroIconCounter = 0
@@ -135,14 +149,18 @@ class HeroPickUI
 
       if playerSelection.has(p)
         let pickedIcon = playerSelection.getAndRemove(p)
-        pickedIcon.disable()
+
         heroPickFrame.hide(p)
 
-        createHero(pickedIcon.heroId, p)
+        if pickedIcon.heroId == RANDOM_ID
+          createRandomHero(p)
+        else
+          createHero(pickedIcon.heroId, p)
 
-        playerSelection.forEach() (player key, HeroIcon value) ->
-          if value == pickedIcon
-            playerSelection.remove(key)
+          pickedIcon.disable()
+          playerSelection.forEach() (player key, HeroIcon value) ->
+            if value == pickedIcon
+              playerSelection.remove(key)
       else
         p.print("Choose hero first!")
         didntSelectHeroSound.playForPlayer(p)

@@ -127,7 +127,7 @@ public class GameSetupDialog
 
       if isAllRandom
         printTimed("    All Random", 7.5)  
-        giveRandomHeroes()
+        createRandomHeroes()
         startArenas()
       else
         initHeroPickMenu()
