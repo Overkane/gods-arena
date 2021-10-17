@@ -1,7 +1,6 @@
 package PierceShot
 import Assets
 import Projectile
-import Knockback3
 import AbilityTooltipGenerator
 import Tagwalk
 import Orders
