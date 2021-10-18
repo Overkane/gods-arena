@@ -24,8 +24,9 @@ init
       let lvl = caster.getAbilityLevel(HOWL_OF_TERROR_ID)
 
       forUnitsInRange(caster.getPos(), AOE) (unit u) ->
-        u.clearAggro()
-        caster.addAggro(u, 300. * lvl)
+        if u.isEnemyOf(caster.getOwner()) and u.isAlive()
+          u.clearAggro()
+          caster.addAggro(u, 300. * lvl)
 
   DamageEvent.addListener() ->
     let sunit = DamageEvent.getSource()
