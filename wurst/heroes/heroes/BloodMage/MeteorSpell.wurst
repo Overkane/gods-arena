@@ -8,7 +8,7 @@ import Entity
 import DamageSystem
 
 public constant METEOR_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 50. + 75. * lvl
+constant RealLevelClosure SPELL_DMG = lvl -> 150. + 75. * lvl
 constant SPELL_AOE = 378.
 
 init
@@ -38,5 +38,5 @@ function genAbility()
     ..addTooltipProperty("Damage", SPELL_DMG)
     ..presetManaCost(lvl -> 160 + lvl * 20)
     ..presetAreaofEffect(lvl -> SPELL_AOE)
-    ..presetCooldown(lvl -> 32. - lvl * 2)
+    ..presetCooldown(lvl -> 34. - lvl * 2)
     ..tooltipStopListen()

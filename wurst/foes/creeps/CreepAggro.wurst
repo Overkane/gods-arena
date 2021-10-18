@@ -13,7 +13,7 @@ import ClosureTimers
 import BonusHandler
 import CustomStatSystem
 
-constant SECONDS_TO_RAGE = 30
+constant SECONDS_TO_RAGE = 20
 
 class AggroEntry
     unit source
