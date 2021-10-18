@@ -11,6 +11,7 @@ import Abilities
 import AttachmentPoints
 import ClosureTimers
 import BonusHandler
+import CustomStatSystem
 
 constant SECONDS_TO_RAGE = 30
 
@@ -59,6 +60,8 @@ public function unit.addAggro(unit target, real amount)
                 found = true
             else
                 aggro.aggro *= 0.9
+
+            aggro.aggro = aggro.aggro * (1 + source.getStat(CustomUnitStats.THREAT_GENERATION))
 
         if not found
             aggroList.add(new AggroEntry(source, amount))
