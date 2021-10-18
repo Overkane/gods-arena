@@ -38,7 +38,7 @@ class WaveController
       currentWave.spawn()
 
   function checkIfCurrentWaveDone()
-    if currentWave != null and currentWave.isDone and not currentWave.bossWave
+    if currentWave != null and currentWave.isDone
       currentWave.finish()
       currentWave = null
       waveSpawn()
