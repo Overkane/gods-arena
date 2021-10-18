@@ -25,7 +25,7 @@ init
         doAfter(0.3) ->
             doPeriodicallyCounted(0.6, (SPELL_DURATION / 0.6).toInt()) (CallbackCounted cb) ->
                 forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
-                    if target.isEnemyOf(caster.getOwner()) and target.isAlive()
+                    if target.isEnemyOf(caster.getOwner()) and target.isAlive() and not target.getEntity().flying
                         caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
                         target.getEntity().addVel(ZERO3.polarProject(-600 * ANIMATION_PERIOD, spellTarget.angleTo(target.getPos()), (90).fromDeg()))
 
