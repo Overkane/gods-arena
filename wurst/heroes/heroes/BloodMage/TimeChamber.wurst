@@ -9,6 +9,8 @@ import InstantDummyCaster
 import Orders
 import GameConstants
 import DamageSystem
+import Boss
+import Entity
 
 public constant TIME_CHAMBER_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
@@ -28,7 +30,7 @@ init
             flashEffect(Abilities.massTeleportTo, spellTarget, 4)
 
             forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
-                if target.isEnemyOf(owner)
+                if target.isEnemyOf(owner) and not target.getEntity() instanceof Boss
                     InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, spellLvl, OrderIds.slow, target)
                     caster.dealMagicalDamage(target, SPELL_DMG.run(spellLvl) * target.getMaxHP())
 

@@ -8,19 +8,24 @@ import Entity
 import DamageSystem
 
 public constant METEOR_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 150. + 75. * lvl
-constant SPELL_AOE = 378.
+constant RealLevelClosure SPELL_DMG = lvl -> 125. + 100. * lvl
+constant RealLevelClosure SPELL_AOE = lvl -> 250. + 25 * lvl
 
 init
     EventListener.onPointCast(METEOR_ABIL_ID) (caster, spellTarget) ->
         let lvl = caster.getAbilityLevel(METEOR_ABIL_ID)
+        let aoe = SPELL_AOE.run(lvl)
         flashEffect(Units.infernalBirth, spellTarget)
         doAfter(0.9) ->
-            forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
+            flashEffect(Units.infernal1, spellTarget)
+            forUnitsInRange(spellTarget, aoe) (target) ->
+                let eff = target.addEffect(Abilities.flameStrikeEmbers, AttachmentPoints.origin)
+                doAfter(0.9) ->
+                    eff.destr()
                 if target.isEnemyOf(caster.getOwner()) and target.isAlive()
-                    let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / SPELL_AOE
+                    let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / aoe
                     caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
-                    target.getEntity().addVel(ZERO3.polarProject(1000 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (23).fromDeg()))
+                    target.getEntity().addVel(ZERO3.polarProject(1000 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
                     flashEffect(Abilities.incinerateBuff, target, "origin")
 
 @compiletime
@@ -36,7 +41,7 @@ function genAbility()
     ..setName("Chaos Meteor")
     ..presetHotkey("Q")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 160 + lvl * 20)
-    ..presetAreaofEffect(lvl -> SPELL_AOE)
-    ..presetCooldown(lvl -> 34. - lvl * 2)
+    ..presetManaCost(lvl -> 180 + lvl * 20)
+    ..presetAreaofEffect(SPELL_AOE)
+    ..presetCooldown(lvl -> 33. - lvl)
     ..tooltipStopListen()
