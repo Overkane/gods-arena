@@ -9,6 +9,7 @@ import GameConstants
 import PassiveAbilityPreset
 import DummyStatCaster
 import Orders
+import DamageSystem
 import TooltipFactory
 
 public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
@@ -46,8 +47,7 @@ init
 
         forUnitsInRange(tunit.getPos(), spellRadius) target ->
           if target.isEnemyOf(sunit) and target.isAlive()
-            DamageEvent.setNextDamageFromCode()
-            sunit.damageTarget(target, spellDamage)
+            sunit.dealPhysicalDamage(target, spellDamage)
 
             new DummyStatCaster()
             ..delay(1.)
@@ -63,6 +63,7 @@ init
   ..presetHotkey("E")
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
   ..setName("Holy Smite")
   ..addTooltipProperty("Chance", lvl -> CHANCE.run(lvl).percRound())
   ..addTooltipProperty("Damage", DAMAGE)

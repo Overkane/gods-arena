@@ -8,6 +8,7 @@ import ClosureEvents
 import GameConstants
 import CustomHeal
 import TooltipFactory
+import DamageSystem
 
 public constant HEALING_SEAL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -43,11 +44,9 @@ init
       forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isEnemyOf(caster) and target.isAlive()
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
-          DamageEvent.setNextDamageFromCode()
-          caster.damageTarget(target, spellDamage)
+          caster.dealMagicalDamage(target, spellDamage)
     else
-      DamageEvent.setNextDamageFromCode()
-      caster.damageTarget(tunit, spellDamage)
+      caster.dealMagicalDamage(tunit, spellDamage)
       forUnitsInRange(tunit.getPos(), spellRadius) target ->
         if target.isAllyOf(caster) and target.isAlive()
           flashEffect(Abilities.holyBoltSpecialArt, target.getPos())
@@ -62,6 +61,7 @@ init
   ..presetButtonPosResearch(0, 0)
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..presetTargetTypes(Targettype.UNIT)
   ..presetHotkey("Q")
   ..setName("Healing Seal")

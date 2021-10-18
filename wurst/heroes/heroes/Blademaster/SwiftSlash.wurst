@@ -16,6 +16,7 @@ import SoundUtils
 import LinkedList
 import MapModels
 import AttachmentPoints
+import DamageSystem
 
 public constant SWIFT_SLASH_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -55,8 +56,8 @@ init
           forUnitsInRange(caster.getPos(), 225) (unit u) ->
             if not damagedTargets.has(u) and u.isAlive() and u.getOwner() == ENEMY_PLAYER
               damagedTargets.add(u)
-              DamageEvent.setNextDamageFromCode()
-              caster.damageTarget(u, rawDamage + caster.getAgi(true) * agiDamageMult)
+
+              caster.dealPhysicalDamage(u, rawDamage + caster.getAgi(true) * agiDamageMult)
               flashEffect(MapModels.ephemeralCutRed, u, AttachmentPoints.chest)
 
               if caster.hasAbility(ARMOR_CUT_ID)
@@ -88,6 +89,7 @@ init
   ..presetHotkey("Q")
   
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
   ..presetTargetTypes(Targettype.POINT)
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Swift Slash")

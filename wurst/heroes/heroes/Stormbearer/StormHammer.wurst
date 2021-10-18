@@ -7,6 +7,7 @@ import OrderIds
 import ClosureEvents
 import GameConstants
 import DummyStatCaster
+import DamageSystem
 
 public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())
 public constant STORM_HAMMER_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
@@ -44,6 +45,7 @@ init
   ..presetHotkey("Q")
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..presetTargetTypes(Targettype.NONE)
   ..setName("Storm Hammer")
   ..addTooltipProperty("Chain Lightning Damage", CHAIN_LIGHTNING_DAMAGE)

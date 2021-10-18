@@ -1,6 +1,7 @@
 package ForkedLightning
 import AbilityTooltipGenerator
 import GameConstants
+import DamageSystem
 
 public constant FORKED_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -17,6 +18,7 @@ IntLevelClosure NUMBER_OF_TARGETS = lvl -> 3 + 2 * lvl
   ..presetHotkey("W")
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Forked Lightning")
   ..presetNumberofTargetsHit(NUMBER_OF_TARGETS)

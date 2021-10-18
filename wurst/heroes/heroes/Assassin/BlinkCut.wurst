@@ -11,7 +11,7 @@ import LinkedList
 import GameConstants
 import MapModels
 import TooltipFactory
-import DamageEvent
+import DamageSystem
 
 public constant BLINK_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -34,8 +34,7 @@ init
 
       caster.setPos(target.getPos())
       caster.setAnimation(UnitAnimations.HeroWarden.attack1.idx)
-      DamageEvent.setNextDamageFromCode()
-      caster.damageTarget(target, damagePerStrike)
+      caster.dealPhysicalDamage(target, damagePerStrike)
       flashEffect(Abilities.blinkCaster, caster.getPos())
       flashEffect("Ephemeral Cut Midnight.mdx", target, AttachmentPoints.chest)
 
@@ -74,6 +73,7 @@ init
   ..presetTargetsAllowed(lvl -> TargetsAllowed.enemies)
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
   ..presetTargetTypes(Targettype.UNIT)
   ..setName("Blink Cut")
   ..addTooltipProperty("Number of Strikes", NUMBER_OF_STRIKES)

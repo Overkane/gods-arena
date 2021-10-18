@@ -2,6 +2,7 @@ package Tempest
 import Icons
 import AbilityTooltipGenerator
 import GameConstants
+import DamageSystem
 
 public constant TEMPEST_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -22,6 +23,7 @@ RealLevelClosure DURATION = lvl -> 10.
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setLevels(ULTIMATE_SPELL_LEVELS)
   ..setName("Tempest")
   ..addTooltipProperty("Channeling", lvl -> "")

@@ -32,8 +32,7 @@ init
 
         forUnitsInRange(tunit.getPos(), spellRadius) target ->
           if target.isEnemyOf(sunit) and target.isAlive()
-            DamageEvent.setNextDamageFromCode()
-            sunit.damageTarget(target, DamageEvent.getAmount() * spellDamage)
+            sunit.dealPhysicalDamage(target, DamageEvent.getAmount() * spellDamage)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Adds a chance to execute a whirlwind on each attack, damaging enemies around the hero.")
@@ -44,6 +43,7 @@ init
   ..presetHotkey("E")
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
   ..setName("Whirlwind")
   ..addTooltipProperty("Chance", lvl -> CHANCE.run(lvl).percRound())
   ..addTooltipProperty("Damage", lvl -> (DAMAGE.run(lvl) * 100).percRound())
