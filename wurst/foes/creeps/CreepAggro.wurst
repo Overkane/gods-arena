@@ -7,6 +7,10 @@ import UnitIndexer
 import Orders
 import PlayerData
 import GameTimer
+import Abilities
+import AttachmentPoints
+import ClosureTimers
+import BonusHandler
 
 class AggroEntry
     unit source
@@ -17,15 +21,26 @@ class AggroEntry
         this.aggro = aggro
 
 constant aggroMap = new HashMap<unit, LinkedList<AggroEntry>>()
-constant lastAttackMap = new HashMap<unit, real>
+constant lastAttackOrder = new HashMap<unit, real>
+constant lastSuccessfulAttack = new HashMap<unit, real>
 
 public function unit.clearAggro()
     let aggroList = aggroMap.get(this)
-    lastAttackMap.remove(this)
+    lastAttackOrder.remove(this)
     if aggroList != null
         for aggro in aggroList
             destroy aggro
         aggroList.clear()
+
+public function unit.enrage()
+    this.setVertexColor(225, 125, 125, 225)
+    this.setMoveSpeed(this.getMoveSpeed() + 75)
+    this.addBonus(Bonus.ATTACKSPEED, 25)
+
+    let eff = this.addEffect(Abilities.bloodLustTarget, AttachmentPoints.chest)
+
+    doAfter(1.) ->
+        eff.destr()
 
 public function unit.addAggro(unit target, real amount)
     let source = this
@@ -48,13 +63,13 @@ public function unit.addAggro(unit target, real amount)
 
         aggroList.sortWith((a, b) -> (b.aggro - a.aggro).toInt())
         
-        let lastAttack = lastAttackMap.get(target)
-        if first != aggroList.getFirst() and not lastAttackMap.has(target) or lastAttack < currentTime - 3
+        let lastAttack = lastAttackOrder.get(target)
+        if first != aggroList.getFirst() and not lastAttackOrder.has(target) or lastAttack < currentTime - 3
             target.issueTargetOrderById(OrderIds.attack, source)
-            lastAttackMap.put(target, currentTime)
+            lastAttackOrder.put(target, currentTime)
 
 init
-    DamageEvent.addListener() -> 
+    DamageEvent.addListener() ->
         var source = DamageEvent.getSource()
         let target = DamageEvent.getTarget()
         let sourceOwner = source.getOwner()
@@ -67,12 +82,22 @@ init
                     source = pdata.getHero().hero.actor
 
             source.addAggro(target, DamageEvent.getAmount())
-            
+
+            let lastAttack = lastSuccessfulAttack.get(target)
+            if lastAttack + 30 < currentTime
+                target.enrage()
+        
+        else if sourceOwner == ENEMY_PLAYER
+            lastSuccessfulAttack.put(source, currentTime)
                 
-            
+    
+    onUnitIndex() ->
+        lastSuccessfulAttack.put(getIndexingUnit(), currentTime)
+        
     onUnitDeindex() ->
         let u = getIndexingUnit()
-        lastAttackMap.remove(u)
+        lastAttackOrder.remove(u)
+        lastSuccessfulAttack.remove(u)
         let aggro = aggroMap.getAndRemove(u)
         if aggro != null
             for agg in aggro
