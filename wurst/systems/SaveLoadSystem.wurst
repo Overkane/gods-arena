@@ -28,7 +28,7 @@ public function initSaveLoadSystem()
         let fileName = FILE_NAME.format(p.getName())
         p.loadData(fileName) (status, data) ->
           if status == LoadStatus.SUCCESS
-            let dataString = data.getUnsafeString()
+            let dataString = sl_decrypt(data.getUnsafeString())
 
             if dataString.toInt() >= honorPoints
               p.print("Your save file has more honor points than you want to save. Saving is aborted.", 5)
