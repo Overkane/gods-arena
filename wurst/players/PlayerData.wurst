@@ -11,6 +11,7 @@ import Entity
 public constant ARENA_POINTS_THRESHOLD = 500
 
 public constant pData = new IterableMap<player, PlayerData>
+public constant pDataFromHeroType = new IterableMap<int, PlayerData>
 
 public function player.getData() returns PlayerData
   return pData.get(this)
@@ -24,6 +25,11 @@ public function maybe_hero.ifPresent(MaybeHeroIfPresent ifPresent)
   if not this.have
     return
   ifPresent.if_present(this.hero)
+
+public function maybeHeroFromHeroType(int type_id) returns maybe_hero
+  if pDataFromHeroType.has(type_id)
+    return pDataFromHeroType.get(type_id).getHero()
+  return maybe_hero(false, null)
 
 public class PlayerData
   private player p
@@ -47,6 +53,7 @@ public class PlayerData
 
   function setHero(Hero h)
     this.maybeHero = maybe_hero(true, h)
+    pDataFromHeroType.put(h.actor.getTypeId(), this)
 
   function getHero() returns maybe_hero
     return this.maybeHero
@@ -135,7 +142,7 @@ public function initPlayers()
       if honorShop.getOwner() == p
         destroy honorShop.getEntity()
         break
-        
+
     printTimed(p.getNameColored() + " has left the game", 15.)
     SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (humanPlayers.size() / 8.))
 

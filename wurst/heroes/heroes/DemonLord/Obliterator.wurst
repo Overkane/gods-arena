@@ -1,36 +1,59 @@
 package Obliterator
+
 import AbilityTooltipGenerator
+import Abilities
 import ClosureForGroups
 import ClosureTimers
 import CreepAggro
 import DemonLordIds
 import HashMap
+import Hero
 import Icons
+import PassiveAbilityPreset
+import PlayerData
 
 constant IntLevelClosure BONUS_STRENGTH = _ -> 50
 constant IntLevelClosure CREEP_AGGRO = _ -> 200
 constant RealLevelClosure CREEP_AGGRO_RANGE = _ -> 400.
 constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .5
 
-constant DEMON_LORD_STR_BONUSES = new HashMap<unit, int>()
+constant DEMON_LORD_STR_BONUSES = new HashMap<unit, ObliteratorData>()
+
+class ObliteratorData
+  int amt
+  effect fx
+
+  construct(unit u, int amt)
+    this.amt = amt
+    this.fx = amt > 0 ? addEffect(Abilities.vampiricAura, u, "origin") : null
+
+  ondestroy
+    if this.fx != null
+      this.fx.destr()
 
 function int.toCustomUnitTypeString() returns string
   return "custom_" + this.toRawCode()
 
 init
   doPeriodically(1.) _ ->
-    forUnitsOfType(OBLITERATOR_ID.toCustomUnitTypeString()) u ->
+    maybeHeroFromHeroType(DEMON_LORD_ID).ifPresent() hero ->
+      let u = hero.actor
       if not DEMON_LORD_STR_BONUSES.has(u)
-        DEMON_LORD_STR_BONUSES.put(u, 0)
+        DEMON_LORD_STR_BONUSES.put(u, new ObliteratorData(u, 0))
 
-      let wants = (u.getHP() / u.getMaxHP()) < BONUS_HEALTH_THRESHOLD.run(1)
+      // Calculate bonus amount based on hero's health without any current bonus. This prevents flip-flop effect.
+      let currAmt = DEMON_LORD_STR_BONUSES.get(u).amt
+      u.addStr(-currAmt)
+      let wants = (u.getHP() / u.getMaxHP()) < BONUS_HEALTH_THRESHOLD.run(1) and u.isAlive()
+      u.addStr(currAmt)
+
       let wants_bonus = wants ? BONUS_STRENGTH.run(1) : 0
-      let curr_bonus = DEMON_LORD_STR_BONUSES.get(u)
+      let curr_bonus = DEMON_LORD_STR_BONUSES.get(u).amt
 
       if curr_bonus != wants_bonus
         u.addStr(wants_bonus - curr_bonus)
-        print(wants_bonus - curr_bonus)
-        DEMON_LORD_STR_BONUSES.put(u, wants_bonus)
+        destroy DEMON_LORD_STR_BONUSES.get(u)
+        DEMON_LORD_STR_BONUSES.put(u, new ObliteratorData(u, wants_bonus))
 
       if wants
         forUnitsInRange(u.getPos(), CREEP_AGGRO_RANGE.run(1)) fog ->
@@ -42,15 +65,15 @@ init
     Targettype.PASSIVE,
     "Passively grants bonus strength and nearby creep aggro when the Demon Lord has less than 50% HP."
   )
-  new AbilityDefinitionArchMageBrillianceAura(OBLITERATOR_ID)
+  new PassiveAbilityPreset(OBLITERATOR_ID, 1, tooltip)
   ..presetTargetsAllowed(_ -> "none")
-  ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(1, 1)
   ..presetButtonPosResearch(1, 0)
   ..setIconNormal(Icons.pASBTNFireRocks)
+  ..tooltipStartListen()
   ..addTooltipProperty("Bonus Strength", BONUS_STRENGTH)
   ..addTooltipProperty("Creep Aggro", CREEP_AGGRO)
   ..addTooltipProperty("Creep Aggro Range", CREEP_AGGRO_RANGE)
   ..addTooltipProperty("Health Threshold", BONUS_HEALTH_THRESHOLD)
-  ..setLevels(1)
   ..setName("Obliterator")
+  ..tooltipStopListen()

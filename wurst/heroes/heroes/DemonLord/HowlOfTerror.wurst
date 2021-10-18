@@ -2,7 +2,7 @@ package HowlOfTerror
 import Abilities
 import AbilityTooltipGenerator
 import BuffIds
-import ClosureEvents
+import DamageEvent
 import DemonLordIds
 import GameConstants
 import Icons
@@ -11,22 +11,28 @@ import TooltipFactory
 
 RealLevelClosure DAMAGE_DECREASE = lvl -> 0.25 + 0.1 * (lvl-1)
 RealLevelClosure DURATION = lvl -> 10
-IntLevelClosure STR_BONUS = lvl -> (0.5 * (lvl - 1)).floor() + 1 // 1, 1, 2, 2, 3
+IntLevelClosure STR_BONUS = _ -> 1
 RealLevelClosure HP_RECOVERY = lvl -> 100.0 + 50 * (lvl-1)
 
 init
-  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
-    let killer = EventData.getKillingUnit()
-    if killer.getTypeId() == DEMON_LORD_ID and EventData.getTriggerUnit().hasAbility(BuffIds.howlofTerror)
-      let level = killer.getAbilityLevel(HOWL_OF_TERROR_ID)
-      let str_bonus = STR_BONUS.run(level)
-      let killer_pos = killer.getPos()
-      killer.addStr(str_bonus)
-      killer.addHP(HP_RECOVERY.run(level))
-      standardTextTag(killer_pos, "+" + str_bonus.toString())
-        ..setColor(255, 0, 0, 255)
-        ..setVisibility(localPlayer == killer.getOwner())
-      flashEffect(Abilities.deathCoilMissile, killer_pos)
+  DamageEvent.addListener(5) ->
+    let target = DamageEvent.getTarget()
+    if DamageEvent.getAmount() > target.getHP()
+      let killer = DamageEvent.getSource()
+      if (
+        killer.getTypeId() == DEMON_LORD_ID
+        and target.hasAbility(BuffIds.howlofTerror)
+        and not target.isType(UNIT_TYPE_SUMMONED)
+      )
+        let level = killer.getAbilityLevel(HOWL_OF_TERROR_ID)
+        let str_bonus = STR_BONUS.run(level)
+        let killer_pos = killer.getPos()
+        killer.addStr(str_bonus)
+        killer.addHP(HP_RECOVERY.run(level))
+        standardTextTag(killer_pos, "+" + str_bonus.toString())
+          ..setColor(255, 0, 0, 255)
+          ..setVisibility(localPlayer == killer.getOwner())
+        flashEffect(Abilities.deathCoilMissile, killer_pos)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(

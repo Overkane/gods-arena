@@ -1,5 +1,5 @@
 ---
-projectName: Gods Arena
+projectName: Gods' Arena
 dependencies:
 - https://github.com/wurstscript/wurstStdlib2
 - https://github.com/Frotty/Frentity.git
@@ -17,14 +17,8 @@ buildMapData:
     loadingScreen:
       title: by Overkane and Frotty
       subTitle: Gods' Arena v0.9.9
-      text: |-
-        Try to survive the arena of the gods.
-
-         Some tips:
-         Press TAB to toggle the shop.
-
-         You can sell items in your inventory with your hero sell ability (hotkey - F).
-
-         You will be revived at the end of each round, but not with full HP and MP.
-
-         You will restore a bit of HP and MP at the end of each round if you survived.
+      text: "Try to survive the arena of the gods.\n\n Some tips:\n Press TAB to toggle\
+        \ the shop.\n\n You can sell items in your inventory with your hero sell ability\
+        \ (hotkey - F).\n\n You will be revived at the end of each round, but not\
+        \ with full HP and MP.\n\n You will restore a bit of HP and MP at the end\
+        \ of each round if you survived."
