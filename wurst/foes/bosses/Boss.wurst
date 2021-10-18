@@ -1,6 +1,7 @@
 package Boss
 import Entity
 import GameConstants
+import Creep
 
 interface BossIsDead
   abstract function execute()
@@ -12,10 +13,9 @@ public constant bossList = new LinkedList<unit>
 public function unit.isBoss() returns bool
   return bossList.has(this)
 
-public class Boss extends UnitEntity
+public class Boss extends Creep
   construct(int typId, vec3 pos, angle ang)
-    super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
-    actor.setAnimation("birth")
+    super(typId, pos, ang)
 
     bossList.add(actor)
 
