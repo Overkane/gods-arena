@@ -8,7 +8,7 @@ import ClosureForGroups
 import InstantDummyCaster
 import Orders
 import GameConstants
-import DamageEvent
+import DamageSystem
 
 public constant TIME_CHAMBER_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
@@ -30,8 +30,7 @@ init
             forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
                 if target.isEnemyOf(owner)
                     InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, spellLvl, OrderIds.slow, target)
-                    DamageEvent.setNextDamageFromCode()
-                    caster.damageTarget(target, SPELL_DMG.run(spellLvl) * target.getMaxHP())
+                    caster.dealMagicalDamage(target, SPELL_DMG.run(spellLvl) * target.getMaxHP())
 
 
 @compiletime
@@ -48,6 +47,7 @@ function genAbil()
     ..presetHotkey("R")
 
     ..tooltipStartListen()
+    ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
     ..presetTargetTypes(Targettype.POINT)
     ..setName("Time Chamber")
     ..presetHotkey("R")

@@ -1,8 +1,8 @@
 package DamageTexts
-import DamageEvent
 import GameConstants
 import FText
 import CoolNumbers
+import DamageSystem
 
 init
     DamageEvent.addListener(99) ->
@@ -10,10 +10,14 @@ init
             let target = DamageEvent.getTarget()
 
             if target.getOwner() == ENEMY_PLAYER
-                if DamageEvent.getType() == DamageType.ATTACK
+                if isPhysicalDamage()
                     coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(233, 116, 122, 255), 7)
-                else
+                else if isMagicalDamage()
                     coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(109, 57, 207, 255), 7)
+                else if isPureDamage()
+                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(194, 156, 74, 255), 7)
+                else 
+                    print("Unknown damage type")
             else
                 coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(146, 29, 29, 255), 6)
         

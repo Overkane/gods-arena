@@ -7,7 +7,7 @@ import Orders
 import BonusHandler
 import GameConstants
 import Buff
-import CustomStatSystem
+import DamageSystem
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -38,8 +38,7 @@ init
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
                 let dmg = SPELL_DAMAGE.run(lvl) 
-                DamageEvent.setNextDamageFromCode()
-                caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
+                caster.dealPhysicalDamage(hitTarget, SPELL_DAMAGE.run(lvl))
                 hitTarget.getEntity().addVel(ZERO3.polarProject((350. + dmg) * ANIMATION_PERIOD, projectile.getXYAngle(), 45 .fromDeg()))
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
@@ -55,6 +54,7 @@ init
     ..presetIcon(Icons.bTNGlaiveThrower)
 
     ..tooltipStartListen()
+    ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
     ..presetTargetTypes(Targettype.POINT)
     ..presetHotkey("Q")
     ..setName("Piercing Shot")

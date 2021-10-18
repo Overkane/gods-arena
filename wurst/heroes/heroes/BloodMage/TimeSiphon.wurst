@@ -2,6 +2,7 @@ package TimeSiphon
 import AbilityTooltipGenerator
 import GameConstants
 import Icons
+import DamageSystem
 
 public constant SIPHON_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
@@ -23,6 +24,7 @@ function genAbil()
     
     
     ..tooltipStartListen()
+    ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
     ..setLevels(NORMAL_SPELL_LEVELS)
     ..setName("Time Siphon")
     ..presetHotkey("E")

@@ -7,7 +7,7 @@ import BubbleShieldBuff
 
 public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HP_HEAL = lvl -> 10. + 20 * lvl
+constant RealLevelClosure HP_HEAL = lvl -> 20. * lvl
 constant RealLevelClosure SHIELD_DURABILITY = lvl -> 150. * lvl
 constant RealLevelClosure DURATION = lvl -> 8. + (lvl/2).floor()
 

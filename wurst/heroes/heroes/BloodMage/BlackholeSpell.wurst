@@ -4,8 +4,8 @@ import ClosureTimers
 import ClosureForGroups
 import AbilityTooltipGenerator
 import GameConstants
-import DamageEvent
 import Entity
+import DamageSystem
 
 public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 5 + 15. * lvl
@@ -26,8 +26,7 @@ init
             doPeriodicallyCounted(0.6, (SPELL_DURATION / 0.6).toInt()) (CallbackCounted cb) ->
                 forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
                     if target.isEnemyOf(caster.getOwner()) and target.isAlive()
-                        DamageEvent.setNextDamageFromCode()
-                        caster.damageTarget(target, SPELL_DMG.run(lvl))
+                        caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
                         target.getEntity().addVel(ZERO3.polarProject(-600 * ANIMATION_PERIOD, spellTarget.angleTo(target.getPos()), (90).fromDeg()))
 
 
@@ -45,6 +44,7 @@ function genAbility()
     ..presetOption(Option.TARGETIMAGE, true)
 
     ..tooltipStartListen()
+    ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
     ..presetTargetTypes(Targettype.POINT)
     ..setName("Black Hole")
     ..presetHotkey("W")

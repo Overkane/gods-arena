@@ -5,12 +5,12 @@ import GameConstants
 import ClosureEvents
 import ClosureForGroups
 import SoundUtils
-import DamageEvent
 import WaterBlastBuff
 import MapModels
 import WaterElemental
 import TooltipFactory
 import CustomHeal
+import DamageSystem
 
 public constant WATER_BLAST_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -34,8 +34,7 @@ init
     forUnitsInRange(target, spellAOE) (unit u) ->
       if u.isAlive() and not u.isAllyOf(caster.getOwner())
         new WaterBlastBuff(buffDuration, buffSlow).apply(u)
-        DamageEvent.setNextDamageFromCode()
-        caster.damageTarget(u, spellDamage)
+        caster.dealMagicalDamage(u, spellDamage)
       else if u.isAlive() and WATER_ELEM_LIST.has(u.getTypeId()) and u.isAllyOf(caster.getOwner())
         new WaterBlastBuff(buffDuration, -buffSlow).apply(u)
         caster.healTarget(u, spellDamage)
@@ -52,6 +51,7 @@ init
   ..presetOption(Option.TARGETIMAGE, true)
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..presetTargetTypes(Targettype.POINT)
   ..setName("Water Blast")
   ..addTooltipProperty("Damage", DAMAGE)

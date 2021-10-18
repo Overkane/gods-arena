@@ -1,6 +1,7 @@
 package CrushingWave
 import AbilityTooltipGenerator
 import GameConstants
+import DamageSystem
 
 public constant CRUSHING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -17,6 +18,7 @@ constant RealLevelClosure DAMAGE = lvl -> 400. + 400. * (lvl-1)
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
   
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setLevels(ULTIMATE_SPELL_LEVELS)
   ..setName("Crushing Wave")
   ..presetDamage(DAMAGE)
