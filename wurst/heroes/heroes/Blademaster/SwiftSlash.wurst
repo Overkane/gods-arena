@@ -16,6 +16,7 @@ import SoundUtils
 import LinkedList
 import MapModels
 import AttachmentPoints
+import DamageSystem
 
 public constant SWIFT_SLASH_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -55,8 +56,8 @@ init
           forUnitsInRange(caster.getPos(), 225) (unit u) ->
             if not damagedTargets.has(u) and u.isAlive() and u.getOwner() == ENEMY_PLAYER
               damagedTargets.add(u)
-              DamageEvent.setNextDamageFromCode()
-              caster.damageTarget(u, rawDamage + caster.getAgi(true) * agiDamageMult)
+
+              caster.dealPhysicalDamage(u, rawDamage + caster.getAgi(true) * agiDamageMult)
               flashEffect(MapModels.ephemeralCutRed, u, AttachmentPoints.chest)
 
               if caster.hasAbility(ARMOR_CUT_ID)
@@ -79,7 +80,7 @@ init
           destroy cb
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all enemies on the way. Also applies Armor Cut to them.")
+  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all enemies on the way. Hit enemies receive current level of Armor Cut debuff if skilled.")
   new ChannelAbilityPreset(SWIFT_SLASH_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.bTNWindWalkOn)
@@ -88,6 +89,7 @@ init
   ..presetHotkey("Q")
   
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
   ..presetTargetTypes(Targettype.POINT)
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Swift Slash")

@@ -13,7 +13,7 @@ import PassiveAbilityPreset
 import PlayerData
 
 constant IntLevelClosure BONUS_STRENGTH = _ -> 50
-constant IntLevelClosure CREEP_AGGRO = _ -> 200
+constant RealLevelClosure CREEP_AGGRO = _ -> 200.
 constant RealLevelClosure CREEP_AGGRO_RANGE = _ -> 400.
 constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .5
 

@@ -9,7 +9,7 @@ import IronSword
 import TooltipFactory
 
 constant CLEAVE_ID = compiletime(ABIL_ID_GEN.next())
-constant CLEAVE_PERC = 20
+constant CLEAVE_PERC = 15
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Cleave", 

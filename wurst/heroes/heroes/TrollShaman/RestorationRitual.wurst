@@ -33,7 +33,7 @@ init
       if castingUnits.has(caster)
         forUnitsInRange(caster.getPos(), aoe) (unit u) ->
           if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive() and u != caster
-            new RestorationRitualBuff(BUFF_ANIM_PERIOD, hpPercRestore, mpPercRestore).apply(u)
+            new RestorationRitualBuff(caster, BUFF_ANIM_PERIOD, hpPercRestore, mpPercRestore).apply(u)
       else 
         cb.stop()
 

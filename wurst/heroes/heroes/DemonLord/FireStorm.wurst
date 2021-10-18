@@ -4,10 +4,10 @@ import AbilityTooltipGenerator
 import ClosureEvents
 import ClosureForGroups
 import ClosureTimers
-import DamageEvent
 import DemonLordIds
 import GameConstants
 import Reference
+import DamageSystem
 
 RealLevelClosure DURATION = lvl -> 3
 RealLevelClosure DAMAGE = lvl -> 25 + 125. * lvl
@@ -31,8 +31,7 @@ init
         let bonus_str = new Reference(0)
         forUnitsInRange(caster.getPos(), RADIUS) u ->
           if u.isEnemyOf(caster.getOwner()) and not u.isInvulnerable()
-            DamageEvent.setNextDamageFromCode()
-            caster.damageTarget(u, DAMAGE.run(lvl))
+            caster.dealMagicalDamage(u, DAMAGE.run(lvl))
             flashEffect(Abilities.flameStrikeDamageTarget, u.getPos())
             bonus_str.val += str_per_struck
         let bonus_str_ = bonus_str.into()
@@ -59,6 +58,7 @@ init
   ..setLevelSkipRequirement(2)
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Fire Storm")
   ..addTooltipProperty("Damage", DAMAGE)

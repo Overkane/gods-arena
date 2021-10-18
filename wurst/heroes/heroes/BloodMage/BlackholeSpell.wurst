@@ -1,0 +1,61 @@
+package BlackholeSpell
+import Assets
+import ClosureTimers
+import ClosureForGroups
+import AbilityTooltipGenerator
+import GameConstants
+import Entity
+import DamageSystem
+
+public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure SPELL_DMG = lvl -> 5 + 15. * lvl
+constant RealLevelClosure SPELL_AOE = lvl -> 290. + lvl * 32
+constant SPELL_FX = "BlackHole.mdx"
+constant SPELL_DURATION = 7.
+
+init
+    EventListener.onCast(BLACKHOLE_ABILITY_ID) caster ->
+        let spellTarget = EventData.getSpellTargetPos()
+        let lvl = caster.getAbilityLevel(BLACKHOLE_ABILITY_ID)
+        let eff = addEffect(SPELL_FX, spellTarget.withTerrainZ(48))..setScale(0)
+        let aoe = SPELL_AOE.run(lvl)
+        
+        doPeriodicallyCounted(0.05, 50) cb ->
+            eff.setScale(eff.getScale().lerp(aoe / 200, 0.5))
+
+        doAfter(0.3) ->
+            doPeriodicallyCounted(0.6, (SPELL_DURATION / 0.6).toInt()) (CallbackCounted cb) ->
+                forUnitsInRange(spellTarget, aoe) (target) ->
+                    if target.isEnemyOf(caster.getOwner()) and target.isAlive() and not target.getEntity().done and not target.getEntity().flying
+                        target.getEntity().addVel(ZERO2.polarOffset(spellTarget.angleTo(target.getPos()), -350 * ANIMATION_PERIOD).toVec3())
+                        caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
+
+
+        doAfter(SPELL_DURATION) ->
+            doPeriodicallyCounted(0.05, 50) cb ->
+                eff.setScale(eff.getScale().lerp(0.0, 0.5))
+                if cb.isLast()
+                    eff.destr()
+
+@compiletime
+function genAbility()
+    new ChannelAbilityPreset(BLACKHOLE_ABILITY_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A black hole that sucks nearby enemies into its center, dealing damage."))
+    ..presetButtonPosNormal(1, 2)
+    ..presetIcon(Icons.bTNDeathAndDecay)
+    ..presetOption(Option.TARGETIMAGE, true)
+
+    ..tooltipStartListen()
+    ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
+    ..presetTargetTypes(Targettype.POINT)
+    ..setName("Black Hole")
+    ..presetHotkey("W")
+    ..addTooltipProperty("Damage", SPELL_DMG)
+    ..presetManaCost(lvl -> 85 + lvl * 20)
+    ..presetAreaofEffect(SPELL_AOE)
+    ..presetCooldown(lvl -> 27. - lvl)
+    ..tooltipStopListen()
+
+@test
+function f()
+    let z = ZERO3.polarProject(10, 0 .fromDeg(), 45 .fromDeg())
+    print(z.toString())

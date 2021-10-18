@@ -2,23 +2,72 @@ package HealingWave
 import AbilityTooltipGenerator
 import GameConstants
 import TooltipFactory
+import ClosureEvents
+import ClosureTimers
+import CustomHeal
+import ClosureForGroups
+import Reference
+import Icons
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
+constant TEMP_GROUP = CreateGroup()
+unit tempUnit = null
 constant RealLevelClosure HEAL_POWER = lvl -> 100. + 100. * (lvl-1)
 constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.2
 constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 4 + lvl
 
+function fu() returns unit
+  return GetFilterUnit()
+
+function bounceHeal(unit caster, unit lastTarget, real heal, real reduction, group targets, int bounce)
+  if bounce == 0
+    targets.destr()
+    return
+
+  targets.add(lastTarget)
+  let healAmount = heal * reduction
+  let foundRef = new Reference<unit>(null)
+  TEMP_GROUP.add(targets)
+  tempUnit = caster
+  forNearestUnit(lastTarget.getPos(), 500, Filter(() -> fu().isAlive() and fu().isAllyOf(tempUnit) and fu().getHP() < fu().getMaxHP() and not TEMP_GROUP.has(fu()))) u ->
+    foundRef.val = u
+
+  TEMP_GROUP.clear()
+  if foundRef.val != null
+    let nextTarget = foundRef.into()
+    caster.healTarget(nextTarget, healAmount)
+    let secondary = addLightning(LIGHTNING_HEALING_WAWE_PRIMARY, false, lastTarget.getPos(), nextTarget.getPos())
+    doAfter(1) ->
+      secondary.destr()
+    doAfter(0.2) ->
+      bounceHeal(caster, nextTarget, healAmount, reduction, targets, bounce - 1)
+      
+
+init
+  EventListener.onTargetCast(HEALING_WAVE_ID) (unit caster, unit target) ->
+    let lvl = caster.getAbilityLevel(HEALING_WAVE_ID)
+    let primary = addLightning(LIGHTNING_HEALING_WAWE_PRIMARY, false, caster.getPos(), target.getPos())
+    let healAmount = HEAL_POWER.run(lvl)
+    caster.healTarget(target, healAmount)
+    doAfter(1) ->
+      primary.destr()
+
+    doAfter(0.2) -> 
+      bounceHeal(caster, target, healAmount, 1 - HEAL_REDUCTION.run(lvl), CreateGroup(), NUMBER_OF_TARGETS.run(lvl))
+    
+
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Calls forth a wave of energy that heals a target and bounces to nearby allies. Each bounce heals less damage.")
-  new AbilityDefinitionShadowHunterHealingWave(HEALING_WAVE_ID)
-  ..registerTooltipGenerator(tooltip)
+  new ChannelAbilityPreset(HEALING_WAVE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetButtonPosNormal(0, 2)
   ..presetButtonPosResearch(0, 0)
+  ..presetIcon(Icons.bTNHealingWave)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self))
   ..presetHotkey("Q")
   
   ..tooltipStartListen()
-  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..presetTargetTypes(Targettype.UNIT)
   ..setName("Healing Wave")
   ..addTooltipProperty("Heal Power", HEAL_POWER)
   ..addTooltipProperty("Heal Reduction per Bounce", lvl -> (HEAL_REDUCTION.run(lvl) * 100).percRound())
@@ -29,6 +78,3 @@ constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 4 + lvl
   ..presetCooldown(lvl -> 11)
   ..tooltipStopListen()
   
-  ..presetDamageperTarget(HEAL_POWER)
-  ..presetDamageReductionperTarget(HEAL_REDUCTION)
-  ..presetNumberofTargetsHit(NUMBER_OF_TARGETS)

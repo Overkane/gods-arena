@@ -7,7 +7,7 @@ import VitalityStone
 import TooltipFactory
 import CustomStatSystem
 
-constant EVASION_CHANCE = 25
+constant EVASION_CHANCE = 8
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Evasion", 

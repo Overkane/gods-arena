@@ -72,7 +72,7 @@ function wave_2() returns Wave
 
   ..creep(UnitIds.foresttrollking)
   ..hp(2750)
-  ..damage(65)
+  ..damage(70)
   ..amount(1)
   ..scale(1.5)
 
@@ -84,7 +84,7 @@ function wave_3() returns Wave
   ..goldBounty(115)
 
   ..creep(UnitIds.furbolg)
-  ..hp(700)
+  ..hp(750)
   ..damage(18)
   ..amount(6)
 
@@ -106,15 +106,15 @@ function wave_3() returns Wave
   ..amount(2)
 
   ..creep(UnitIds.furbolgeldershaman)
-  ..hp(750)
+  ..hp(850)
   ..damage(28)
   ..amount(3)
 
   ..wait(10)
 
   ..creep(UnitIds.furbolgancient)
-  ..hp(4000)
-  ..damage(54)
+  ..hp(4250)
+  ..damage(62)
   ..amount(1)
   ..scale(1.5)
 
@@ -126,18 +126,19 @@ function wave_4() returns Wave
   ..goldBounty(140)
 
   ..creep(UnitIds.gnoll1)
-  ..hp(750)
+  ..hp(825)
   ..damage(25)
   ..amount(18)
+  ..scale(1)
 
   ..creep(UnitIds.gnoll3)
-  ..hp(850)
-  ..damage(28)
+  ..hp(925)
+  ..damage(32)
   ..amount(4)
   ..scale(1.25)
 
   ..creep(UnitIds.gnollpoacher)
-  ..hp(600)
+  ..hp(625)
   ..damage(18)
   ..amount(9)
 
@@ -154,8 +155,8 @@ function wave_4() returns Wave
   ..amount(4)
 
   ..creep(UnitIds.gnollking)
-  ..hp(6500)
-  ..damage(95)
+  ..hp(6750)
+  ..damage(105)
   ..amount(1)
   ..scale(1.5)
 
@@ -194,9 +195,9 @@ function wave_5() returns Wave
   ..amount(4)
 
   ..creep(UnitIds.broodmother)
-  ..hp(8950)
-  ..damage(98)
-  ..attackrate(0.7)
+  ..hp(9250)
+  ..damage(110)
+  ..attackrate(0.75)
   ..amount(1)
   ..scale(2.4)
 
@@ -208,12 +209,12 @@ function wave_6() returns Wave
   ..goldBounty(175)
 
   ..creep(UnitIds.owlbear)
-  ..hp(1900)
-  ..damage(50)
+  ..hp(1950)
+  ..damage(52)
   ..amount(7)
 
   ..creep(UnitIds.enragedowlbear)
-  ..hp(2400)
+  ..hp(2450)
   ..damage(55)
   ..amount(4)
 
@@ -262,12 +263,13 @@ function wave_7() returns Wave
   ..amount(5)
 
   ..creep(UnitIds.ancientsasquatch)
-  ..hp(11000)
-  ..damage(115)
+  ..hp(12500)
+  ..damage(125)
   ..attackrate(0.45)
   ..amount(1)
   ..scale(1.95)
   ..armor(10)
+  ..movespeed(375)
   ..abilities(commaList(AbilityIds.slam, AbilityIds.forceofNature))
 
   .build()
@@ -290,11 +292,12 @@ function wave_8() returns Wave
   ..wait(25)
 
   ..creep(UnitIds.stonemaulwarchief)
-  ..hp(3750)
+  ..hp(4250)
   ..damage(115)
   ..armor(8)
   ..amount(1)
   ..scale(0.9)
+  ..movespeed(475)
   ..rgb(0, 0, 255)
 
   ..creep(UnitIds.stonemaulwarchief)
@@ -307,7 +310,7 @@ function wave_8() returns Wave
   ..wait(25)
 
   ..creep(UnitIds.ogrelord)
-  ..hp(10500)
+  ..hp(12500)
   ..damage(490)
   ..attackrate(1.70)
   ..amount(1)
@@ -334,8 +337,8 @@ function wave_9() returns Wave
   ..amount(2)
 
   ..creep(UnitIds.archer)
-  ..hp(1750)
-  ..damage(95)
+  ..hp(2150)
+  ..damage(105)
   ..amount(12)
 
   ..creep(UnitIds.dryad)

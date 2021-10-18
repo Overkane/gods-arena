@@ -15,8 +15,8 @@ public constant STASIS_TOTEM_ID = compiletime(ABIL_ID_GEN.next())
 public constant STASIS_TOTEM_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure TOTEM_DURATION = lvl -> 4. + (lvl / 2).floor()
-constant RealLevelClosure STUN_INTERVAL = lvl -> 1
-constant RealLevelClosure STUN_DURATION = lvl -> 0.25 + 0.05 * lvl
+constant RealLevelClosure STUN_INTERVAL = lvl -> 1.25
+constant RealLevelClosure STUN_DURATION = lvl -> 0.25 + 0.1 * lvl
 constant RealLevelClosure AOE = lvl -> 300
 
 init
@@ -54,7 +54,7 @@ init
   ..addTooltipProperty("Stun Duration", STUN_DURATION)
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 50 + 25 * lvl)
+  ..presetManaCost(lvl -> 50 + 15 * lvl)
   ..presetCooldown(lvl -> 22. - lvl)
   ..tooltipStopListen()
 

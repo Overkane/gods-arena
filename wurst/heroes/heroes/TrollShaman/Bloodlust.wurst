@@ -29,7 +29,7 @@ constant RealLevelClosure DURATION = lvl -> 15.
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 650)
   ..presetManaCost(lvl -> 75)
-  ..presetCooldown(lvl -> 10)
+  ..presetCooldown(lvl -> 7.5)
   ..tooltipStopListen()
   
   ..presetAttackSpeedIncrease(AS_BONUS)

@@ -6,6 +6,7 @@ import DivineBlessingBuff
 import TheEmpyreanBuff
 import ClosureEvents
 import GameConstants
+import CustomStatSystem
 
 public constant DIVINE_BLESSING_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -27,6 +28,8 @@ init
       let empyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
       empyreanMult = empyreanBuff.divineBlessingMult
 
+    empyreanMult *= (1 + caster.getStat(CustomUnitStats.SPELL_POWER))
+
     let bonusArmor = BONUS_ARMOR.run(lvl) * empyreanMult
     let bonusHpReg = BONUS_HP_REG.run(lvl) * empyreanMult
     let spellDuration = DURATION.run(lvl)
@@ -35,13 +38,13 @@ init
     forUnitsInRange(target, spellRadius) u ->
       if u == caster
         new DivineBlessingBuff(spellDuration, bonusArmor * 2, bonusHpReg * 2).apply(caster)
-      else if u.isAllyOf(caster)
+      else if u.isAllyOf(caster) and u.isAlive()
         new DivineBlessingBuff(spellDuration, bonusArmor, bonusHpReg).apply(u)
       
         
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Increases armor and hp regeneration of allies in aoe. Works two times effective for the caster.")
+  let tooltip = new AbilityTooltipGenerator("Increases armor and hp regeneration of allies in aoe. Two times as effective for the caster.")
   new ChannelAbilityPreset(DIVINE_BLESSING_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(0)
   ..presetIcon(Icons.bTNResurrection)

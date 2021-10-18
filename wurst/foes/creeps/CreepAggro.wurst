@@ -6,24 +6,51 @@ import LinkedList
 import UnitIndexer
 import Orders
 import PlayerData
+import GameTimer
+import Abilities
+import AttachmentPoints
+import ClosureTimers
+import BonusHandler
+import CustomStatSystem
+
+constant SECONDS_TO_RAGE = 20
 
 class AggroEntry
     unit source
-    int aggro = 0
+    var aggro = 0.
 
-    construct(unit source, int aggro)
+    construct(unit source, real aggro)
         this.source = source
         this.aggro = aggro
 
 constant aggroMap = new HashMap<unit, LinkedList<AggroEntry>>()
+constant lastAttackOrder = new HashMap<unit, real>
+constant lastSuccessfulAttack = new HashMap<unit, real>
+
+public function unit.clearAggro()
+    let aggroList = aggroMap.get(this)
+    lastAttackOrder.remove(this)
+    if aggroList != null
+        for aggro in aggroList
+            destroy aggro
+        aggroList.clear()
+
+public function unit.enrage()
+    this.setVertexColor(225, 125, 125, 225)
+    this.setMoveSpeed(this.getMoveSpeed() + 75)
+    this.addBonus(Bonus.ATTACKSPEED, 25)
+    let eff = this.addEffect(Abilities.bloodLustTarget, AttachmentPoints.chest)
+
+    doAfter(1.) ->
+        eff.destr()
 
 interface AggroMergeFn<T>
     function apply(T curr, T new_) returns T
 
-constant AggroMergeFn<int> ADDING_MERGE_FN = (curr, new_) -> curr + new_
-constant AggroMergeFn<int> SETTING_MERGE_FN = (_curr, new_) -> new_
+constant AggroMergeFn<real> ADDING_MERGE_FN = (curr, new_) -> curr + new_
+constant AggroMergeFn<real> SETTING_MERGE_FN = (_curr, new_) -> new_
 
-public function unit.mergeAggro(unit target, int amount, AggroMergeFn<int> merge_fn)
+public function unit.mergeAggro(unit target, real amount, AggroMergeFn<real> merge_fn)
     let source = this
     if not aggroMap.has(target)
         aggroMap.put(target, new LinkedList<AggroEntry>())
@@ -36,20 +63,25 @@ public function unit.mergeAggro(unit target, int amount, AggroMergeFn<int> merge
             if aggro.source == source
                 aggro.aggro = merge_fn.apply(aggro.aggro, amount)
                 found = true
-                break
+            else
+                aggro.aggro *= 0.9
+
+            aggro.aggro = aggro.aggro * (1 + source.getStat(CustomUnitStats.THREAT_GENERATION))
 
         if not found
             aggroList.add(new AggroEntry(source, amount))
 
-        aggroList.sortWith((a, b) -> b.aggro - a.aggro)
+        aggroList.sortWith((a, b) -> (b.aggro - a.aggro).toInt())
 
-        if first != aggroList.getFirst()
+        let lastAttack = lastAttackOrder.get(target)
+        if first != aggroList.getFirst() and not lastAttackOrder.has(target) or lastAttack < currentTime - 3
             target.issueTargetOrderById(OrderIds.attack, source)
+            lastAttackOrder.put(target, currentTime)
 
-public function unit.addAggro(unit target, int amount)
+public function unit.addAggro(unit target, real amount)
     this.mergeAggro(target, amount, ADDING_MERGE_FN)
 
-public function unit.setAggro(unit target, int amount)
+public function unit.setAggro(unit target, real amount)
     this.mergeAggro(target, amount, SETTING_MERGE_FN)
 
 init
@@ -62,14 +94,26 @@ init
         if targetOwner == ENEMY_PLAYER and sourceOwner.isHuman() and not target.isType(UNIT_TYPE_PEON)
             if source.hasAbility(LOCUST_ID)
                 let pdata = pData.get(sourceOwner)
-                source = pdata.getHero().hero.actor
+                if pdata != null
+                    source = pdata.getHero().hero.actor
 
-            source.addAggro(target, DamageEvent.getAmount().toInt())
+            source.addAggro(target, DamageEvent.getAmount())
+
+            let lastAttack = lastSuccessfulAttack.get(target)
+            if lastAttack + SECONDS_TO_RAGE < currentTime
+                target.enrage()
+
+        else if sourceOwner == ENEMY_PLAYER
+            lastSuccessfulAttack.put(source, currentTime)
 
 
+    onUnitIndex() ->
+        lastSuccessfulAttack.put(getIndexingUnit(), currentTime)
 
     onUnitDeindex() ->
         let u = getIndexingUnit()
+        lastAttackOrder.remove(u)
+        lastSuccessfulAttack.remove(u)
         let aggro = aggroMap.getAndRemove(u)
         if aggro != null
             for agg in aggro

@@ -1,6 +1,7 @@
 package ThunderStrike
 import AbilityTooltipGenerator
 import GameConstants
+import DamageSystem
 
 public constant THUNDER_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -17,6 +18,7 @@ RealLevelClosure STUN_DURATION = lvl -> 0.3
   ..presetHotkey("E")
   
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Thunder Strike")
   ..presetChancetoBash(CHANCE_TO_BASH)

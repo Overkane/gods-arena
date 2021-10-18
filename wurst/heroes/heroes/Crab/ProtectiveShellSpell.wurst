@@ -15,7 +15,7 @@ constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_REGEN = lvl -> 3. + 6. * lvl
 constant RealLevelClosure SPELL_ARMOR = lvl -> 7. + 3. * lvl
 // constant RealLevelClosure REDUCE_DMG = lvl -> 0. * lvl
-constant SPELL_AOE = 256.
+constant SPELL_AOE = 320.
 constant SPELL_DURATION = 7.
 constant FLASH_EFFECT_DELAY = 0.9
 
@@ -24,7 +24,7 @@ init
         let lvl = caster.getAbilityLevel(SHELL_ABIL_ID)
         let owner = caster.getOwner()
 
-        let iceEffect = caster.addEffect(Doodads.ruins_Shells4, AttachmentPoints.origin)
+        let shellEffect = caster.addEffect(Doodads.ruins_Shells4, AttachmentPoints.origin)
         ..setScale(5.)
 
         let regen = SPELL_REGEN.run(lvl)
@@ -36,10 +36,13 @@ init
         forUnitsInRange(caster.getPos(), SPELL_AOE) (target) ->
             if target.isEnemyOf(owner)
                 InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, lvl, OrderIds.cripple, target)
-                caster.addAggro(target, 50 + lvl * 50)
+                target.clearAggro()
+                caster.addAggro(target, 200. + lvl * 200)
 
+        doAfter(SPELL_DURATION - 4.) ->    
+            shellEffect.destr()
+            
         doAfter(SPELL_DURATION) ->
-            iceEffect.destr()
             caster..setPropWindow(caster.getDefaultPropWindow())
             ..addBonus(Bonus.LIFEREGEN, -regen)
             ..addBonus(Bonus.ARMOR, -armor)
@@ -48,7 +51,7 @@ init
 
 @compiletime
 function genAbility()
-    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases regeneration but taunts nearby enemies."))
+    new ChannelAbilityPreset(SHELL_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. Increases defense but |cffb93939taunts|r nearby enemies."))
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)
     ..presetIcon(Icons.bTNShimmerWeed)

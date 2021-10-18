@@ -39,7 +39,8 @@ init
     Targettype.NONE,
     "The Demon Lord lets loose a terrifying howl that causes nearby enemy units to shiver in fear. "
     + "Feared units have reduced attack damage. "
-    + "If the Demon Lord kills a feared unit, it permanently gains strength and recovers HP."
+    + "If the Demon Lord kills a feared unit, it permanently gains strength and recovers HP.\n"
+    + "Also |cffb93939taunts|r enemies in AOE."
   )
   new AbilityDefinitionPitLordHowlofTerror(HOWL_OF_TERROR_ID)
   ..registerTooltipGenerator(tooltip)
@@ -54,10 +55,10 @@ init
   ..addTooltipProperty("Damage Decrease", lvl -> (DAMAGE_DECREASE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Bonus Strength", STR_BONUS)
   ..addTooltipProperty("HP Recovered", HP_RECOVERY)
-  ..presetAreaofEffect(lvl -> 400)
+  ..presetAreaofEffect(lvl -> 400.)
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 60)
-  ..presetCooldown(lvl -> 25)
+  ..presetCooldown(lvl -> 20)
   ..tooltipStopListen()
 
   ..presetDamageIncrease(DAMAGE_DECREASE)

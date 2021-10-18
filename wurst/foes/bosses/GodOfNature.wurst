@@ -113,13 +113,13 @@ init
   ..setAttack1DamageBase(100)
   ..setAttack1AttackType(AttackType.Chaos)
   ..setDefenseBase(15)
-  ..setHitPointsMaximumBase(37500)
+  ..setHitPointsMaximumBase(42500)
   ..setScalingValue(2.6)
 
   new UnitDefinition(WISP_ID, UnitIds.wisp)
-  ..setHitPointsMaximumBase(500)
+  ..setHitPointsMaximumBase(600)
   ..setArmorType(ArmorType.Unarmored)
-  ..setSpeedBase(100)
+  ..setSpeedBase(110)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
 

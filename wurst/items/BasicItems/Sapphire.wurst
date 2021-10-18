@@ -6,7 +6,7 @@ public constant SAPPHIRE_ITEM = compiletime(new RecipeItem()
 ..setName("Sapphire")
 ..setInterfaceIcon(MapIcons.bTNSapphire)
 ..setGoldCost(90)
-..addBonus(Bonus.INTELLIGENCE, 8)
+..addBonus(Bonus.INTELLIGENCE, 6)
 ..generateTooltip("")
 )..register()
 

@@ -9,8 +9,9 @@ import TooltipFactory
 
 public constant KILLER_REFLEXES_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure EVASION = lvl -> 10. + 5 * (lvl-1)
-constant ACTIVE_BONUS = 2.
+constant RealLevelClosure EVASION = lvl -> 3. * lvl
+constant RealLevelClosure AGI_BONUS = lvl -> 5. * lvl
+constant RealLevelClosure MS_BONUS = lvl -> 5. * lvl
 
 init
   EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
@@ -18,15 +19,23 @@ init
 
     if EventData.getLearnedSkill() == KILLER_REFLEXES_ID
       let lvl = u.getAbilityLevel(KILLER_REFLEXES_ID)
+      let evasion = EVASION.run(lvl)
+      let bonusAgi = AGI_BONUS.run(lvl).toInt()
+      let bonusMS = MS_BONUS.run(lvl)
+
       if lvl != 1
         let evasionOld = EVASION.run(lvl-1)
+        let agiOld = AGI_BONUS.run(lvl-1).toInt()
         u.addStat(CustomUnitStats.EVASION, -evasionOld/100)
+        u.setAgi(u.getAgi(false) - agiOld)
       
-      let evasion = EVASION.run(lvl)
-      u.addStat(CustomUnitStats.EVASION, evasion/100)
+      u
+      ..addStat(CustomUnitStats.EVASION, evasion/100)
+      ..setAgi(u.getAgi(false) + bonusAgi)
+      ..setMoveSpeed(u.getMoveSpeed() + bonusMS)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gets chance to evade an attack.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gets boost to base agility, move speed and evasion.")
   new PassiveAbilityPreset(KILLER_REFLEXES_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.pASBTNEvasion)
@@ -37,4 +46,6 @@ init
   ..tooltipStartListen()
   ..setName("Killer Reflexes")
   ..addTooltipProperty("Evasion", lvl -> EVASION.run(lvl).percRound())
+  ..addTooltipProperty("Agility Bonus", lvl -> AGI_BONUS.run(lvl).round())
+  ..addTooltipProperty("MS Bonus", lvl -> MS_BONUS.run(lvl).round())
   ..tooltipStopListen()

@@ -1,13 +1,13 @@
 package PierceShot
 import Assets
 import Projectile
-import Knockback3
 import AbilityTooltipGenerator
 import Tagwalk
 import Orders
 import BonusHandler
 import GameConstants
 import Buff
+import DamageSystem
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -17,12 +17,12 @@ constant RealLevelClosure SPELL_DAMAGE = lvl -> 75. + 85 * lvl
 
 class TreantEntity extends UnitEntity
 
-    construct(player owner, unit target, int lvl)
-        super(createUnit(owner, TREANT_ID, target.getPos(), angle(0))
-        ..setTimedLife(12.)
+    construct(unit owner, unit target, int lvl)
+        super(createUnit(owner.getOwner(), TREANT_ID, target.getPos(), angle(0))
+        ..setTimedLife(15.)
         ..issueTargetOrderById(OrderIds.attack, target)
-        ..addBonus(Bonus.DAMAGE, lvl * 30.)
-        ..addBonus(Bonus.LIFE, 95. * lvl))
+        ..addBonus(Bonus.DAMAGE, lvl * 30. * (1 + owner.getStat(CustomUnitStats.SPELL_POWER)))
+        ..addBonus(Bonus.LIFE, 95. * lvl + (lvl - 1) * 50 * (1 + owner.getStat(CustomUnitStats.SPELL_POWER))))
 
 
 init
@@ -37,14 +37,13 @@ init
         projectile.onHit() hitTarget ->
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
-                DamageEvent.setNextDamageFromCode()
                 let dmg = SPELL_DAMAGE.run(lvl) 
-                caster.damageTarget(hitTarget, SPELL_DAMAGE.run(lvl))
-                Knockback3.add(hitTarget, 350. + dmg, projectile.getXYAngle(), 45 .fromDeg())
+                hitTarget.getEntity().addVel(ZERO3.polarProject((350. + dmg) * ANIMATION_PERIOD, projectile.getXYAngle(), 45 .fromDeg()))
+                caster.dealPhysicalDamage(hitTarget, SPELL_DAMAGE.run(lvl))
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
-                    new TreantEntity(projectile.owner, hitTarget, lvl)
-                    hitTarget.removeBuff(TagBuff.typeId)
+                    new TreantEntity(caster, hitTarget, lvl)
+                    hitTarget.removeBuffById(TagBuff.typeId)
 
 
 @compiletime function genAbility()
@@ -55,6 +54,7 @@ init
     ..presetIcon(Icons.bTNGlaiveThrower)
 
     ..tooltipStartListen()
+    ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
     ..presetTargetTypes(Targettype.POINT)
     ..presetHotkey("Q")
     ..setName("Piercing Shot")

@@ -2,17 +2,17 @@ package Thornmail
 import RecipeItem
 import Icons
 import PassiveAbilityPreset
-import DamageEvent
 import SimpleArmor
 import HeartAmulet
 import IronSword
 import TooltipFactory
+import DamageSystem
 
 constant RETALIATE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Retaliate", 
-  "deals " + "[Hero Level]*10".color(COLOR_GOLD) + " damage to the attacker. Multiple items don't stack.")
+  "deals " + "[Hero Level] * 10".color(COLOR_GOLD) + " pure damage to the attacker. Multiple items don't stack.")
 
 public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 ..setName("Thornmail")
@@ -35,8 +35,7 @@ init
     let tunit = DamageEvent.getTarget()
 
     if DamageEvent.getType() == DamageType.ATTACK and tunit.hasItemById(THORNMAIL_ITEM.getNewId()) and not tunit.isIllusion()
-      DamageEvent.setNextDamageFromCode()
-      tunit.damageTarget(sunit, tunit.getLevel().toReal() * 10)
+      tunit.dealPureDamage(sunit, tunit.getLevel().toReal() * 10)
 
 @compiletime function genItemAbils()
   new PassiveAbilityPreset(RETALIATE_ID, 1)

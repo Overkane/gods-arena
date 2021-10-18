@@ -2,13 +2,11 @@ package Backpack
 import ObjectIdGenerator
 import HeroPreset
 import ClosureTimers
-import ItemShopUI
 import Icons
 import UnitIds
 import AbilityIds
 import PlayerData
 import Entity
-import Framehandle
 
 constant BACKPACK_ID = compiletime(HERO_ID_GEN.next())
 

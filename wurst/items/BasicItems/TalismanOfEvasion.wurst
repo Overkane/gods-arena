@@ -4,7 +4,7 @@ import RecipeItem
 import TooltipFactory
 import CustomStatSystem
 
-constant EVASION_CHANCE = 15
+constant EVASION_CHANCE = 5
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Evasion", 

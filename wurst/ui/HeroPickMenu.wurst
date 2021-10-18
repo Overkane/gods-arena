@@ -13,14 +13,68 @@ import DemonLordIds
 import CustomStatSystem
 import Backpack
 import HonorShop
+import LinkedList
+import ObjectIdGenerator
+import Reference
 
 public HeroPickUI heroPickUI
 
+constant BONUS_GOLD_FOR_RANDOM = 20
+
 constant playerSelection = new IterableMap<player, HeroIcon>
+constant heroPool = new LinkedList<int>
+..add(HYDROMANCER_ID)
+..add(TROLL_SHAMAN_ID)
+..add(STORMBEARER_ID)
+..add(BLADEMASTER_ID)
+..add(CRUSADER_ID)
+..add(ASSASSIN_ID)
+..add(DEMON_LORD_ID)
+..add(ARCHER_ID)
+..add(CRAB_ID)
+..add(ELEMENTOR_ID)
+..shuffle()
+
+constant RANDOM_ID = compiletime(HERO_ID_GEN.next())
 
 public function initHeroPickMenu()
   heroPickUI = new HeroPickUI()
   addHeroIcons()
+
+public function createRandomHeroes()
+  heroPool.shuffle()
+
+  pData.forEach() (player p, PlayerData value) ->
+    createRandomHero(p)
+
+function createRandomHero(player owner)
+  createHero(heroPool.pop(), owner)
+  owner.addGold(BONUS_GOLD_FOR_RANDOM)
+
+function createHero(int heroId, player owner)
+  // Removing hero from hero pool so it can't be get by random after.
+  heroPool.remove(heroId)
+
+  let h = new Hero(owner, heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
+  pData.get(owner).setHero(h)
+  
+  h.actor
+  ..addAbility(SELL_ID)
+  // Base custom stats for heroes
+  ..addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.25)
+  ..addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.25)
+  
+  owner
+  ..selectSingle(h.actor)
+  ..setCameraPosition(h.actor.getPos())
+  
+  new Backpack(owner, h.actor).actor
+  .addAbility(SELL_ID)
+  
+  new HonorShop(owner, h.actor)
+
+  toggleShopButton.show(owner, h.actor)
+  shop.showToUnit(h.actor)
 
 function addHeroIcons()
   heroPickUI
@@ -51,6 +105,12 @@ function addHeroIcons()
   ..addHeroIcon(
     new HeroIcon(CRAB_ID, Icons.bTNLobstrokkBlue, Icons.dISBTNLobstrokkBlue)
     ..addTooltip("Crab", "Why do things keep evolving into crabs?"))
+  ..addHeroIcon(
+    new HeroIcon(ELEMENTOR_ID, Icons.bTNBLoodMage2, Icons.dISBTNBLoodMage2)
+    ..addTooltip("Elementor", "Shapes the elements to his will, unleahing fearsome magic on his enemies."))
+  ..addHeroIcon(
+    new HeroIcon(RANDOM_ID, Icons.bTNSelectHeroOn, Icons.dISBTNSelectHeroOn)
+    ..addTooltip("Random", "Get a random hero and a small gold bonus."))
 
 class HeroPickUI
   private var heroIconCounter = 0
@@ -89,30 +149,21 @@ class HeroPickUI
       let p = GetTriggerPlayer()
 
       if playerSelection.has(p)
-        let pickedIcon = playerSelection.getAndRemove(p)
-        let h = new Hero(p, pickedIcon.heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
-        let backpack = new Backpack(p, h.actor).actor
-        new HonorShop(p, h.actor)
-        
-        pData.get(p).setHero(h)
-        p.selectSingle(h.actor)
-        p.setCameraPosition(h.actor.getPos())
-        pickedIcon.disable()
+        var pickedIcon = playerSelection.getAndRemove(p)
+
         heroPickFrame.hide(p)
 
-        toggleShopButton.show(p, h.actor)
-        // toggleMultiboardButton.show(p)
-        // toggleStatMultiboardButton.show(p)
+        if pickedIcon.heroId == RANDOM_ID
+          createRandomHero(p)
+          
+          let pickedIconRef = new Reference(pickedIcon)
+          pData.get(p).getHero().ifPresent() (Hero h) ->
+            pickedIconRef.val = HeroIcon.heroIconIdMap.get(h.actor.getTypeId())
+          pickedIcon = pickedIconRef.into()
+        else
+          createHero(pickedIcon.heroId, p)
 
-        shop.showToUnit(h.actor)
-
-        h.actor.addAbility(SELL_ID)
-        backpack.addAbility(SELL_ID)
-
-        // Setting starting stats for heroes
-        h.actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.5)
-        h.actor.addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.5)
-
+        pickedIcon.disable()
         playerSelection.forEach() (player key, HeroIcon value) ->
           if value == pickedIcon
             playerSelection.remove(key)
@@ -132,6 +183,7 @@ class HeroPickUI
     heroIcon.setIconPosition(iconPosition)
 
 class HeroIcon
+  static constant heroIconIdMap = new HashMap<int, HeroIcon>
   static private var globalIconContext = 0
 
   var heroId = 0
@@ -143,6 +195,7 @@ class HeroIcon
   private framehandle heroIcon = null
 
   construct(int heroId, string activeIcon, string disabledIcon)
+    heroIconIdMap.put(heroId, this)
     this.heroId = heroId
     this.activeIcon = activeIcon
     this.disabledIcon = disabledIcon

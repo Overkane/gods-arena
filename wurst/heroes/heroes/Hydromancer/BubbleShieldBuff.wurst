@@ -4,18 +4,21 @@ import Assets
 import SoundUtils
 import WaterElemental
 import BonusHandler
+import CustomHeal
 
 constant buffTuple = compiletime(createDummyBuffObject("Bubble Shield", "Increases unit's hp regeneration and can block small amount of damage",  Icons.bTNNeutralManaShield, Abilities.manaShieldCaster))
 
 public class BubbleShieldBuff extends ShieldBuff
   real healAmount
   var bonusDamage = 0.
+  unit caster
 
   private constant ON_APPLY_SOUND = new SoundDefinition(Sounds.manaShieldCaster1)
   
-  construct(real dur, real shieldDurabiblity, real healAmount)
+  construct(unit caster, real dur, real shieldDurabiblity, real healAmount)
     super(dur, buffTuple, shieldDurabiblity)
     this.healAmount = healAmount
+    this.caster = caster
 
   override function onApply()
     if WATER_ELEM_LIST.has(target.getTypeId())
@@ -29,5 +32,5 @@ public class BubbleShieldBuff extends ShieldBuff
 
   override function update()
     super.update()
-    target.addHP(healAmount)
+    caster.healTarget(target, healAmount)
     

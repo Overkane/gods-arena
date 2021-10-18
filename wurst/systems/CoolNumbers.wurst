@@ -1,0 +1,27 @@
+package CoolNumbers
+import FText
+
+public function coolTextTag(unit source, unit target, int amount, colorA col, int baseSize) returns FText
+    let pos = target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-30, 0), 0, 0)
+    let text = coolNumber(amount)
+    let size = baseSize + SquareRoot(amount.toReal()) / 5
+    let strength = size / 10
+    var hsv = col.withoutAlpha().toHSV()
+    hsv.s *= strength
+
+    let result = createFText(pos, text, size, 0.90, vec2(0, 0.045), hsv.toRGB().withAlpha(255), source.getOwner())
+    if localPlayer == source.getOwner() or localPlayer == target.getOwner()
+        result.tt.setVisibility(true)
+    return result
+
+public function coolNumber(int amount) returns string
+    if amount < 1000
+        return amount.toString()
+    else if amount < 1000000
+        let thousands = (amount / 1000)
+        if (thousands - thousands.toInt()) < 0.1
+            return thousands.toInt().toString() + "K"
+
+        return thousands.toString(1) + "K"
+
+    return (amount / 1000000).toString(1) + "M"

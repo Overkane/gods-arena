@@ -1,20 +1,23 @@
 package RestorationRitualBuff
 import public PresetBuffs
 import Assets
+import CustomHeal
 
 constant buffTuple = compiletime(createDummyBuffObject("Restoration Ritual", "Restores hp and mp",  Icons.bTNBigBadVoodooSpell, Abilities.voodooAuraTarget, AttachmentPoints.overhead))
 
 public class RestorationRitualBuff extends NormalBuff
   private real hpPercReg
-  private real mpPercReg 
+  private real mpPercReg
+  private unit caster
 
-  construct(real dur, real hpPercReg, real mpPercReg)
+  construct(unit caster, real dur, real hpPercReg, real mpPercReg)
     super(dur, buffTuple)
     this.hpPercReg = hpPercReg
     this.mpPercReg = mpPercReg
+    this.caster = caster
     
   override function update()
     super.update()
-    target.addHP(target.getMaxHP() * hpPercReg)
+    caster.healTarget(target, target.getMaxHP() * hpPercReg)
     target.addMana(target.getMaxMana() * mpPercReg)
     

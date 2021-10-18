@@ -1,0 +1,40 @@
+package TimeSiphon
+import AbilityTooltipGenerator
+import GameConstants
+import Icons
+import DamageSystem
+
+public constant SIPHON_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure SPELL_DMG = lvl -> 0.05 * lvl
+constant RealLevelClosure SPELL_CAST_RANGE = lvl -> 700. + 100 * lvl
+constant SPELL_CD = 17.
+constant SPELL_COST = 30
+
+
+
+
+@compiletime
+function genAbil()
+    new AbilityDefinitionDarkRangerDrain(SIPHON_ABIL_ID)
+    ..presetButtonPosNormal(2, 2)
+    ..presetButtonPosResearch(2, 0)
+    ..presetIcon(Icons.bTNDrain)
+    ..registerTooltipGenerator(new AbilityTooltipGenerator("The Elementor siphons enegery from the target to himself, replenishing mana and hitpoints."))
+    
+    
+    ..tooltipStartListen()
+    ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
+    ..setLevels(NORMAL_SPELL_LEVELS)
+    ..setName("Time Siphon")
+    ..presetHotkey("E")
+    ..presetManaPointsDrained(lvl -> 10. + 20 * lvl)
+    ..presetHitPointsDrained(lvl -> 10. + 10 * lvl)
+    ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies))
+    ..presetDurationNormal(lvl -> 7)
+    ..presetDurationHero(lvl -> 7)
+    ..presetCastRange(SPELL_CAST_RANGE)
+    ..presetManaCost(lvl -> SPELL_COST + lvl * 10)
+    ..presetCooldown(lvl -> SPELL_CD)
+    ..tooltipStopListen()
+

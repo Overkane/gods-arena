@@ -1,0 +1,67 @@
+package BlinkStrike
+import AbilityTooltipGenerator
+import Icons
+import GameConstants
+import TooltipFactory
+import ClosureEvents
+import ClosureTimers
+import BlinkStrikeBuff
+import Buff
+import Abilities
+import OrderIds
+
+public constant BLINK_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure AGI_BONUS = lvl -> 0.1 + 0.1 * lvl
+constant RealLevelClosure AGI_BUFF_DURATION = lvl -> 4. + 0.5 * lvl
+constant RealLevelClosure BLINK_STRKE_DEBUFF_DURATION = lvl -> 3
+
+init
+  EventListener.onTargetCast(BLINK_STRIKE_ID) (unit caster, unit target) ->
+    nullTimer() -> 
+      let lvl = caster.getAbilityLevel(BLINK_STRIKE_ID)
+      let bonusAgi = AGI_BONUS.run(lvl)
+      let bonusAgiDuration = AGI_BUFF_DURATION.run(lvl)
+      let debuffDuration = BLINK_STRKE_DEBUFF_DURATION.run(lvl)
+
+      let facingAngle = target.getFacingAngle()
+      let backAngle = facingAngle - (180).fromDeg()
+      let backPos = target.getPos().polarOffset(backAngle, 24)
+      
+      caster
+      ..setPos(backPos)
+      ..setFacing(caster.getPos().angleTo(target.getPos()))
+      flashEffect(Abilities.blinkCaster, caster.getPos())
+
+      caster.issueTargetOrderById(OrderIds.attack, target)
+
+      new BlinkStrikeBuff(bonusAgiDuration, bonusAgi).apply(caster)
+      new BlinkStrikeDebuff(debuffDuration).apply(target)
+
+  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
+    let killer = EventData.getKillingUnit()
+    let diedUnit = EventData.getTriggerUnit()
+
+    if killer.hasAbility(BLINK_STRIKE_ID) and diedUnit.hasBuff(BlinkStrikeDebuff.typeId) and diedUnit.isEnemyOf(killer.getOwner())
+      killer.resetAbilityCooldown(BLINK_STRIKE_ID)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero blinks behind the target unit and gets a temporary agility buff which is based on base agility.\n"
+  +"If the target unit is killed within " + ("Time to kill").color(COLOR_GOLD) + " time, the ability cooldown is reset. Agility buff stacks.")
+  new ChannelAbilityPreset(BLINK_STRIKE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetIcon(Icons.bTNShadowMeld)
+  ..presetHotkey("W")
+  ..presetTargetsAllowed(lvl -> TargetsAllowed.enemies)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.UNIT)
+  ..setName("Blink Strike")
+  ..addTooltipProperty("Agility Bonus", lvl -> (AGI_BONUS.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Agilitiy Buff Duration", AGI_BUFF_DURATION)
+  ..addTooltipProperty("Time to kill", BLINK_STRKE_DEBUFF_DURATION)
+  ..presetCastRange(lvl -> 800)
+  ..presetManaCost(lvl -> 30 + 5 * lvl)
+  ..presetCooldown(lvl -> 22)
+  ..tooltipStopListen()

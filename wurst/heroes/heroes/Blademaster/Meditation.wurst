@@ -62,7 +62,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero meditates and restores his hp and mp over time. "
-    + "Any received damage during meditation interrupts it. If meditation was fully completed, hero gets attack damage buff for some time.")
+    + "Any received damage during meditation interrupts it. If meditation was fully completed, hero also receives attack damage buff.")
   new ChannelAbilityPreset(MEDITATION_ID, NORMAL_SPELL_LEVELS, false, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.bTNSleep)

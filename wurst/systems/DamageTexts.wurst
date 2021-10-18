@@ -1,7 +1,8 @@
 package DamageTexts
-import DamageEvent
 import GameConstants
 import FText
+import CoolNumbers
+import DamageSystem
 
 init
     DamageEvent.addListener(99) ->
@@ -9,13 +10,17 @@ init
             let target = DamageEvent.getTarget()
 
             if target.getOwner() == ENEMY_PLAYER
-                if DamageEvent.getType() == DamageType.ATTACK
-                    createFText(target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 6,
-                        0.85, vec2(0, 0.045), colorA(233, 116, 122, 255), DamageEvent.getSource().getOwner())
-                else
-                    createFText(target.getPos().withTerrainZ(45) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 7 + SquareRoot(DamageEvent.getAmount()) / 6,
-                        0.85, vec2(0, 0.045), colorA(57, 97, 207, 255), DamageEvent.getSource().getOwner())
+                if isPhysicalDamage()
+                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(233, 116, 122, 255), 7)
+                else if isMagicalDamage()
+                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(109, 57, 207, 255), 7)
+                else if isPureDamage()
+                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(194, 156, 74, 255), 7)
+                else 
+                    // print("Unknown damage type:", 3)
+                    // print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName(), 3)
+                    // print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".", 3)
+                    // print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString(), 3)
             else
-                createFText(target.getPos().withTerrainZ(45) + vec3(GetRandomReal(-30, 0), 0, 0), DamageEvent.getAmount().toInt().toString(), 6 + SquareRoot(DamageEvent.getAmount()) / 8,
-                    0.85, vec2(0, 0.045), colorA(146, 29, 29, 255), target.getOwner())
+                coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(146, 29, 29, 255), 6)
         

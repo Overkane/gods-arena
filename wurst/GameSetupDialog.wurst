@@ -1,0 +1,145 @@
+package GameSetupDialog
+import ClosureTimers
+import ClosureFrames
+import PlayerData
+import FramehandleNames
+import GameConstants
+import HeroPickMenu
+import Arenas
+import TimerUtils
+
+constant PREGAME_MAX_DURATION = 30
+
+public enum Difficulties
+  NORMAL
+  HARD
+  INSANE
+
+Difficulties gameDifficulty
+GameSetupDialog setupDialog
+
+public function initGameSetupDialog()
+  setupDialog = new GameSetupDialog()
+
+public class GameSetupDialog
+  let owner = players[0]
+  constant dialogFrame = createFrame("FRAME", "multiboardFrame", GAME_UI, "", 0)
+  ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.4, 0.515))
+  ..setSize(0.25, 0.185)
+  ..hide()
+  ..show(owner)
+
+  var started = false
+
+  var difficulty = 0
+  var isAllRandom = false
+
+  construct()
+    pData.forEach() (player p, PlayerData value) ->
+      if p == players[0]
+        p.print("You have " + COLOR_GOLD.toColorString() + PREGAME_MAX_DURATION.toString() + "|r seconds to choose game modes.", 5)
+      else
+        p.print("Please wait while " + players[0].getNameColored() + " chooses game modes.", 5)
+              
+      createFrame("HeroPickMenuBackdrop", dialogFrame, 0, 0).setAllPoints(dialogFrame)
+
+      createFrame(FramehandleTypeNames.text, "title", dialogFrame, "", 0)
+      ..setText("Game Setup")
+      ..setTextAlignment(TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
+      ..setScale(2.25)
+      ..setPoint(FRAMEPOINT_TOP, dialogFrame, FRAMEPOINT_TOP, vec2(0, -0.0095))
+      
+      let difficultyPopupMenuTitle = createFrame(FramehandleTypeNames.text, "", dialogFrame, "", 0)
+      ..setText("Difficulty:")
+      ..setScale(1.15)
+      ..setWidth(0.075)
+      ..setTextAlignment(TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_RIGHT)
+      ..setPoint(FRAMEPOINT_TOP, dialogFrame, FRAMEPOINT_TOP, vec2(-0.075, -0.0615))
+
+      let isAllRandomTitle = createFrame(FramehandleTypeNames.text, "", dialogFrame, "", 0)
+      ..setText("All Random:")
+      ..setScale(1.15)
+      ..setWidth(0.075)
+      ..setTextAlignment(TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_RIGHT)
+      ..setPoint(FRAMEPOINT_TOP, difficultyPopupMenuTitle, FRAMEPOINT_BOTTOM, vec2(0, -0.015))
+
+      createFrame("DifficultyPopup", dialogFrame, 0, 0)
+      ..setPoint(FRAMEPOINT_LEFT, difficultyPopupMenuTitle, FRAMEPOINT_RIGHT, vec2(0.005, 0))
+      ..setTextAlignment(TEXT_JUSTIFY_LEFT, TEXT_JUSTIFY_CENTER)
+      ..setValue(difficulty.toReal())
+      ..onPopupMenuItemChange() ->
+        difficulty = BlzGetTriggerFrameValue().toInt()
+
+      let isAllRandomFlag = createFrame("QuestCheckBox2", dialogFrame, 0, 0)
+      ..setPoint(FRAMEPOINT_LEFT, isAllRandomTitle, FRAMEPOINT_RIGHT, vec2(0.005, 0))
+      ..setScale(1.5)
+      ..onCheckboxCheck() -> 
+        isAllRandom = true
+      isAllRandomFlag.onCheckboxUncheck() -> 
+        isAllRandom = false
+        
+      let auto = createFrame("TEXT", "", dialogFrame, "", 0)
+      ..setText("Game auto-starts in " + PREGAME_MAX_DURATION.toString() + " seconds...")
+      ..setTextAlignment(TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
+      ..setScale(0.85)
+      ..setPoint(FRAMEPOINT_TOP, dialogFrame, FRAMEPOINT_TOP, vec2(-0.055, -0.18))
+
+      doPeriodicallyCounted(1, PREGAME_MAX_DURATION) (CallbackCounted cb) ->
+        auto.setText("Game auto-starts in " + (cb.getCount() - 1).toString() + " seconds...")
+        if cb.isLast() and not started
+          startGame()
+
+      createFrame("GeneralButton", dialogFrame, 0, 0)
+      ..setPoint(FRAMEPOINT_TOP, dialogFrame, FRAMEPOINT_TOP, vec2(0.065, -0.1425))
+      ..setSize(0.075, 0.03)
+      ..setText("Start")
+      ..onClick() -> 
+        startGame()
+
+  function startGame()
+    if not started
+      printTimed("Modes:", 7.5)
+      started = true
+      setupDialog.dialogFrame.hide()
+
+      var gold = 0
+
+      switch difficulty
+        case 0
+          printTimed("    Difficulty: |cffaabbccNormal", 7.5)
+          gameDifficulty = Difficulties.NORMAL
+          gold = 180
+        case 1
+          printTimed("    Difficulty: |cffca4410Hard", 7.5)
+          gameDifficulty = Difficulties.HARD
+          gold = 200
+          pData.forEach() (player p, PlayerData value) ->
+            SetPlayerHandicap(p, 0.9)
+        case 2
+          printTimed("    Difficulty: |cff8f0808Insane", 7.5)
+          gameDifficulty = Difficulties.INSANE
+          gold = 220
+          pData.forEach() (player p, PlayerData value) ->
+            SetPlayerHandicap(p, 0.8)
+
+      pData.forEach() (player p, PlayerData playerData) ->
+        p.setGold(gold)
+
+      if isAllRandom
+        printTimed("    All Random", 7.5)  
+        createRandomHeroes()
+        startArenas()
+      else
+        initHeroPickMenu()
+        initPickTimer()
+
+function initPickTimer()
+  let heroPickTimer = getTimer()
+  let heroPickTimerDialog = heroPickTimer.createTimerDialog()
+  heroPickTimerDialog
+  ..setTitle("Hero pick phase ends in:")
+  ..display(true)
+
+  heroPickTimer.doAfter(HERO_PICK_TIME) ->
+    heroPickTimerDialog.destr()
+    startArenas()

@@ -46,7 +46,7 @@ constant WISD_SL = 0.5
 constant ABIL_LUCK = compiletime(ABIL_ID_GEN.next())
 constant LUCK_ACC = 1.
 constant LUCK_SCC = 1.
-constant LUCK_EV = 1.
+constant LUCK_EV = 0.5
 
 public constant honorShopUnits = new LinkedList<unit>
 
@@ -185,11 +185,14 @@ public class HonorShop extends UnitEntity
   ..hideHeroDeathMsg(true)
   ..hideHeroMinimapDisplay(true)
   ..setHideMinimapDisplay(true)
-  ..setNormalAbilities(commaList(AbilityIds.invulnerable, 
-    ABIL_MIGHT, ABIL_ENDURANCE, 
-    ABIL_DEXTERITY, ABIL_QUICKNESS, 
-    ABIL_MIND, ABIL_WISDOM, 
-    ABIL_LUCK))
+  ..addNormalAbility(AbilityIds.invulnerable)
+  ..addNormalAbility(ABIL_MIGHT)
+  ..addNormalAbility(ABIL_ENDURANCE)
+  ..addNormalAbility(ABIL_DEXTERITY)
+  ..addNormalAbility(ABIL_QUICKNESS)
+  ..addNormalAbility(ABIL_MIND)
+  ..addNormalAbility(ABIL_WISDOM)
+  ..addNormalAbility(ABIL_LUCK)
   ..setArmorType(ArmorType.Divine)
   ..setModelFile("")
   ..setScalingValue(0.)

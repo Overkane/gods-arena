@@ -79,11 +79,11 @@ function wave_2() returns Wave
   ..wait(10)
 
   ..creep(UnitIds.nagaroyalguard)
-  ..hp(12500)
+  ..hp(14500)
   ..mana(5000)
   ..attackrate(0.35)
-  ..damage(235)
-  ..armor(11)
+  ..damage(245)
+  ..armor(12)
   ..amount(2)
 
   .build()

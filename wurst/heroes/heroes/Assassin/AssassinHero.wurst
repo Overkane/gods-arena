@@ -3,7 +3,7 @@ import UnitIds
 import HeroPreset
 import ObjectIdGenerator
 import BlinkCut
-import Stealth
+import BlinkStrike
 import KillerReflexes
 import CoupDeGrace
 import Contract
@@ -14,7 +14,7 @@ public constant ASSASSIN_ID = compiletime(HERO_ID_GEN.next())
   new HeroPreset(ASSASSIN_ID, UnitIds.warden, "Assassin")
   ..addProperName("Persephone")
   ..addHeroAbility(BLINK_CUT_ID)
-  ..addHeroAbility(STEALTH_ID)
+  ..addHeroAbility(BLINK_STRIKE_ID)
   ..addHeroAbility(KILLER_REFLEXES_ID)
   ..addHeroAbility(COUP_DE_GRACE_ID)
   ..addNormalAbility(CONTRACT_ID)
