@@ -54,7 +54,7 @@ init
           caster.healTarget(target, spellHealing)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero heals an ally and deals damage to all enemies around it or deals damage to the enemy and heals allies around it.")
+  let tooltip = new AbilityTooltipGenerator("Either heals an ally and deals damage to enemies around the target or deals damage to one enemy and heals allies around the target.")
   new ChannelAbilityPreset(HEALING_SEAL_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..setLevelSkipRequirement(0)
   ..presetIcon(Icons.bTNHolyBolt)

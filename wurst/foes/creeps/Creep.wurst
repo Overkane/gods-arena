@@ -1,5 +1,4 @@
 package Creep
-import Entity
 import GameConstants
 import PhysicsEntity
 
