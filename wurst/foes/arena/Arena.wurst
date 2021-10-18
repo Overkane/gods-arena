@@ -7,8 +7,10 @@ import PlayerData
 import Abilities
 import AttachmentPoints
 import ClosureForGroups
+import CurrentArena
 
 constant LAST_WAVE_COMPLETED = new SoundDefinition(Sounds.credits)
+
 
 public class Arena
   use LinkedListModule
@@ -35,6 +37,7 @@ public class Arena
       this.waves.add(wave)
 
   function start(boolean isNext)
+    currentArenaRect = this.arenaRect
     printTimed("|cffceac15>> Arena:|r " + name, 10.)
     pData.forEach() (player p, PlayerData playerData) ->
       modifier = createVision(p, arenaRect, true)..start()

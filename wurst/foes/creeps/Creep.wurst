@@ -1,6 +1,7 @@
 package Creep
 import GameConstants
 import PhysicsEntity
+import CurrentArena
 
 interface AllCreepsDead
   abstract function execute()
@@ -51,3 +52,14 @@ public class Creep extends UnitEntity
   override function onGroundHit()
     scaleVel(0.75)
     actor.setPropWindow(actor.getDefaultPropWindow())
+
+  override function setXY(vec3 tpos)
+    pos = tpos
+    if tpos.x > currentArenaRect.getMaxX() or tpos.x < currentArenaRect.getMinX()
+      vel = vec3(-vel.x, vel.y, vel.z)
+      pos += vel
+    else if tpos.y > currentArenaRect.getMaxY() or tpos.y < currentArenaRect.getMinY()
+      vel = vec3(vel.x, -vel.y, vel.z)
+      pos += vel
+      
+    actor.setXYZReal(pos)

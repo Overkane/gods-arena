@@ -65,7 +65,7 @@ function CreateRegions takes nothing returns nothing
     set gg_rct_Arena1SpawnPoint=Rect(- 512.0, 544.0, 416.0, 992.0)
     set gg_rct_Arena2=Rect(- 2208.0, - 7712.0, 2560.0, - 2272.0)
     set gg_rct_Arena2Center=Rect(- 160.0, - 5056.0, 192.0, - 4672.0)
-    set gg_rct_Arena3=Rect(2976.0, - 2240.0, 7296.0, 1664.0)
+    set gg_rct_Arena3=Rect(2944.0, - 2240.0, 7296.0, 1664.0)
     set we=AddWeatherEffect(gg_rct_Arena3, 'RLlr')
     call EnableWeatherEffect(we, true)
     set gg_rct_Arena3Center=Rect(4768.0, - 544.0, 5472.0, 32.0)
