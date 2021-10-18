@@ -12,6 +12,8 @@ import AttachmentPoints
 import ClosureTimers
 import BonusHandler
 
+constant SECONDS_TO_RAGE = 30
+
 class AggroEntry
     unit source
     var aggro = 0.
@@ -84,7 +86,7 @@ init
             source.addAggro(target, DamageEvent.getAmount())
 
             let lastAttack = lastSuccessfulAttack.get(target)
-            if lastAttack + 30 < currentTime
+            if lastAttack + SECONDS_TO_RAGE < currentTime
                 target.enrage()
         
         else if sourceOwner == ENEMY_PLAYER
