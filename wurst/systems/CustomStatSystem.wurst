@@ -24,6 +24,7 @@ public enum CustomUnitStats
   // Utility 
   EVASION
   MAGIC_RESISTANCE
+  THREAT_GENERATION
 
 // Additive stats value is calculated just by addition
 constant additiveStats = new LinkedList<CustomUnitStats>
@@ -35,6 +36,7 @@ constant additiveStats = new LinkedList<CustomUnitStats>
 ..add(CustomUnitStats.BONUS_SPELL_DAMAGE)
 ..add(CustomUnitStats.SPELL_CRIT_POWER)
 ..add(CustomUnitStats.SPELL_LIFESTEAL)
+..add(CustomUnitStats.THREAT_GENERATION)
 
 // Multiplicative stats value is calculated by formula — 1 - ((1 - x) * (1 - y) * ...)
 // where x, y and etc are stats in the list
