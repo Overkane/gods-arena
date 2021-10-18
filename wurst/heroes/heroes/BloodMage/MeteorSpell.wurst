@@ -24,8 +24,8 @@ init
                     eff.destr()
                 if target.isEnemyOf(caster.getOwner()) and target.isAlive()
                     let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / aoe
-                    caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
                     target.getEntity().addVel(ZERO3.polarProject(1000 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
+                    caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
                     flashEffect(Abilities.incinerateBuff, target, "origin")
 
 @compiletime

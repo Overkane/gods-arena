@@ -38,8 +38,8 @@ init
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
                 let dmg = SPELL_DAMAGE.run(lvl) 
-                caster.dealPhysicalDamage(hitTarget, SPELL_DAMAGE.run(lvl))
                 hitTarget.getEntity().addVel(ZERO3.polarProject((350. + dmg) * ANIMATION_PERIOD, projectile.getXYAngle(), 45 .fromDeg()))
+                caster.dealPhysicalDamage(hitTarget, SPELL_DAMAGE.run(lvl))
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
                     new TreantEntity(caster, hitTarget, lvl)
