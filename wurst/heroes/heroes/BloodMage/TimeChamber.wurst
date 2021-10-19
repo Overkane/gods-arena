@@ -1,7 +1,6 @@
 package TimeChamber
 import AbilityTooltipGenerator
 import Icons
-import ClosureEvents
 import Abilities
 import ClosureTimers
 import ClosureForGroups
@@ -11,6 +10,7 @@ import GameConstants
 import DamageSystem
 import Boss
 import Entity
+import TooltipFactory
 
 public constant TIME_CHAMBER_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
@@ -53,7 +53,7 @@ function genAbil()
     ..presetTargetTypes(Targettype.POINT)
     ..setName("Time Chamber")
     ..presetHotkey("R")
-    ..addTooltipProperty("Damage", lvl -> SPELL_DMG.run(lvl).toString() + "%")
+    ..addTooltipProperty("Damage", lvl -> SPELL_DMG.run(lvl).percRound(2))
     ..presetManaCost(lvl -> SPELL_COST + lvl * 10)
     ..presetAreaofEffect(lvl -> SPELL_AOE)
     ..presetCooldown(lvl -> SPELL_CD)
