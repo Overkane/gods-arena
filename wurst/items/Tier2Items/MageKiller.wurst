@@ -8,19 +8,22 @@ import AssassinsBlade
 import TooltipFactory
 import MapIcons
 
-constant CRITICAL_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
-constant CRITICAL_STRIKE_CHANCE = 20
-constant CRITICAL_STRIKE_MUL = 1.5
+constant ATTACK_CRIT_CHANCE = 12
+constant ATTACK_CRIT_POWER = 35
 
 constant FEEDBACK_ID = compiletime(ABIL_ID_GEN.next())
 constant FEEDBACK_MP_BURN = 25
 constant FEEDBACK_RATIO = 2
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Strike", 
-  "gives " + CRITICAL_STRIKE_CHANCE.colorPerc(COLOR_GOLD) + " chance to deal " + CRITICAL_STRIKE_MUL.color(COLOR_GOLD) + "x damage.")
+  "Critical Chance", 
+  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD) + ".")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Critical Power", 
+  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD) + ".")
+
+constant ABIL_TOOLTIP3 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Feedback", 
   "burn out " + FEEDBACK_MP_BURN.color(COLOR_GOLD) + " mana from attacked target. Deals " + FEEDBACK_RATIO.color(COLOR_GOLD) + " damage per burned mana.")
 
@@ -29,8 +32,8 @@ public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 ..setInterfaceIcon(MapIcons.bTNDarkShaft)
 ..addBonus(Bonus.DAMAGE, 65)
 ..addBonus(Bonus.AGILITY, 15)
-..setAbilities(commaList(CRITICAL_STRIKE_ID, FEEDBACK_ID))
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+..setAbilities(commaList(FEEDBACK_ID))
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2 + "\n\n" + ABIL_TOOLTIP3)
 )..register()
 
 public constant MAGE_KILLER_RECIPE = new ItemRecipe()
@@ -39,10 +42,6 @@ public constant MAGE_KILLER_RECIPE = new ItemRecipe()
 ..setResultItem(MAGE_KILLER_ITEM)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionCriticalStrikecreep(CRITICAL_STRIKE_ID)
-  ..setChancetoCriticalStrike(1, CRITICAL_STRIKE_CHANCE.toReal())
-  ..setDamageMultiplier(1, CRITICAL_STRIKE_MUL)
-
   new AbilityDefinitionFeedback(FEEDBACK_ID)
   ..setDamageRatioHeros(1, FEEDBACK_RATIO.toReal())
   ..setDamageRatioUnits(1, FEEDBACK_RATIO.toReal())
