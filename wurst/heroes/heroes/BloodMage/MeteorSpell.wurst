@@ -17,14 +17,13 @@ init
         let aoe = SPELL_AOE.run(lvl)
         flashEffect(Units.infernalBirth, spellTarget)
         doAfter(0.9) ->
-            flashEffect(Units.infernal1, spellTarget)
             forUnitsInRange(spellTarget, aoe) (target) ->
                 let eff = target.addEffect(Abilities.flameStrikeEmbers, AttachmentPoints.origin)
                 doAfter(0.9) ->
                     eff.destr()
                 if target.isEnemyOf(caster.getOwner()) and target.isAlive()
                     let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / aoe
-                    target.getEntity().addVel(ZERO3.polarProject(1000 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
+                    target.getEntity().addVel(ZERO3.polarProject(800 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
                     caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
                     flashEffect(Abilities.incinerateBuff, target, "origin")
 
@@ -41,7 +40,7 @@ function genAbility()
     ..setName("Chaos Meteor")
     ..presetHotkey("Q")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 180 + lvl * 20)
+    ..presetManaCost(lvl -> 160 + lvl * 50)
     ..presetAreaofEffect(SPELL_AOE)
-    ..presetCooldown(lvl -> 33. - lvl)
+    ..presetCooldown(lvl -> 29. - lvl)
     ..tooltipStopListen()

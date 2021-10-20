@@ -8,7 +8,7 @@ import Entity
 import DamageSystem
 
 public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 5 + 15. * lvl
+constant RealLevelClosure SPELL_DMG = lvl -> 5 + 10. * lvl
 constant RealLevelClosure SPELL_AOE = lvl -> 290. + lvl * 32
 constant SPELL_FX = "BlackHole.mdx"
 constant SPELL_DURATION = 7.
@@ -50,9 +50,9 @@ function genAbility()
     ..setName("Black Hole")
     ..presetHotkey("W")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 85 + lvl * 20)
+    ..presetManaCost(lvl -> 75 + lvl * 35)
     ..presetAreaofEffect(SPELL_AOE)
-    ..presetCooldown(lvl -> 27. - lvl)
+    ..presetCooldown(lvl -> 25. - lvl)
     ..tooltipStopListen()
 
 @test
