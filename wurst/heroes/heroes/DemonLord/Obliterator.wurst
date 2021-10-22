@@ -13,7 +13,7 @@ import PassiveAbilityPreset
 import PlayerData
 
 constant IntLevelClosure BONUS_STRENGTH = _ -> 50
-constant RealLevelClosure CREEP_AGGRO = _ -> 200.
+constant RealLevelClosure CREEP_AGGRO = _ -> 500.
 constant RealLevelClosure CREEP_AGGRO_RANGE = _ -> 400.
 constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .5
 
@@ -30,9 +30,6 @@ class ObliteratorData
   ondestroy
     if this.fx != null
       this.fx.destr()
-
-function int.toCustomUnitTypeString() returns string
-  return "custom_" + this.toRawCode()
 
 init
   doPeriodically(1.) _ ->
@@ -58,7 +55,7 @@ init
       if wants
         forUnitsInRange(u.getPos(), CREEP_AGGRO_RANGE.run(1)) fog ->
           if fog.isEnemyOf(u)
-            u.setAggro(fog, CREEP_AGGRO.run(1))
+            u.maxAggro(fog, CREEP_AGGRO.run(1))
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(

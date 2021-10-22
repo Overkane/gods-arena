@@ -2,37 +2,43 @@ package HowlOfTerror
 import Abilities
 import AbilityTooltipGenerator
 import BuffIds
-import DamageEvent
+import ClosureEvents
 import DemonLordIds
 import GameConstants
 import Icons
-import StandardTextTags
 import TooltipFactory
+import CustomHeal
+import DamageEvent
+import CreepAggro
+import ClosureForGroups
 
-RealLevelClosure DAMAGE_DECREASE = lvl -> 0.25 + 0.1 * (lvl-1)
-RealLevelClosure DURATION = lvl -> 10
-IntLevelClosure STR_BONUS = _ -> 1
-RealLevelClosure HP_RECOVERY = lvl -> 100.0 + 50 * (lvl-1)
+constant AOE = 500.
+constant RealLevelClosure DAMAGE_DECREASE = lvl -> 0.25 + 0.1 * (lvl-1)
+constant RealLevelClosure DURATION = lvl -> 10
+constant IntLevelClosure STR_BONUS = lvl -> (0.5 * (lvl - 1)).floor() + 1 // 1, 1, 2, 2, 3
+constant RealLevelClosure HP_RECOVERY = lvl -> 100.0 + 50 * (lvl-1)
 
 init
-  DamageEvent.addListener(5) ->
-    let target = DamageEvent.getTarget()
-    if DamageEvent.getAmount() > target.getHP()
-      let killer = DamageEvent.getSource()
-      if (
-        killer.getTypeId() == DEMON_LORD_ID
-        and target.hasAbility(BuffIds.howlofTerror)
-        and not target.isType(UNIT_TYPE_SUMMONED)
-      )
-        let level = killer.getAbilityLevel(HOWL_OF_TERROR_ID)
-        let str_bonus = STR_BONUS.run(level)
-        let killer_pos = killer.getPos()
-        killer.addStr(str_bonus)
-        killer.addHP(HP_RECOVERY.run(level))
-        standardTextTag(killer_pos, "+" + str_bonus.toString())
-          ..setColor(255, 0, 0, 255)
-          ..setVisibility(localPlayer == killer.getOwner())
-        flashEffect(Abilities.deathCoilMissile, killer_pos)
+  EventListener.onCast(HOWL_OF_TERROR_ID) (unit caster) ->
+    if caster.hasAbility(HOWL_OF_TERROR_ID)
+      let lvl = caster.getAbilityLevel(HOWL_OF_TERROR_ID)
+
+      forUnitsInRange(caster.getPos(), AOE) (unit u) ->
+        if u.isEnemyOf(caster.getOwner()) and u.isAlive()
+          u.clearAggro()
+          caster.addAggro(u, 300. * lvl)
+
+  DamageEvent.addListener() ->
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if tunit.getHP() <= DamageEvent.getAmount() // Seems there is no buffs on died units so need to check death preemptively
+      and sunit.getTypeId() == DEMON_LORD_ID and tunit.hasAbility(BuffIds.howlofTerror)
+
+      let level = sunit.getAbilityLevel(HOWL_OF_TERROR_ID)
+      sunit.addStr(STR_BONUS.run(level))
+      sunit.healTarget(sunit, HP_RECOVERY.run(level))
+      flashEffect(Abilities.deathCoilMissile, sunit.getPos())
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
@@ -55,7 +61,7 @@ init
   ..addTooltipProperty("Damage Decrease", lvl -> (DAMAGE_DECREASE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Bonus Strength", STR_BONUS)
   ..addTooltipProperty("HP Recovered", HP_RECOVERY)
-  ..presetAreaofEffect(lvl -> 400.)
+  ..presetAreaofEffect(lvl -> AOE)
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 60)
   ..presetCooldown(lvl -> 20)

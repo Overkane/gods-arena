@@ -48,7 +48,7 @@ interface AggroMergeFn<T>
     function apply(T curr, T new_) returns T
 
 constant AggroMergeFn<real> ADDING_MERGE_FN = (curr, new_) -> curr + new_
-constant AggroMergeFn<real> SETTING_MERGE_FN = (_curr, new_) -> new_
+constant AggroMergeFn<real> MAXING_MERGE_FN = (curr, new_) -> max(new_, curr)
 
 public function unit.mergeAggro(unit target, real amount, AggroMergeFn<real> merge_fn)
     let source = this
@@ -81,8 +81,8 @@ public function unit.mergeAggro(unit target, real amount, AggroMergeFn<real> mer
 public function unit.addAggro(unit target, real amount)
     this.mergeAggro(target, amount, ADDING_MERGE_FN)
 
-public function unit.setAggro(unit target, real amount)
-    this.mergeAggro(target, amount, SETTING_MERGE_FN)
+public function unit.maxAggro(unit target, real amount)
+    this.mergeAggro(target, amount, MAXING_MERGE_FN)
 
 init
     DamageEvent.addListener() ->
