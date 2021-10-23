@@ -2,6 +2,7 @@ package ArcherinoHero
 import ObjectIdGenerator
 import UnitIds
 import HeroPreset
+import Companion
 import PierceShot
 import Tagwalk
 import CriticalArrow
@@ -9,10 +10,10 @@ import ArrowVolley
 
 public constant ARCHER_ID = compiletime(HERO_ID_GEN.next())
 
-
 @compiletime function genHero()
   new HeroPreset(ARCHER_ID, UnitIds.sylvanuswindrunner, "Archerino")
   ..addProperName("Garth")
+  ..addNormalAbility(COMPANION_ID)
   ..addHeroAbility(PIERCESHOT_ID)
   ..addHeroAbility(TAGWALK_ID)
   ..addHeroAbility(CRIT_ARROW_ID)
