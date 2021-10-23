@@ -51,7 +51,7 @@ init
     new ChannelAbilityPreset(PIERCESHOT_ID, NORMAL_SPELL_LEVELS, true, tooltip)
     ..presetButtonPosNormal(0, 2)
     ..presetButtonPosResearch(0, 0)
-    ..presetIcon(Icons.bTNGlaiveThrower)
+    ..presetIcon(Icons.bTNImpalingBolt)
 
     ..tooltipStartListen()
     ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)

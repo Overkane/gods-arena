@@ -60,7 +60,7 @@ init
     let tooltip = new AbilityTooltipGenerator("Reduces incoming damage and boosts speed. Walking through enemies will make them |cffd803bctagged|r, enhancing other spells.")
     new AbilityDefinitionBladeMasterWindWalk(TAGWALK_ID)
     ..registerTooltipGenerator(tooltip)
-    ..presetIcon(Icons.bTNTheBlackArrow)
+    ..presetIcon(Icons.bTNAmbush)
     ..presetButtonPosNormal(1, 2)
     ..presetButtonPosResearch(1, 0)
     
