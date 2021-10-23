@@ -12,12 +12,12 @@ import Icons
 import PassiveAbilityPreset
 import PlayerData
 
-constant IntLevelClosure BONUS_STRENGTH = _ -> 50
-constant RealLevelClosure CREEP_AGGRO = _ -> 500.
+constant IntLevelClosure BONUS_AGILITY = _ -> 50
+constant RealLevelClosure CREEP_AGGRO = _ -> 600.
 constant RealLevelClosure CREEP_AGGRO_RANGE = _ -> 400.
-constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .5
+constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .35
 
-constant DEMON_LORD_STR_BONUSES = new HashMap<unit, ObliteratorData>()
+constant DEMON_LORD_AGI_BONUSES = new HashMap<unit, ObliteratorData>()
 
 class ObliteratorData
   int amt
@@ -35,22 +35,22 @@ init
   doPeriodically(1.) _ ->
     maybeHeroFromHeroType(DEMON_LORD_ID).ifPresent() hero ->
       let u = hero.actor
-      if not DEMON_LORD_STR_BONUSES.has(u)
-        DEMON_LORD_STR_BONUSES.put(u, new ObliteratorData(u, 0))
+      if not DEMON_LORD_AGI_BONUSES.has(u)
+        DEMON_LORD_AGI_BONUSES.put(u, new ObliteratorData(u, 0))
 
       // Calculate bonus amount based on hero's health without any current bonus. This prevents flip-flop effect.
-      let currAmt = DEMON_LORD_STR_BONUSES.get(u).amt
-      u.addStr(-currAmt)
+      let currAmt = DEMON_LORD_AGI_BONUSES.get(u).amt
+      u.addAgi(-currAmt)
       let wants = (u.getHP() / u.getMaxHP()) < BONUS_HEALTH_THRESHOLD.run(1) and u.isAlive()
-      u.addStr(currAmt)
+      u.addAgi(currAmt)
 
-      let wants_bonus = wants ? BONUS_STRENGTH.run(1) : 0
-      let curr_bonus = DEMON_LORD_STR_BONUSES.get(u).amt
+      let wants_bonus = wants ? BONUS_AGILITY.run(1) : 0
+      let curr_bonus = DEMON_LORD_AGI_BONUSES.get(u).amt
 
       if curr_bonus != wants_bonus
-        u.addStr(wants_bonus - curr_bonus)
-        destroy DEMON_LORD_STR_BONUSES.get(u)
-        DEMON_LORD_STR_BONUSES.put(u, new ObliteratorData(u, wants_bonus))
+        u.addAgi(wants_bonus - curr_bonus)
+        destroy DEMON_LORD_AGI_BONUSES.get(u)
+        DEMON_LORD_AGI_BONUSES.put(u, new ObliteratorData(u, wants_bonus))
 
       if wants
         forUnitsInRange(u.getPos(), CREEP_AGGRO_RANGE.run(1)) fog ->
@@ -60,7 +60,7 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
     Targettype.PASSIVE,
-    "Passively grants bonus strength and nearby creep aggro when the Demon Lord has less than 50% HP."
+    "Passively grants bonus agility and nearby creep aggro when the Demon Lord has low HP."
   )
   new PassiveAbilityPreset(OBLITERATOR_ID, 1, tooltip)
   ..presetTargetsAllowed(_ -> "none")
@@ -68,7 +68,7 @@ init
   ..presetButtonPosResearch(1, 0)
   ..setIconNormal(Icons.pASBTNFireRocks)
   ..tooltipStartListen()
-  ..addTooltipProperty("Bonus Strength", BONUS_STRENGTH)
+  ..addTooltipProperty("Bonus Agility", BONUS_AGILITY)
   ..addTooltipProperty("Creep Aggro", CREEP_AGGRO)
   ..addTooltipProperty("Creep Aggro Range", CREEP_AGGRO_RANGE)
   ..addTooltipProperty("Health Threshold", BONUS_HEALTH_THRESHOLD)
