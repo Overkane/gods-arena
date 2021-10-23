@@ -1,6 +1,6 @@
 [Misc]
-BoneDecayTime=0.0
-DecayTime=0.0
+BoneDecayTime=5.0
+DecayTime=2.0
 GrantNormalXP=0
 GuardDistance=100000.0
 GuardReturnTime=10000.0
