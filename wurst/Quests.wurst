@@ -25,6 +25,21 @@ init
     "- You can sell items in your inventory with your hero sell ability (hotkey - 'F') for " + (REFUND_VALUE * 100).percRound() + " of initial price.\n" +
     "- Zero recipe cost in the shop means item will be assembled automatically when all required items will be in the inventory.\n"
   )
+
+  new Quest(true)
+  ..setIcon(Icons.bTNMedalionOfCourage)
+  ..setTitle("Honor Points")
+  ..setDescription(
+    "Honor Points is a resource which you can keep between games.\n" +
+    "You can spend it for various upgrades on F3.\n" +
+    "You get 1 honor point for each 500 arena points you earn.\n" +
+    "For now ways to get arena points are next:\n" +
+    "- +5 for a kill;\n" +
+    "- +100 for finishing a wave;\n" +
+    "- -50 for a death.\n" +
+    "You can save honor points only if saved amount is more than amount in your save file.\n"
+  )
+
   new Quest(false)
   ..setIcon(Icons.bTNTome)
   ..setTitle("Credits")
@@ -43,5 +58,7 @@ init
   ..setTitle("Commands")
   ..setDescription(
     "-kick [player number] - kicks player with given number (available only for red player)\n" + 
+    "-save - transforms arena points to honor points and saves it\n" + 
+    "-stats - shows hero custom stats\n" + 
     "-z [number] - sets camera distance\n"
   )
