@@ -26,3 +26,5 @@ public class MapIcons extends Icons
   // Passive Buttons
   static constant pASBTNBackstab = "ReplaceableTextures/PassiveButtons/PASBackStab.blp"
   static constant pASBTNWhirlwind = "ReplaceableTextures/PassiveButtons/PASwhirlwind.blp"
+  // Autocast Buttons
+  static constant ATCBeamShower = "ReplaceableTextures/CommandButtons/ATCBeamShower.blp" // The Panda
