@@ -2,6 +2,7 @@ package Obliterator
 
 import AbilityTooltipGenerator
 import Abilities
+import BonusHandler
 import ClosureForGroups
 import CreepAggro
 import DemonLordIds
@@ -9,46 +10,56 @@ import Icons
 import PassiveAbilityPreset
 import PermanentBuff
 
-constant effect_description = "grants bonus agility and nearby creep aggro"
+constant effect_description = "grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units"
 constant buffTupleBuff = compiletime(
   createDummyBuffObject("Obliterator", effect_description, Icons.bTNFireRocks, Abilities.vampiricAura)
 )
 
-constant IntLevelClosure BONUS_AGILITY = _ -> 50
+constant IntLevelClosure BONUS_ATTACK_SPEED = _ -> 50
 constant RealLevelClosure CREEP_AGGRO = _ -> 600.
 constant RealLevelClosure CREEP_AGGRO_RANGE = _ -> 400.
 constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .35
+constant RealLevelClosure SLAY_RATIO = _ -> 0.05
+constant RealLevelClosure SLAY_BONUS_DAMAGE_MULTIPLIER = _ -> 10.
 
 
 public class ObliteratorBuff extends PermanentBuff
-  unit owner
-
-  construct(unit owner)
+  construct()
     super(buffTupleBuff)
-    this.owner = owner
 
   override function update()
     super.update()
-    if (this.owner.getHP() / this.owner.getMaxHP()) > BONUS_HEALTH_THRESHOLD.run(1) or not this.owner.isAlive()
+    if (this.target.getHP() / this.target.getMaxHP()) > BONUS_HEALTH_THRESHOLD.run(1)
       terminate()
     if not done
-      forUnitsInRange(this.owner.getPos(), CREEP_AGGRO_RANGE.run(1)) fog ->
-        if fog.isEnemyOf(this.owner)
-          this.owner.maxAggro(fog, CREEP_AGGRO.run(1))
+      forUnitsInRange(this.target.getPos(), CREEP_AGGRO_RANGE.run(1)) fog ->
+        if fog.isEnemyOf(this.target)
+          this.target.maxAggro(fog, CREEP_AGGRO.run(1))
 
   override function onApply()
-    this.owner.addAgi(BONUS_AGILITY.run(1))
+    this.target.addBonus(Bonus.ATTACKSPEED, BONUS_ATTACK_SPEED.run(1).toReal())
 
   override function onEnd()
-    this.owner.addAgi(-BONUS_AGILITY.run(1))
+    if this.target != null
+      this.target.addBonus(Bonus.ATTACKSPEED, -BONUS_ATTACK_SPEED.run(1).toReal())
+
+
+function unit.hpRatio() returns real
+  return this.getHP() / this.getMaxHP()
 
 
 init
-  DamageEvent.addListener(5) ->
+  DamageEvent.addListener(1) ->
     let target = DamageEvent.getTarget()
-    if target.getTypeId() == DEMON_LORD_ID and (target.getHP() / target.getMaxHP()) < BONUS_HEALTH_THRESHOLD.run(1)
-      new ObliteratorBuff(target).apply(target)
-
+    let source = DamageEvent.getSource()
+    if target.getTypeId() == DEMON_LORD_ID and target.hpRatio() < BONUS_HEALTH_THRESHOLD.run(1)
+      new ObliteratorBuff().apply(target)
+    else if (
+      source.getTypeId() == DEMON_LORD_ID
+      and source.hasBuff(ObliteratorBuff.typeId)
+      and target.hpRatio() < SLAY_RATIO.run(1)
+    )
+      DamageEvent.addAmount(DamageEvent.getAmount() * (SLAY_BONUS_DAMAGE_MULTIPLIER.run(1) - 1.))
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
@@ -61,9 +72,11 @@ init
   ..presetButtonPosResearch(1, 0)
   ..setIconNormal(Icons.pASBTNFireRocks)
   ..tooltipStartListen()
-  ..addTooltipProperty("Bonus Agility", BONUS_AGILITY)
+  ..addTooltipProperty("Bonus Attack Speed", BONUS_ATTACK_SPEED)
   ..addTooltipProperty("Creep Aggro", CREEP_AGGRO)
   ..addTooltipProperty("Creep Aggro Range", CREEP_AGGRO_RANGE)
   ..addTooltipProperty("Health Threshold", BONUS_HEALTH_THRESHOLD)
+  ..addTooltipProperty("Bonus Damage HP Threshold", SLAY_RATIO)
+  ..addTooltipProperty("Bonus Damage Multiplier", SLAY_BONUS_DAMAGE_MULTIPLIER)
   ..setName("Obliterator")
   ..tooltipStopListen()
