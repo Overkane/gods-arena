@@ -8,7 +8,7 @@ import CreepAggro
 import DemonLordIds
 import Icons
 import PassiveAbilityPreset
-import PermanentBuff
+import PresetBuffs
 
 constant effect_description = "grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units"
 constant buffTupleBuff = compiletime(
@@ -23,9 +23,10 @@ constant RealLevelClosure SLAY_RATIO = _ -> 0.05
 constant RealLevelClosure SLAY_BONUS_DAMAGE_MULTIPLIER = _ -> 10.
 
 
-public class ObliteratorBuff extends PermanentBuff
+public class ObliteratorBuff extends NormalBuff
+  static constant FOREVER = 9999999.
   construct()
-    super(buffTupleBuff)
+    super(FOREVER, buffTupleBuff)
 
   override function update()
     super.update()
