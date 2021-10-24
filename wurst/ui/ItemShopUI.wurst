@@ -87,9 +87,9 @@ public function initItemShop()
   // ..addItem(TOME_OF_AGILITY_ITEM)
   // ..addItem(TOME_OF_INTELLIGENCE_ITEM)
 
-  toggleShopButton = new ToggleShopButton(shop, "Shop (Z)")
+  toggleShopButton = new ToggleShopButton(shop, "Shop (B)")
   pData.forEach() (player key, PlayerData value) ->
-    toggleShopButton.addHotkeyForPlayer(key, OSKEY_Z)
+    toggleShopButton.addHotkeyForPlayer(key, OSKEY_B)
 
   EventListener.onTargetCast(SELL_ID) (unit caster, unit target) ->
     let tItem = GetSpellTargetItem()..setUserData(-1) 
