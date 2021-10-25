@@ -1,0 +1,51 @@
+package ObliteratorBuff
+
+import Assets
+import BonusHandler
+import ClosureForGroups
+import CreepAggro
+import PresetBuffs
+
+constant buffTupleBuff = compiletime(
+  createDummyBuffObject(
+    "Obliterator",
+    "Grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units",
+    Icons.bTNFireRocks,
+    Abilities.vampiricAura
+  )
+)
+
+
+public function unit.hpRatio() returns real
+  return this.getHP() / this.getMaxHP()
+
+
+public class ObliteratorBuff extends NormalBuff
+  static constant FOREVER = 9999999.
+  real bonus_health_threshold
+  real creep_aggro_range
+  real creep_aggro
+  real bonus_attack_speed
+  construct(real bonus_health_threshold, real creep_aggro_range, real creep_aggro, real bonus_attack_speed)
+    super(FOREVER, buffTupleBuff)
+
+    this.bonus_health_threshold = bonus_health_threshold
+    this.creep_aggro_range = creep_aggro_range
+    this.creep_aggro = creep_aggro
+    this.bonus_attack_speed = bonus_attack_speed
+
+  override function update()
+    super.update()
+    if this.target.hpRatio() > this.bonus_health_threshold
+      terminate()
+    if not done
+      forUnitsInRange(this.target.getPos(), this.creep_aggro_range) fog ->
+        if fog.isEnemyOf(this.target)
+          this.target.maxAggro(fog, this.creep_aggro)
+
+  override function onApply()
+    this.target.addBonus(Bonus.ATTACKSPEED, this.bonus_attack_speed)
+
+  override function onEnd()
+    if this.target != null
+      this.target.addBonus(Bonus.ATTACKSPEED, -this.bonus_attack_speed)

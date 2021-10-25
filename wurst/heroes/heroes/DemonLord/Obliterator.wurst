@@ -1,19 +1,11 @@
 package Obliterator
 
 import AbilityTooltipGenerator
-import Abilities
-import BonusHandler
-import ClosureForGroups
-import CreepAggro
+import Buff
 import DemonLordIds
 import Icons
+import ObliteratorBuff
 import PassiveAbilityPreset
-import PresetBuffs
-
-constant effect_description = "grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units"
-constant buffTupleBuff = compiletime(
-  createDummyBuffObject("Obliterator", effect_description, Icons.bTNFireRocks, Abilities.vampiricAura)
-)
 
 constant IntLevelClosure BONUS_ATTACK_SPEED = _ -> 50
 constant RealLevelClosure CREEP_AGGRO = _ -> 600.
@@ -22,39 +14,17 @@ constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .35
 constant RealLevelClosure SLAY_RATIO = _ -> 0.05
 constant RealLevelClosure SLAY_BONUS_DAMAGE_MULTIPLIER = _ -> 10.
 
-
-public class ObliteratorBuff extends NormalBuff
-  static constant FOREVER = 9999999.
-  construct()
-    super(FOREVER, buffTupleBuff)
-
-  override function update()
-    super.update()
-    if (this.target.getHP() / this.target.getMaxHP()) > BONUS_HEALTH_THRESHOLD.run(1)
-      terminate()
-    if not done
-      forUnitsInRange(this.target.getPos(), CREEP_AGGRO_RANGE.run(1)) fog ->
-        if fog.isEnemyOf(this.target)
-          this.target.maxAggro(fog, CREEP_AGGRO.run(1))
-
-  override function onApply()
-    this.target.addBonus(Bonus.ATTACKSPEED, BONUS_ATTACK_SPEED.run(1).toReal())
-
-  override function onEnd()
-    if this.target != null
-      this.target.addBonus(Bonus.ATTACKSPEED, -BONUS_ATTACK_SPEED.run(1).toReal())
-
-
-function unit.hpRatio() returns real
-  return this.getHP() / this.getMaxHP()
-
-
 init
   DamageEvent.addListener(1) ->
     let target = DamageEvent.getTarget()
     let source = DamageEvent.getSource()
     if target.getTypeId() == DEMON_LORD_ID and target.hpRatio() < BONUS_HEALTH_THRESHOLD.run(1)
-      new ObliteratorBuff().apply(target)
+      new ObliteratorBuff(
+        BONUS_HEALTH_THRESHOLD.run(1),
+        CREEP_AGGRO_RANGE.run(1),
+        CREEP_AGGRO.run(1),
+        BONUS_ATTACK_SPEED.run(1).toReal()
+      ).apply(target)
     else if (
       source.getTypeId() == DEMON_LORD_ID
       and source.hasBuff(ObliteratorBuff.typeId)
@@ -65,10 +35,10 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
     Targettype.PASSIVE,
-    "Passively " + effect_description + " when the Demon Lord has low HP."
+    "Passively grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units, when the Demon "
+    + "Lord has low HP."
   )
   new PassiveAbilityPreset(OBLITERATOR_ID, 1, tooltip)
-  ..presetTargetsAllowed(_ -> "none")
   ..presetButtonPosNormal(1, 1)
   ..presetButtonPosResearch(1, 0)
   ..setIconNormal(Icons.pASBTNFireRocks)
