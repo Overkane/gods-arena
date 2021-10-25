@@ -1,0 +1,53 @@
+package Obliterator
+
+import AbilityTooltipGenerator
+import Buff
+import DemonLordIds
+import Icons
+import ObliteratorBuff
+import PassiveAbilityPreset
+
+constant IntLevelClosure BONUS_ATTACK_SPEED = _ -> 50
+constant RealLevelClosure CREEP_AGGRO = _ -> 600.
+constant RealLevelClosure CREEP_AGGRO_RANGE = _ -> 400.
+constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .35
+constant RealLevelClosure SLAY_RATIO = _ -> 0.05
+constant RealLevelClosure SLAY_BONUS_DAMAGE_MULTIPLIER = _ -> 10.
+
+init
+  DamageEvent.addListener(1) ->
+    let target = DamageEvent.getTarget()
+    let source = DamageEvent.getSource()
+    if target.getTypeId() == DEMON_LORD_ID and target.hpRatio() < BONUS_HEALTH_THRESHOLD.run(1)
+      new ObliteratorBuff(
+        BONUS_HEALTH_THRESHOLD.run(1),
+        CREEP_AGGRO_RANGE.run(1),
+        CREEP_AGGRO.run(1),
+        BONUS_ATTACK_SPEED.run(1).toReal()
+      ).apply(target)
+    else if (
+      source.getTypeId() == DEMON_LORD_ID
+      and source.hasBuff(ObliteratorBuff.typeId)
+      and target.hpRatio() < SLAY_RATIO.run(1)
+    )
+      DamageEvent.addAmount(DamageEvent.getAmount() * (SLAY_BONUS_DAMAGE_MULTIPLIER.run(1) - 1.))
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(
+    Targettype.PASSIVE,
+    "Passively grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units, when the Demon "
+    + "Lord has low HP."
+  )
+  new PassiveAbilityPreset(OBLITERATOR_ID, 1, tooltip)
+  ..presetButtonPosNormal(1, 1)
+  ..presetButtonPosResearch(1, 0)
+  ..setIconNormal(Icons.pASBTNFireRocks)
+  ..tooltipStartListen()
+  ..addTooltipProperty("Bonus Attack Speed", BONUS_ATTACK_SPEED)
+  ..addTooltipProperty("Creep Aggro", CREEP_AGGRO)
+  ..addTooltipProperty("Creep Aggro Range", CREEP_AGGRO_RANGE)
+  ..addTooltipProperty("Health Threshold", BONUS_HEALTH_THRESHOLD)
+  ..addTooltipProperty("Bonus Damage HP Threshold", SLAY_RATIO)
+  ..addTooltipProperty("Bonus Damage Multiplier", SLAY_BONUS_DAMAGE_MULTIPLIER)
+  ..setName("Obliterator")
+  ..tooltipStopListen()

@@ -39,13 +39,18 @@ public function unit.enrage()
     this.setVertexColor(225, 125, 125, 225)
     this.setMoveSpeed(this.getMoveSpeed() + 75)
     this.addBonus(Bonus.ATTACKSPEED, 25)
-
     let eff = this.addEffect(Abilities.bloodLustTarget, AttachmentPoints.chest)
 
     doAfter(1.) ->
         eff.destr()
 
-public function unit.addAggro(unit target, real amount)
+interface AggroMergeFn<T>
+    function apply(T curr, T new_) returns T
+
+constant AggroMergeFn<real> ADDING_MERGE_FN = (curr, new_) -> curr + new_
+constant AggroMergeFn<real> MAXING_MERGE_FN = (curr, new_) -> max(new_, curr)
+
+public function unit.mergeAggro(unit target, real amount, AggroMergeFn<real> merge_fn)
     let source = this
     if not aggroMap.has(target)
         aggroMap.put(target, new LinkedList<AggroEntry>())
@@ -56,7 +61,7 @@ public function unit.addAggro(unit target, real amount)
         var found = false
         for aggro in aggroList
             if aggro.source == source
-                aggro.aggro += amount
+                aggro.aggro = merge_fn.apply(aggro.aggro, amount)
                 found = true
             else
                 aggro.aggro *= 0.9
@@ -67,11 +72,17 @@ public function unit.addAggro(unit target, real amount)
             aggroList.add(new AggroEntry(source, amount))
 
         aggroList.sortWith((a, b) -> (b.aggro - a.aggro).toInt())
-        
+
         let lastAttack = lastAttackOrder.get(target)
         if first != aggroList.getFirst() and not lastAttackOrder.has(target) or lastAttack < currentTime - 3
             target.issueTargetOrderById(OrderIds.attack, source)
             lastAttackOrder.put(target, currentTime)
+
+public function unit.addAggro(unit target, real amount)
+    this.mergeAggro(target, amount, ADDING_MERGE_FN)
+
+public function unit.maxAggro(unit target, real amount)
+    this.mergeAggro(target, amount, MAXING_MERGE_FN)
 
 init
     DamageEvent.addListener() ->
@@ -91,14 +102,14 @@ init
             let lastAttack = lastSuccessfulAttack.get(target)
             if lastAttack + SECONDS_TO_RAGE < currentTime
                 target.enrage()
-        
+
         else if sourceOwner == ENEMY_PLAYER
             lastSuccessfulAttack.put(source, currentTime)
-                
-    
+
+
     onUnitIndex() ->
         lastSuccessfulAttack.put(getIndexingUnit(), currentTime)
-        
+
     onUnitDeindex() ->
         let u = getIndexingUnit()
         lastAttackOrder.remove(u)
