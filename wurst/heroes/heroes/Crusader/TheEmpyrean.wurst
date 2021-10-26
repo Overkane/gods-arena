@@ -1,31 +1,29 @@
 package TheEmpyrean
 import Icons
 import AbilityTooltipGenerator
-import TheEmpyreanBuff
+import public TheEmpyreanBuff
 import Entity
 import GameConstants
 import TooltipFactory
 
 public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE = lvl -> 50. + 50. * (lvl-1)
-RealLevelClosure ATTACK_SPEED_SLOW = lvl -> 60
-RealLevelClosure HEAL_SEAL_ADDITIONAL_RADIUS = lvl -> 100. + 50. * (lvl-1)
-RealLevelClosure HOLY_SMITE_PROC_CHANCE = lvl -> 80. + 10. * (lvl-1)
-RealLevelClosure DIVINE_BLESSING_MULT = lvl -> 1.25 + lvl * 0.25
-RealLevelClosure DURATION = lvl -> 30.
+constant RealLevelClosure DAMAGE = lvl -> 50. + 50. * (lvl-1)
+constant RealLevelClosure ATTACK_SPEED_SLOW = lvl -> 90
+constant RealLevelClosure DURATION = lvl -> 30.
+
+public constant RealLevelClosure SACRED_GROUNDS_AOE_MULTIPLIER = lvl -> 1.5
+public constant RealLevelClosure DIVINE_SHIELD_MULTIPLIER = lvl -> 2.
+public constant RealLevelClosure HOLY_SMITE_PROC_CHANCE = lvl -> 80. + 10. * (lvl-1)
 
 init 
   EventListener.onCast(THE_EMPYREAN_ID) (unit caster) ->
     let lvl = caster.getAbilityLevel(THE_EMPYREAN_ID)
     let bonusDamage = DAMAGE.run(lvl)
     let attackSpeedSlow = ATTACK_SPEED_SLOW.run(lvl)
-    let healSealAddAOE = HEAL_SEAL_ADDITIONAL_RADIUS.run(lvl)
-    let holySmiteProcChance = HOLY_SMITE_PROC_CHANCE.run(lvl)
-    let divineBlessingMult = DIVINE_BLESSING_MULT.run(lvl)
     let spellDuration = DURATION.run(lvl)
 
-    new TheEmpyreanBuff(spellDuration, bonusDamage, attackSpeedSlow, healSealAddAOE, holySmiteProcChance, divineBlessingMult).apply(caster)
+    new TheEmpyreanBuff(spellDuration, bonusDamage, attackSpeedSlow, lvl).apply(caster)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero enhance himself and all his abilities, but his attack speed becomes slower.")
@@ -42,9 +40,9 @@ init
   ..setName("The Empyrean")
   ..addTooltipProperty("Additional Damage", DAMAGE)
   ..addTooltipProperty("Attack Speed Slow", ATTACK_SPEED_SLOW)
-  ..addTooltipProperty("Healing Seal Additional Radius", DAMAGE)
+  ..addTooltipProperty("Sacred Ground AOE Multiplier", SACRED_GROUNDS_AOE_MULTIPLIER)
+  ..addTooltipProperty("Divine Shield Damage Reduction Multiplayer", DIVINE_SHIELD_MULTIPLIER)
   ..addTooltipProperty("Holy Smite Proc Chance", lvl -> HOLY_SMITE_PROC_CHANCE.run(lvl).percRound())
-  ..addTooltipProperty("Divine Blessing Multiplayer", DIVINE_BLESSING_MULT)
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 125 + 25 * lvl)
   ..presetCooldown(lvl -> 90)

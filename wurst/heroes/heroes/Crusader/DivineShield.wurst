@@ -1,0 +1,61 @@
+package DivineShield
+import AbilityTooltipGenerator
+import GameConstants
+import Icons
+import ClosureEvents
+import DivineShieldBuff
+import TooltipFactory
+import DamageSystem
+import TheEmpyrean
+
+public constant DIVINE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure HP_HEAL = lvl -> 20. * lvl
+constant RealLevelClosure DAMAGE_REDUCTION = lvl -> 0.05 + 0.05 * lvl
+constant RealLevelClosure DURATION = lvl -> 5. + (lvl / 2).floor()
+
+init
+  EventListener.onTargetCast(DIVINE_SHIELD_ID) (unit caster, unit target) ->
+    let lvl = caster.getAbilityLevel(DIVINE_SHIELD_ID)
+    let duration = DURATION.run(lvl)
+    var empLvl = 0
+
+    if caster.hasBuff(TheEmpyreanBuff.typeId)
+      let empBuff = caster.getBuff(TheEmpyreanBuff.typeId) castTo TheEmpyreanBuff
+      empLvl = empBuff.lvl
+
+    new DivineShieldBuff(duration, lvl, empLvl).apply(target)
+
+  DamageEvent.addUnreducedListener(DamageEvents.SHIELD castTo int) -> 
+    let tunit = DamageEvent.getTarget()
+
+    if tunit.hasBuff(DivineShieldBuff.typeId)
+      let buffClass = tunit.getBuff(DivineShieldBuff.typeId) castTo DivineShieldBuff
+      let buffLvl = buffClass.buffLvl
+      let empyreanMultiplier = buffClass.empLvl != 0 ? DIVINE_SHIELD_MULTIPLIER.run(buffClass.empLvl) : 1
+      let damageReduction = DAMAGE_REDUCTION.run(buffLvl) * empyreanMultiplier
+
+      DamageEvent.setAmount(DamageEvent.getAmount() * (1 - damageReduction))
+
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Applies shield to target, which reduces a part of incoming damage.")
+  new ChannelAbilityPreset(DIVINE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..presetIcon(Icons.bTNDivineIntervention)
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("W")
+  ..presetDurationHero(DURATION)
+  ..presetDurationNormal(DURATION)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self, TargetsAllowed.friend))
+  
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.UNIT)
+  ..setName("Divine Shield")
+  ..addTooltipProperty("Damage Reduction", lvl -> (DAMAGE_REDUCTION.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 35 + 15 * lvl)
+  ..presetCooldown(lvl -> 23. - lvl)
+  ..tooltipStopListen()
+  

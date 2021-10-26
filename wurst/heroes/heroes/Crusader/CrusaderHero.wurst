@@ -2,9 +2,10 @@ package CrusaderHero
 import UnitIds
 import HeroPreset
 import ObjectIdGenerator
-import HealingSeal
+import Pray
+import SacredGrounds
+import DivineShield
 import HolySmite
-import DivineBlessing
 import TheEmpyrean
 
 public constant CRUSADER_ID = compiletime(HERO_ID_GEN.next())
@@ -12,9 +13,10 @@ public constant CRUSADER_ID = compiletime(HERO_ID_GEN.next())
 @compiletime function genHero()
   new HeroPreset(CRUSADER_ID, UnitIds.arthas, "Crusader")
   ..addProperName("William")
-  ..addHeroAbility(HEALING_SEAL_ID)
+  ..addNormalAbility(PRAY_ID)
+  ..addHeroAbility(SACRED_GROUNDS_ID)
+  ..addHeroAbility(DIVINE_SHIELD_ID)
   ..addHeroAbility(HOLY_SMITE_ID)
-  ..addHeroAbility(DIVINE_BLESSING_ID)
   ..addHeroAbility(THE_EMPYREAN_ID)
   ..setStartingStrength(22)
   ..setStrengthPerLevel(2.4)

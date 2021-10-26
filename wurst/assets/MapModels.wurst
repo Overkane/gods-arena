@@ -4,4 +4,5 @@ public class MapModels
   static constant ephemeralCutRed = "Models/Ephemeral Cut Red.mdx" // Mythic
   static constant ephemeralCutMidnight = "Models/Ephemeral Cut Midnight.mdx" // Mythic
   static constant missilePurple = "Models/Shot II Purple.mdx" // Mythic
+  static constant heavensGateChannel= "Models/Heaven's Gate Channel.mdx" // Mythic
   static constant waterBlast = "Models/WaterBlast.mdx" // JesusHipster

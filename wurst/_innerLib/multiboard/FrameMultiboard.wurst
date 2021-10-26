@@ -8,7 +8,7 @@ public class FrameMultiboard
   constant multiboardFrame = createFrame("FRAME", "multiboardFrame", GAME_UI, "", 0)
   private constant itemFrameTable = InitHashtable()
 
-  private constant heroPickBackdrop = createFrame("QuestButtonBaseTemplate", multiboardFrame, 0, 0)..setAllPoints(multiboardFrame)
+  private constant multiboardBackdrop = createFrame("QuestButtonBaseTemplate", multiboardFrame, 0, 0)..setAllPoints(multiboardFrame)
 
   construct(framepointtype framepoint, vec2 position)
     multiboardFrame

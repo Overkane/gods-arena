@@ -4,7 +4,7 @@ import Abilities
 import ClosureForGroups
 import AbilityTooltipGenerator
 import StunAbilityPreset
-import TheEmpyreanBuff
+import TheEmpyrean
 import GameConstants
 import PassiveAbilityPreset
 import DummyStatCaster
@@ -27,15 +27,13 @@ init
 
     if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(HOLY_SMITE_ID)
       let lvl = sunit.getAbilityLevel(HOLY_SMITE_ID)
-
-      let bEmpyreanBuff = sunit.getBuff(TheEmpyreanBuff.typeId)
-      let hasEmpyreanBuff = bEmpyreanBuff != null
-
       var spellChance = CHANCE.run(lvl)
 
-      if hasEmpyreanBuff
-        let empyreanBuff = bEmpyreanBuff castTo TheEmpyreanBuff
-        spellChance = empyreanBuff.holySmiteProcChance
+      if sunit.hasBuff(TheEmpyreanBuff.typeId)
+        let empBuff = sunit.getBuff(TheEmpyreanBuff.typeId) castTo TheEmpyreanBuff
+        let empLvl = empBuff.lvl
+        
+        spellChance = HOLY_SMITE_PROC_CHANCE.run(empLvl)
 
       if spellChance >= GetRandomInt(1, 100)
         let tunit = DamageEvent.getTarget()

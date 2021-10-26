@@ -10,8 +10,6 @@ import HashMap
 import DamageSystem
 import CreepAggro
 import SoundUtils
-import AbilityIds
-import UnitAnimations
 
 public constant COMPANION_ID = compiletime(ABIL_ID_GEN.next())
 constant COMPANION_UNIT_ID = compiletime(UNIT_ID_GEN.next())

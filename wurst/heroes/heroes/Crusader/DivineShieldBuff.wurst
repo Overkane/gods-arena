@@ -1,0 +1,14 @@
+package DivineShieldBuff
+import public PresetBuffs
+import Assets
+
+constant buffTuple = compiletime(createDummyBuffObject("Divine Shield", "Incoming damage is reduced",  Icons.bTNDivineIntervention, Abilities.divineShieldTarget))
+
+public class DivineShieldBuff extends NormalBuff
+  int buffLvl
+  int empLvl
+
+  construct(real dur, int buffLvl, int empLvl)
+    super(dur, buffTuple)
+    this.buffLvl = buffLvl
+    this.empLvl = empLvl
