@@ -64,7 +64,7 @@ public function unit.mergeAggro(unit target, real amount, AggroMergeFn<real> mer
                 aggro.aggro = merge_fn.apply(aggro.aggro, amount)
                 found = true
             else
-                aggro.aggro *= 0.9
+                aggro.aggro *= 0.925
 
             aggro.aggro = aggro.aggro * (1 + source.getStat(CustomUnitStats.THREAT_GENERATION))
 
