@@ -1,0 +1,84 @@
+package SacredGrounds
+import Icons
+import ClosureForGroups
+import AbilityTooltipGenerator
+import ClosureEvents
+import GameConstants
+import CustomHeal
+import TooltipFactory
+import DamageSystem
+import MapModels
+import ClosureTimers
+import SoundUtils
+import TheEmpyrean
+
+public constant SACRED_GROUNDS_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure DAMAGE_PER_SEC = lvl -> 15. * lvl
+constant RealLevelClosure BONUS_STR_DAMAGE = lvl -> 0.5 * lvl
+constant RealLevelClosure HEAL_PER_SEC = lvl -> 10. * lvl
+constant RealLevelClosure BONUS_INT_HEALING = lvl -> 0.5 * lvl
+constant RealLevelClosure DURATION = lvl -> 4. + (lvl / 2).ceil()
+constant RealLevelClosure AOE = lvl -> 300.
+
+constant LOOP_SOUND = new SoundDefinition(Sounds.manaFlareLoop)
+
+init 
+  EventListener.onPointCast(SACRED_GROUNDS_ID) (unit caster, vec2 target) ->
+    let lvl = caster.getAbilityLevel(SACRED_GROUNDS_ID)
+    let damage = DAMAGE_PER_SEC.run(lvl) + caster.getStr(true) * BONUS_STR_DAMAGE.run(lvl)
+    let heal = HEAL_PER_SEC.run(lvl) + caster.getInt(true) * BONUS_INT_HEALING.run(lvl)
+    var aoe = AOE.run(lvl)
+    var effectScale = 1.
+    var duration = DURATION.run(lvl)
+
+    if caster.hasBuff(TheEmpyreanBuff.typeId)
+      let empBuff = caster.getBuff(TheEmpyreanBuff.typeId) castTo TheEmpyreanBuff
+      let empLvl = empBuff.lvl
+      
+      aoe *= SACRED_GROUNDS_AOE_MULTIPLIER.run(empLvl)
+      effectScale *= SACRED_GROUNDS_AOE_MULTIPLIER.run(empLvl)
+
+    let sacredGrounds = addEffect(MapModels.heavensGateChannel, target)..setScale(effectScale)
+    
+    doPeriodically(1) (CallbackPeriodic cb) ->
+      LOOP_SOUND.play()
+
+      forUnitsInRange(target, aoe) (unit u) ->
+        if u.isAlive()
+          if u.isAllyOf(caster)
+            caster.healTarget(u, heal)
+          else if u.isEnemyOf(caster)
+            caster.dealMagicalDamage(u, damage)
+
+      duration -= 1
+      if duration <= 0
+        sacredGrounds.destr()
+        destroy cb
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Creates sacred grounds in the target area. Enemies in the area are damaged every second and allies are healed.")
+  new ChannelAbilityPreset(SACRED_GROUNDS_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..setLevelSkipRequirement(0)
+  ..presetIcon(Icons.bTNInnerFire)
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetOption(Option.TARGETIMAGE, true)
+
+  ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
+  ..presetTargetTypes(Targettype.POINT)
+  ..presetHotkey("Q")
+  ..setName("Sacred Grounds")
+  ..addTooltipProperty("Damage per sec", DAMAGE_PER_SEC)
+  ..addTooltipProperty("Bonus Str Damage", lvl -> (BONUS_STR_DAMAGE.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Healing per sec", HEAL_PER_SEC)
+  ..addTooltipProperty("Bonus Int Healing", lvl -> (BONUS_INT_HEALING.run(lvl) * 100).percRound())
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
+  ..presetAreaofEffect(AOE)
+  ..presetCastRange(lvl -> 600)
+  ..presetCooldown(lvl -> 18)
+  ..tooltipStopListen()
+
+  ..presetDurationNormal(lvl -> 15)
+  ..presetDurationHero(lvl -> 15)

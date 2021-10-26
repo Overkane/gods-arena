@@ -1,0 +1,92 @@
+package Pray
+import Icons
+import AbilityTooltipGenerator
+import ClosureEvents
+import Buff
+import DialogBox
+import ClosureTimers
+import PlayerData
+import PrayBuff
+import HashMap
+
+public constant PRAY_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant PRAY_AOE = 600.
+
+DialogBox prayDialog
+
+public enum PrayBuffTypes
+  DAMAGE
+  ARMOR
+  ATTACK_SPEED
+  HP_REG
+  STATS
+
+public constant prayBuffMap = new IterableMap<PrayBuffTypes, real>
+..put(PrayBuffTypes.DAMAGE, 0)
+..put(PrayBuffTypes.ARMOR, 0)
+..put(PrayBuffTypes.ATTACK_SPEED, 0)
+..put(PrayBuffTypes.HP_REG, 0)
+..put(PrayBuffTypes.STATS, 0)
+
+init 
+  nullTimer() -> 
+    prayDialog = new DialogBox("Choose God to Pray")
+    
+    prayDialog.addButton("God of Fire (+5 Damage)") -> 
+      updateBuff(PrayBuffTypes.DAMAGE)
+    
+    prayDialog.addButton("God of Wind (+5 Attack Speed)") ->
+      updateBuff(PrayBuffTypes.ATTACK_SPEED)
+      
+    prayDialog.addButton("God of Earth (+2 Armor)") ->
+      updateBuff(PrayBuffTypes.ARMOR)
+
+    prayDialog.addButton("God of Nature (+0.5 hp reg)") -> 
+      updateBuff(PrayBuffTypes.HP_REG)
+
+    prayDialog.addButton("God of Water (+1 All Stats)") -> 
+      updateBuff(PrayBuffTypes.STATS)
+
+  EventListener.onCast(PRAY_ID) (unit caster) ->
+    prayDialog.display(caster.getOwner(), true)
+
+function updateBuff(PrayBuffTypes prayBuffType)
+  let p = GetTriggerPlayer()
+  pData.get(p).getHero().ifPresent() (h) ->
+    if h.actor.hasBuff(PrayMainBuff.typeId)
+      h.actor.getBuff(PrayMainBuff.typeId).terminate()
+    
+    // After buff main buff is destroyed we are waiting for minor buff to expire to be sure onEnd()
+    // it have used old buff values.
+    doAfter(BUFF_ANIM_PERIOD) ->
+      switch prayBuffType
+        case PrayBuffTypes.DAMAGE
+          prayBuffMap.put(prayBuffType, prayBuffMap.get(prayBuffType) + 5)  
+        case PrayBuffTypes.ATTACK_SPEED
+          prayBuffMap.put(prayBuffType, prayBuffMap.get(prayBuffType) + 5)  
+        case PrayBuffTypes.ARMOR
+          prayBuffMap.put(prayBuffType, prayBuffMap.get(prayBuffType) + 2)  
+        case PrayBuffTypes.HP_REG
+          prayBuffMap.put(prayBuffType, prayBuffMap.get(prayBuffType) + 0.5)  
+        case PrayBuffTypes.STATS
+          prayBuffMap.put(prayBuffType, prayBuffMap.get(prayBuffType) + 1)  
+      
+      new PrayMainBuff().apply(h.actor)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Hero prays to the forgotten Gods and gain a portion of their power, strengthen himself and his allies. Each pray makes the buff stronger.")
+  new ChannelAbilityPreset(PRAY_ID, 1, true, tooltip)
+  ..presetIcon(Icons.bTNResurrection)
+  ..presetButtonPosNormal(1, 1)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("D")
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..setName("Pray")
+  ..presetAreaofEffect(lvl -> PRAY_AOE)
+  ..presetCooldown(lvl -> 90.)
+  ..tooltipStopListen()
+
+  ..presetManaCost(lvl -> 0)

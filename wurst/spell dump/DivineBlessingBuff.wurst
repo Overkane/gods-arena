@@ -1,0 +1,23 @@
+// package DivineBlessingBuff
+// import PresetBuffs
+// import Assets
+// import BonusHandler
+
+// constant buffTuple = compiletime(createDummyBuffObject("Divine Blessing", "Increases armor and hp regen",  Icons.bTNResurrection, Abilities.innerFireTarget, AttachmentPoints.overhead))
+
+// public class DivineBlessingBuff extends NormalBuff
+//   private real bonusArmor
+//   private real bonusHpReg 
+
+//   construct(real dur, real bonusArmor, real bonusHpReg)
+//     super(dur, buffTuple)
+//     this.bonusArmor = bonusArmor
+//     this.bonusHpReg = bonusHpReg
+    
+//   override function onApply()
+//     target..addBonus(Bonus.ARMOR, bonusArmor)
+//     ..addBonus(Bonus.LIFEREGEN, bonusHpReg)
+
+//   override function onEnd()
+//     target..addBonus(Bonus.ARMOR, -bonusArmor)
+//     ..addBonus(Bonus.LIFEREGEN, -bonusHpReg)

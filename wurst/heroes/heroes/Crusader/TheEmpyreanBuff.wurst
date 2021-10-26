@@ -9,20 +9,17 @@ constant buffTuple = compiletime(createDummyBuffObject("The Empyrean", "Enchance
 public class TheEmpyreanBuff extends NormalBuff
   private real bonusDamage
   private real attackSpeedSlow 
-  real healSealAddAOE
-  real holySmiteProcChance 
-  real divineBlessingMult 
+
+  int lvl
 
   constant ON_APPLY_SOUND = new SoundDefinition(Sounds.divineShield)
   constant ON_END_SOUND = new SoundDefinition(Sounds.paladinDivineShieldDeath1)
 
-  construct(real dur, real bonusDamage, real attackSpeedSlow, real healSealAddAOE, real holySmiteProcChance, real divineBlessingMult)
+  construct(real dur, real bonusDamage, real attackSpeedSlow, int lvl)
     super(dur, buffTuple)
     this.bonusDamage = bonusDamage
     this.attackSpeedSlow = attackSpeedSlow
-    this.healSealAddAOE = healSealAddAOE
-    this.holySmiteProcChance = holySmiteProcChance
-    this.divineBlessingMult = divineBlessingMult
+    this.lvl = lvl
     
   override function onApply()
     ON_APPLY_SOUND.play()
