@@ -1,12 +1,13 @@
 package CustomStatSystem
 import HashMap
 import LinkedList
+import UnitIndexer
 
 // Constant unit stats
-constant customUnitStats = new HashMap<unit, HashMap<CustomUnitStats, LinkedList<real>>>
+HashMap<CustomUnitStats, LinkedList<real>> array customUnitStats
 
 // Temporary unit stats, which are removed upon getting
-constant customUnitOnetimeStats = new HashMap<unit, HashMap<CustomUnitStats, LinkedList<real>>>
+HashMap<CustomUnitStats, LinkedList<real>> array customUnitOnetimeStats
 
 public enum CustomUnitStats
   // Attack related stuff
@@ -48,14 +49,15 @@ constant multiplicativeStats = new LinkedList<CustomUnitStats>
   
 public function unit.getStat(CustomUnitStats stat) returns real
   let allStats = new LinkedList<real>
+  let index = this.getIndex()
 
-  if customUnitStats.has(this) and customUnitStats.get(this).has(stat)
-    allStats.addAll(customUnitStats.get(this).get(stat))
+  if customUnitStats[index] != null and customUnitStats[index].has(stat)
+    allStats.addAll(customUnitStats[index].get(stat))
 
-  if customUnitOnetimeStats.has(this) and customUnitOnetimeStats.get(this).has(stat)
-    allStats.addAll(customUnitOnetimeStats.get(this).get(stat))
+  if customUnitOnetimeStats[index] != null and customUnitOnetimeStats[index].has(stat)
+    allStats.addAll(customUnitOnetimeStats[index].get(stat))
 
-    customUnitOnetimeStats.get(this).get(stat).clear()
+    customUnitOnetimeStats[index].get(stat).clear()
 
   var overallStatValue = 0.
 
@@ -86,36 +88,48 @@ public function unit.getStat(CustomUnitStats stat) returns real
   return overallStatValue
 
 public function unit.addStat(CustomUnitStats stat, real value)
+  let index = this.getIndex()
 
-  if not customUnitStats.has(this)
-    customUnitStats.put(this, new HashMap<CustomUnitStats, LinkedList<real>>)
+  if customUnitStats[index] == null
+    customUnitStats[index] = new HashMap<CustomUnitStats, LinkedList<real>>
   
-  if not customUnitStats.get(this).has(stat)
-    customUnitStats.get(this).put(stat, new LinkedList<real>)
+  if not customUnitStats[index].has(stat)
+    customUnitStats[index].put(stat, new LinkedList<real>)
   
   // If in the list there is opposite value, then need to remove it, instead of adding its opposite value.
   // so stat list won't be overflowed with bunch of opposite values.
-  if not customUnitStats.get(this).get(stat).remove(-value)
-    customUnitStats.get(this).get(stat).add(value)
+  if not customUnitStats[index].get(stat).remove(-value)
+    customUnitStats[index].get(stat).add(value)
 
 public function unit.addOnetimeStat(CustomUnitStats stat, real value)
-  if not customUnitOnetimeStats.has(this)
-    customUnitOnetimeStats.put(this, new HashMap<CustomUnitStats, LinkedList<real>>)
+  let index = this.getIndex()
+  if customUnitOnetimeStats[index] == null
+    customUnitOnetimeStats[index] = new HashMap<CustomUnitStats, LinkedList<real>>
   
-  if not customUnitOnetimeStats.get(this).has(stat)
-    customUnitOnetimeStats.get(this).put(stat, new LinkedList<real>)
+  if not customUnitOnetimeStats[index].has(stat)
+    customUnitOnetimeStats[index].put(stat, new LinkedList<real>)
 
   // If in the list there is opposite value, then need to remove it, instead of adding its opposite value.
   // so stat list won't be overflowed with bunch of opposite values.
-  if not customUnitOnetimeStats.get(this).get(stat).remove(-value)
-    customUnitOnetimeStats.get(this).get(stat).add(value)
+  if not customUnitOnetimeStats[index].get(stat).remove(-value)
+    customUnitOnetimeStats[index].get(stat).add(value)
   
 public function unit.copyStats(unit target)
-  if customUnitStats.has(this)
-    customUnitStats.put(target, customUnitStats.get(this))
-  if customUnitOnetimeStats.has(this)
-    customUnitOnetimeStats.put(target, customUnitOnetimeStats.get(this))
+  let index = this.getIndex()
+  if customUnitStats[index] != null
+    customUnitStats[target.getIndex()] = customUnitStats[index]
+  if customUnitOnetimeStats[index] != null
+    customUnitOnetimeStats[target.getIndex()] = customUnitOnetimeStats[index]
 
 public function unit.clearStats()
-  customUnitStats.remove(this)
-  customUnitOnetimeStats.remove(this)
+  let index = this.getIndex()
+  if customUnitStats[index] != null
+    destroy customUnitStats[index]
+    customUnitStats[index] = null
+  if customUnitOnetimeStats[index] != null
+    destroy customUnitOnetimeStats[index]
+    customUnitOnetimeStats[index] = null
+
+init
+  onUnitDeindex() ->
+    getIndexingUnit().clearStats()
