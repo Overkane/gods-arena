@@ -27,26 +27,14 @@ public enum CustomUnitStats
   MAGIC_RESISTANCE
   THREAT_GENERATION
 
-// Additive stats value is calculated just by addition
-constant additiveStats = new LinkedList<CustomUnitStats>
-..add(CustomUnitStats.ATTACK_POWER)
-..add(CustomUnitStats.BONUS_ATTACK_DAMAGE)
-..add(CustomUnitStats.ATTACK_CRIT_POWER)
-..add(CustomUnitStats.LIFESTEAL)
-..add(CustomUnitStats.SPELL_POWER)
-..add(CustomUnitStats.BONUS_SPELL_DAMAGE)
-..add(CustomUnitStats.SPELL_CRIT_POWER)
-..add(CustomUnitStats.SPELL_LIFESTEAL)
-..add(CustomUnitStats.THREAT_GENERATION)
+constant isAdditive = [1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 2, 1]
 
-// Multiplicative stats value is calculated by formula — 1 - ((1 - x) * (1 - y) * ...)
-// where x, y and etc are stats in the list
-constant multiplicativeStats = new LinkedList<CustomUnitStats>
-..add(CustomUnitStats.ATTACK_CRIT_CHANCE)
-..add(CustomUnitStats.SPELL_CRIT_CHANCE)
-..add(CustomUnitStats.EVASION)
-..add(CustomUnitStats.MAGIC_RESISTANCE)
-  
+public function CustomUnitStats.isAdditive() returns boolean
+  return isAdditive[this castTo int] == 1
+
+public function CustomUnitStats.isMultiplicative() returns boolean
+  return isAdditive[this castTo int] == 2
+
 public function unit.getStat(CustomUnitStats stat) returns real
   let allStats = new LinkedList<real>
   let index = this.getIndex()
@@ -61,11 +49,11 @@ public function unit.getStat(CustomUnitStats stat) returns real
 
   var overallStatValue = 0.
 
-  if additiveStats.has(stat)
+  if stat.isAdditive()
     for elem in allStats
       overallStatValue += elem
       
-  else if multiplicativeStats.has(stat)
+  else if stat.isMultiplicative()
     var multiplicativePositiveValue = 1.
     var multiplicativeNegativeValue = 1.
 
