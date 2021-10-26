@@ -76,8 +76,8 @@ init
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(1, 1)
   ..presetButtonPosTurnOff(1, 1)
-  ..setIconNormal(MapIcons.ATCBeamShower)
-  ..setIconTurnOff(MapIcons.ATCBeamShower)
+  ..setIconNormal(MapIcons.aTCBeamShower)
+  ..setIconTurnOff(MapIcons.aTCBeamShower)
   ..presetTargetsAllowed(lvl -> TargetsAllowed.enemies)
   ..setMissileArt(MapModels.missilePurple)
   ..presetHotkey("D")
@@ -99,7 +99,7 @@ init
 
 
   new BuffDefinition(ELEMENTAL_DISCHARGE_ID, BuffIds.slow)
-  ..setIcon(MapIcons.ATCBeamShower)
+  ..setIcon(MapIcons.aTCBeamShower)
   ..setTooltipNormal(1, "Elemental Discharge")
   ..setArtTarget("")
 
