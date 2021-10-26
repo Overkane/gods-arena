@@ -14,6 +14,7 @@ public class DamageTypeTooltips
 
 public enum DamageEvents
   START // First listener, where can be set stats for next listeners
+  EVASION // Evasion related
   RELATIVE // Damage affected by multiplication and division
   ABSOLUTE // Damage affected by addition and subtraction
   CRIT // Damage affected by crits
@@ -49,7 +50,7 @@ public function isPureDamage() returns bool
     and DamageEvent.getType() == DamageType.CODE
 
 init
-  DamageEvent.addUnreducedListener(DamageEvents.START castTo int) ->
+  DamageEvent.addUnreducedListener(DamageEvents.EVASION castTo int) ->
     let damageType = DamageEvent.getType()
     let tunit = DamageEvent.getTarget()
 
