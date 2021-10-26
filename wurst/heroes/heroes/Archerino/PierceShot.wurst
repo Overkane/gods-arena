@@ -8,6 +8,7 @@ import BonusHandler
 import GameConstants
 import Buff
 import DamageSystem
+import Heightmap
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -32,7 +33,7 @@ init
         projectile
             ..setRanged(1200)
             ..setAcc(0.997)
-            ..setTarget(target.withTerrainZ(), 50.)
+            ..setTarget(target.withHeightMap(), 50.)
 
         projectile.onHit() hitTarget ->
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())

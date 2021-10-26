@@ -1,8 +1,9 @@
 package CoolNumbers
 import FText
+import Heightmap
 
 public function coolTextTag(unit source, unit target, int amount, colorA col, int baseSize) returns FText
-    let pos = target.getPos().withTerrainZ(35) + vec3(GetRandomReal(-30, 0), 0, 0)
+    let pos = target.getPos().withHeightMap(35) + vec3(GetRandomReal(-30, 0), 0, 0)
     let text = coolNumber(amount)
     let size = baseSize + SquareRoot(amount.toReal()) / 5
     let strength = size / 10

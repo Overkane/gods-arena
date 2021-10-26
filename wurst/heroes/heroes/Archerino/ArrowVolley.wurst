@@ -8,6 +8,7 @@ import GameConstants
 import Buff
 import Tagwalk
 import DamageSystem
+import Heightmap
 
 public constant ARROW_VOLLEY_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -18,7 +19,7 @@ init
         let lvl = caster.getAbilityLevel(ARROW_VOLLEY_ID)
         forUnitsOfPlayer(ENEMY_PLAYER) u ->
             if u.hasBuff(TagBuff.typeId)
-                let projectile = new Projectile(caster.getPos().withTerrainZ(64), 16., caster.getOwner(), caster.getPos().angleTo(target), Abilities.arrowMissile1)
+                let projectile = new Projectile(caster.getPos().withHeightMap(64), 16., caster.getOwner(), caster.getPos().angleTo(target), Abilities.arrowMissile1)
                 projectile.gravity = defaultGravity
                 projectile
                 ..setTarget(u.getPos().withTerrainZ(), 30.)

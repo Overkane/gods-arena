@@ -6,6 +6,7 @@ import AbilityTooltipGenerator
 import GameConstants
 import Entity
 import DamageSystem
+import Heightmap
 
 public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 5 + 10. * lvl
@@ -17,7 +18,7 @@ init
     EventListener.onCast(BLACKHOLE_ABILITY_ID) caster ->
         let spellTarget = EventData.getSpellTargetPos()
         let lvl = caster.getAbilityLevel(BLACKHOLE_ABILITY_ID)
-        let eff = addEffect(SPELL_FX, spellTarget.withTerrainZ(48))..setScale(0)
+        let eff = addEffect(SPELL_FX, spellTarget.withHeightMap(48))..setScale(0)
         let aoe = SPELL_AOE.run(lvl)
         
         doPeriodicallyCounted(0.05, 50) cb ->
