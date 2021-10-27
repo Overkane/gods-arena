@@ -134,10 +134,20 @@ public function unit.copyStats(unit target)
 
   // Remove cached value if it exists to trigger re-calculation
   if statCache[targetIndex] != null
-    destroy statCache[index]
+    destroy statCache[targetIndex]
+    statCache[targetIndex] = null
+
+
+public function unit.clearStatCopy()
+  let index = this.getIndex()
+  if customUnitStats[index] != null
+    customUnitStats[index] = null
+  if customUnitOnetimeStats[index] != null
+    customUnitOnetimeStats[index] = null
+  if statCache[index] != null
     statCache[index] = null
 
-public function unit.clearStats()
+public function unit.removeStats()
   let index = this.getIndex()
   if customUnitStats[index] != null
     destroy customUnitStats[index]
@@ -151,4 +161,4 @@ public function unit.clearStats()
 
 init
   onUnitDeindex() ->
-    getIndexingUnit().clearStats()
+    getIndexingUnit().removeStats()

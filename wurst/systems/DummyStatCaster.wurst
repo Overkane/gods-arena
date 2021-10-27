@@ -15,5 +15,5 @@ public class DummyStatCaster extends DummyCaster
         return dummy
 
     override function recycleDummy(unit dummy, int id)
-        dummy.clearStats()
+        dummy.clearStatCopy()
         super.recycleDummy(dummy, id)
