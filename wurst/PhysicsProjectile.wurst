@@ -1,0 +1,39 @@
+package PhysicsProjectile
+import PhysicsEntity
+import Projectile
+import Interpolation
+
+public class PhysicsProjectile extends Projectile
+	use PhysicsModule
+	
+	construct( vec3 pos, real radius, player owner, angle xyAngle, string fxpath)
+		super(pos, radius, owner, xyAngle, fxpath)
+		setXYAngle(xyAngle)
+		gravity = defaultGravity
+		
+	override function update()
+		physicsUpdate(this)
+		setXYAngle(pos.angleTo2d(pos+vel))
+		setZAngle(getSlopeAngle(pos.z, pos.z + vel.z, 2))
+		super.update()
+		
+
+public class Shrapnell extends PhysicsProjectile
+	real initialTime
+
+	construct(vec3 startPos, string fxpath)
+		super(startPos, 16, DUMMY_PLAYER, angle(0), fxpath)
+		setXYAngle(GetRandomReal(0,360).asAngleDegrees())
+		setSpeed(GetRandomReal(5,11))
+		fx.eff..setColor(colorA(GetRandomInt(0,255), GetRandomInt(0,255), GetRandomInt(0,255),255))
+		..setScale(GetRandomReal(0.5, 2))
+		vel.z = GetRandomReal(7, 21)
+		initialTime = GetRandomReal(1, 1.75)
+		setTimed(initialTime)
+
+
+	override function update()
+		var col = fx.tint
+		col.alpha = bezier3(255, 200, -5, time/initialTime).toInt()
+		fx.tint = col
+		super.update()

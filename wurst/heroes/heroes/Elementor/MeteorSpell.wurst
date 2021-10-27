@@ -6,6 +6,8 @@ import AbilityTooltipGenerator
 import GameConstants
 import Entity
 import DamageSystem
+import PhysicsProjectile
+import Heightmap
 
 public constant METEOR_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 125. + 100. * lvl
@@ -17,6 +19,9 @@ init
         let aoe = SPELL_AOE.run(lvl)
         flashEffect(Units.infernalBirth, spellTarget)
         doAfter(0.9) ->
+            for i = 0 to 9
+                new Shrapnell(spellTarget.withHeightMap(), Abilities.redDragonMissile)
+
             forUnitsInRange(spellTarget, aoe) (target) ->
                 let eff = target.addEffect(Abilities.flameStrikeEmbers, AttachmentPoints.origin)
                 doAfter(0.9) ->
@@ -26,6 +31,7 @@ init
                     target.getEntity().addVel(ZERO3.polarProject(800 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
                     caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
                     flashEffect(Abilities.incinerateBuff, target, "origin")
+
 
 @compiletime
 function genAbility()
