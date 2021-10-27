@@ -20,7 +20,7 @@ init
         flashEffect(Units.infernalBirth, spellTarget)
         doAfter(0.9) ->
             for i = 0 to 9
-                new Shrapnell(spellTarget.withHeightMap(), Abilities.redDragonMissile)
+                new Shrapnel(spellTarget.withHeightMap(), Abilities.redDragonMissile)
 
             forUnitsInRange(spellTarget, aoe) (target) ->
                 let eff = target.addEffect(Abilities.flameStrikeEmbers, AttachmentPoints.origin)

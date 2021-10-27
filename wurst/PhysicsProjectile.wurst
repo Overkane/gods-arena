@@ -18,7 +18,7 @@ public class PhysicsProjectile extends Projectile
 		super.update()
 		
 
-public class Shrapnell extends PhysicsProjectile
+public class Shrapnel extends PhysicsProjectile
 	real initialTime
 
 	construct(vec3 startPos, string fxpath)
