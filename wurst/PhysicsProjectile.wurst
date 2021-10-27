@@ -24,7 +24,7 @@ public class Shrapnel extends PhysicsProjectile
 	construct(vec3 startPos, string fxpath)
 		super(startPos, 16, DUMMY_PLAYER, angle(0), fxpath)
 		setXYAngle(GetRandomReal(0,360).asAngleDegrees())
-		setSpeed(GetRandomReal(5,11))
+		setSpeed(GetRandomReal(5,13))
 		fx.eff..setColor(colorA(GetRandomInt(0,255), GetRandomInt(0,255), GetRandomInt(0,255),255))
 		..setScale(GetRandomReal(0.5, 2))
 		vel.z = GetRandomReal(7, 21)
