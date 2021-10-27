@@ -32,7 +32,7 @@ init
       u
       ..addStat(CustomUnitStats.EVASION, evasion/100)
       ..setAgi(u.getAgi(false) + bonusAgi)
-      ..setMoveSpeed(u.getMoveSpeed() + bonusMS)
+      ..setMoveSpeed(u.getDefaultMovespeed() + bonusMS)
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gets boost to base agility, move speed and evasion.")

@@ -14,8 +14,8 @@ public class WaterBlastBuff extends NormalBuff
     
   override function onApply()
     target.addBonus(Bonus.ATTACKSPEED, -slow)
-    target.setMoveSpeed(target.getMoveSpeed() - slow)
+    target.setMoveSpeed(target.getDefaultMovespeed() - slow)
 
   override function onEnd()
     target.addBonus(Bonus.ATTACKSPEED, slow)
-    target.setMoveSpeed(target.getMoveSpeed() + slow)
+    target.setMoveSpeed(target.getDefaultMovespeed())

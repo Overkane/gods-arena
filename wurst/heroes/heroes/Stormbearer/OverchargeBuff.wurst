@@ -35,10 +35,10 @@ public class OverchargeDebuff extends NormalBuff
 
   override function onApply()
     target.addStat(CustomUnitStats.SPELL_POWER, -bonusSP)
-    target.setMoveSpeed(target.getMoveSpeed() - 100)
+    target.setMoveSpeed(target.getDefaultMovespeed() - 100)
     ON_APPLY_SOUND.playForPlayer(target.getOwner())
 
 
   override function onEnd()
     target.addStat(CustomUnitStats.SPELL_POWER, bonusSP)
-    target.setMoveSpeed(target.getMoveSpeed() + 100)
+    target.setMoveSpeed(target.getDefaultMovespeed())

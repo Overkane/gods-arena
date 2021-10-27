@@ -31,13 +31,13 @@ public class BattleTranceBuff extends NormalBuff
     ON_APPLY_SOUND.play()
     target
     ..addBonus(Bonus.ATTACKSPEED, bonusAS)
-    ..setMoveSpeed(target.getMoveSpeed() + bonusMS)
+    ..setMoveSpeed(target.getDefaultMovespeed() + bonusMS)
     ..setAttackCooldown(attackCooldownTime, 1)
 
   override function onEnd()
     target
     ..addBonus(Bonus.ATTACKSPEED, -bonusAS)
-    ..setMoveSpeed(target.getMoveSpeed() - bonusMS)
+    ..setMoveSpeed(target.getDefaultMovespeed())
     ..setAttackCooldown(baseAttackCooldownTime, 1)
 
     new BattleTranceDebuff(originalDuration / 2, bonusAS, bonusMS).apply(target)
@@ -54,9 +54,9 @@ public class BattleTranceDebuff extends NormalBuff
   override function onApply()
     target
     ..addBonus(Bonus.ATTACKSPEED, -bonusAS)
-    ..setMoveSpeed(target.getMoveSpeed() - bonusMS)
+    ..setMoveSpeed(target.getDefaultMovespeed() - bonusMS)
 
   override function onEnd()
     target
     ..addBonus(Bonus.ATTACKSPEED, bonusAS)
-    ..setMoveSpeed(target.getMoveSpeed() + bonusMS)
+    ..setMoveSpeed(target.getDefaultMovespeed())
