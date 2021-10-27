@@ -4,48 +4,55 @@ import Assets
 import ClosureForGroups
 import BonusHandler
 import CustomStatSystem
-import LinkedList
 import HashMap
 import initlater Pray
 
 public constant buffTuple = compiletime(createDummyBuffObject("Pray", "Various stats are improved",  Icons.bTNResurrection))
 
+constant prayMap = new HashMap<trigger, PrayMainBuff>
+function trigger.getPrayBuff() returns PrayMainBuff
+  return prayMap.get(this)
+
+function trigger.setPrayBuff(PrayMainBuff buffInstance) 
+  prayMap.put(this, buffInstance)
 public class PrayMainBuff extends NormalBuff
   effect buffEffect
-  constant subBuffs = new IterableMap<unit, PrayMinorBuff>
+  constant affected = CreateGroup()
+  constant inRangeTrig = CreateTrigger()..setPrayBuff(this)
 
   construct()
     super(99999, buffTuple)
 
+  function onInRange(unit u)
+    affected.add(u)
+    new PrayMinorBuff(99999)..apply(u)
+
   override function onApply()
     buffEffect = target.addEffect(Abilities.devotionAura, AttachmentPoints.origin)
+    inRangeTrig..registerUnitInRange(target, PRAY_AOE, null)
+    ..addAction(() -> GetTriggeringTrigger().getPrayBuff().onInRange(GetTriggerUnit()))
+
+    forUnitsInRange(target.getPos(), PRAY_AOE) (unit u) ->
+      if u.isAlive() and u.isAllyOf(target) and not affected.has(u)
+        onInRange(u)
   
   override function onEnd()
     buffEffect.destr()
+    affected..clear()..destr()
 
-    for u in subBuffs
-      subBuffs.get(u).terminate()
-    destroy subBuffs
+    for u in affected
+      u.removeBuffById(PrayMinorBuff.typeId)
+    
+    affected.destr()
 
   override function update()
     super.update()
 
-    let unitsWithBuff = new LinkedList<unit>
+    for u in affected
+      if u.getPos().distanceToSq(target.getPos()) > PRAY_AOE.squared()
+        u.removeBuffById(PrayMinorBuff.typeId)
+        affected.remove(u)
 
-    // Units in range get a second buff, which has the actual effect
-    forUnitsInRange(target.getPos(), PRAY_AOE) (unit u) ->
-      unitsWithBuff.add(u)
-      if not subBuffs.has(u)
-        if u.isAlive() and u.isAllyOf(target)
-          let subBuff = new PrayMinorBuff(99999)..apply(u)
-          subBuffs.put(u, subBuff)
-    
-    // Units out of range get their buff destroyed
-    for u in subBuffs
-      if not unitsWithBuff.has(u)
-        subBuffs.getAndRemove(u).terminate()
-
-    destroy unitsWithBuff
 
 public class PrayMinorBuff extends NormalBuff
 
