@@ -20,7 +20,6 @@ init
         forUnitsOfPlayer(ENEMY_PLAYER) u ->
             if u.hasBuff(TagBuff.typeId)
                 let projectile = new Projectile(caster.getPos().withHeightMap(64), 16., caster.getOwner(), caster.getPos().angleTo(target), Abilities.arrowMissile1)
-                projectile.gravity = defaultGravity
                 projectile
                 ..setTarget(u.getPos().withTerrainZ(), 30.)
                 ..setRanged(caster.getPos().distanceTo(u.getPos()))

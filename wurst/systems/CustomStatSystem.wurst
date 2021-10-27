@@ -6,6 +6,8 @@ import UnitIndexer
 // Constant unit stats
 HashMap<CustomUnitStats, LinkedList<real>> array customUnitStats
 
+HashMap<CustomUnitStats, real> array statCache
+
 // Temporary unit stats, which are removed upon getting
 HashMap<CustomUnitStats, LinkedList<real>> array customUnitOnetimeStats
 
@@ -36,13 +38,18 @@ public function CustomUnitStats.isMultiplicative() returns boolean
   return isAdditive[this castTo int] == 2
 
 public function unit.getStat(CustomUnitStats stat) returns real
-  let allStats = new LinkedList<real>
   let index = this.getIndex()
+  // If cache exists for this stat, use it
+  if statCache[index] != null and statCache[index].has(stat)
+    return statCache[index].get(stat)
+
+  let allStats = new LinkedList<real>
 
   if customUnitStats[index] != null and customUnitStats[index].has(stat)
     allStats.addAll(customUnitStats[index].get(stat))
 
-  if customUnitOnetimeStats[index] != null and customUnitOnetimeStats[index].has(stat)
+  let hasOnetimeStat = customUnitOnetimeStats[index] != null and customUnitOnetimeStats[index].has(stat)
+  if hasOnetimeStat
     allStats.addAll(customUnitOnetimeStats[index].get(stat))
 
     customUnitOnetimeStats[index].get(stat).clear()
@@ -71,6 +78,13 @@ public function unit.getStat(CustomUnitStats stat) returns real
   else
     print("Unknown stat " + (stat castTo int).toString())
 
+  if not hasOnetimeStat
+    // Cache newly calculated value if it didn't contain one time bonuses
+    if statCache[index] == null
+      statCache[index] = new HashMap<CustomUnitStats, real>()
+
+    statCache[index].put(stat, overallStatValue)
+
   destroy allStats
   
   return overallStatValue
@@ -89,6 +103,10 @@ public function unit.addStat(CustomUnitStats stat, real value)
   if not customUnitStats[index].get(stat).remove(-value)
     customUnitStats[index].get(stat).add(value)
 
+  // Remove cached value if it exists to trigger re-calculation
+  if statCache[index] != null
+    statCache[index].remove(stat)
+
 public function unit.addOnetimeStat(CustomUnitStats stat, real value)
   let index = this.getIndex()
   if customUnitOnetimeStats[index] == null
@@ -101,13 +119,22 @@ public function unit.addOnetimeStat(CustomUnitStats stat, real value)
   // so stat list won't be overflowed with bunch of opposite values.
   if not customUnitOnetimeStats[index].get(stat).remove(-value)
     customUnitOnetimeStats[index].get(stat).add(value)
+
+  // Remove cached value if it exists to trigger re-calculation
+  if statCache[index] != null
+    statCache[index].remove(stat)
   
 public function unit.copyStats(unit target)
   let index = this.getIndex()
+  let targetIndex = target.getIndex()
   if customUnitStats[index] != null
-    customUnitStats[target.getIndex()] = customUnitStats[index]
+    customUnitStats[targetIndex] = customUnitStats[index]
   if customUnitOnetimeStats[index] != null
-    customUnitOnetimeStats[target.getIndex()] = customUnitOnetimeStats[index]
+    customUnitOnetimeStats[targetIndex] = customUnitOnetimeStats[index]
+
+  // Remove cached value if it exists to trigger re-calculation
+  if statCache[targetIndex] != null
+    statCache[targetIndex].flush()
 
 public function unit.clearStats()
   let index = this.getIndex()
@@ -117,6 +144,9 @@ public function unit.clearStats()
   if customUnitOnetimeStats[index] != null
     destroy customUnitOnetimeStats[index]
     customUnitOnetimeStats[index] = null
+  if statCache[index] != null
+    destroy statCache[index]
+    statCache[index] = null
 
 init
   onUnitDeindex() ->
