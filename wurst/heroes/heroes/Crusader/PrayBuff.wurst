@@ -3,12 +3,16 @@ import PresetBuffs
 import Assets
 import ClosureForGroups
 import BonusHandler
+import CustomStatSystem
+import LinkedList
+import HashMap
 import initlater Pray
 
 public constant buffTuple = compiletime(createDummyBuffObject("Pray", "Various stats are improved",  Icons.bTNResurrection))
 
 public class PrayMainBuff extends NormalBuff
   effect buffEffect
+  constant subBuffs = new IterableMap<unit, PrayMinorBuff>
 
   construct()
     super(99999, buffTuple)
@@ -19,11 +23,29 @@ public class PrayMainBuff extends NormalBuff
   override function onEnd()
     buffEffect.destr()
 
+    for u in subBuffs
+      subBuffs.get(u).terminate()
+    destroy subBuffs
+
   override function update()
     super.update()
+
+    let unitsWithBuff = new LinkedList<unit>
+
+    // Units in range get a second buff, which has the actual effect
     forUnitsInRange(target.getPos(), PRAY_AOE) (unit u) ->
-      if u.isAlive() and u.isAllyOf(target)
-        new PrayMinorBuff(BUFF_ANIM_PERIOD).apply(u)
+      unitsWithBuff.add(u)
+      if not subBuffs.has(u)
+        if u.isAlive() and u.isAllyOf(target)
+          let subBuff = new PrayMinorBuff(99999)..apply(u)
+          subBuffs.put(u, subBuff)
+    
+    // Units out of range get their buff destroyed
+    for u in subBuffs
+      if not unitsWithBuff.has(u)
+        subBuffs.getAndRemove(u).terminate()
+
+    destroy unitsWithBuff
 
 public class PrayMinorBuff extends NormalBuff
 
@@ -42,13 +64,13 @@ public class PrayMinorBuff extends NormalBuff
     for prayBuffType in prayBuffMap
       switch prayBuffType
         case PrayBuffTypes.DAMAGE
-          target.addBonus(Bonus.DAMAGE, prayBuffMap.get(prayBuffType) * multiplier)
+          target.addStat(CustomUnitStats.EVASION, prayBuffMap.get(prayBuffType) * multiplier)
         case PrayBuffTypes.ATTACK_SPEED
-          target.addBonus(Bonus.ATTACKSPEED, prayBuffMap.get(prayBuffType) * multiplier) 
+          target.addStat(CustomUnitStats.SPELL_LIFESTEAL, prayBuffMap.get(prayBuffType) * multiplier)
         case PrayBuffTypes.ARMOR
-          target.addBonus(Bonus.ARMOR, prayBuffMap.get(prayBuffType) * multiplier)
+          target.addStat(CustomUnitStats.SPELL_POWER, prayBuffMap.get(prayBuffType) * multiplier)
         case PrayBuffTypes.HP_REG
-          target.addBonus(Bonus.LIFEREGEN, prayBuffMap.get(prayBuffType) * multiplier)
+          target.addStat(CustomUnitStats.ATTACK_POWER, prayBuffMap.get(prayBuffType) * multiplier)
         case PrayBuffTypes.STATS
           target.addBonus(Bonus.STRENGTH, prayBuffMap.get(prayBuffType) * multiplier)
           target.addBonus(Bonus.AGILITY, prayBuffMap.get(prayBuffType) * multiplier)
