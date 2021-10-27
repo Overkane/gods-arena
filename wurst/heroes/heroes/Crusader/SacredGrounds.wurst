@@ -41,7 +41,7 @@ init
 
     let sacredGrounds = addEffect(MapModels.heavensGateChannel, target)..setScale(effectScale)
     
-    doPeriodically(1) (CallbackPeriodic cb) ->
+    doPeriodicallyCounted(1., (duration).toInt()) (CallbackCounted cb) ->
       LOOP_SOUND.play()
 
       forUnitsInRange(target, aoe) (unit u) ->
@@ -51,10 +51,8 @@ init
           else if u.isEnemyOf(caster)
             caster.dealMagicalDamage(u, damage)
 
-      duration -= 1
-      if duration <= 0
+      if cb.isLast()
         sacredGrounds.destr()
-        destroy cb
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Creates sacred grounds in the target area. Enemies in the area are damaged every second and allies are healed.")
