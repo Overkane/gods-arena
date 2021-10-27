@@ -55,7 +55,7 @@ function updateBuff(PrayBuffTypes prayBuffType)
   let p = GetTriggerPlayer()
   pData.get(p).getHero().ifPresent() (h) ->
     if h.actor.hasBuff(PrayMainBuff.typeId)
-      h.actor.getBuff(PrayMainBuff.typeId).terminate()
+      h.actor.removeBuffById(PrayMainBuff.typeId)
     
     // After buff main buff is destroyed we are waiting for minor buff to expire to be sure onEnd()
     // it have used old buff values.
