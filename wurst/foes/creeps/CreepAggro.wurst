@@ -104,6 +104,9 @@ init
                 target.enrage()
 
         else if sourceOwner == ENEMY_PLAYER
+            let lastAttack = lastSuccessfulAttack.get(target)
+            if lastAttack + SECONDS_TO_RAGE < currentTime
+                target.enrage()
             lastSuccessfulAttack.put(source, currentTime)
 
 

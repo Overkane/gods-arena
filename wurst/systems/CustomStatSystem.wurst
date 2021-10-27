@@ -134,7 +134,8 @@ public function unit.copyStats(unit target)
 
   // Remove cached value if it exists to trigger re-calculation
   if statCache[targetIndex] != null
-    statCache[targetIndex].flush()
+    destroy statCache[index]
+    statCache[index] = null
 
 public function unit.clearStats()
   let index = this.getIndex()

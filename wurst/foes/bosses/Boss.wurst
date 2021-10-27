@@ -29,6 +29,9 @@ public class Boss extends UnitEntity
     physicsUpdate(this)
     super.update()
 
+  override function addVel(vec3 vel)
+    super.addVel(vel * 0.2)
+
   override function onEscapeGround()
     actor.setPropWindow(0 .fromDeg())
 
