@@ -43,14 +43,17 @@ init
 
         flashEffect(Abilities.thunderclapCaster, tunit.getPos())
 
+        let dummyCaster = new DummyStatCaster()
+          ..delay(1.)
+          ..caster(sunit)
+
         forUnitsInRange(tunit.getPos(), spellRadius) target ->
           if target.isEnemyOf(sunit) and target.isAlive()
             sunit.dealPhysicalDamage(target, spellDamage)
 
-            new DummyStatCaster()
-            ..delay(1.)
-            ..caster(sunit)
-            ..castTarget(HOLY_SMITE_STUN_ID, lvl, OrderIds.thunderbolt, target)
+            dummyCaster.castTarget(HOLY_SMITE_STUN_ID, lvl, OrderIds.thunderbolt, target)
+
+            
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
