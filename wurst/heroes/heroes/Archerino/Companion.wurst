@@ -32,7 +32,9 @@ class Companion extends UnitEntity
   construct(unit summoner, int typId, vec3 pos, angle ang)
     super(createUnit(summoner.getOwner(), typId, pos.toVec2(), ang))
     flashEffect(Abilities.feralspirittarget, actor.getPos())
-    actor.setAnimation("birth")
+    actor
+    ..setAnimation("birth")
+    ..queueAnimation("stand")
 
     actor
     ..setMaxHP(actor.getMaxHP().toInt() + summoner.getStr(true) * 15)
