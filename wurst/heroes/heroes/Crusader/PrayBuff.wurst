@@ -15,6 +15,7 @@ function trigger.getPrayBuff() returns PrayMainBuff
 
 function trigger.setPrayBuff(PrayMainBuff buffInstance) 
   prayMap.put(this, buffInstance)
+
 public class PrayMainBuff extends NormalBuff
   effect buffEffect
   constant affected = CreateGroup()
@@ -39,6 +40,8 @@ public class PrayMainBuff extends NormalBuff
   override function onEnd()
     buffEffect.destr()
     affected..clear()..destr()
+    prayMap.remove(inRangeTrig)
+    inRangeTrig.destr()
 
     for u in affected
       u.removeBuffById(PrayMinorBuff.typeId)
