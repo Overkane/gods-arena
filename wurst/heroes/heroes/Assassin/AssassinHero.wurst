@@ -1,6 +1,6 @@
 package AssassinHero
 import UnitIds
-import HeroPreset
+import HeroDefinitionPresets
 import ObjectIdGenerator
 import BlinkCut
 import BlinkStrike
@@ -11,7 +11,7 @@ import Contract
 public constant ASSASSIN_ID = compiletime(HERO_ID_GEN.next())
 
 @compiletime function genHero()
-  new HeroPreset(ASSASSIN_ID, UnitIds.warden, "Assassin")
+  new AgiHeroPreset(ASSASSIN_ID, UnitIds.warden, "Assassin")
   ..addProperName("Persephone")
   ..addHeroAbility(BLINK_CUT_ID)
   ..addHeroAbility(BLINK_STRIKE_ID)
@@ -27,5 +27,4 @@ public constant ASSASSIN_ID = compiletime(HERO_ID_GEN.next())
   ..setAttack1DamageBase(10)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(5)
-  ..setCollisionSize(24)
   ..buildHero()

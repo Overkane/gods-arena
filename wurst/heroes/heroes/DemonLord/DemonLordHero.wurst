@@ -1,10 +1,10 @@
 package DemonLordHero
 import UnitIds
-import HeroPreset
+import HeroDefinitionPresets
 import DemonLordIds
 
 @compiletime function genHero()
-  new HeroPreset(DEMON_LORD_ID, UnitIds.pitlord, "Demon Lord")
+  new StrHeroPreset(DEMON_LORD_ID, UnitIds.pitlord, "Demon Lord")
   ..addProperName("Legion")
   ..addHeroAbility(FIRE_STORM_ID)
   ..addHeroAbility(HOWL_OF_TERROR_ID)
@@ -22,5 +22,4 @@ import DemonLordIds
   ..setTintingColorBlue(125)
   ..setTintingColorRed(155)
   ..setTintingColorGreen(125)
-  ..setCollisionSize(24)
   ..buildHero()

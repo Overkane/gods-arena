@@ -1,6 +1,6 @@
 package TrollShamanHero
 import UnitIds
-import HeroPreset
+import HeroDefinitionPresets
 import ObjectIdGenerator
 import HealingWave
 import StasisTotem
@@ -12,14 +12,13 @@ import ObjectIds
 public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
 
 @compiletime function genHero()
-  new HeroPreset(TROLL_SHAMAN_ID, UnitIds.shadowhunter, "Troll Shaman")
+  new IntHeroPreset(TROLL_SHAMAN_ID, UnitIds.shadowhunter, "Troll Shaman")
   ..addProperName("Trall")
   ..addHeroAbility(HEALING_WAVE_ID)
   ..addHeroAbility(STASIS_TOTEM_ID)
   ..addHeroAbility(BOUNCING_CHAKRAM_ID)
   ..addHeroAbility(RESTORATION_RITUAL_ID)
   ..addNormalAbility(BLOODLUST_ID)
-  ..setPrimaryAttribute("INT")
   ..setStartingStrength(16)
   ..setStrengthPerLevel(1.7)
   ..setStartingAgility(18)
@@ -33,5 +32,4 @@ public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
   ..setAttack1AreaofEffectFullDamage(400)
   ..setAttack1WeaponType(WeaponType.MissileBounce)
   ..setUpgradesUsed(BOUNCING_CHAKRAM_UPGRADE_ID.toRawCode())
-  ..setCollisionSize(24)
   ..buildHero()

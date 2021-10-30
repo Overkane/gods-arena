@@ -1,6 +1,6 @@
 package BlademasterHero
 import UnitIds
-import HeroPreset
+import HeroDefinitionPresets
 import ObjectIdGenerator
 import ArmorCut
 import SwiftSlash
@@ -11,7 +11,7 @@ import BattleTrance
 public constant BLADEMASTER_ID = compiletime(HERO_ID_GEN.next())
 
 @compiletime function genHero()
-  new HeroPreset(BLADEMASTER_ID, UnitIds.blademaster, "Blademaster")
+  new AgiHeroPreset(BLADEMASTER_ID, UnitIds.blademaster, "Blademaster")
   ..addProperName("Futsunushi")
   ..addHeroAbility(SWIFT_SLASH_ID)
   ..addHeroAbility(MEDITATION_ID)
@@ -27,5 +27,4 @@ public constant BLADEMASTER_ID = compiletime(HERO_ID_GEN.next())
   ..setAttack1CooldownTime(1.7)
   ..setAttack1DamageNumberofDice(2)
   ..setAttack1DamageSidesperDie(5)
-  ..setCollisionSize(24)
   ..buildHero()

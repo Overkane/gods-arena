@@ -1,6 +1,6 @@
 package CrusaderHero
 import UnitIds
-import HeroPreset
+import HeroDefinitionPresets
 import ObjectIdGenerator
 import Pray
 import SacredGrounds
@@ -11,7 +11,7 @@ import TheEmpyrean
 public constant CRUSADER_ID = compiletime(HERO_ID_GEN.next())
 
 @compiletime function genHero()
-  new HeroPreset(CRUSADER_ID, UnitIds.arthas, "Crusader")
+  new StrHeroPreset(CRUSADER_ID, UnitIds.arthas, "Crusader")
   ..addProperName("William")
   ..addNormalAbility(PRAY_ID)
   ..addHeroAbility(SACRED_GROUNDS_ID)
@@ -26,5 +26,4 @@ public constant CRUSADER_ID = compiletime(HERO_ID_GEN.next())
   ..setIntelligencePerLevel(1.8)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(6)
-  ..setCollisionSize(24)
   ..buildHero()

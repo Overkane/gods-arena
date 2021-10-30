@@ -1,6 +1,5 @@
 package ElementorHero
-
-import HeroPreset
+import HeroDefinitionPresets
 import Assets
 import ChannelAbilityPreset
 import ElementalMissiles
@@ -14,7 +13,7 @@ public constant ELEMENTOR_ID = compiletime(HERO_ID_GEN.next())
 @compiletime
 function genHero()
 
-    new HeroPreset(ELEMENTOR_ID, UnitIds.bloodmage, "Elementor")
+    new IntHeroPreset(ELEMENTOR_ID, UnitIds.bloodmage, "Elementor")
     ..addProperName("Alex")
     ..addHeroAbility(METEOR_ABIL_ID)
     ..addHeroAbility(BLACKHOLE_ABILITY_ID)
@@ -30,7 +29,6 @@ function genHero()
     ..setAttack1DamageNumberofDice(1)
     ..setAttack1DamageSidesperDie(4)
     ..setAttack1Range(500)
-    ..setCollisionSize(24)
     ..setTintingColorBlue(175)
     ..setTintingColorGreen(175)
     ..setTintingColorRed(175)
