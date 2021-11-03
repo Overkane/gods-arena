@@ -1,3 +1,4 @@
 package AbilityTooltipGenerator_config
 
-@config public constant DESCRIPTION_PATTERN = "|cffffffff$description$|r"
+@config public function buildDescription(string description) returns string
+    return "|cffffffff" + description + "|r"
