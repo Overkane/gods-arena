@@ -37,7 +37,7 @@ public class GameSetupDialog
   construct()
     pData.forEach() (player p, PlayerData value) ->
       if p == players[0]
-        p.print("You have " + COLOR_GOLD.toColorString() + PREGAME_MAX_DURATION.toString() + "|r seconds to choose game modes.", 5)
+        p.print("You have " + COLOR_GOLD_STR + PREGAME_MAX_DURATION.toString() + "|r seconds to choose game modes.", 5)
       else
         p.print("Please wait while " + players[0].getNameColored() + " chooses game modes.", 5)
               

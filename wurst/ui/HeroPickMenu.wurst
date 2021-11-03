@@ -221,7 +221,7 @@ class HeroIcon
 
     tooltip..setSize(0.2, 0.08)
     ..setPoint(FRAMEPOINT_LEFT, heroIconButton, FRAMEPOINT_RIGHT)
-    getFrame("BoxedTextTitle", iconContext).setText("Pick " + COLOR_GOLD.toColorString() + tooltipTitle + "|r")
+    getFrame("BoxedTextTitle", iconContext).setText("Pick " + COLOR_GOLD_STR + tooltipTitle + "|r")
     getFrame("BoxedTextValue", iconContext)..setText("________\n\n"+tooltipDescription)
 
   function disable()
