@@ -118,7 +118,7 @@ public class PlayerData
       let honorPoints = (arenaPointsForConvertation / ARENA_POINTS_THRESHOLD).floor()
       p
       ..addLumber(honorPoints)
-      ..print("You got 1 honor point. You can spend it in " + ("Honor Shop").color(COLOR_GOLD) + " (F3)", 5)
+      ..print("You got 1 honor point. You can spend it in " + ("Honor Shop").color(COLOR_GOLD_STR) + " (F3)", 5)
 
       arenaPointsForConvertation = arenaPointsForConvertation - honorPoints * ARENA_POINTS_THRESHOLD
 
@@ -147,8 +147,8 @@ public function initPlayers()
         break
 
     printTimed(p.getNameColored() + " has left the game", 15.)
-    printTimed("All players get " + expCompensationOnPlayerLeave.toString().color(COLOR_GOLD) + " experience and "
-      + goldCompensationOnPlayerLeave.toString().color(COLOR_GOLD) + " gold as compensation.", 15.)
+    printTimed("All players get " + expCompensationOnPlayerLeave.toString().color(COLOR_GOLD_STR) + " experience and "
+      + goldCompensationOnPlayerLeave.toString().color(COLOR_GOLD_STR) + " gold as compensation.", 15.)
     
     pData.forEach() (player p, PlayerData playerData) ->
       p.addGold(goldCompensationOnPlayerLeave)

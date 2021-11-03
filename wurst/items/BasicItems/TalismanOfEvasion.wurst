@@ -8,7 +8,7 @@ constant EVASION_CHANCE = 5
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Evasion", 
-  EVASION_CHANCE.colorPerc(COLOR_GOLD) + " chance to dodge an attack.")
+  EVASION_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to dodge an attack.")
 
 public constant TALISMAN_OF_EVASION_ITEM = compiletime(new RecipeItem()
 ..setName("Talisman of Evasion")

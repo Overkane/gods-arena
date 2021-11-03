@@ -17,11 +17,11 @@ constant LIFESTEAL_VALUE = 25
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Cleave", 
-  "gives " + CLEAVE_PERC.colorPerc(COLOR_GOLD) + " cleave.")
+  "gives " + CLEAVE_PERC.colorPerc(COLOR_GOLD_STR) + " cleave.")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Lifesteal", 
-  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of damage dealt converted to hitpoints.")
+  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD_STR) + " of damage dealt converted to hitpoints.")
 
 public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 ..setName("Dracula's Axe")

@@ -16,11 +16,11 @@ constant PHASE_STEP_DURATION = 5
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Phase Step", 
-  "allows owner to walk through other units. Lasts " + PHASE_STEP_DURATION.color(COLOR_GOLD) + " seconds.")
+  "allows owner to walk through other units. Lasts " + PHASE_STEP_DURATION.color(COLOR_GOLD_STR) + " seconds.")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Evasion", 
-  (EVASION_CHANCE.toString() + "%").color(COLOR_GOLD) + " chance to dodge an attack.")
+  (EVASION_CHANCE.toString() + "%").color(COLOR_GOLD_STR) + " chance to dodge an attack.")
 
 public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..setName("Cloak of Shadows")

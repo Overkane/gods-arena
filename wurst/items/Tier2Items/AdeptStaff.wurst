@@ -17,12 +17,12 @@ constant SPELL_POWER = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Fire Bolt", 
-  "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD)
-  + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD) + " seconds.")
+  "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
+  + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD_STR) + " seconds.")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.ACTIVE,
   "Spell Power", 
-  "Increases user " + "Spell Power".color(COLOR_GOLD) + " by " + SPELL_POWER.colorPerc(COLOR_GOLD) + ".")
+  "Increases user " + "Spell Power".color(COLOR_GOLD_STR) + " by " + SPELL_POWER.colorPerc(COLOR_GOLD_STR) + ".")
 
 public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Adept Staff")

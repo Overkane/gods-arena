@@ -10,7 +10,7 @@ constant SPELL_LIFESTEAL_VALUE = 10
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Spell Lifesteal", 
-  SPELL_LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of spell damage dealt converted to hitpoints.")
+  SPELL_LIFESTEAL_VALUE.colorPerc(COLOR_GOLD_STR) + " of spell damage dealt converted to hitpoints.")
 
 public constant RING_OF_SPELL_LIFESTEAL_ITEM = compiletime(new RecipeItem()
 ..setName("Ring of Spell Lifesteal")

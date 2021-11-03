@@ -11,7 +11,7 @@ constant EVASION_CHANCE = 8
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Evasion", 
-  EVASION_CHANCE.colorPerc(COLOR_GOLD) + " chance to dodge an attack.")
+  EVASION_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to dodge an attack.")
 
 public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
 ..setName("Ninja Cloak")

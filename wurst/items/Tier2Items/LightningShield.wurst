@@ -21,12 +21,12 @@ constant CHAIN_LIGHTNING_NUMBER_OF_UNITS = 3
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Block", 
-  BLOCK_CHANCE.colorPerc(COLOR_GOLD) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD) + " damage.")
+  BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD_STR) + " damage.")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Lightning Shield", 
-  CHAIN_LIGHTNING_CHANCE.colorPerc(COLOR_GOLD) + " chance to cast chain lightning on attacker, which deals " 
-  + CHAIN_LIGHTNING_DAMAGE.color(COLOR_GOLD) + " damage and jumps between " + CHAIN_LIGHTNING_NUMBER_OF_UNITS.color(COLOR_GOLD) + " units.")
+  CHAIN_LIGHTNING_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to cast chain lightning on attacker, which deals " 
+  + CHAIN_LIGHTNING_DAMAGE.color(COLOR_GOLD_STR) + " damage and jumps between " + CHAIN_LIGHTNING_NUMBER_OF_UNITS.color(COLOR_GOLD_STR) + " units.")
 
 public constant LIGHTNING_SHIELD_ITEM = compiletime(new RecipeItem()
 ..setName("Lightning Shield")

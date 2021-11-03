@@ -17,15 +17,15 @@ constant FEEDBACK_RATIO = 2
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Critical Chance", 
-  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD) + ".")
+  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD_STR) + ".")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Critical Power", 
-  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD) + ".")
+  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD_STR) + ".")
 
 constant ABIL_TOOLTIP3 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Feedback", 
-  "burn out " + FEEDBACK_MP_BURN.color(COLOR_GOLD) + " mana from attacked target. Deals " + FEEDBACK_RATIO.color(COLOR_GOLD) + " damage per burned mana.")
+  "burn out " + FEEDBACK_MP_BURN.color(COLOR_GOLD_STR) + " mana from attacked target. Deals " + FEEDBACK_RATIO.color(COLOR_GOLD_STR) + " damage per burned mana.")
 
 public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 ..setName("Mage Killer")

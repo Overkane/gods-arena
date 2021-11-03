@@ -12,14 +12,14 @@ init
   EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
     let tunit = EventData.getTriggerUnit()
     if tunit.isType(UNIT_TYPE_HERO) and tunit.getOwner().isEnemyOf(ENEMY_PLAYER) and not ended
-      printTimedToPlayer(COLOR_GOLD.toColorString() + ">>|r You died. You will revive at the end of the round.", 15., tunit.getOwner())
+      printTimedToPlayer(COLOR_GOLD_STR + ">>|r You died. You will revive at the end of the round.", 15., tunit.getOwner())
       let aliveCount = new Reference(0)
       pData.forEach() (player key, PlayerData value) ->
         if value.getHero().have and value.getHero().hero.actor.isAlive()
           aliveCount.val += 1
       if aliveCount.into() == 0
-        print(">> All Heroes died. You lost!".color(COLOR_GOLD))
-        print(">> Game will end momentarily.".color(COLOR_GOLD))
+        print(">> All Heroes died. You lost!".color(COLOR_GOLD_STR))
+        print(">> Game will end momentarily.".color(COLOR_GOLD_STR))
         ended = true
         doAfter(30.) ->
           EndGame(true)

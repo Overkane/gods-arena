@@ -17,7 +17,7 @@ constant PERC_HEAL = 25
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Heal", 
-  "Heals "+ FLAT_HEAL.color(COLOR_GOLD) +" or "+ PERC_HEAL.colorPerc(COLOR_GOLD) +" hp, depending on which value is bigger.")
+  "Heals "+ FLAT_HEAL.color(COLOR_GOLD_STR) +" or "+ PERC_HEAL.colorPerc(COLOR_GOLD_STR) +" hp, depending on which value is bigger.")
 
 public constant S_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Small Healing Potion")

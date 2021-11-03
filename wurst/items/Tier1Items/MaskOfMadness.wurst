@@ -17,12 +17,12 @@ constant LIFESTEAL_VALUE = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Berserk", 
-  "gives " + BERSERK_BONUS_AS.colorPerc(COLOR_GOLD) + " AS, but increases damage taken by " 
-  + BERSERK_DAMAGE_TAKEN_INC.colorPerc(COLOR_GOLD) + ".")
+  "gives " + BERSERK_BONUS_AS.colorPerc(COLOR_GOLD_STR) + " AS, but increases damage taken by " 
+  + BERSERK_DAMAGE_TAKEN_INC.colorPerc(COLOR_GOLD_STR) + ".")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Lifesteal", 
-  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of damage dealt converted to hitpoints.")
+  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD_STR) + " of damage dealt converted to hitpoints.")
 
 constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Madness")

@@ -1,8 +1,8 @@
 package TooltipFactory
 
-constant ACTIVE_TOOLTIP_COLOR = COLOR_GOLD
-constant PASSIVE_TOOLTIP_COLOR = COLOR_GOLD
-constant ABILITY_NAME_COLOR = color(106, 194, 221)
+constant ACTIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
+constant PASSIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
+constant ABILITY_NAME_COLOR = color(106, 194, 221).toColorString()
 
 public enum AbilityType
   PASSIVE
@@ -15,35 +15,19 @@ public function real.percRound(int precision) returns string
   return (this.toString(precision) + "%")
 
 // To avoid redundant toString() calls.
-public function real.color(color which) returns string
+public function real.color(string which) returns string
   return this.toString().color(which)
 
 // To avoid redundant toString() calls.
-public function int.color(color which) returns string
+public function int.color(string which) returns string
   return this.toString().color(which)
 
-// To avoid redundant toString() calls.
-public function real.color(colorA which) returns string
-  return this.toString().color(which)
-
-// To avoid redundant toString() calls.
-public function int.color(colorA which) returns string
-  return this.toString().color(which)
-  
 // To avoid redundant toString() calls and % uses.
-public function real.colorPerc(color which) returns string
+public function real.colorPerc(string which) returns string
   return (this.toString() + "%").color(which)
 
 // To avoid redundant toString() calls and % uses.
-public function int.colorPerc(color which) returns string
-  return (this.toString() + "%").color(which)
-
-// To avoid redundant toString() calls and % uses.
-public function real.colorPerc(colorA which) returns string
-  return (this.toString() + "%").color(which)
-
-// To avoid redundant toString() calls and % uses.
-public function int.colorPerc(colorA which) returns string
+public function int.colorPerc(string which) returns string
   return (this.toString() + "%").color(which)
 
 public function itemAbilityTooltip(AbilityType abilityType, string abilityName, string abilityDescription) returns string

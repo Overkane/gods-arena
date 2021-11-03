@@ -14,7 +14,7 @@ constant PERC_MP = 50
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Restoration", 
-  "Restores "+ PERC_HP.colorPerc(COLOR_GOLD) +" hp and "+ PERC_MP.colorPerc(COLOR_GOLD) +" mp.")
+  "Restores "+ PERC_HP.colorPerc(COLOR_GOLD_STR) +" hp and "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mp.")
 
 public constant HELM_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 ..setName("Helm of the God")

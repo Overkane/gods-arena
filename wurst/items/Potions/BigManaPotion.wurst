@@ -15,7 +15,7 @@ constant PERC_MP = 35
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Restoration", 
-  "Restores "+ FLAT_MP.color(COLOR_GOLD) +" or "+ PERC_MP.colorPerc(COLOR_GOLD) +" mp, depending on which value is bigger.")
+  "Restores "+ FLAT_MP.color(COLOR_GOLD_STR) +" or "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mp, depending on which value is bigger.")
 
 public constant B_MANA_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Big Mana Potion")

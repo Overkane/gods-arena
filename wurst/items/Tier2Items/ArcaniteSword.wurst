@@ -10,11 +10,11 @@ constant ATTACK_CRIT_POWER = 50
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Critical Chance", 
-  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD) + ".")
+  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD_STR) + ".")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Critical Power", 
-  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD) + ".")
+  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD_STR) + ".")
 
 public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Arcanite Sword")

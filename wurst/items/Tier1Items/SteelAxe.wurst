@@ -13,7 +13,7 @@ constant CLEAVE_PERC = 15
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Cleave", 
-  "gives " + CLEAVE_PERC.colorPerc(COLOR_GOLD) + " cleave.")
+  "gives " + CLEAVE_PERC.colorPerc(COLOR_GOLD_STR) + " cleave.")
 
 public constant STEEL_AXE_ITEM = compiletime(new RecipeItem()
 ..setName("Steel Axe")

@@ -14,8 +14,8 @@ constant BASH_DAMAGE = 25
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Bash", 
-  "gives " + BASH_CHANCE.colorPerc(COLOR_GOLD) + " chance to bash on attack for " + BASH_DURATION.color(COLOR_GOLD) + " seconds with " 
-  + BASH_DAMAGE.color(COLOR_GOLD) + " bonus damage.")
+  "gives " + BASH_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to bash on attack for " + BASH_DURATION.color(COLOR_GOLD_STR) + " seconds with " 
+  + BASH_DAMAGE.color(COLOR_GOLD_STR) + " bonus damage.")
 
 public constant MACE_ITEM = compiletime(new RecipeItem()
 ..setName("Mace")

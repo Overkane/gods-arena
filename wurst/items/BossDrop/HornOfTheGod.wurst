@@ -15,7 +15,7 @@ constant ARMOR_AOE = 900
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Protection Aura", 
-  "Provides " + ARMOR.color(COLOR_GOLD) + " in " + ARMOR_AOE.color(COLOR_GOLD) + " AoE.")
+  "Provides " + ARMOR.color(COLOR_GOLD_STR) + " in " + ARMOR_AOE.color(COLOR_GOLD_STR) + " AoE.")
 
 public constant HORN_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 ..setName("Horn of the God")

@@ -47,7 +47,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero blinks behind the target unit and gets a temporary agility buff which is based on base agility.\n"
-  +"If the target unit is killed within " + ("Time to kill").color(COLOR_GOLD) + " time, the ability cooldown is reset. Agility buff stacks.")
+  +"If the target unit is killed within " + ("Time to kill").color(COLOR_GOLD_STR) + " time, the ability cooldown is reset. Agility buff stacks.")
   new ChannelAbilityPreset(BLINK_STRIKE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetButtonPosNormal(1, 2)
   ..presetButtonPosResearch(1, 0)

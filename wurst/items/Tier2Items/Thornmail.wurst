@@ -12,7 +12,7 @@ constant RETALIATE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Retaliate", 
-  "deals " + "[Hero Level] * 10".color(COLOR_GOLD) + " pure damage to the attacker. Multiple items don't stack.")
+  "deals " + "[Hero Level] * 10".color(COLOR_GOLD_STR) + " pure damage to the attacker. Multiple items don't stack.")
 
 public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 ..setName("Thornmail")

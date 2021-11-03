@@ -203,9 +203,9 @@ public class HonorShop extends UnitEntity
   ..buildHero()
 
   // Upgrades for honor shop
-  var tooltip = new AbilityTooltipGenerator("Increases " + "Strength".color(COLOR_GOLD) + " by " + MIGHT_STR.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Attack Damage (AD)".color(COLOR_GOLD) + " by " + MIGHT_AD.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Attack Crit Power (ACP)".color(COLOR_GOLD) + " by " + MIGHT_ACP.colorPerc(COLOR_GOLD) + ".")
+  var tooltip = new AbilityTooltipGenerator("Increases " + "Strength".color(COLOR_GOLD_STR) + " by " + MIGHT_STR.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Attack Damage (AD)".color(COLOR_GOLD_STR) + " by " + MIGHT_AD.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Attack Crit Power (ACP)".color(COLOR_GOLD_STR) + " by " + MIGHT_ACP.colorPerc(COLOR_GOLD_STR) + ".")
   new ChannelAbilityPreset(ABIL_MIGHT, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
   ..presetButtonPosNormal(0, 0)
   ..presetHotkey("Q")
@@ -218,9 +218,9 @@ public class HonorShop extends UnitEntity
   ..addTooltipProperty("Bonus ACP (%)", lvl -> MIGHT_ACP * (lvl-1))
   ..tooltipStopListen()
 
-  tooltip = new AbilityTooltipGenerator("Increases " + "Hit Points (HP)".color(COLOR_GOLD) + " by " + END_HP.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Armor".color(COLOR_GOLD) + " by " + END_ARMOR.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Hit Point Regeneration (HPR)".color(COLOR_GOLD) + " by " + END_HPREG.color(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Hit Points (HP)".color(COLOR_GOLD_STR) + " by " + END_HP.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Armor".color(COLOR_GOLD_STR) + " by " + END_ARMOR.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Hit Point Regeneration (HPR)".color(COLOR_GOLD_STR) + " by " + END_HPREG.color(COLOR_GOLD_STR) + ".")
   new ChannelAbilityPreset(ABIL_ENDURANCE, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
   ..presetButtonPosNormal(0, 1)
   ..presetHotkey("A")
@@ -233,9 +233,9 @@ public class HonorShop extends UnitEntity
   ..addTooltipProperty("Bonus HPR", lvl -> END_HPREG * (lvl-1))
   ..tooltipStopListen()
 
-  tooltip = new AbilityTooltipGenerator("Increases " + "Agility".color(COLOR_GOLD) + " by " + DEX_AGI.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Attack Power (AP)".color(COLOR_GOLD) + " by " + DEX_AP.colorPerc(COLOR_GOLD) + ".\n" +
-    "Increases " + "Evasion".color(COLOR_GOLD) + " by " + DEX_EV.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Agility".color(COLOR_GOLD_STR) + " by " + DEX_AGI.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Attack Power (AP)".color(COLOR_GOLD_STR) + " by " + DEX_AP.colorPerc(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Evasion".color(COLOR_GOLD_STR) + " by " + DEX_EV.colorPerc(COLOR_GOLD_STR) + ".")
   new ChannelAbilityPreset(ABIL_DEXTERITY, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
   ..presetButtonPosNormal(1, 0)
   ..presetHotkey("W")
@@ -248,9 +248,9 @@ public class HonorShop extends UnitEntity
   ..addTooltipProperty("Bonus Evasion (%)", lvl -> DEX_EV * (lvl-1))
   ..tooltipStopListen()
 
-  tooltip = new AbilityTooltipGenerator("Increases " + "Attack Speed (AS)".color(COLOR_GOLD) + " by " + QUICK_AS.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Movement Speed (MS)".color(COLOR_GOLD) + " by " + QUICK_MS.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Lifesteal".color(COLOR_GOLD) + " by " + QUIKC_LS.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Attack Speed (AS)".color(COLOR_GOLD_STR) + " by " + QUICK_AS.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Movement Speed (MS)".color(COLOR_GOLD_STR) + " by " + QUICK_MS.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Lifesteal".color(COLOR_GOLD_STR) + " by " + QUIKC_LS.colorPerc(COLOR_GOLD_STR) + ".")
   new ChannelAbilityPreset(ABIL_QUICKNESS, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
   ..presetButtonPosNormal(1, 1)
   ..presetHotkey("S")
@@ -263,9 +263,9 @@ public class HonorShop extends UnitEntity
   ..addTooltipProperty("Bonus Lifesteal (%)", lvl -> QUIKC_LS * (lvl-1))
   ..tooltipStopListen()
 
-  tooltip = new AbilityTooltipGenerator("Increases " + "Intelligence".color(COLOR_GOLD) + " by " + MIND_INT.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Spell Power (SP)".color(COLOR_GOLD) + " by " + MIND_SP.colorPerc(COLOR_GOLD) + ".\n" +
-    "Increases " + "Spell Crit Power (SCP)".color(COLOR_GOLD) + " by " + MIND_SCP.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Intelligence".color(COLOR_GOLD_STR) + " by " + MIND_INT.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Spell Power (SP)".color(COLOR_GOLD_STR) + " by " + MIND_SP.colorPerc(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Spell Crit Power (SCP)".color(COLOR_GOLD_STR) + " by " + MIND_SCP.colorPerc(COLOR_GOLD_STR) + ".")
   new ChannelAbilityPreset(ABIL_MIND, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
   ..presetButtonPosNormal(2, 0)
   ..presetHotkey("E")
@@ -278,9 +278,9 @@ public class HonorShop extends UnitEntity
   ..addTooltipProperty("Bonus SCP (%)", lvl -> MIND_SCP * (lvl-1))
   ..tooltipStopListen()
   
-  tooltip = new AbilityTooltipGenerator("Increases " + "Mana".color(COLOR_GOLD) + " by " + WISD_MANA.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Mana Regeneration (MR)".color(COLOR_GOLD) + " by " + WISD_MANAREG.color(COLOR_GOLD) + ".\n" +
-    "Increases " + "Spell Lifesteal (SL)".color(COLOR_GOLD) + " by " + WISD_SL.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Mana".color(COLOR_GOLD_STR) + " by " + WISD_MANA.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Mana Regeneration (MR)".color(COLOR_GOLD_STR) + " by " + WISD_MANAREG.color(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Spell Lifesteal (SL)".color(COLOR_GOLD_STR) + " by " + WISD_SL.colorPerc(COLOR_GOLD_STR) + ".")
   new ChannelAbilityPreset(ABIL_WISDOM, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
   ..presetButtonPosNormal(2, 1)
   ..presetHotkey("D")
@@ -293,9 +293,9 @@ public class HonorShop extends UnitEntity
   ..addTooltipProperty("Bonus SL (%)", lvl -> WISD_SL * (lvl-1))
   ..tooltipStopListen()
 
-  tooltip = new AbilityTooltipGenerator("Increases " + "Attack Crit Chance (ACC)".color(COLOR_GOLD) + " by " + LUCK_ACC.colorPerc(COLOR_GOLD) + ".\n" +
-    "Increases " + "Spell Crit Chance (SCC)".color(COLOR_GOLD) + " by " + LUCK_SCC.colorPerc(COLOR_GOLD) + ".\n" +
-    "Increases " + "Evasion".color(COLOR_GOLD) + " by " + LUCK_EV.colorPerc(COLOR_GOLD) + ".")
+  tooltip = new AbilityTooltipGenerator("Increases " + "Attack Crit Chance (ACC)".color(COLOR_GOLD_STR) + " by " + LUCK_ACC.colorPerc(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Spell Crit Chance (SCC)".color(COLOR_GOLD_STR) + " by " + LUCK_SCC.colorPerc(COLOR_GOLD_STR) + ".\n" +
+    "Increases " + "Evasion".color(COLOR_GOLD_STR) + " by " + LUCK_EV.colorPerc(COLOR_GOLD_STR) + ".")
   new ChannelAbilityPreset(ABIL_LUCK, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
   ..presetButtonPosNormal(3, 0)
   ..presetHotkey("R")

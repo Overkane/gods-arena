@@ -17,11 +17,11 @@ constant SPELL_LIFESTEAL_VALUE = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Shield", 
-  "activates a shield that absorbs " + MANA_SHIELD_ABSORB.color(COLOR_GOLD) + " damage per point of mana. Lasts " + MANA_SHIELD_DURATION.color(COLOR_GOLD) + " seconds.")
+  "activates a shield that absorbs " + MANA_SHIELD_ABSORB.color(COLOR_GOLD_STR) + " damage per point of mana. Lasts " + MANA_SHIELD_DURATION.color(COLOR_GOLD_STR) + " seconds.")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Spell Lifesteal", 
-  SPELL_LIFESTEAL_VALUE.colorPerc(COLOR_GOLD) + " of spell damage dealt converted to hitpoints.")
+  SPELL_LIFESTEAL_VALUE.colorPerc(COLOR_GOLD_STR) + " of spell damage dealt converted to hitpoints.")
 
 public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
 ..setName("Archmage Robe")

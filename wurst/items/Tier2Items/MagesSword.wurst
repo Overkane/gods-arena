@@ -11,11 +11,11 @@ constant SPELL_CRIT_POWER = 40
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Spell Critical Chance", 
-  "Increases chance to deal spell critical hits by " + SPELL_CRIT_CHANCE.colorPerc(COLOR_GOLD) + ".")
+  "Increases chance to deal spell critical hits by " + SPELL_CRIT_CHANCE.colorPerc(COLOR_GOLD_STR) + ".")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Spell Critical Power", 
-  "Increases power of spell critical strike by " + SPELL_CRIT_POWER.colorPerc(COLOR_GOLD) + ".")
+  "Increases power of spell critical strike by " + SPELL_CRIT_POWER.colorPerc(COLOR_GOLD_STR) + ".")
 
 public constant MAGES_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Mage's Sword")
