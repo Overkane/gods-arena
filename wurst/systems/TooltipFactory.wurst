@@ -1,8 +1,68 @@
 package TooltipFactory
+import CustomStatSystem
+import RecipeItem
 
 constant ACTIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
 constant PASSIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
 constant ABILITY_NAME_COLOR = color(106, 194, 221).toColorString()
+
+public function CustomUnitStats.toString() returns string
+  switch this
+    case BONUS_ATTACK_DAMAGE
+      return "Bonus Damage"
+    case ATTACK_POWER
+      return "Attack Power"
+    case ATTACK_CRIT_POWER
+      return "Attack Crit Power"
+    case ATTACK_CRIT_CHANCE
+      return "Attack Crit Chance"
+    case LIFESTEAL
+      return "Lifesteal"
+    case BONUS_SPELL_DAMAGE
+      return "Bonus Spell Damage"
+    case SPELL_POWER
+      return "Spell Power"
+    case SPELL_CRIT_POWER
+      return "Spell Crit Power"
+    case SPELL_CRIT_CHANCE
+      return "Spell Crit Chance"
+    case SPELL_LIFESTEAL
+      return "Spell Lifesteal"
+    case EVASION
+      return "Evasion"
+    case MAGIC_RESISTANCE
+      return "Magic Resistance"
+    case THREAT_GENERATION
+      return "Threat Generation"
+
+public function CustomUnitStats.getMeasure() returns string
+  switch this
+    case BONUS_ATTACK_DAMAGE
+      return ""
+    case ATTACK_POWER
+      return "%"
+    case ATTACK_CRIT_POWER
+      return "%"
+    case ATTACK_CRIT_CHANCE
+      return "%"
+    case LIFESTEAL
+      return "%"
+    case BONUS_SPELL_DAMAGE
+      return ""
+    case SPELL_POWER
+      return "%"
+    case SPELL_CRIT_POWER
+      return "%"
+    case SPELL_CRIT_CHANCE
+      return "%"
+    case SPELL_LIFESTEAL
+      return "%"
+    case EVASION
+      return "%"
+    case MAGIC_RESISTANCE
+      return "%"
+    case THREAT_GENERATION
+      return "%"
 
 public enum AbilityType
   PASSIVE
@@ -29,6 +89,25 @@ public function real.colorPerc(string which) returns string
 // To avoid redundant toString() calls and % uses.
 public function int.colorPerc(string which) returns string
   return (this.toString() + "%").color(which)
+
+public function RecipeItem.addCustomStat(CustomUnitStats statType, real amount)
+  var result = ""
+  if amount >= 0
+    result += COLOR_GOLD_STR + "+"
+  else
+    result += color(205,55,55).toColorString()
+  
+  result += amount.round().toString()
+
+  result += statType.getMeasure() + "|r " + ABILITY_NAME_COLOR + statType.toString() + "|r"
+
+  var statAmount = amount
+  if statType.getMeasure() == "%"
+    statAmount = amount / 100
+
+  this.addTooltipProperty(result, u -> u.addStat(statType, statAmount),  u -> u.addStat(statType, -statAmount))
+    
+  
 
 public function itemAbilityTooltip(AbilityType abilityType, string abilityName, string abilityDescription) returns string
   var itemAbilityTooltip = ""
