@@ -15,15 +15,8 @@ constant FEEDBACK_ID = compiletime(ABIL_ID_GEN.next())
 constant FEEDBACK_MP_BURN = 25
 constant FEEDBACK_RATIO = 2
 
+
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Chance", 
-  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD_STR) + ".")
-
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Power", 
-  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD_STR) + ".")
-
-constant ABIL_TOOLTIP3 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Feedback", 
   "burn out " + FEEDBACK_MP_BURN.color(COLOR_GOLD_STR) + " mana from attacked target. Deals " + FEEDBACK_RATIO.color(COLOR_GOLD_STR) + " damage per burned mana.")
 
@@ -33,7 +26,7 @@ public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.DAMAGE, 65)
 ..addBonus(Bonus.AGILITY, 15)
 ..setAbilities(commaList(FEEDBACK_ID))
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2 + "\n\n" + ABIL_TOOLTIP3)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant MAGE_KILLER_RECIPE = new ItemRecipe()

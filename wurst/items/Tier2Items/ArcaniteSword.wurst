@@ -5,30 +5,18 @@ import SteelSword
 import TooltipFactory
 import CustomStatSystem
 
-constant ATTACK_CRIT_CHANCE = 15
-constant ATTACK_CRIT_POWER = 50
+constant ATTACK_CRIT_CHANCE = 15.
+constant ATTACK_CRIT_POWER = 50.
 
-constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Chance", 
-  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD_STR) + ".")
-
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Power", 
-  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD_STR) + ".")
+constant ABIL_TOOLTIP = ""
 
 public constant ARCANITE_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Arcanite Sword")
 ..setInterfaceIcon(Icons.bTNArcaniteMelee)
 ..addBonus(Bonus.DAMAGE, 80)
-..onPickup(actor -> begin
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, ATTACK_CRIT_CHANCE/100)
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, ATTACK_CRIT_POWER/100)
-end)
-..onDrop(actor -> begin
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, -ATTACK_CRIT_CHANCE/100)
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, -ATTACK_CRIT_POWER/100)
-end)
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+..addCustomStat(CustomUnitStats.ATTACK_CRIT_CHANCE, ATTACK_CRIT_CHANCE)
+..addCustomStat(CustomUnitStats.ATTACK_CRIT_POWER, ATTACK_CRIT_POWER)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant ARCANITE_SWORD_RECIPE = new ItemRecipe()

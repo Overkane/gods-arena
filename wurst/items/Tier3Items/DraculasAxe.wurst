@@ -13,15 +13,12 @@ import CustomStatSystem
 constant CLEAVE_ID = compiletime(ABIL_ID_GEN.next())
 constant CLEAVE_PERC = 35
 
-constant LIFESTEAL_VALUE = 25
+constant LIFESTEAL_VALUE = 25.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Cleave", 
   "gives " + CLEAVE_PERC.colorPerc(COLOR_GOLD_STR) + " cleave.")
 
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Lifesteal", 
-  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD_STR) + " of damage dealt converted to hitpoints.")
 
 public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 ..setName("Dracula's Axe")
@@ -31,9 +28,8 @@ public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.AGILITY, 12)
 ..addBonus(Bonus.INTELLIGENCE, 12)
 ..setAbilities(commaList(CLEAVE_ID))
-..onPickup(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE/100))
-..onDrop(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, -LIFESTEAL_VALUE/100)) 
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+..addCustomStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant DRACULAS_AXE_RECIPE = new ItemRecipe()

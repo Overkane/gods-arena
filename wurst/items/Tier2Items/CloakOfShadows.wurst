@@ -9,7 +9,7 @@ import AssassinsBlade
 import TooltipFactory
 import CustomStatSystem
 
-constant EVASION_CHANCE = 15
+constant EVASION_CHANCE = 15.
 
 constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
 constant PHASE_STEP_DURATION = 5
@@ -17,10 +17,6 @@ constant PHASE_STEP_DURATION = 5
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Phase Step", 
   "allows owner to walk through other units. Lasts " + PHASE_STEP_DURATION.color(COLOR_GOLD_STR) + " seconds.")
-
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Evasion", 
-  (EVASION_CHANCE.toString() + "%").color(COLOR_GOLD_STR) + " chance to dodge an attack.")
 
 public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..setName("Cloak of Shadows")
@@ -30,9 +26,8 @@ public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.AGILITY, 25)
 ..addBonus(Bonus.LIFE, 300)
 ..setAbilities(commaList(PHASE_STEP_ID))
-..onPickup(actor -> actor.addStat(CustomUnitStats.EVASION, EVASION_CHANCE/100))
-..onDrop(actor -> actor.addStat(CustomUnitStats.EVASION, -EVASION_CHANCE/100)) 
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+..addCustomStat(CustomUnitStats.EVASION, EVASION_CHANCE)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()

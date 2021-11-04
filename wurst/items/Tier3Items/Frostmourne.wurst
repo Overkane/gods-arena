@@ -9,18 +9,10 @@ import ArcaniteSword
 import PlatedGauntlets
 
 
-constant ATTACK_CRIT_CHANCE = 20
-constant ATTACK_CRIT_POWER = 60
+constant ATTACK_CRIT_CHANCE = 20.
+constant ATTACK_CRIT_POWER = 60.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Chance", 
-  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD_STR) + ".")
-
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Power", 
-  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD_STR) + ".")
-
-constant ABIL_TOOLTIP3 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Frost Attack", 
   "Enchants attacks with a frost effect.")
 
@@ -34,15 +26,9 @@ public constant FROSTMOURNE_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.ARMOR, 2)
 ..addBonus(Bonus.DAMAGE, 120)
 ..setAbilities(commaList('Alob'))
-..onPickup(actor -> begin
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, ATTACK_CRIT_CHANCE/100)
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, ATTACK_CRIT_POWER/100)
-end)
-..onDrop(actor -> begin
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, -ATTACK_CRIT_CHANCE/100)
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, -ATTACK_CRIT_POWER/100)
-end)
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2 + "\n\n" + ABIL_TOOLTIP3)
+..addCustomStat(CustomUnitStats.ATTACK_CRIT_CHANCE, ATTACK_CRIT_CHANCE)
+..addCustomStat(CustomUnitStats.ATTACK_CRIT_POWER, ATTACK_CRIT_POWER)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant FROSTMOURNE_RECIPE = new ItemRecipe()

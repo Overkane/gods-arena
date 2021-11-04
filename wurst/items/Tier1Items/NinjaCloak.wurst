@@ -7,19 +7,16 @@ import VitalityStone
 import TooltipFactory
 import CustomStatSystem
 
-constant EVASION_CHANCE = 8
+constant EVASION_CHANCE = 8.
 
-constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Evasion", 
-  EVASION_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to dodge an attack.")
+constant ABIL_TOOLTIP = ""
 
 public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
 ..setName("Ninja Cloak")
 ..setInterfaceIcon(Icons.bTNCloak)
 ..addBonus(Bonus.AGILITY, 12)
 ..addBonus(Bonus.LIFE, 200)
-..onPickup(actor -> actor.addStat(CustomUnitStats.EVASION, EVASION_CHANCE/100))
-..onDrop(actor -> actor.addStat(CustomUnitStats.EVASION, -EVASION_CHANCE/100)) 
+..addCustomStat(CustomUnitStats.EVASION, EVASION_CHANCE)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

@@ -4,7 +4,7 @@ import RecipeItem
 import TooltipFactory
 import CustomStatSystem
 
-constant LIFESTEAL_VALUE = 15
+constant LIFESTEAL_VALUE = 15.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Lifesteal", 
@@ -14,7 +14,6 @@ public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Death")
 ..setInterfaceIcon(Icons.bTNMaskOfDeath)
 ..setGoldCost(135)
-..onPickup(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE/100))
-..onDrop(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, -LIFESTEAL_VALUE/100)) 
+..addCustomStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()

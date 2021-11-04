@@ -9,13 +9,7 @@ import CustomStatSystem
 constant ATTACK_CRIT_CHANCE = 10
 constant ATTACK_CRIT_POWER = 25
 
-constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Chance", 
-  "Increases chance to deal critical hits by " + ATTACK_CRIT_CHANCE.colorPerc(COLOR_GOLD_STR) + ".")
-
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Critical Power", 
-  "Increases power of critical strike by " + ATTACK_CRIT_POWER.colorPerc(COLOR_GOLD_STR) + ".")
+constant ABIL_TOOLTIP = ""
 
 public constant STEEL_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Steel Sword")
@@ -29,7 +23,7 @@ end)
   actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, -ATTACK_CRIT_CHANCE/100)
   actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, -ATTACK_CRIT_POWER/100)
 end)
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant STEEL_SWORD_RECIPE = new ItemRecipe()

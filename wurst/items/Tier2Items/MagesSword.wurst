@@ -6,31 +6,19 @@ import CustomStatSystem
 import Sapphire
 import SteelSword
 
-constant SPELL_CRIT_CHANCE = 12
-constant SPELL_CRIT_POWER = 40
+constant SPELL_CRIT_CHANCE = 12.
+constant SPELL_CRIT_POWER = 40.
 
-constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Spell Critical Chance", 
-  "Increases chance to deal spell critical hits by " + SPELL_CRIT_CHANCE.colorPerc(COLOR_GOLD_STR) + ".")
-
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Spell Critical Power", 
-  "Increases power of spell critical strike by " + SPELL_CRIT_POWER.colorPerc(COLOR_GOLD_STR) + ".")
+constant ABIL_TOOLTIP = ""
 
 public constant MAGES_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Mage's Sword")
 ..setInterfaceIcon(MapIcons.bTNFrostMourne)
 ..addBonus(Bonus.DAMAGE, 20)
 ..addBonus(Bonus.INTELLIGENCE, 12)
-..onPickup(actor -> begin
-  actor.addStat(CustomUnitStats.SPELL_CRIT_CHANCE, SPELL_CRIT_CHANCE/100)
-  actor.addStat(CustomUnitStats.SPELL_CRIT_POWER, SPELL_CRIT_POWER/100)
-end)
-..onDrop(actor -> begin
-  actor.addStat(CustomUnitStats.SPELL_CRIT_CHANCE, -SPELL_CRIT_CHANCE/100)
-  actor.addStat(CustomUnitStats.SPELL_CRIT_POWER, -SPELL_CRIT_POWER/100)
-end)
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+..addCustomStat(CustomUnitStats.SPELL_CRIT_CHANCE, SPELL_CRIT_CHANCE)
+..addCustomStat(CustomUnitStats.SPELL_CRIT_POWER, SPELL_CRIT_POWER)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant MAGES_SWORD_RECIPE = new ItemRecipe()

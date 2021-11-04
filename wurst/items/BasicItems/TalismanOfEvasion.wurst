@@ -4,7 +4,7 @@ import RecipeItem
 import TooltipFactory
 import CustomStatSystem
 
-constant EVASION_CHANCE = 5
+constant EVASION_CHANCE = 5.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Evasion", 
@@ -14,7 +14,6 @@ public constant TALISMAN_OF_EVASION_ITEM = compiletime(new RecipeItem()
 ..setName("Talisman of Evasion")
 ..setInterfaceIcon(Icons.bTNTalisman)
 ..setGoldCost(95)
-..onPickup(actor -> actor.addStat(CustomUnitStats.EVASION, EVASION_CHANCE/100))
-..onDrop(actor -> actor.addStat(CustomUnitStats.EVASION, -EVASION_CHANCE/100)) 
+..addCustomStat(CustomUnitStats.EVASION, EVASION_CHANCE)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()

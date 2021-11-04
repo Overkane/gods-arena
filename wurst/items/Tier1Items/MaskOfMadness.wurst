@@ -13,16 +13,13 @@ constant BERSERK_ID = compiletime(ABIL_ID_GEN.next())
 constant BERSERK_BONUS_AS = 40
 constant BERSERK_DAMAGE_TAKEN_INC = 30
 
-constant LIFESTEAL_VALUE = 20
+constant LIFESTEAL_VALUE = 20.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Berserk", 
   "gives " + BERSERK_BONUS_AS.colorPerc(COLOR_GOLD_STR) + " AS, but increases damage taken by " 
   + BERSERK_DAMAGE_TAKEN_INC.colorPerc(COLOR_GOLD_STR) + ".")
 
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Lifesteal", 
-  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD_STR) + " of damage dealt converted to hitpoints.")
 
 constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Madness")
@@ -31,9 +28,8 @@ constant MASK_OF_MADNESS_ITEM = compiletime(new RecipeItem()
 ..setActivelyUsed(true)
 ..setAbilities(commaList(BERSERK_ID))
 ..setCooldownGroup(BERSERK_ID.toRawCode())
-..onPickup(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE/100))
-..onDrop(actor -> actor.addStat(CustomUnitStats.LIFESTEAL, -LIFESTEAL_VALUE/100)) 
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+..addCustomStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant MASK_OF_MADNESS_RECIPE = new ItemRecipe()

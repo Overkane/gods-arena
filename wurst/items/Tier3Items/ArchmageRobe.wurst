@@ -13,15 +13,12 @@ constant MANA_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 constant MANA_SHIELD_ABSORB = 2
 constant MANA_SHIELD_DURATION = 20
 
-constant SPELL_LIFESTEAL_VALUE = 20
+constant SPELL_LIFESTEAL_VALUE = 20.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Shield", 
   "activates a shield that absorbs " + MANA_SHIELD_ABSORB.color(COLOR_GOLD_STR) + " damage per point of mana. Lasts " + MANA_SHIELD_DURATION.color(COLOR_GOLD_STR) + " seconds.")
 
-constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Spell Lifesteal", 
-  SPELL_LIFESTEAL_VALUE.colorPerc(COLOR_GOLD_STR) + " of spell damage dealt converted to hitpoints.")
 
 public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
 ..setName("Archmage Robe")
@@ -33,9 +30,8 @@ public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.INTELLIGENCE, 15)
 ..addBonus(Bonus.MANAREGEN, 2)
 ..setAbilities(commaList(MANA_SHIELD_ID))
-..onPickup(actor -> actor.addStat(CustomUnitStats.SPELL_LIFESTEAL, SPELL_LIFESTEAL_VALUE/100))
-..onDrop(actor -> actor.addStat(CustomUnitStats.SPELL_LIFESTEAL, -SPELL_LIFESTEAL_VALUE/100)) 
-..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+..addCustomStat(CustomUnitStats.SPELL_LIFESTEAL, SPELL_LIFESTEAL_VALUE)
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant ARCHMAGE_ROBE_RECIPE = new ItemRecipe()
