@@ -6,3 +6,8 @@ public class MapModels
   static constant missilePurple = "Models/Shot II Purple.mdx" // Mythic
   static constant heavensGateChannel= "Models/Heaven's Gate Channel.mdx" // Mythic
   static constant waterBlast = "Models/WaterBlast.mdx" // JesusHipster
+  static constant blackhole = "Models/BlackHole.mdx" // Fingolfin
+  static constant bubbles = "Models/Bubbles.mdx" // MajorSonnwaitts
+  static constant coupDeGrace = "Models/Coup de Grace.mdx" // Vinz not used for now
+  static constant waterTentacle = "Models/Water Tentacle.mdx" // Champara Bros
+  static constant waterElemental = "Models/WaterElemental.mdx" // icewolf055

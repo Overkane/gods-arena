@@ -2,8 +2,9 @@ package WaterBlastBuff
 import PresetBuffs
 import Assets
 import BonusHandler
+import MapModels
 
-constant buffTuple = compiletime(createDummyBuffObject("Water Blast", "Unit's attack and movement speed is slowed",  Icons.bTNOrbOfFrost, "Bubbles.mdx", AttachmentPoints.foot))
+constant buffTuple = compiletime(createDummyBuffObject("Water Blast", "Unit's attack and movement speed is slowed",  Icons.bTNOrbOfFrost, MapModels.bubbles, AttachmentPoints.foot))
 
 public class WaterBlastBuff extends NormalBuff
   real slow

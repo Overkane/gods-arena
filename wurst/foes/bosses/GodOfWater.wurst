@@ -13,6 +13,7 @@ import HelmOfTheGod
 import Hero
 import InstantDummyCaster
 import DummyCaster
+import MapModels
 
 constant GOD_OF_WATER_ID = compiletime(UNIT_ID_GEN.next())
 
@@ -88,7 +89,7 @@ init
   new UnitDefinition(GOD_OF_WATER_ID, UnitIds.waterelemental3)
   ..setAcquisitionRange(99999)
   ..setName("God of Water")
-  ..setModelFile("WaterElemental.mdx")
+  ..setModelFile(MapModels.waterElemental)
   ..setAttack1ProjectileArt(Abilities.crushingWaveDamage)
   ..setAttack1CooldownTime(1.75)
   ..setAttack1DamageBase(575)
@@ -107,7 +108,7 @@ init
   ..setAttack1Range(188)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(1)
-  ..setModelFile("Water Tentacle")
+  ..setModelFile(MapModels.waterTentacle)
   ..setHitPointsMaximumBase(4500)
   ..setArmorType(ArmorType.Medium)
   ..setDefenseBase(5)
