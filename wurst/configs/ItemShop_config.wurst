@@ -1,0 +1,4 @@
+package ItemShop_config
+import MapIcons
+
+@config public constant LUMBER_ICON = MapIcons.bTNMedalionOfCourageWithBorder

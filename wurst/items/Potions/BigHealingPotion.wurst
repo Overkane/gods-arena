@@ -11,8 +11,8 @@ import MapIcons
 import CustomHeal
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_HEAL = 1500
-constant PERC_HEAL = 45
+constant FLAT_HEAL = 1600
+constant PERC_HEAL = 60
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Heal", 
@@ -21,7 +21,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 public constant B_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Big Healing Potion")
   ..setInterfaceIcon(MapIcons.bTNBigHealingPotion)
-  ..setGoldCost(105)
+  ..setGoldCost(145)
   ..setNumberofCharges(1)
   ..setMaxStack(5)
   ..setActivelyUsed(true)
@@ -43,5 +43,5 @@ init
 @compiletime function genItemAbils()
   new AbilityDefinitionItemHealLesser(HEAL_ID)
   ..presetHitPointsGained(lvl -> 0)
-  ..presetCooldown(lvl -> 20)
+  ..presetCooldown(lvl -> 25)
 

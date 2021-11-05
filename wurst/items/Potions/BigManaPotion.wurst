@@ -10,8 +10,8 @@ import TooltipFactory
 import MapIcons
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_MP = 625
-constant PERC_MP = 35
+constant FLAT_MP = 1000
+constant PERC_MP = 45
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Restoration", 
@@ -20,7 +20,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 public constant B_MANA_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Big Mana Potion")
   ..setInterfaceIcon(MapIcons.bTNBigManaPotion)
-  ..setGoldCost(105)
+  ..setGoldCost(165)
   ..setNumberofCharges(1)
   ..setMaxStack(5)
   ..setActivelyUsed(true)

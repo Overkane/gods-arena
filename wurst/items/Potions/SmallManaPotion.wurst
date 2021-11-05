@@ -11,7 +11,7 @@ import MapIcons
 public constant MANA_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_MP = 225
+constant FLAT_MP = 250
 constant PERC_MP = 15
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,

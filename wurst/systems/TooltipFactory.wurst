@@ -6,6 +6,29 @@ constant ACTIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
 constant PASSIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
 constant ABILITY_NAME_COLOR = color(106, 194, 221).toColorString()
 
+public constant PHYSICAL_COLOR = colorA(223, 59, 33, 255).toColorString()
+public constant MAGICAL_COLOR = colorA(91, 147, 209, 255).toColorString()
+public constant PURE_COLOR = colorA(194, 156, 74, 255).toColorString()
+public constant UTILITY_COLOR = colorA(35, 170, 58, 255).toColorString()
+
+enum CustomStatType
+  PHYSICAL
+  MAGICAL
+  UTILITY
+
+public enum AbilityType
+  PASSIVE
+  ACTIVE
+
+public function CustomUnitStats.getStatType() returns CustomStatType
+  switch this
+    case BONUS_ATTACK_DAMAGE | ATTACK_POWER | ATTACK_CRIT_POWER | ATTACK_CRIT_CHANCE | LIFESTEAL
+      return CustomStatType.PHYSICAL
+    case BONUS_SPELL_DAMAGE | SPELL_POWER | SPELL_CRIT_POWER | SPELL_CRIT_CHANCE | SPELL_LIFESTEAL
+      return CustomStatType.MAGICAL
+    case EVASION | MAGIC_RESISTANCE | THREAT_GENERATION
+      return CustomStatType.UTILITY
+
 public function CustomUnitStats.toString() returns string
   switch this
     case BONUS_ATTACK_DAMAGE
@@ -17,7 +40,7 @@ public function CustomUnitStats.toString() returns string
     case ATTACK_CRIT_CHANCE
       return "Attack Crit Chance"
     case LIFESTEAL
-      return "Lifesteal"
+      return "Physical Lifesteal"
     case BONUS_SPELL_DAMAGE
       return "Bonus Spell Damage"
     case SPELL_POWER
@@ -64,10 +87,6 @@ public function CustomUnitStats.getMeasure() returns string
     case THREAT_GENERATION
       return "%"
 
-public enum AbilityType
-  PASSIVE
-  ACTIVE
-
 public function real.percRound() returns string
   return (this.toString(0) + "%")
 
@@ -90,8 +109,16 @@ public function real.colorPerc(string which) returns string
 public function int.colorPerc(string which) returns string
   return (this.toString() + "%").color(which)
 
-public function RecipeItem.addCustomStat(CustomUnitStats statType, real amount)
+public function RecipeItem.addCustomStat(CustomUnitStats customStat, real amount)
   var result = ""
+
+  var tooltipColor = PHYSICAL_COLOR
+
+  if customStat.getStatType() == CustomStatType.MAGICAL
+    tooltipColor = MAGICAL_COLOR
+  else if customStat.getStatType() == CustomStatType.UTILITY
+    tooltipColor = UTILITY_COLOR
+
   if amount >= 0
     result += COLOR_GOLD_STR + "+"
   else
@@ -99,13 +126,13 @@ public function RecipeItem.addCustomStat(CustomUnitStats statType, real amount)
   
   result += amount.round().toString()
 
-  result += statType.getMeasure() + "|r " + ABILITY_NAME_COLOR + statType.toString() + "|r"
+  result += customStat.getMeasure() + "|r " + tooltipColor + customStat.toString() + "|r"
 
   var statAmount = amount
-  if statType.getMeasure() == "%"
+  if customStat.getMeasure() == "%"
     statAmount = amount / 100
 
-  this.addTooltipProperty(result, u -> u.addStat(statType, statAmount),  u -> u.addStat(statType, -statAmount))
+  this.addTooltipProperty(result, u -> u.addStat(customStat, statAmount),  u -> u.addStat(customStat, -statAmount))
     
   
 

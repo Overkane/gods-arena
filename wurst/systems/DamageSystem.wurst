@@ -6,11 +6,12 @@ import PlayerData
 import GameConstants
 import CustomHeal
 import ObjEditingNatives
+import TooltipFactory
 
 public class DamageTypeTooltips
-  static constant StringLevelClosure physical = lvl -> "Physical".color(colorA(223, 59, 33, 255))
-  static constant StringLevelClosure magical = lvl -> "Magical".color(colorA(91, 147, 209, 255))
-  static constant StringLevelClosure pure = lvl -> "Pure".color(colorA(194, 156, 74, 255))
+  static constant StringLevelClosure physical = lvl -> "Physical".color(PHYSICAL_COLOR)
+  static constant StringLevelClosure magical = lvl -> "Magical".color(MAGICAL_COLOR)
+  static constant StringLevelClosure pure = lvl -> "Pure".color(PURE_COLOR)
 
 public enum DamageEvents
   START // First listener, where can be set stats for next listeners

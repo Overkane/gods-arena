@@ -10,8 +10,8 @@ import TooltipFactory
 import MapIcons
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_MP = 450
-constant PERC_MP = 25
+constant FLAT_MP = 500
+constant PERC_MP = 30
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Restoration", 

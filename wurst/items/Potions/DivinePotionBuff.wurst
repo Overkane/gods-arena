@@ -1,0 +1,36 @@
+package DivinePotionBuff
+import PresetBuffs
+import Assets
+import SoundUtils
+import BonusHandler
+
+constant buffTuple1 = compiletime(createDummyBuffObject("Divine Potion Buff", "All hero stats are increased",  Icons.bTNPotionOfRestoration))
+constant ON_APPLY_SOUND = new SoundDefinition(Sounds.divineShield)
+
+public class DivinePotionBuff extends NormalBuff
+  constant statIncreasePerc = 0.
+  var bonusStr = 0.
+  var bonusAgi = 0.
+  var bonusInt = 0.
+
+  construct(real dur, real statIncreasePerc)
+    super(dur, buffTuple1)
+    this.statIncreasePerc = statIncreasePerc
+    
+  override function onApply()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
+
+    bonusStr = target.getStr(false) * statIncreasePerc
+    bonusAgi = target.getAgi(false) * statIncreasePerc
+    bonusInt = target.getInt(false) * statIncreasePerc
+
+    target
+    ..addBonus(Bonus.STRENGTH, bonusStr)
+    ..addBonus(Bonus.AGILITY, bonusAgi)
+    ..addBonus(Bonus.INTELLIGENCE, bonusInt)
+
+  override function onEnd()
+    target
+    ..addBonus(Bonus.STRENGTH, -bonusStr)
+    ..addBonus(Bonus.AGILITY, -bonusAgi)
+    ..addBonus(Bonus.INTELLIGENCE, -bonusInt)
