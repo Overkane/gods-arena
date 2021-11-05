@@ -200,6 +200,7 @@ public class HonorShop extends UnitEntity
   ..setCollisionSize(0.)
   ..setSightRadiusDay(0)
   ..setSightRadiusNight(0)
+  ..setIsaBuilding(false)
   ..buildHero()
 
   // Upgrades for honor shop
