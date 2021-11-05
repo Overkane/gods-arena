@@ -3,7 +3,6 @@ import Icons
 import RecipeItem
 import ClawsOfAttack
 import IronSword
-import TooltipFactory
 import CustomStatSystem
 
 constant ATTACK_CRIT_CHANCE = 10

@@ -6,9 +6,7 @@ import CustomStatSystem
 
 constant LIFESTEAL_VALUE = 15.
 
-constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Lifesteal", 
-  LIFESTEAL_VALUE.colorPerc(COLOR_GOLD_STR) + " of damage dealt converted to hitpoints.")
+constant ABIL_TOOLTIP = ""
 
 public constant MASK_OF_DEATH_ITEM = compiletime(new RecipeItem()
 ..setName("Mask of Death")

@@ -16,7 +16,7 @@ init
                     coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(109, 57, 207, 255), 7)
                 else if isPureDamage()
                     coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(194, 156, 74, 255), 7)
-                else 
+                // else 
                     // print("Unknown damage type:", 3)
                     // print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName(), 3)
                     // print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".", 3)
