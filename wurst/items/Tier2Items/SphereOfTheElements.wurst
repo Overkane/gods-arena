@@ -1,0 +1,42 @@
+package SphereOfTheElements
+import ItemObjEditing
+import RecipeItem
+import ChannelAbilityPreset
+import MapIcons
+import ClosureEvents
+import SoundUtils
+import ElementalStone
+import TooltipFactory
+
+constant SPHERE_OF_THE_ELEMENTS_ID = compiletime(ABIL_ID_GEN.next())
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Refresh", 
+  "refreshes all abilities of the owner.")
+
+public constant SPHERE_OF_THE_ELEMENTS_ITEM = compiletime(new RecipeItem()
+  ..setName("Sphere of the Elements")
+  ..setInterfaceIcon(MapIcons.bTNShpereOfVoid)
+  ..setActivelyUsed(true)
+  ..addBonus(Bonus.STRENGTH, 30)
+  ..addBonus(Bonus.AGILITY, 30)
+  ..addBonus(Bonus.INTELLIGENCE, 30)
+  ..setAbilities(SPHERE_OF_THE_ELEMENTS_ID.toRawCode())
+  ..setCooldownGroup(SPHERE_OF_THE_ELEMENTS_ID.toRawCode())
+  ..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant SPHERE_OF_THE_ELEMENTS_RECIPE = new ItemRecipe()
+..gold(300)
+..setRequiredItems(ELEMENTAL_STONE_ITEM, ELEMENTAL_STONE_ITEM)
+..setResultItem(SPHERE_OF_THE_ELEMENTS_ITEM)
+
+init
+  EventListener.onCast(SPHERE_OF_THE_ELEMENTS_ID) (unit caster) ->
+    new SoundDefinition(Sounds.wandOfIllusionTarget1).playForPlayer(caster.getOwner())
+    caster.resetCooldown()
+
+@compiletime function genItemAbils()
+  new ChannelAbilityPreset(SPHERE_OF_THE_ELEMENTS_ID, 1, true)
+  ..setManaCost(1, 200)
+  ..setCooldown(1, 100)
