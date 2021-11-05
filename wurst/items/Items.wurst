@@ -8,7 +8,7 @@ import public BigHealingPotion
 import public SmallManaPotion
 import public MediumManaPotion
 import public BigManaPotion
-import public VampiricPotion
+import public DivinePotion
 import public Tomes
 
 // Basic items

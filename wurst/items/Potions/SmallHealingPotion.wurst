@@ -13,7 +13,7 @@ public constant HEALING_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_HEAL = 400
-constant PERC_HEAL = 25
+constant PERC_HEAL = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Heal", 
