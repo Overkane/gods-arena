@@ -128,7 +128,8 @@ init
       
       if lifestealAmount != 0
         let healValue = DamageEvent.getAmount() * lifestealAmount
-        sunit.healTarget(sunit, healValue, false)
+        if healValue > 1
+          sunit.healTarget(sunit, healValue, false)
 
     else if isMagicalDamage()
       var attacker = sunit
@@ -140,5 +141,6 @@ init
       
       if lifestealAmount != 0
         let healValue = DamageEvent.getAmount() * lifestealAmount
-        attacker.healTarget(attacker, healValue, false)
+        if healValue > 1
+          attacker.healTarget(attacker, healValue, false)
     
