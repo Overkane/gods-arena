@@ -31,6 +31,9 @@ public class Shrapnel extends PhysicsProjectile
 		initialTime = GetRandomReal(1, 1.75)
 		setTimed(initialTime)
 
+	override function onGroundHit()
+		vel.z = -vel.z
+
 
 	override function update()
 		var col = fx.tint

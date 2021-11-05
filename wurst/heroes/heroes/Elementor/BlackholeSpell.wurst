@@ -8,6 +8,7 @@ import Entity
 import DamageSystem
 import Heightmap
 import MapModels
+import PhysicsProjectile
 
 public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 5 + 10. * lvl
@@ -21,6 +22,9 @@ init
         let lvl = caster.getAbilityLevel(BLACKHOLE_ABILITY_ID)
         let eff = addEffect(SPELL_FX, spellTarget.withHeightMap(48))..setScale(0)
         let aoe = SPELL_AOE.run(lvl)
+
+        for i = 0 to 9
+            new Shrapnel(spellTarget.withHeightMap(), Abilities.vengeanceMissile)
         
         doPeriodicallyCounted(0.05, 50) cb ->
             eff.setScale(eff.getScale().lerp(aoe / 200, 0.5))
