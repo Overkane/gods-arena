@@ -1,5 +1,4 @@
 package AdeptStaff
-import Icons
 import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
@@ -8,6 +7,7 @@ import ApprenticeStaff
 import MoonAmulet
 import TooltipFactory
 import CustomStatSystem
+import MapIcons
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 350
@@ -22,7 +22,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 
 public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Adept Staff")
-..setInterfaceIcon(Icons.bTNWandOfShadowSight)
+..setInterfaceIcon(MapIcons.btnMage2)
 ..setActivelyUsed(true)
 ..addBonus(Bonus.INTELLIGENCE, 20)
 ..addBonus(Bonus.MANAREGEN, 2)

@@ -24,6 +24,9 @@ public class MapIcons extends Icons
   static constant btNElementalSpin = "ReplaceableTextures/CommandButtons/BTNElementalSpin.blp"
   static constant bTNFrostMourne = "ReplaceableTextures/CommandButtons/BTNFrostMourne.blp"
   static constant btnWeaver = "ReplaceableTextures/CommandButtons/BTNWeaver.blp"
+  static constant btnMage1 = "ReplaceableTextures/CommandButtons/BTNMage01.blp"
+  static constant btnMage2 = "ReplaceableTextures/CommandButtons/BTNMage02.blp"
+  static constant btnMage3 = "ReplaceableTextures/CommandButtons/BTNMage03.blp"
   static constant bTNMedalionOfCourageWithBorder = "ReplaceableTextures/CommandButtons/BTNMedalionOfCourageWithBorder.blp" // Blizzard
   static constant bTNShpereOfVoid = "ReplaceableTextures/CommandButtons/BTNShpereOfVoid.blp" // PeeKay
   // Passive Buttons

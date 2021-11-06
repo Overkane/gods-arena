@@ -21,24 +21,40 @@ function wave_1() returns Wave
   ..goldBounty(80)
 
   ..creep(UnitIds.timberwolf)
-  ..hp(350)
+  ..hp(375)
   ..damage(8)
-  ..amount(20)
+  ..amount(10)
 
-  ..wait(10)
+  ..wait(15)
+
+  ..creep(UnitIds.timberwolf)
+  ..hp(450)
+  ..damage(10)
+  ..amount(10)
+  ..scale(1.2)
+
+  ..wait(15)
 
   ..creep(UnitIds.giantwolf)
-  ..hp(700)
+  ..hp(800)
   ..damage(14)
   ..amount(2)
 
   ..wait(5)
 
   ..creep(UnitIds.direwolf)
-  ..hp(1750)
+  ..hp(1950)
   ..damage(29)
   ..amount(1)
   ..scale(1.5)
+
+  ..wait(5)
+
+  ..creep(UnitIds.timberwolf)
+  ..hp(450)
+  ..damage(10)
+  ..amount(5)
+  ..scale(1.2)
 
   .build()
 
@@ -53,7 +69,7 @@ function wave_2() returns Wave
   ..amount(6)
 
   ..creep(UnitIds.foresttrolltrapper)
-  ..hp(600)
+  ..hp(650)
   ..damage(16)
   ..amount(4)
 
@@ -61,7 +77,7 @@ function wave_2() returns Wave
 
   ..creep(UnitIds.foresttrollberserker)
   ..hp(700)
-  ..damage(14)
+  ..damage(24)
   ..amount(9)
 
   ..creep(UnitIds.foresttrollhighpriest)
@@ -71,8 +87,8 @@ function wave_2() returns Wave
   ..amount(3)
 
   ..creep(UnitIds.foresttrollking)
-  ..hp(2750)
-  ..damage(70)
+  ..hp(3000)
+  ..damage(75)
   ..amount(1)
   ..scale(1.5)
 
@@ -90,7 +106,7 @@ function wave_3() returns Wave
 
   ..creep(UnitIds.furbolgtracker)
   ..hp(800)
-  ..damage(22)
+  ..damage(27)
   ..amount(4)
 
   ..creep(UnitIds.furbolgshaman)
@@ -113,7 +129,7 @@ function wave_3() returns Wave
   ..wait(10)
 
   ..creep(UnitIds.furbolgancient)
-  ..hp(4250)
+  ..hp(4500)
   ..damage(62)
   ..amount(1)
   ..scale(1.5)

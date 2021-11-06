@@ -1,5 +1,4 @@
 package ApprenticeStaff
-import Icons
 import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
@@ -7,6 +6,7 @@ import ObjectIds
 import SpiritMask
 import Sapphire
 import TooltipFactory
+import MapIcons
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 200
@@ -19,7 +19,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
 
 public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Apprentice Staff")
-..setInterfaceIcon(Icons.bTNWand)
+..setInterfaceIcon(MapIcons.btnMage1)
 ..setActivelyUsed(true)
 ..addBonus(Bonus.INTELLIGENCE, 10)
 ..addBonus(Bonus.MANAREGEN, 1)
