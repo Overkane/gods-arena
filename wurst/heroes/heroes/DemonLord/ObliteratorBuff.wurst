@@ -15,11 +15,6 @@ constant buffTupleBuff = compiletime(
   )
 )
 
-
-public function unit.hpRatio() returns real
-  return this.getHP() / this.getMaxHP()
-
-
 public class ObliteratorBuff extends NormalBuff
   static constant FOREVER = 9999999.
   real bonus_health_threshold
@@ -36,7 +31,7 @@ public class ObliteratorBuff extends NormalBuff
 
   override function update()
     super.update()
-    if this.target.hpRatio() > this.bonus_health_threshold
+    if this.target.getHPRatio() > this.bonus_health_threshold
       terminate()
     if not done
       forUnitsInRange(this.target.getPos(), this.creep_aggro_range) fog ->

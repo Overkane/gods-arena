@@ -3,6 +3,7 @@ import NoWurst
 import public AbilityObjEditing
 import public ObjectIds
 import public ObjectIdGenerator
+import public Icons
 
 public class PassiveAbilityPreset extends AbilityDefinitionCriticalStrikecreep
 	construct(int newId, int lvls, TooltipGenerator tgen)

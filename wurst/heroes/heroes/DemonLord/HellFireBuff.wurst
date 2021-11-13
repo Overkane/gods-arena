@@ -1,0 +1,44 @@
+package HellFireBuff
+import public PresetBuffs
+import Assets
+import SoundUtils
+import ChannelAbilityPreset
+import ClosureForGroups
+import DamageSystem
+
+constant buffTuple = compiletime(createDummyBuffObject("Hell Fire", "Unit burns enemies nearby",  Icons.bTNImmolationOn, Abilities.immolationTarget))
+
+public constant RealLevelClosure HELL_FIRE_HP_DRAIN = lvl -> 1
+public constant IntLevelClosure HELL_FIRE_DAMAGE_PER_DRAINED_HP = lvl -> 1 * lvl
+public constant HELL_FIRE_AOE = 300.
+
+constant ON_APPLY_SOUND = new SoundDefinition(Sounds.immolationTarget1)
+constant ON_END_SOUND = new SoundDefinition(Sounds.immolationDecay1)
+
+public class HellFireBuff extends NormalBuff
+  private int lvl
+  private real damageToCaster = 0.
+  private int damageToEnemies = 0
+
+  construct(int lvl)
+    super(999999, buffTuple)
+    this.lvl = lvl
+
+  override function onApply()
+    damageToCaster = HELL_FIRE_HP_DRAIN.run(lvl) / 100
+    damageToEnemies = HELL_FIRE_DAMAGE_PER_DRAINED_HP.run(lvl)
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
+
+  override function onEnd()
+    ON_END_SOUND.playForPlayer(target.getOwner())
+
+  override function update()
+    super.update()
+    let casterDamage = target.getMaxHP() * damageToCaster * BUFF_ANIM_PERIOD
+    target.addHP(-casterDamage)
+
+    forUnitsInRange(target.getPos(), HELL_FIRE_AOE) (unit u) ->
+      if u.isAlive() and u.isEnemyOf(target)
+        target.dealMagicalDamage(u, casterDamage * damageToEnemies)
+        flashEffect(Abilities.immolationDamage, u, AttachmentPoints.origin)
+    
