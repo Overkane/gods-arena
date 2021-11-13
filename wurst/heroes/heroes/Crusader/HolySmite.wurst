@@ -1,5 +1,4 @@
 package HolySmite
-import Icons
 import Abilities
 import ClosureForGroups
 import AbilityTooltipGenerator

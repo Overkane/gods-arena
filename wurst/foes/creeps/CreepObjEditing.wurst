@@ -2,7 +2,6 @@ package CreepObjEditing
 import public UnitObjEditing
 
 public class CreepDefinition extends UnitDefinition
-  int exp = 10
 
   construct(int newId, int origId)
     super(newId, origId)

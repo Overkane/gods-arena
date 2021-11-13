@@ -1,6 +1,5 @@
 package CriticalArrow
 import AbilityTooltipGenerator
-import Icons
 import StandardTextTags
 import Tagwalk
 import Orders

@@ -1,7 +1,6 @@
 package CrabDefense
 import AbilityTooltipGenerator
 import GameConstants
-import Icons
 import PassiveAbilityPreset
 import UnitIds
 import DamageEvent

@@ -1,6 +1,5 @@
 package LightningShield
 import RecipeItem
-import Icons
 import PassiveAbilityPreset
 import OrderIds
 import DamageEvent

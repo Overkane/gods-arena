@@ -1,6 +1,5 @@
 package BouncingChakram
 import AbilityTooltipGenerator
-import Icons
 import GameConstants
 import ClosureEvents
 import UpgradeObjEditing

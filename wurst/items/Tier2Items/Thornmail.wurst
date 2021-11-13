@@ -1,6 +1,5 @@
 package Thornmail
 import RecipeItem
-import Icons
 import PassiveAbilityPreset
 import SimpleArmor
 import HeartAmulet

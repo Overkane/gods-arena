@@ -1,6 +1,5 @@
 package MantleOfProtection
 import RecipeItem
-import Icons
 import PassiveAbilityPreset
 import RobeOfTheMage
 import SimpleArmor

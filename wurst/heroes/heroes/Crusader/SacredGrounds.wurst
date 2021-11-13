@@ -28,9 +28,9 @@ init
     let lvl = caster.getAbilityLevel(SACRED_GROUNDS_ID)
     let damage = DAMAGE_PER_SEC.run(lvl) + caster.getStr(true) * BONUS_STR_DAMAGE.run(lvl)
     let heal = HEAL_PER_SEC.run(lvl) + caster.getInt(true) * BONUS_INT_HEALING.run(lvl)
+    let duration = DURATION.run(lvl)
     var aoe = AOE.run(lvl)
     var effectScale = 1.
-    var duration = DURATION.run(lvl)
 
     if caster.hasBuff(TheEmpyreanBuff.typeId)
       let empBuff = caster.getBuff(TheEmpyreanBuff.typeId) castTo TheEmpyreanBuff

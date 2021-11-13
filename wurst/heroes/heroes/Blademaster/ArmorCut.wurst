@@ -1,7 +1,6 @@
 package ArmorCut
 import AbilityTooltipGenerator
 import GameConstants
-import Icons
 import TooltipFactory
 import public ArmorCutBuff
 import PassiveAbilityPreset
