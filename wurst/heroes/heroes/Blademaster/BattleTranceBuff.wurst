@@ -3,8 +3,9 @@ import PresetBuffs
 import Assets
 import SoundUtils
 import BonusHandler
+import TooltipFactory
 
-constant buffTuple1 = compiletime(createDummyBuffObject("Battle Trance Buff", "Hero has increased attackspeed.",  Icons.bTNMirrorImage))
+constant buffTuple1 = compiletime(createDummyBuffObject("Battle Trance".color(POSITIVE_COLOR), "Hero has increased attackspeed.",  Icons.bTNMirrorImage))
 constant buffTuple2 = compiletime(createDummyBuffObject("Battle Trance Debuff", "Hero has decreased attackspeed.",  Icons.bTNMirrorImage))
 
 public class BattleTranceBuff extends NormalBuff

@@ -1,8 +1,9 @@
 package DivineShieldBuff
 import public PresetBuffs
 import Assets
+import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Divine Shield", "Incoming damage is reduced",  Icons.bTNDivineIntervention, Abilities.divineShieldTarget))
+constant buffTuple = compiletime(createDummyBuffObject("Divine Shield".color(POSITIVE_COLOR), "Incoming damage is reduced",  Icons.bTNDivineIntervention, Abilities.divineShieldTarget))
 
 public class DivineShieldBuff extends NormalBuff
   int buffLvl

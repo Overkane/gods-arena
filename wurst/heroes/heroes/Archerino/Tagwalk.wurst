@@ -6,13 +6,14 @@ import Abilities
 import AttachmentPoints
 import ClosureEvents
 import GameConstants
+import TooltipFactory
 
 public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure WALK_DURATION = lvl -> 5. + 1. * lvl
 
 public constant tagBuffObj = compiletime(createDummyBuffObject("Tagged", "This unit has been tagged.", Icons.bTNTheBlackArrow, Abilities.parasiteTarget, AttachmentPoints.overhead))
-constant stabBuffObj = compiletime(createDummyBuffObject("|cff1cd134Tag Walk", "Increases speed and reduces damage taken. Enemies touched during the effect are |cffd803bctagged|r and will receive more damage.", Icons.bTNTheBlackArrow))
+constant stabBuffObj = compiletime(createDummyBuffObject("Tag Walk".color(POSITIVE_COLOR), "Increases speed and reduces damage taken. Enemies touched during the effect are |cffd803bctagged|r and will receive more damage.", Icons.bTNTheBlackArrow))
 
 public class TagBuff extends NormalBuff
 

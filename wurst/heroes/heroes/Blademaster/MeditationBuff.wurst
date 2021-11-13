@@ -1,9 +1,10 @@
 package MeditationBuff
 import public PresetBuffs
 import Assets
+import TooltipFactory
 import CustomHeal
 
-constant buffTuple = compiletime(createDummyBuffObject("Meditation", "Restores hp and mp",  Icons.bTNSleep))
+constant buffTuple = compiletime(createDummyBuffObject("Meditation".color(POSITIVE_COLOR), "Restores hp and mp",  Icons.bTNSleep))
 
 public class MeditationBuff extends NormalBuff
   private real hpPercReg

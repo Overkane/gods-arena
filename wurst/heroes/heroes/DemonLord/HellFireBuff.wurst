@@ -5,8 +5,9 @@ import SoundUtils
 import ChannelAbilityPreset
 import ClosureForGroups
 import DamageSystem
+import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Hell Fire", "Unit burns enemies nearby",  Icons.bTNImmolationOn, Abilities.immolationTarget))
+constant buffTuple = compiletime(createDummyBuffObject("Hell Fire".color(POSITIVE_COLOR), "Unit burns enemies nearby",  Icons.bTNImmolationOn, Abilities.immolationTarget))
 
 public constant RealLevelClosure HELL_FIRE_HP_DRAIN = lvl -> 1
 public constant IntLevelClosure HELL_FIRE_DAMAGE_PER_DRAINED_HP = lvl -> 1 * lvl

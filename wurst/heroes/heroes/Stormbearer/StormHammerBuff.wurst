@@ -2,8 +2,9 @@ package StormHammerBuff
 import PresetBuffs
 import Assets
 import SoundUtils
+import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("The Storm Hammer", "Hero attacks call chain lightining",  Icons.bTNStormHammer))
+constant buffTuple = compiletime(createDummyBuffObject("The Storm Hammer".color(POSITIVE_COLOR), "Hero attacks call chain lightining",  Icons.bTNStormHammer))
 
 public class StormHammerBuff extends NormalBuff
   constant ON_APPLY_SOUND = new SoundDefinition(Sounds.lightningShieldTarget1)

@@ -5,10 +5,11 @@ import BonusHandler
 import ClosureForGroups
 import CreepAggro
 import PresetBuffs
+import TooltipFactory
 
 constant buffTupleBuff = compiletime(
   createDummyBuffObject(
-    "Obliterator",
+    "Obliterator".color(POSITIVE_COLOR),
     "Grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units",
     Icons.bTNFireRocks,
     Abilities.vampiricAura

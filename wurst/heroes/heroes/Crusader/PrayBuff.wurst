@@ -4,9 +4,10 @@ import Assets
 import ClosureForGroups
 import BonusHandler
 import HashMap
+import TooltipFactory
 import initlater Pray
 
-public constant buffTuple = compiletime(createDummyBuffObject("Pray", "Various stats are improved",  Icons.bTNResurrection))
+public constant buffTuple = compiletime(createDummyBuffObject("Pray".color(POSITIVE_COLOR), "Various stats are improved",  Icons.bTNResurrection))
 
 constant prayMap = new HashMap<trigger, PrayMainBuff>
 function trigger.getPrayBuff() returns PrayMainBuff

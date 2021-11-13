@@ -3,8 +3,9 @@ import PresetBuffs
 import Assets
 import SoundUtils
 import CustomStatSystem
+import TooltipFactory
 
-constant buffTuple1 = compiletime(createDummyBuffObject("Overcharge Buff", "Hero deals increased magic damage",  Icons.bTNControlMagic))
+constant buffTuple1 = compiletime(createDummyBuffObject("Overcharge Buff".color(POSITIVE_COLOR), "Hero deals increased magic damage",  Icons.bTNControlMagic))
 constant buffTuple2 = compiletime(createDummyBuffObject("Overcharge Debuff", "Hero deals decreased magic damage",  Icons.bTNControlMagic))
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.purgeTarget1)
 

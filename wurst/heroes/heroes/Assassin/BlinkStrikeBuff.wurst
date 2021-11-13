@@ -1,9 +1,10 @@
 package BlinkStrikeBuff
 import PresetBuffs
 import Assets
+import TooltipFactory
 import BonusHandler
 
-constant buffTupleBuff = compiletime(createDummyBuffObject("Blink Strike Buff", "Unit's agility is increased.",  Icons.bTNShadowMeld))
+constant buffTupleBuff = compiletime(createDummyBuffObject("Blink Strike".color(POSITIVE_COLOR), "Unit's agility is increased.",  Icons.bTNShadowMeld))
 
 public class BlinkStrikeBuff extends StackingBuff
   var bonusAgi = 0.
