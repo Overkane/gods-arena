@@ -23,7 +23,7 @@ public class MapIcons extends Icons
   static constant bTNSuperiorMageRobe = "ReplaceableTextures/CommandButtons/BTNSuperiorMageRobe.blp"
   static constant btNElementalSpin = "ReplaceableTextures/CommandButtons/BTNElementalSpin.blp"
   static constant bTNFrostMourne = "ReplaceableTextures/CommandButtons/BTNFrostMourne.blp"
-  static constant btnWeaver = "ReplaceableTextures/CommandButtons/BTNWeaver.blp"
+  static constant btnFoliant = "ReplaceableTextures/CommandButtons/BTNWeaver.blp"
   static constant btnMage1 = "ReplaceableTextures/CommandButtons/BTNMage01.blp"
   static constant btnMage2 = "ReplaceableTextures/CommandButtons/BTNMage02.blp"
   static constant btnMage3 = "ReplaceableTextures/CommandButtons/BTNMage03.blp"
