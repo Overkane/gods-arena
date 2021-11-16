@@ -1,5 +1,4 @@
 package TheEmpyrean
-import Icons
 import AbilityTooltipGenerator
 import public TheEmpyreanBuff
 import Entity

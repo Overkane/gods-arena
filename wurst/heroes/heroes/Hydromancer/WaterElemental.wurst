@@ -2,7 +2,6 @@ package WaterElemental
 import AbilityTooltipGenerator
 import UnitIds
 import GameConstants
-import Icons
 import Entity
 import CustomStatSystem
 

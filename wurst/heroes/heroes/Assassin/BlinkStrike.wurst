@@ -1,6 +1,5 @@
 package BlinkStrike
 import AbilityTooltipGenerator
-import Icons
 import GameConstants
 import TooltipFactory
 import ClosureEvents

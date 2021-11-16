@@ -1,6 +1,5 @@
 package Tagwalk
 import AbilityTooltipGenerator
-import Icons
 import PresetBuffs
 import Abilities
 import AttachmentPoints

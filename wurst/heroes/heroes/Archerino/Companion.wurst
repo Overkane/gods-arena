@@ -1,6 +1,5 @@
 package Companion
 import AbilityTooltipGenerator
-import Icons
 import Tagwalk
 import GameConstants
 import Entity

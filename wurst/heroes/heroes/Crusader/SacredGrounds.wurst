@@ -1,5 +1,4 @@
 package SacredGrounds
-import Icons
 import ClosureForGroups
 import AbilityTooltipGenerator
 import ClosureEvents

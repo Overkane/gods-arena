@@ -1,6 +1,5 @@
 package TimeChamber
 import AbilityTooltipGenerator
-import Icons
 import Abilities
 import ClosureTimers
 import ClosureForGroups

@@ -1,7 +1,6 @@
 package TimeSiphon
 import AbilityTooltipGenerator
 import GameConstants
-import Icons
 import DamageSystem
 
 public constant SIPHON_ABIL_ID = compiletime(ABIL_ID_GEN.next())

@@ -1,5 +1,4 @@
 package StormHammer
-import Icons
 import AbilityTooltipGenerator
 import StormHammerBuff
 import Buff

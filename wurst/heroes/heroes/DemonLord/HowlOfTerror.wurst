@@ -5,7 +5,6 @@ import BuffIds
 import ClosureEvents
 import DemonLordIds
 import GameConstants
-import Icons
 import TooltipFactory
 import CustomHeal
 import DamageEvent

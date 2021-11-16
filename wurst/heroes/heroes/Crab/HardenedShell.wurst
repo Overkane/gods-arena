@@ -1,7 +1,6 @@
 package HardenedShell
 import AbilityTooltipGenerator
 import GameConstants
-import Icons
 import TooltipFactory
 
 public constant HARD_SHELL_ID = compiletime(ABIL_ID_GEN.next())

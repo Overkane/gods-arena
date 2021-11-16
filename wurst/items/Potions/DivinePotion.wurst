@@ -1,6 +1,5 @@
 package DivinePotion
 import RecipeItem
-import Icons
 import TooltipFactory
 import ClosureEvents
 import ChannelAbilityPreset

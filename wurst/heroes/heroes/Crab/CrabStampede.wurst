@@ -1,6 +1,5 @@
 package CrabStampede
 import AbilityTooltipGenerator
-import Icons
 import GameConstants
 import Units
 import DamageSystem

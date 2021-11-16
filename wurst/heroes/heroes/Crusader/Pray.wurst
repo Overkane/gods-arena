@@ -1,5 +1,4 @@
 package Pray
-import Icons
 import AbilityTooltipGenerator
 import ClosureEvents
 import Buff

@@ -1,6 +1,5 @@
 package ArrowVolley
 import AbilityTooltipGenerator
-import Icons
 import Projectile
 import Abilities
 import ClosureForGroups

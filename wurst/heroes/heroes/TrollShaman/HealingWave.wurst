@@ -7,7 +7,6 @@ import ClosureTimers
 import CustomHeal
 import ClosureForGroups
 import Reference
-import Icons
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 

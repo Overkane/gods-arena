@@ -1,5 +1,4 @@
 package Overcharge
-import Icons
 import AbilityTooltipGenerator
 import ClosureEvents
 import OverchargeBuff

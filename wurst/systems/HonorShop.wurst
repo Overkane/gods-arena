@@ -1,6 +1,5 @@
 package HonorShop
 import ClosureTimers
-import Icons
 import UnitIds
 import PlayerData
 import TooltipFactory

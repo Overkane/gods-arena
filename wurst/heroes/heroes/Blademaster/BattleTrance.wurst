@@ -1,7 +1,6 @@
 package BattleTrance
 import AbilityTooltipGenerator
 import GameConstants
-import Icons
 import BattleTranceBuff
 import ClosureEvents
 

@@ -3,7 +3,6 @@ import AbilityTooltipGenerator
 import GameConstants
 import DemonLordIds
 import HellFireBuff
-import Icons
 import TooltipFactory
 import ClosureEvents
 import DamageSystem

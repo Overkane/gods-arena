@@ -1,5 +1,4 @@
 package Contract
-import Icons
 import AbilityTooltipGenerator
 import ClosureEvents
 import ClosureForGroups

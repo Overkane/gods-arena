@@ -1,6 +1,5 @@
 package StasisTotem
 import AbilityTooltipGenerator
-import Icons
 import GameConstants
 import ClosureEvents
 import ClosureTimers

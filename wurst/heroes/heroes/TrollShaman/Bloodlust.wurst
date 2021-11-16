@@ -1,7 +1,6 @@
 package Bloodlust
 import AbilityTooltipGenerator
 import GameConstants
-import Icons
 import TooltipFactory
 
 public constant BLOODLUST_ID = compiletime(ABIL_ID_GEN.next())

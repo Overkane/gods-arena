@@ -1,7 +1,6 @@
 package DivineShield
 import AbilityTooltipGenerator
 import GameConstants
-import Icons
 import ClosureEvents
 import DivineShieldBuff
 import TooltipFactory
