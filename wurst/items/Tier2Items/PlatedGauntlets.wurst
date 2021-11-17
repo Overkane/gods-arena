@@ -1,20 +1,44 @@
 package PlatedGauntlets
 import RecipeItem
 import PowerGloves
-import AssassinsBlade
+import RubyAxe
+import HelmOfProtection
 import MapIcons
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import CustomStatSystem
+import TooltipFactory
+
+constant BASH_ID = compiletime(ABIL_ID_GEN.next())
+constant BASH_CHANCE = 17
+constant BASH_DURATION = 0.6
+constant BASH_DAMAGE = 60
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Knockdown", 
+  "gives " + BASH_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to bash on attack for " + BASH_DURATION.color(COLOR_GOLD_STR) + " seconds with " 
+  + BASH_DAMAGE.color(COLOR_GOLD_STR) + " bonus damage.")
 
 public constant PLATED_GAUNTLETS_ITEM = compiletime(new RecipeItem()
 ..setName("Plated Gauntlets")
 ..setInterfaceIcon(MapIcons.bTNPlateGauntlet)
-..addBonus(Bonus.ATTACKSPEED, 60)
-..addBonus(Bonus.AGILITY, 16)
-..addBonus(Bonus.DAMAGE, 24)
-..addBonus(Bonus.ARMOR, 2)
-..generateTooltip("")
+..addBonus(Bonus.DAMAGE, 36)
+..addBonus(Bonus.ARMOR, 6)
+..addBonus(Bonus.STRENGTH, 16)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, 16)
+..setAbilities(commaList(BASH_ID))
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant PLATED_GAUNTLETS_RECIPE = new ItemRecipe()
-..gold(290)
-..setRequiredItems(POWER_GLOVES_ITEM, ASSASSINS_BLADE_ITEM)
+..gold(145)
+..setRequiredItems(POWER_GLOVES_ITEM, HELM_OF_PROTECTION_ITEM, RUBY_AXE_ITEM)
 ..setResultItem(PLATED_GAUNTLETS_ITEM)
+
+@compiletime function gen()
+  new AbilityDefinitionBashcreep(BASH_ID)
+  ..setChancetoBash(1, BASH_CHANCE.toReal())
+  ..setDamageBonus(1, BASH_DAMAGE.toReal())
+  ..setDurationNormal(1, BASH_DURATION)
+  ..setDurationHero(1, BASH_DURATION / 2)

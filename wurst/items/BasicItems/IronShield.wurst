@@ -1,18 +1,16 @@
 package IronShield
-import Icons
 import RecipeItem
-import AbilityObjEditing
-import ObjectIdGenerator
-import ObjectIds
 import TooltipFactory
+import DamageSystem
+import PassiveAbilityPreset
 
 constant BLOCK_ID = compiletime(ABIL_ID_GEN.next())
-constant BLOCK_CHANCE = 50
-constant BLOCK_VALUE = 25
+constant BLOCK_CHANCE = 25
+constant BLOCK_VALUE = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Block", 
-  BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD_STR) + " damage.")
+  BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD_STR) + " damage. " + "Multiple items don't stack.".color(IMPORTANT_COLOR))
 
 public constant IRON_SHIELD_ITEM = compiletime(new RecipeItem()
 ..setName("Iron Shield")
@@ -22,9 +20,20 @@ public constant IRON_SHIELD_ITEM = compiletime(new RecipeItem()
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
-@compiletime function genItemAbils()
-  new AbilityDefinitionHardenedSkin(BLOCK_ID)
-  ..setChancetoReduceDamage(1, BLOCK_CHANCE.toReal())
-  ..setIgnoredDamage(1, BLOCK_VALUE.toReal())
-  ..setMinimumDamage(1, 1)
-  ..setCheckDependencies(false)
+init
+  DamageEvent.addUnreducedListener(DamageEvents.SHIELD castTo int) -> 
+    let tunit = DamageEvent.getTarget()
+    let damageType = DamageEvent.getType()
+    
+    if damageType == DamageType.ATTACK and tunit.hasAbility(BLOCK_ID) and not tunit.isIllusion()
+
+      if BLOCK_CHANCE / 100 > GetRandomReal(0, 1)
+        let damageAmount = DamageEvent.getAmount()
+
+        if BLOCK_VALUE >= damageAmount
+          DamageEvent.setAmount(1)
+        else
+          DamageEvent.setAmount(damageAmount - BLOCK_VALUE)
+
+@compiletime function gen()
+  new PassiveAbilityPreset(BLOCK_ID, 1)

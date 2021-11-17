@@ -1,20 +1,15 @@
-package RunedBracers // TODO
+package RunedBracers
 import Icons
 import RecipeItem
-import AbilityObjEditing
-import ObjectIdGenerator
-import ObjectIds
+import CustomStatSystem
+import TooltipFactory
 
-constant SPELL_RES_ID = compiletime(ABIL_ID_GEN.next())
+constant MAGIC_RES_BONUS = 8.
 
 public constant RUNED_BRACERS_ITEM = compiletime(new RecipeItem()
 ..setName("Runed Bracers")
 ..setInterfaceIcon(Icons.bTNRunedBracers)
 ..setGoldCost(135)
-..setAbilities(commaList(SPELL_RES_ID))
-..generateTooltip("Passive - 15% spell damage reduction.")
+..addCustomStat(CustomUnitStats.MAGIC_RESISTANCE, MAGIC_RES_BONUS)
+..generateTooltip("")
 )..register()
-
-@compiletime function genItemAbils()
-  new AbilityDefinitionRunedBracers(SPELL_RES_ID)
-  ..setDamageReduction(1, 0.15)

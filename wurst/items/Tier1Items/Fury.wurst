@@ -1,0 +1,52 @@
+package Fury
+import TooltipFactory
+import PassiveAbilityPreset
+import RecipeItem
+import Buff
+import FuryBuff
+import GlovesOfHaste
+import PowerGloves
+import Emerald
+
+constant FURY_ID = compiletime(ABIL_ID_GEN.next())
+constant FURY_MAX_AS = 100.
+constant FURY_BONUS_AS = 3.
+constant FURY_DURATION = 5.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Fury", 
+  "each attack on the same target increase attack speed by " + FURY_BONUS_AS.colorPerc(COLOR_GOLD_STR) + ". "
+    + "Max attack speed bonus is " + FURY_MAX_AS.color(COLOR_GOLD_STR) + ". "
+    + "When attack target is changed or "+ FURY_DURATION.color(COLOR_GOLD_STR) + " seconds are passed effect disappears and all accumulated attack speed is lost. " 
+    + "Multiple items don't stack.".color(IMPORTANT_COLOR))
+
+public constant FURY_ITEM = compiletime(new RecipeItem()
+..setName("Fury")
+..setInterfaceIcon(Icons.bTNAdvancedUnholyStrength)
+..addBonus(Bonus.ATTACKSPEED, 30)
+..addBonus(Bonus.AGILITY, 10)
+..setAbilities(commaList(FURY_ID))
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant FURY_RECIPE = new ItemRecipe()
+..gold(190)
+..setRequiredItems(GLOVES_OF_HASTE_ITEM, POWER_GLOVES_ITEM, EMERALD_ITEM)
+..setResultItem(FURY_ITEM)
+
+init
+  FuryBuff.maxAS = FURY_MAX_AS
+
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasItemById(FURY_ITEM.getNewId()) and not sunit.isIllusion() and sunit.isEnemyOf(tunit)
+      if FuryBuff.buffTargets[sunit.getIndex()] != tunit
+        sunit.removeBuffById(FuryBuff.typeId)
+        FuryBuff.buffTargets[sunit.getIndex()] = tunit
+
+      new FuryBuff(FURY_DURATION, FURY_BONUS_AS).apply(sunit)
+
+@compiletime function genItemAbils()
+  new PassiveAbilityPreset(FURY_ID, 1)

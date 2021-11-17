@@ -1,0 +1,42 @@
+package SpikedArmor
+import RecipeItem
+import PassiveAbilityPreset
+import ClawsOfAttack
+import VitalityStone
+import RingOfProtection
+import TooltipFactory
+import DamageSystem
+
+constant RETALIATE_ID = compiletime(ABIL_ID_GEN.next())
+constant RETALIATE_VALUE = 5
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Retaliate", 
+  "deals " + ("[Hero Level] * " + RETALIATE_VALUE.toString()).color(COLOR_GOLD_STR) + " " + PURE_DAMAGE_STRING + " damage to the attacker. " + "Multiple items don't stack.".color(IMPORTANT_COLOR))
+
+public constant SPIKED_ARMOR_ITEM = compiletime(new RecipeItem()
+..setName("Spiked Armor")
+..setInterfaceIcon(Icons.bTNThornyShieldOff)
+..addBonus(Bonus.DAMAGE, 9)
+..addBonus(Bonus.LIFE, 200)
+..addBonus(Bonus.ARMOR, 3)
+..addCustomStat(CustomUnitStats.THREAT_GENERATION, 15)
+..setAbilities(commaList(RETALIATE_ID))
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant SPIKED_ARMOR_RECIPE = new ItemRecipe()
+..gold(210)
+..setRequiredItems(CLAWS_OF_ATTACK_ITEM, VITALITY_STONE_ITEM, RING_OF_PROTECTION_ITEM)
+..setResultItem(SPIKED_ARMOR_ITEM)
+
+init
+  DamageEvent.addUnreducedListener(DamageEvents.FINAL castTo int) -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if DamageEvent.getType() == DamageType.ATTACK and tunit.hasItemById(SPIKED_ARMOR_ITEM.getNewId()) and not tunit.isIllusion() and sunit.isEnemyOf(tunit)
+      tunit.dealPureDamage(sunit, tunit.getLevel().toReal() * RETALIATE_VALUE)
+
+@compiletime function genItemAbils()
+  new PassiveAbilityPreset(RETALIATE_ID, 1)

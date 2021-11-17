@@ -1,11 +1,12 @@
 package GlovesOfHaste
 import Icons
 import RecipeItem
+import ItemIds
 
-public constant GLOVES_OF_HASTE_ITEM = compiletime(new RecipeItem()
+public constant GLOVES_OF_HASTE_ITEM = compiletime(new RecipeItem(ItemIds.bootsofSpeed)
 ..setName("Gloves of Haste")
 ..setInterfaceIcon(Icons.bTNGlove)
 ..setGoldCost(65)
-..addBonus(Bonus.ATTACKSPEED, 15)
+..addBonus(Bonus.ATTACKSPEED, 5)
 ..generateTooltip("")
 )..register()

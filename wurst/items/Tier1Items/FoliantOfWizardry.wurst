@@ -3,7 +3,7 @@ import MapIcons
 import RecipeItem
 import TooltipFactory
 import CustomStatSystem
-import MoonAmulet
+import WoodenStaff
 import Sapphire
 
 constant SPELL_POWER_VALUE = 15.
@@ -20,5 +20,5 @@ public constant FOLIANT_OF_WIZ_ITEM = compiletime(new RecipeItem()
 
 public constant FOLIANT_OF_WIZ_RECIPE = new ItemRecipe()
 ..gold(150)
-..setRequiredItems(SAPPHIRE_ITEM, MOON_AMULET_ITEM)
+..setRequiredItems(SAPPHIRE_ITEM, WOODEN_STAFF_ITEM)
 ..setResultItem(FOLIANT_OF_WIZ_ITEM)

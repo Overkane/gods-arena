@@ -5,7 +5,7 @@ import AbilityObjEditing
 import RecipeItem
 import ObjectIds
 import ClosureEvents
-import SmallHealingPotion
+import CooldownGroups
 import TooltipFactory
 import MapIcons
 import CustomHeal

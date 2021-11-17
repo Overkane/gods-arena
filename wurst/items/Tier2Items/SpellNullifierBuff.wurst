@@ -1,0 +1,24 @@
+package SpellNullifierBuff
+import PresetBuffs
+import Assets
+import TooltipFactory
+import AbilityObjEditing
+import ObjectIdGenerator
+
+constant buffTuple = compiletime(createDummyBuffObject("Spell Nullifier".color(POSITIVE_COLOR), "Unit is immune to spells",  Icons.bTNNagaArmorUp3, Abilities.antiMagicShell, AttachmentPoints.origin))
+
+constant ANTI_MAGIC_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
+
+public class SpellNullifierBuff extends NormalBuff
+  construct(real dur)
+    super(dur, buffTuple)
+    
+  override function onApply()
+    target.addAbility(ANTI_MAGIC_SHIELD_ID)
+    target.hideAbility(ANTI_MAGIC_SHIELD_ID, true)
+
+  override function onEnd()
+    target.removeAbility(ANTI_MAGIC_SHIELD_ID)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionMagicImmunity(ANTI_MAGIC_SHIELD_ID)

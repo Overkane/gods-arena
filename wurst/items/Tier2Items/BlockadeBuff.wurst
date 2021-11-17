@@ -1,0 +1,24 @@
+package BlockadeBuff
+import PresetBuffs
+import BonusHandler
+import SoundUtils
+import MapIcons
+import TooltipFactory
+
+constant buffTuple = compiletime(createDummyBuffObject("Blockade".color(POSITIVE_COLOR), "Unit armor is increased",  MapIcons.bTNAdvancedReinforcedHides))
+constant ON_APPLY_SOUND = new SoundDefinition(Sounds.defendCaster1)
+
+public class BlockadeBuff extends NormalBuff
+  constant armorIncrease = 0.
+
+  construct(real dur, real armorIncrease)
+    super(dur, buffTuple)
+    this.armorIncrease = armorIncrease
+    
+  override function onApply()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
+
+    target.addBonus(Bonus.ARMOR, armorIncrease)
+
+  override function onEnd()
+    target.addBonus(Bonus.ARMOR, -armorIncrease)

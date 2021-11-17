@@ -1,0 +1,55 @@
+package Swapper
+import ItemObjEditing
+import RecipeItem
+import ChannelAbilityPreset
+import MapIcons
+import ClosureEvents
+import SoundUtils
+import TooltipFactory
+import HeartAmulet
+import RingOfRecovery
+import PendantOfEnergy
+import RingOfManaRegeneraion
+import Ruby
+import Sapphire
+
+constant SWAPPER_ID = compiletime(ABIL_ID_GEN.next())
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Swap", 
+  "swaps current mana and hp.")
+
+public constant SWAPPER_ITEM = compiletime(new RecipeItem()
+  ..setName("Swapper")
+  ..setInterfaceIcon(MapIcons.bTNStaffOfSilence)
+  ..setActivelyUsed(true)
+  ..addBonus(Bonus.LIFE, 450)
+  ..addBonus(Bonus.MANA, 350)
+  ..addBonus(Bonus.LIFEREGEN, 6)
+  ..addBonus(Bonus.MANAREGEN, 3)
+  ..addBonus(Bonus.STRENGTH, 9)
+  ..addBonus(Bonus.INTELLIGENCE, 9)
+  ..setAbilities(SWAPPER_ID.toRawCode())
+  ..setCooldownGroup(SWAPPER_ID.toRawCode())
+  ..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant SWAPPER_RECIPE = new ItemRecipe()
+..setRequiredItems(HEART_AMULET_ITEM, RING_OF_RECOVERY_ITEM, PENDANT_OF_ENERGY_ITEM, RING_OF_MANA_REGENERATION_ITEM, RUBY_ITEM, SAPPHIRE_ITEM)
+..setResultItem(SWAPPER_ITEM)
+
+init
+  EventListener.onCast(SWAPPER_ID) (unit caster) ->
+    let casterHP = caster.getHP()
+    let casterMP = caster.getMana()
+
+    caster
+    ..setHP(casterMP)
+    ..setMana(casterHP)
+    
+    new SoundDefinition(Sounds.wandOfIllusionTarget1).playForPlayer(caster.getOwner())
+
+@compiletime function genItemAbils()
+  new ChannelAbilityPreset(SWAPPER_ID, 1, true)
+  ..setManaCost(1, 0)
+  ..setCooldown(1, 60)

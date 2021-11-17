@@ -7,8 +7,7 @@ import ObjectIds
 import ClosureEvents
 import TooltipFactory
 import MapIcons
-
-public constant MANA_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
+import CooldownGroups
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_MP = 250

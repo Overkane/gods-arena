@@ -5,16 +5,19 @@ import ObjectIdGenerator
 import ObjectIds
 import SpiritMask
 import Sapphire
+import WoodenStaff
 import TooltipFactory
 import MapIcons
+import CustomStatSystem
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 200
-constant FIREBOLT_STUN = 0.5
+constant FIREBOLT_STUN = 1.
+constant SPELL_POWER = 10.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
-  "Fire Bolt", 
-  "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
+  "Frost Bolt", 
+  "fires frostbolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
   + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD_STR) + " seconds.")
 
 public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
@@ -22,21 +25,22 @@ public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
 ..setInterfaceIcon(MapIcons.btnMage1)
 ..setActivelyUsed(true)
 ..addBonus(Bonus.INTELLIGENCE, 10)
-..addBonus(Bonus.MANAREGEN, 1)
+..addBonus(Bonus.MANAREGEN, 0.75)
+..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
 ..setAbilities(commaList(FIREBOLT_ID))
 ..setCooldownGroup(FIREBOLT_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant APPRENTICE_STAFF_RECIPE = new ItemRecipe()
-..gold(65)
-..setRequiredItems(SPIRIT_MASK_ITEM, SAPPHIRE_ITEM)
+..gold(120)
+..setRequiredItems(SPIRIT_MASK_ITEM, SAPPHIRE_ITEM, WOODEN_STAFF_ITEM)
 ..setResultItem(APPRENTICE_STAFF_ITEM)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionFireBoltcreep(FIREBOLT_ID)
+  new AbilityDefinitionFrostBolt(FIREBOLT_ID)
   ..setDamage(1, FIREBOLT_DAMAGE.toReal())
   ..setDurationNormal(1, FIREBOLT_STUN)
-  ..setDurationHero(1, FIREBOLT_STUN)
+  ..setDurationHero(1, FIREBOLT_STUN/2)
   ..setManaCost(1, 75)
   ..setCooldown(1, 16)

@@ -1,0 +1,69 @@
+package Blockade
+import RecipeItem
+import TooltipFactory
+import DamageSystem
+import PassiveAbilityPreset
+import ChannelAbilityPreset
+import IronShield
+import SimpleArmor
+import HelmOfProtection
+import ClosureEvents
+import BlockadeBuff
+
+constant BLOCKADE_ID = compiletime(ABIL_ID_GEN.next())
+constant BLOCKADE_ARMOR = 30.
+constant BLOCKADE_DURATION = 8.
+
+constant BLOCK_ID = compiletime(ABIL_ID_GEN.next())
+constant BLOCK_CHANCE = 30
+constant BLOCK_MULTIPLIER = 2
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Blockade", 
+  "increases armor by " + BLOCKADE_ARMOR.color(COLOR_GOLD_STR) + ". Lasts for " + BLOCKADE_DURATION.color(COLOR_GOLD_STR) + " seconds.")
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Block", 
+  BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + ("[Hero Armor] * " +  BLOCK_MULTIPLIER.toString()).color(COLOR_GOLD_STR) + " damage. " + "Multiple items don't stack.".color(IMPORTANT_COLOR))
+
+public constant BLOCKADE_ITEM = compiletime(new RecipeItem()
+..setName("Blockade")
+..setInterfaceIcon(Icons.bTNAdvancedReinforcedHides)
+..setActivelyUsed(true)
+..addBonus(Bonus.LIFE, 300)
+..addBonus(Bonus.ARMOR, 12)
+..addBonus(Bonus.LIFEREGEN, 3)
+..setAbilities(commaList(BLOCKADE_ID, BLOCK_ID))
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+)..register()
+
+public constant BLOCKADE_RECIPE = new ItemRecipe()
+..gold(300)
+..setRequiredItems(HELM_OF_PROTECTION_ITEM, IRON_SHIELD_ITEM, SIMPLE_ARMOR_ITEM)
+..setResultItem(BLOCKADE_ITEM)
+
+init
+  EventListener.onCast(BLOCKADE_ID) (unit caster) ->
+    new BlockadeBuff(BLOCKADE_DURATION, BLOCKADE_ARMOR).apply(caster)
+
+  DamageEvent.addUnreducedListener(DamageEvents.SHIELD castTo int) -> 
+    let tunit = DamageEvent.getTarget()
+    let damageType = DamageEvent.getType()
+    
+    if damageType == DamageType.ATTACK and tunit.hasAbility(BLOCK_ID) and not tunit.isIllusion()
+
+      if BLOCK_CHANCE / 100 > GetRandomReal(0, 1)
+        let damageAmount = DamageEvent.getAmount()
+        let blockValue = (tunit.getArmor() + tunit.getBonus(Bonus.ARMOR)) * BLOCK_MULTIPLIER
+
+        if blockValue >= damageAmount
+          DamageEvent.setAmount(1)
+        else
+          DamageEvent.setAmount(damageAmount - blockValue)
+
+@compiletime function gen()
+  new ChannelAbilityPreset(BLOCKADE_ID, 1, true)
+  ..setManaCost(1, 80)
+  ..setCooldown(1, 45)
+
+  new PassiveAbilityPreset(BLOCK_ID, 1)

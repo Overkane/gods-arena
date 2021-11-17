@@ -1,0 +1,22 @@
+package BootsOfSpeed
+import Icons
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import TooltipFactory
+
+constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
+constant MS_BONUS = 40
+
+public constant BOOTS_OF_SPEED_ITEM = compiletime(new RecipeItem()
+..setName("Boots of Speed")
+..setInterfaceIcon(Icons.bTNBootsOfSpeed)
+..setGoldCost(75)
+..setAbilities(commaList(BONUS_SPEED_ID))
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR))
+)..register()
+
+@compiletime function gen()
+  new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
+  ..setMovementSpeedBonus(1, MS_BONUS)

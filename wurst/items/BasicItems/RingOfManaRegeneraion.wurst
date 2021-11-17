@@ -1,0 +1,11 @@
+package RingOfManaRegeneraion
+import Icons
+import RecipeItem
+
+public constant RING_OF_MANA_REGENERATION_ITEM = compiletime(new RecipeItem()
+..setName("Ring of Mana Regeneration")
+..setInterfaceIcon(Icons.bTNRingPurple)
+..setGoldCost(240)
+..addBonus(Bonus.MANAREGEN, 1.5)
+..generateTooltip("")
+)..register()

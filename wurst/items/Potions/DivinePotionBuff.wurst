@@ -3,8 +3,9 @@ import PresetBuffs
 import Assets
 import SoundUtils
 import BonusHandler
+import TooltipFactory
 
-constant buffTuple1 = compiletime(createDummyBuffObject("Divine Potion Buff", "All hero stats are increased",  Icons.bTNPotionOfRestoration))
+constant buffTuple = compiletime(createDummyBuffObject("Divine Potion".color(POSITIVE_COLOR), "All unit stats are increased",  Icons.bTNPotionOfRestoration))
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.divineShield)
 
 public class DivinePotionBuff extends NormalBuff
@@ -14,7 +15,7 @@ public class DivinePotionBuff extends NormalBuff
   var bonusInt = 0.
 
   construct(real dur, real statIncreasePerc)
-    super(dur, buffTuple1)
+    super(dur, buffTuple)
     this.statIncreasePerc = statIncreasePerc
     
   override function onApply()

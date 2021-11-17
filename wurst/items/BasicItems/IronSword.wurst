@@ -5,7 +5,7 @@ import RecipeItem
 public constant IRON_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Iron Sword")
 ..setInterfaceIcon(Icons.bTNSteelMelee)
-..setGoldCost(105)
+..setGoldCost(125)
 ..addBonus(Bonus.DAMAGE, 14)
 ..generateTooltip("")
 )..register()

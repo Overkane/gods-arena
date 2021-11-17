@@ -1,16 +1,16 @@
-package MoonAmulet
+package WoodenStaff
 import RecipeItem
 import MapIcons
 import CustomStatSystem
 import TooltipFactory
 
-constant SPELL_POWER = 10.
+constant SPELL_POWER = 5.
 
 constant ABIL_TOOLTIP = ""
 
-public constant MOON_AMULET_ITEM = compiletime(new RecipeItem()
-..setName("Moon Amulet")
-..setInterfaceIcon(MapIcons.bTNMoonAmulet)
+public constant WOODEN_STAFF_ITEM = compiletime(new RecipeItem()
+..setName("Wooden Staff")
+..setInterfaceIcon(MapIcons.bTNWand)
 ..setGoldCost(125)
 ..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
 ..generateTooltip(ABIL_TOOLTIP)

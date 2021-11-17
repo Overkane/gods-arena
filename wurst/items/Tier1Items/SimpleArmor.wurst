@@ -3,16 +3,18 @@ import Icons
 import RecipeItem
 import VitalityStone
 import RingOfProtection
+import RingOfRegeneration
 
 public constant SIMPLE_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Simple Armor")
 ..setInterfaceIcon(Icons.bTNLeatherUpgradeTwo)
 ..addBonus(Bonus.LIFE, 200)
 ..addBonus(Bonus.ARMOR, 3)
+..addBonus(Bonus.LIFEREGEN, 2.5)
 ..generateTooltip("")
 )..register()
 
 public constant SIMPLE_ARMOR_RECIPE= new ItemRecipe()
 ..gold(100)
-..setRequiredItems(VITALITY_STONE_ITEM, RING_OF_PROTECTION_ITEM)
+..setRequiredItems(VITALITY_STONE_ITEM, RING_OF_REGENERATION_ITEM, RING_OF_PROTECTION_ITEM)
 ..setResultItem(SIMPLE_ARMOR_ITEM)

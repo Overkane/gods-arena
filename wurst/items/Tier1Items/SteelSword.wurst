@@ -4,28 +4,18 @@ import RecipeItem
 import ClawsOfAttack
 import IronSword
 import CustomStatSystem
-
-constant ATTACK_CRIT_CHANCE = 10
-constant ATTACK_CRIT_POWER = 25
-
-constant ABIL_TOOLTIP = ""
+import TooltipFactory
 
 public constant STEEL_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Steel Sword")
 ..setInterfaceIcon(Icons.bTNThoriumMelee)
-..addBonus(Bonus.DAMAGE, 30)
-..onPickup(actor -> begin
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, ATTACK_CRIT_CHANCE/100)
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, ATTACK_CRIT_POWER/100)
-end)
-..onDrop(actor -> begin
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, -ATTACK_CRIT_CHANCE/100)
-  actor.addStat(CustomUnitStats.ATTACK_CRIT_POWER, -ATTACK_CRIT_POWER/100)
-end)
-..generateTooltip(ABIL_TOOLTIP)
+..addBonus(Bonus.DAMAGE, 26)
+..addCustomStat(CustomUnitStats.ATTACK_CRIT_CHANCE, 5)
+..addCustomStat(CustomUnitStats.ATTACK_CRIT_POWER, 25)
+..generateTooltip("")
 )..register()
 
 public constant STEEL_SWORD_RECIPE = new ItemRecipe()
-..gold(90)
+..gold(110)
 ..setRequiredItems(CLAWS_OF_ATTACK_ITEM, IRON_SWORD_ITEM)
 ..setResultItem(STEEL_SWORD_ITEM)

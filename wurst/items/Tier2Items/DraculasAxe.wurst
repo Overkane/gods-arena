@@ -1,0 +1,49 @@
+package DraculasAxe
+import RecipeItem
+import ClosureEvents
+import RubyAxe
+import DraculasAxeBuff
+import TooltipFactory
+import MaskOfDeath
+import MapIcons
+import ChannelAbilityPreset
+import CustomStatSystem
+
+constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
+constant BONUS_LIFESTEAL = 40.
+
+constant LIFESTEAL_VALUE = 21.
+constant ATTACK_POWER = 40.
+constant DURATION = 8.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Bloodthirst", 
+  "Increases physical lifesteal by " + BONUS_LIFESTEAL.colorPerc(COLOR_GOLD_STR) + "." 
+  + " Lasts " + DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
+
+public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
+..setName("Dracula's Axe")
+..setInterfaceIcon(MapIcons.bTNDraculasAxe)
+..setActivelyUsed(true)
+..addBonus(Bonus.DAMAGE, 90)
+..addBonus(Bonus.STRENGTH, 25)
+..addBonus(Bonus.ATTACKSPEED, -30)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, ATTACK_POWER)
+..addCustomStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE)
+..setAbilities(commaList(LIFESTEAL_ID))
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant DRACULAS_AXE_RECIPE = new ItemRecipe()
+..gold(350)
+..setRequiredItems(RUBY_AXE_ITEM, RUBY_AXE_ITEM, MASK_OF_DEATH_ITEM)
+..setResultItem(DRACULAS_AXE_ITEM)
+
+init
+  EventListener.onCast(LIFESTEAL_ID) (unit caster) ->
+    new DraculasAxeBuff(DURATION, BONUS_LIFESTEAL).apply(caster)
+
+@compiletime function genItemAbils()
+  new ChannelAbilityPreset(LIFESTEAL_ID, 1, true)
+  ..setManaCost(1, 120)
+  ..setCooldown(1, 40)

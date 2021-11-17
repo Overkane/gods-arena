@@ -1,0 +1,55 @@
+package ManaBoots
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import TooltipFactory
+import MapIcons
+import CooldownGroups
+import ClosureEvents
+import SmallManaPotion
+import BootsOfSpeed
+import PendantOfMana
+
+constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
+constant MS_BONUS = 45
+
+constant MANA_ID = compiletime(ABIL_ID_GEN.next())
+constant FLAT_MP = 250
+constant PERC_MP = 15
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Mana Restoration", 
+  "Restores "+ FLAT_MP.color(COLOR_GOLD_STR) +" or "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mp, depending on which value is bigger.")
+
+public constant MANA_BOOTS_ITEM = compiletime(new RecipeItem()
+..setName("Mana Boots")
+..setInterfaceIcon(MapIcons.bTNWalkersOfDarkness)
+..setActivelyUsed(true)
+..addBonus(Bonus.MANA, 150)
+..setAbilities(commaList(MANA_ID, BONUS_SPEED_ID))
+..setCooldownGroup(MANA_COOLDOWN_GROUP_ID.toRawCode())
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR) + "\n\n" + ABIL_TOOLTIP)
+)..register()
+
+public constant MANA_BOOTS_RECIPE = new ItemRecipe()
+..gold(90)
+..setRequiredItems(S_MANA_POT_ITEM, PENDANT_OF_MANA_ITEM, BOOTS_OF_SPEED_ITEM)
+..setResultItem(MANA_BOOTS_ITEM)
+
+init 
+  EventListener.onCast(MANA_ID) (unit caster) ->
+    let percMP = caster.getMaxMana() * PERC_MP/100
+    
+    if FLAT_MP > percMP
+      caster.addMana(FLAT_MP.toReal())
+    else
+      caster.addMana(percMP)
+
+@compiletime function gen()
+  new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
+  ..setMovementSpeedBonus(1, MS_BONUS)
+
+  new AbilityDefinitionItemManaRestoreLesser(MANA_ID)
+  ..presetManaPointsGained(lvl -> 0)
+  ..presetCooldown(lvl -> 50)

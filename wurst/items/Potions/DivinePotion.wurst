@@ -11,7 +11,7 @@ constant DURATION = 30.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Divinity", 
-  "Increase all attributes by " + STAT_INCREASE_PERC.colorPerc(COLOR_GOLD_STR) + " based on base attribute value." 
+  "Increases all attributes by " + STAT_INCREASE_PERC.colorPerc(COLOR_GOLD_STR) + " based on base attribute value." 
   + " Lasts " + DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
 
 public constant DIVINE_POTION_ITEM = compiletime(new RecipeItem('vamp')

@@ -1,0 +1,11 @@
+package HelmOfProtection
+import Icons
+import RecipeItem
+
+public constant HELM_OF_PROTECTION_ITEM = compiletime(new RecipeItem()
+..setName("Helm of Protection")
+..setInterfaceIcon(Icons.bTNHelmutPurple)
+..setGoldCost(230)
+..addBonus(Bonus.ARMOR, 6)
+..generateTooltip("")
+)..register()

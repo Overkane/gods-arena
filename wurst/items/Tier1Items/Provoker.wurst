@@ -1,0 +1,49 @@
+package Provoker
+import RecipeItem
+import HeartAmulet
+import HelmOfProtection
+import TooltipFactory
+import ChannelAbilityPreset
+import CooldownGroups
+import ClosureEvents
+import ClosureForGroups
+import CreepAggro
+import Abilities
+
+constant PROVOCATE_ID = compiletime(ABIL_ID_GEN.next())
+constant PROVOCATE_AGGRO_PER_LVL = 50.
+constant PROVOCATE_AOE = 500.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Provocate", 
+  "clears aggro of other players for enemy units in " + PROVOCATE_AOE.color(COLOR_GOLD_STR) + " range except the item holder. For affected units also increases aggro for the item holder by " 
+    + ("[Hero Level] * " + PROVOCATE_AGGRO_PER_LVL.toString()).color(COLOR_GOLD_STR) + ".")
+
+public constant PROVOKER_ITEM = compiletime(new RecipeItem()
+..setName("Provoker")
+..setInterfaceIcon(Icons.bTNGrimWard)
+..setActivelyUsed(true)
+..addBonus(Bonus.LIFE, 500)
+..addBonus(Bonus.ARMOR, 6)
+..setAbilities(commaList(PROVOCATE_ID))
+..setCooldownGroup(PROVOCATE_GROUP_ID.toRawCode())
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant PROVOKER_RECIPE = new ItemRecipe()
+..gold(145)
+..setRequiredItems(HEART_AMULET_ITEM, HELM_OF_PROTECTION_ITEM)
+..setResultItem(PROVOKER_ITEM)
+
+init
+  EventListener.onCast(PROVOCATE_ID) (unit caster) ->
+    forUnitsInRange(caster.getPos(), PROVOCATE_AOE) (unit u) ->
+      if u.isEnemyOf(caster.getOwner()) and u.isAlive()
+        u.clearAggro()
+        caster.addAggro(u, PROVOCATE_AGGRO_PER_LVL * caster.getLevel())
+
+@compiletime function genItemAbils()
+  new ChannelAbilityPreset(PROVOCATE_ID, 1, true)
+  ..setArtCaster(Abilities.tauntCaster)
+  ..setManaCost(1, 75)
+  ..setCooldown(1, 30)

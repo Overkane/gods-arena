@@ -4,7 +4,7 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import ApprenticeStaff
-import MoonAmulet
+import WoodenStaff
 import TooltipFactory
 import CustomStatSystem
 import MapIcons
@@ -34,7 +34,7 @@ public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 
 public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
 ..gold(190)
-..setRequiredItems(APPRENTICE_STAFF_ITEM, MOON_AMULET_ITEM)
+..setRequiredItems(APPRENTICE_STAFF_ITEM, WOODEN_STAFF_ITEM)
 ..setResultItem(ADEPT_STAFF_ITEM)
 
 @compiletime function genItemAbils()

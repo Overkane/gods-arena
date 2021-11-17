@@ -1,0 +1,6 @@
+package CooldownGroups
+import ObjectIdGenerator
+
+public constant HEALING_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
+public constant MANA_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
+public constant PROVOCATE_GROUP_ID = compiletime(ABIL_ID_GEN.next())

@@ -8,8 +8,7 @@ import ClosureEvents
 import TooltipFactory
 import MapIcons
 import CustomHeal
-
-public constant HEALING_COOLDOWN_GROUP_ID = compiletime(ABIL_ID_GEN.next())
+import CooldownGroups
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_HEAL = 400

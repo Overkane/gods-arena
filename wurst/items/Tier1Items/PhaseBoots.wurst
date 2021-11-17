@@ -1,0 +1,49 @@
+package PhaseBoots
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import TooltipFactory
+import MapIcons
+import CooldownGroups
+import BootsOfSpeed
+import ClawsOfAttack
+import GlovesOfHaste
+
+constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
+constant MS_BONUS = 55
+
+constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
+constant PHASE_STEP_DURATION = 5
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Phase Step", 
+  "allows owner to walk through other units. Lasts " + PHASE_STEP_DURATION.color(COLOR_GOLD_STR) + " seconds.")
+
+public constant PHASE_BOOTS_ITEM = compiletime(new RecipeItem()
+..setName("Phase Boots")
+..setInterfaceIcon(MapIcons.bTNBoots)
+..setActivelyUsed(true)
+..addBonus(Bonus.DAMAGE, 6)
+..addBonus(Bonus.ATTACKSPEED, 6)
+..setAbilities(commaList(PHASE_STEP_ID, BONUS_SPEED_ID))
+..setCooldownGroup(MANA_COOLDOWN_GROUP_ID.toRawCode())
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR) + "\n\n" + ABIL_TOOLTIP)
+)..register()
+
+public constant PHASE_BOOTS_RECIPE = new ItemRecipe()
+..setRequiredItems(CLAWS_OF_ATTACK_ITEM, GLOVES_OF_HASTE_ITEM, BOOTS_OF_SPEED_ITEM)
+..setResultItem(PHASE_BOOTS_ITEM)
+
+@compiletime function gen()
+  new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
+  ..setMovementSpeedBonus(1, MS_BONUS)
+
+  new AbilityDefinitionWindWalk(PHASE_STEP_ID)
+  ..setTransitionTime(1, 5)
+  ..setMovementSpeedIncrease(1, 0)
+  ..setBackstabDamage(1, false)
+  ..setDurationHero(1, PHASE_STEP_DURATION.toReal())
+  ..setDurationNormal(1, PHASE_STEP_DURATION.toReal())
+  ..setManaCost(1, 25)
+  ..setCooldown(1, 18)

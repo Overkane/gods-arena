@@ -1,0 +1,44 @@
+package SpellNullifier
+import RecipeItem
+import ElementalStone
+import HeartAmulet
+import RunedBracers
+import TooltipFactory
+import DamageSystem
+import ClosureEvents
+import ChannelAbilityPreset
+import SpellNullifierBuff
+
+constant ANTI_MAGIC_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
+constant ANTI_MAGIC_SHIELD_DURATION = 6.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Anti-Magic Shield", 
+  "activates a magic immunity shield for " + ANTI_MAGIC_SHIELD_DURATION.color(COLOR_GOLD_STR) + " seconds.")
+
+public constant SPELL_NULLIFIER_ITEM = compiletime(new RecipeItem()
+..setName("Spell Nullifier")
+..setInterfaceIcon(Icons.bTNNagaArmorUp3)
+..setActivelyUsed(true)
+..addBonus(Bonus.LIFE, 500)
+..addBonus(Bonus.STRENGTH, 20)
+..addBonus(Bonus.AGILITY, 20)
+..addBonus(Bonus.INTELLIGENCE, 20)
+..addCustomStat(CustomUnitStats.MAGIC_RESISTANCE, 20)
+..setAbilities(commaList(ANTI_MAGIC_SHIELD_ID))
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant SPELL_NULLIFIER_RECIPE = new ItemRecipe()
+..gold(350)
+..setRequiredItems(HEART_AMULET_ITEM, RUNED_BRACERS_ITEM, ELEMENTAL_STONE_ITEM)
+..setResultItem(SPELL_NULLIFIER_ITEM)
+
+init
+  EventListener.onCast(ANTI_MAGIC_SHIELD_ID) (unit caster) ->
+    new SpellNullifierBuff(ANTI_MAGIC_SHIELD_DURATION).apply(caster)
+
+@compiletime function genItemAbils()
+  new ChannelAbilityPreset(ANTI_MAGIC_SHIELD_ID, 1, true)
+  ..setManaCost(1, 90)
+  ..setCooldown(1, 50)

@@ -4,12 +4,15 @@ import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
-import NinjaCloak
-import AssassinsBlade
 import TooltipFactory
 import CustomStatSystem
+import NinjaCloak
+import PhaseBoots
 
 constant EVASION_CHANCE = 15.
+
+constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
+constant MS_BONUS = 55
 
 constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
 constant PHASE_STEP_DURATION = 5
@@ -23,19 +26,23 @@ public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..setInterfaceIcon(MapIcons.bTNCloakOfShadows)
 ..setActivelyUsed(true)
 ..addBonus(Bonus.DAMAGE, 25)
-..addBonus(Bonus.AGILITY, 25)
+..addBonus(Bonus.ATTACKSPEED, 10)
 ..addBonus(Bonus.LIFE, 300)
-..setAbilities(commaList(PHASE_STEP_ID))
+..addBonus(Bonus.AGILITY, 25)
+..setAbilities(commaList(PHASE_STEP_ID, BONUS_SPEED_ID))
 ..addCustomStat(CustomUnitStats.EVASION, EVASION_CHANCE)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
-..gold(170)
-..setRequiredItems(NINJA_CLOAK_ITEM, ASSASSINS_BLADE_ITEM)
+..gold(220)
+..setRequiredItems(NINJA_CLOAK_ITEM, PHASE_BOOTS_ITEM)
 ..setResultItem(CLOAK_OF_SHADOWS_ITEM)
 
 @compiletime function genItemAbils()
+  new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
+  ..setMovementSpeedBonus(1, MS_BONUS)
+
   new AbilityDefinitionWindWalk(PHASE_STEP_ID)
   ..setTransitionTime(1, 5)
   ..setMovementSpeedIncrease(1, 0)
