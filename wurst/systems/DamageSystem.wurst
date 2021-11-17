@@ -23,19 +23,22 @@ public enum DamageEvents
   FINAL // Final damage
 
 // Damage ignores magic immunity, but reduced by armor
-public function unit.dealPhysicalDamage(widget target, real amount)
-  DamageEvent.setNextDamageFromCode()
-  this.damageTarget(target, amount, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
+public function unit.dealPhysicalDamage(unit target, real amount)
+  if target.isAlive()
+    DamageEvent.setNextDamageFromCode()
+    this.damageTarget(target, amount, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
 
 // Damage ignores armor, but reduced by magic resistance
-public function unit.dealMagicalDamage(widget target, real amount)
-  DamageEvent.setNextDamageFromCode()
-  this.damageTarget(target, amount, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
+public function unit.dealMagicalDamage(unit target, real amount)
+  if target.isAlive()
+    DamageEvent.setNextDamageFromCode()
+    this.damageTarget(target, amount, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
 
 // Damage ignores magic immunity, magic resistance and armor reduction
-public function unit.dealPureDamage(widget target, real amount)
-  DamageEvent.setNextDamageFromCode()
-  this.damageTarget(target, amount)
+public function unit.dealPureDamage(unit target, real amount)
+  if target.isAlive()
+    DamageEvent.setNextDamageFromCode()
+    this.damageTarget(target, amount)
 
 public function isPhysicalDamage() returns bool
   return DamageEvent.getAttackType() == ATTACK_TYPE_CHAOS and DamageEvent.getDamageType() == DAMAGE_TYPE_NORMAL
@@ -119,7 +122,7 @@ init
       
     DamageEvent.setAmount(damage)
 
-// Lifesteal is calculated after all damage calculations
+  // Lifesteal is calculated after all damage calculations
   DamageEvent.addListener() ->
     let damageType = DamageEvent.getType()
     let sunit = DamageEvent.getSource()
@@ -145,3 +148,26 @@ init
         if healValue > 1
           attacker.healTarget(attacker, healValue, false)
     
+  // // Cleave
+  // DamageEvent.addListener() ->
+  //   let damageType = DamageEvent.getType()
+  //   let sunit = DamageEvent.getSource()
+  //   let tunit = DamageEvent.getTarget()
+
+  //   if damageType == DamageType.ATTACK
+  //     let cleaveAmount = sunit.getStat(CustomUnitStats.CLEAVE)
+
+  //     if cleaveAmount > 0
+  //       let targetList = new LinkedList<unit>
+  //       forUnitsInRange(tunit.getPos(), CLEAVE_AOE) (unit u) ->
+  //         if u.isAlive() and u.isEnemyOf(sunit) and u != tunit
+  //           targetList.add(u)
+        
+  //       targetList.shuffle()
+  //       for i = 1 to CLEAVE_MAX_TARGET
+  //         if targetList.isEmpty()
+  //           break
+  //         let cleaveTarget = targetList.pop()
+  //         sunit.dealPhysicalDamage(cleaveTarget, DamageEvent.getAmount() * cleaveAmount)
+      
+  //       destroy targetList
