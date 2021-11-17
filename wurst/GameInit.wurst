@@ -62,13 +62,13 @@ function initChatCommands()
     // Summons friendly dummy
       else if message.startsWith("-fd ")
         let numberOfDummies = message.ltrim("-fd ").toInt()
-        for i = 0 to numberOfDummies
+        for i = 0 to numberOfDummies - 1
           createUnit(p, UnitIds.footman, gg_rct_Arena1SpawnPoint.getCenter(), angle(0))
           ..setHP(250) // To test heal and stuff
     // Summons enemy dummy
       else if message.startsWith("-ed ")
         let numberOfDummies = message.ltrim("-ed ").toInt()
-        for i = 0 to numberOfDummies
+        for i = 0 to numberOfDummies - 1
           let u = createUnit(ENEMY_PLAYER, UnitIds.footman, gg_rct_Arena1SpawnPoint.getCenter(), angle(0))
           u
           ..setMaxHP(dummyHp)
