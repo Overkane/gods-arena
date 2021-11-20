@@ -5,7 +5,7 @@ import RecipeItem
 public constant VITALITY_STONE_ITEM = compiletime(new RecipeItem()
 ..setName("Vitality Stone")
 ..setInterfaceIcon(Icons.bTNPeriapt)
-..setGoldCost(85)
+..setGoldCost(75)
 ..addBonus(Bonus.LIFE, 150)
 ..generateTooltip("")
 )..register()

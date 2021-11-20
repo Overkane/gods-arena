@@ -20,6 +20,6 @@ public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant NINJA_CLOAK_RECIPE = new ItemRecipe()
-..gold(0)
+..gold(85)
 ..setRequiredItems(EMERALD_ITEM, VITALITY_STONE_ITEM)
 ..setResultItem(NINJA_CLOAK_ITEM)

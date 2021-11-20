@@ -14,23 +14,23 @@ constant ANTI_MAGIC_SHIELD_DURATION = 6.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Anti-Magic Shield", 
-  "activates a magic immunity shield for " + ANTI_MAGIC_SHIELD_DURATION.color(COLOR_GOLD_STR) + " seconds.")
+  "activates a magic immunity shield for " + ANTI_MAGIC_SHIELD_DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
 
 public constant SPELL_NULLIFIER_ITEM = compiletime(new RecipeItem()
 ..setName("Spell Nullifier")
 ..setInterfaceIcon(Icons.bTNNagaArmorUp3)
 ..setActivelyUsed(true)
 ..addBonus(Bonus.LIFE, 500)
-..addBonus(Bonus.STRENGTH, 20)
-..addBonus(Bonus.AGILITY, 20)
-..addBonus(Bonus.INTELLIGENCE, 20)
+..addBonus(Bonus.STRENGTH, 15)
+..addBonus(Bonus.AGILITY, 15)
+..addBonus(Bonus.INTELLIGENCE, 15)
 ..addCustomStat(CustomUnitStats.MAGIC_RESISTANCE, 20)
 ..setAbilities(commaList(ANTI_MAGIC_SHIELD_ID))
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant SPELL_NULLIFIER_RECIPE = new ItemRecipe()
-..gold(350)
+..gold(470)
 ..setRequiredItems(HEART_AMULET_ITEM, RUNED_BRACERS_ITEM, ELEMENTAL_STONE_ITEM)
 ..setResultItem(SPELL_NULLIFIER_ITEM)
 

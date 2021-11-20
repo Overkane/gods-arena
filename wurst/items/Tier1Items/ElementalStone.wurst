@@ -15,6 +15,6 @@ public constant ELEMENTAL_STONE_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant ELEMENTAL_STONE_RECIPE= new ItemRecipe()
-..gold(180)
+..gold(270)
 ..setRequiredItems(RUBY_ITEM, EMERALD_ITEM, SAPPHIRE_ITEM)
 ..setResultItem(ELEMENTAL_STONE_ITEM)

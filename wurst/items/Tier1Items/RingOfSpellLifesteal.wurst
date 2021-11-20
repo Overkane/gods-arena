@@ -19,6 +19,6 @@ public constant RING_OF_SPELL_LIFESTEAL_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant RING_OF_SPELL_LIFESTEAL_RECIPE = new ItemRecipe()
-..gold(50)
+..gold(60)
 ..setRequiredItems(MASK_OF_DEATH_ITEM, SAPPHIRE_ITEM)
 ..setResultItem(RING_OF_SPELL_LIFESTEAL_ITEM)

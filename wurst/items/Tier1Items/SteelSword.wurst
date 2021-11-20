@@ -16,6 +16,6 @@ public constant STEEL_SWORD_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant STEEL_SWORD_RECIPE = new ItemRecipe()
-..gold(110)
+..gold(170)
 ..setRequiredItems(CLAWS_OF_ATTACK_ITEM, IRON_SWORD_ITEM)
 ..setResultItem(STEEL_SWORD_ITEM)

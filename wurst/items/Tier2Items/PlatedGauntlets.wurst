@@ -12,8 +12,8 @@ import TooltipFactory
 
 constant BASH_ID = compiletime(ABIL_ID_GEN.next())
 constant BASH_CHANCE = 17
-constant BASH_DURATION = 0.6
-constant BASH_DAMAGE = 60
+constant BASH_DURATION = 0.5
+constant BASH_DAMAGE = 50
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Knockdown", 
@@ -32,7 +32,7 @@ public constant PLATED_GAUNTLETS_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant PLATED_GAUNTLETS_RECIPE = new ItemRecipe()
-..gold(145)
+..gold(95)
 ..setRequiredItems(POWER_GLOVES_ITEM, HELM_OF_PROTECTION_ITEM, RUBY_AXE_ITEM)
 ..setResultItem(PLATED_GAUNTLETS_ITEM)
 

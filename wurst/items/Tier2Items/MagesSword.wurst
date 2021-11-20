@@ -6,22 +6,19 @@ import CustomStatSystem
 import Sapphire
 import SteelSword
 
-constant SPELL_CRIT_CHANCE = 9.
-constant SPELL_CRIT_POWER = 35.
-
 constant ABIL_TOOLTIP = ""
 
 public constant MAGES_SWORD_ITEM = compiletime(new RecipeItem()
 ..setName("Mage's Sword")
 ..setInterfaceIcon(MapIcons.bTNDaggerOfEscape)
-..addBonus(Bonus.DAMAGE, 20)
+..addBonus(Bonus.DAMAGE, 25)
 ..addBonus(Bonus.INTELLIGENCE, 12)
-..addCustomStat(CustomUnitStats.SPELL_CRIT_CHANCE, SPELL_CRIT_CHANCE)
-..addCustomStat(CustomUnitStats.SPELL_CRIT_POWER, SPELL_CRIT_POWER)
+..addCustomStat(CustomUnitStats.SPELL_CRIT_CHANCE, 10)
+..addCustomStat(CustomUnitStats.SPELL_CRIT_POWER, 40)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant MAGES_SWORD_RECIPE = new ItemRecipe()
 ..gold(175)
-..setRequiredItems(STEEL_SWORD_ITEM, SAPPHIRE_ITEM)
+..setRequiredItems(SAPPHIRE_ITEM, STEEL_SWORD_ITEM)
 ..setResultItem(MAGES_SWORD_ITEM)

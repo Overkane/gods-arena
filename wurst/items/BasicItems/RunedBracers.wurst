@@ -9,7 +9,7 @@ constant MAGIC_RES_BONUS = 8.
 public constant RUNED_BRACERS_ITEM = compiletime(new RecipeItem()
 ..setName("Runed Bracers")
 ..setInterfaceIcon(Icons.bTNRunedBracers)
-..setGoldCost(135)
+..setGoldCost(120)
 ..addCustomStat(CustomUnitStats.MAGIC_RESISTANCE, MAGIC_RES_BONUS)
 ..generateTooltip("")
 )..register()

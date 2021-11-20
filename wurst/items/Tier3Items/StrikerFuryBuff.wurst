@@ -1,0 +1,32 @@
+package StrikerFuryBuff
+import Assets
+import public UnitIndexer
+import BonusHandler
+import TooltipFactory
+import AdvancedNormalBuff
+
+constant buffTuple = compiletime(createDummyBuffObject("Fury".color(POSITIVE_COLOR), "Unit attack speed is increased",  Icons.bTNAdvancedUnholyStrength))
+
+public class StrikerFuryBuff extends AdvancedNormalBuff
+  static private real array buffArray
+  static unit array buffTargets
+  static real maxAS
+
+  private var attackSpeedIncrease = 0.
+
+  construct(real dur, real attackSpeedIncrease)
+    super(dur, buffTuple)
+    this.attackSpeedIncrease = attackSpeedIncrease
+    
+  override function onApply()
+    buffArray[target.getIndex()] += attackSpeedIncrease
+    
+    if buffArray[target.getIndex()] > maxAS
+      buffArray[target.getIndex()] = maxAS
+    else
+      target.addBonus(Bonus.ATTACKSPEED, attackSpeedIncrease)
+
+  override function onEnd()
+    target.addBonus(Bonus.ATTACKSPEED, -buffArray[target.getIndex()])
+
+    buffArray[target.getIndex()] = 0

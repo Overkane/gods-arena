@@ -5,7 +5,7 @@ import RecipeItem
 public constant HEART_AMULET_ITEM = compiletime(new RecipeItem()
 ..setName("Heart Amulet")
 ..setInterfaceIcon(MapIcons.bTNHeartAmulet)
-..setGoldCost(210)
+..setGoldCost(175)
 ..addBonus(Bonus.LIFE, 350)
 ..generateTooltip("")
 )..register()

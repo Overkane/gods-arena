@@ -27,7 +27,7 @@ public constant SPHERE_OF_THE_ELEMENTS_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant SPHERE_OF_THE_ELEMENTS_RECIPE = new ItemRecipe()
-..gold(300)
+..gold(420)
 ..lumber(1)
 ..setRequiredItems(ELEMENTAL_STONE_ITEM, ELEMENTAL_STONE_ITEM)
 ..setResultItem(SPHERE_OF_THE_ELEMENTS_ITEM)

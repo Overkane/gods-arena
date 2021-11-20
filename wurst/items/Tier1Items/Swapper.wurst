@@ -10,8 +10,6 @@ import HeartAmulet
 import RingOfRecovery
 import PendantOfEnergy
 import RingOfManaRegeneraion
-import Ruby
-import Sapphire
 
 constant SWAPPER_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -27,15 +25,14 @@ public constant SWAPPER_ITEM = compiletime(new RecipeItem()
   ..addBonus(Bonus.MANA, 350)
   ..addBonus(Bonus.LIFEREGEN, 6)
   ..addBonus(Bonus.MANAREGEN, 3)
-  ..addBonus(Bonus.STRENGTH, 9)
-  ..addBonus(Bonus.INTELLIGENCE, 9)
   ..setAbilities(SWAPPER_ID.toRawCode())
   ..setCooldownGroup(SWAPPER_ID.toRawCode())
   ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant SWAPPER_RECIPE = new ItemRecipe()
-..setRequiredItems(HEART_AMULET_ITEM, RING_OF_RECOVERY_ITEM, PENDANT_OF_ENERGY_ITEM, RING_OF_MANA_REGENERATION_ITEM, RUBY_ITEM, SAPPHIRE_ITEM)
+..gold(370)
+..setRequiredItems(HEART_AMULET_ITEM, RING_OF_RECOVERY_ITEM, PENDANT_OF_ENERGY_ITEM, RING_OF_MANA_REGENERATION_ITEM)
 ..setResultItem(SWAPPER_ITEM)
 
 init

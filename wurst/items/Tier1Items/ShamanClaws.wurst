@@ -7,8 +7,8 @@ import ClawsOfAttack
 public constant SHAMAN_CLAWS_ITEM = compiletime(new RecipeItem()
 ..setName("Shaman Claws")
 ..setInterfaceIcon(Icons.bTNShamanMaster)
-..addBonus(Bonus.DAMAGE, 20)
-..addBonus(Bonus.ATTACKSPEED, 20)
+..addBonus(Bonus.DAMAGE, 12)
+..addBonus(Bonus.ATTACKSPEED, 5)
 ..generateTooltip("")
 )..register()
 

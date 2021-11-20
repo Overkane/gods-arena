@@ -5,7 +5,7 @@ import RecipeItem
 public constant RING_OF_RECOVERY_ITEM = compiletime(new RecipeItem()
 ..setName("Ring of Recovery")
 ..setInterfaceIcon(Icons.bTNRingLionHead)
-..setGoldCost(220)
+..setGoldCost(175)
 ..addBonus(Bonus.LIFEREGEN, 5)
 ..generateTooltip("")
 )..register()

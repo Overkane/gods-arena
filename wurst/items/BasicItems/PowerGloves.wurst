@@ -5,7 +5,7 @@ import RecipeItem
 public constant POWER_GLOVES_ITEM = compiletime(new RecipeItem()
 ..setName("Power Gloves")
 ..setInterfaceIcon(Icons.bTNSpellSteal)
-..setGoldCost(270)
+..setGoldCost(260)
 ..addBonus(Bonus.ATTACKSPEED, 20)
 ..generateTooltip("")
 )..register()

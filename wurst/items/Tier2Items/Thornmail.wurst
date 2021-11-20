@@ -21,12 +21,14 @@ constant PROVOCATE_AOE = 500.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Provocate", 
-  "clears aggro of other players for enemy units in " + PROVOCATE_AOE.color(COLOR_GOLD_STR) + " range except the item holder. For affected units also increases aggro for the item holder by " 
-    + ("[Hero Level] * " + PROVOCATE_AGGRO_PER_LVL.toString()).color(COLOR_GOLD_STR) + ".")
+  "clears aggro of other players for enemy units in " + PROVOCATE_AOE.round().color(COLOR_GOLD_STR) 
+    + " range except the item holder. For affected units also increases aggro for the item holder by " 
+    + ("[Hero Level] * " + PROVOCATE_AGGRO_PER_LVL.toString(0)).color(COLOR_GOLD_STR) + ".")
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Retaliate", 
-  "deals " + ("[Hero Level] * " + RETALIATE_VALUE.toString()).color(COLOR_GOLD_STR) + " " + PURE_DAMAGE_STRING + " damage to the attacker. " + "Multiple items don't stack.".color(IMPORTANT_COLOR))
+  "deals " + ("[Hero Level] * " + RETALIATE_VALUE.toString()).color(COLOR_GOLD_STR) + " " 
+    + PURE_DAMAGE_STRING + " damage to the attacker. " + "Multiple items don't stack.".color(IMPORTANT_COLOR))
 
 public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 ..setName("Thornmail")
@@ -42,7 +44,7 @@ public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant THORNMAIL_RECIPE = new ItemRecipe()
-..gold(550)
+..gold(430)
 ..setRequiredItems(SPIKED_ARMOR_ITEM, PROVOKER_ITEM)
 ..setResultItem(THORNMAIL_ITEM)
 

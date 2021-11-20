@@ -5,7 +5,7 @@ import RecipeItem
 public constant PENDANT_OF_ENERGY_ITEM = compiletime(new RecipeItem()
 ..setName("Pendant of Energy")
 ..setInterfaceIcon(Icons.bTNPendantOfEnergy)
-..setGoldCost(210)
+..setGoldCost(180)
 ..addBonus(Bonus.MANA, 240)
 ..generateTooltip("")
 )..register()

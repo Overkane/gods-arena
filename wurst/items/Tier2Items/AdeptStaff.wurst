@@ -33,7 +33,7 @@ public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
-..gold(190)
+..gold(485)
 ..setRequiredItems(APPRENTICE_STAFF_ITEM, WOODEN_STAFF_ITEM)
 ..setResultItem(ADEPT_STAFF_ITEM)
 

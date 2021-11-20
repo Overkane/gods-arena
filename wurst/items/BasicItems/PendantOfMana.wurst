@@ -5,7 +5,7 @@ import RecipeItem
 public constant PENDANT_OF_MANA_ITEM = compiletime(new RecipeItem()
 ..setName("Pendant of Mana")
 ..setInterfaceIcon(Icons.bTNPendantOfMana)
-..setGoldCost(75)
+..setGoldCost(70)
 ..addBonus(Bonus.MANA, 90)
 ..generateTooltip("")
 )..register()

@@ -5,7 +5,7 @@ import RecipeItem
 public constant HELM_OF_PROTECTION_ITEM = compiletime(new RecipeItem()
 ..setName("Helm of Protection")
 ..setInterfaceIcon(Icons.bTNHelmutPurple)
-..setGoldCost(230)
+..setGoldCost(180)
 ..addBonus(Bonus.ARMOR, 6)
 ..generateTooltip("")
 )..register()

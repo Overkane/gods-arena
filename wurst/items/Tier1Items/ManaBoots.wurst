@@ -12,7 +12,7 @@ import BootsOfSpeed
 import PendantOfMana
 
 constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
-constant MS_BONUS = 45
+constant MS_BONUS = 30
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_MP = 250
@@ -33,7 +33,7 @@ public constant MANA_BOOTS_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant MANA_BOOTS_RECIPE = new ItemRecipe()
-..gold(90)
+..gold(95)
 ..setRequiredItems(S_MANA_POT_ITEM, PENDANT_OF_MANA_ITEM, BOOTS_OF_SPEED_ITEM)
 ..setResultItem(MANA_BOOTS_ITEM)
 

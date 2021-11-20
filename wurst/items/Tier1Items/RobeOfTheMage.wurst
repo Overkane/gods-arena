@@ -13,6 +13,6 @@ public constant ROBE_OF_THE_MAGE_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant ROBE_OF_THE_MAGE_RECIPE = new ItemRecipe()
-..gold(125)
+..gold(155)
 ..setRequiredItems(PENDANT_OF_MANA_ITEM, SPIRIT_MASK_ITEM)
 ..setResultItem(ROBE_OF_THE_MAGE_ITEM)

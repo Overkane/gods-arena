@@ -16,8 +16,9 @@ constant PROVOCATE_AOE = 500.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Provocate", 
-  "clears aggro of other players for enemy units in " + PROVOCATE_AOE.color(COLOR_GOLD_STR) + " range except the item holder. For affected units also increases aggro for the item holder by " 
-    + ("[Hero Level] * " + PROVOCATE_AGGRO_PER_LVL.toString()).color(COLOR_GOLD_STR) + ".")
+  "clears aggro of other players for enemy units in " + PROVOCATE_AOE.round().color(COLOR_GOLD_STR) 
+    + " range except the item holder. For affected units also increases aggro for the item holder by " 
+    + ("[Hero Level] * " + PROVOCATE_AGGRO_PER_LVL.toString(0)).color(COLOR_GOLD_STR) + ".")
 
 public constant PROVOKER_ITEM = compiletime(new RecipeItem()
 ..setName("Provoker")

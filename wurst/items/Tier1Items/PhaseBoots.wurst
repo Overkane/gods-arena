@@ -11,7 +11,7 @@ import ClawsOfAttack
 import GlovesOfHaste
 
 constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
-constant MS_BONUS = 55
+constant MS_BONUS = 35
 
 constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
 constant PHASE_STEP_DURATION = 5
@@ -32,6 +32,7 @@ public constant PHASE_BOOTS_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant PHASE_BOOTS_RECIPE = new ItemRecipe()
+..gold(70)
 ..setRequiredItems(CLAWS_OF_ATTACK_ITEM, GLOVES_OF_HASTE_ITEM, BOOTS_OF_SPEED_ITEM)
 ..setResultItem(PHASE_BOOTS_ITEM)
 

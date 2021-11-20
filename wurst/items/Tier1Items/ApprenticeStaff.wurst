@@ -16,9 +16,9 @@ constant FIREBOLT_STUN = 1.
 constant SPELL_POWER = 10.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
-  "Frost Bolt", 
-  "fires frostbolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
-  + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD_STR) + " seconds.")
+  "Fire Bolt", 
+  "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
+  + " damage and stuns target for " + FIREBOLT_STUN..round().color(COLOR_GOLD_STR) + " seconds.")
 
 public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Apprentice Staff")
@@ -33,12 +33,12 @@ public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant APPRENTICE_STAFF_RECIPE = new ItemRecipe()
-..gold(120)
+..gold(290)
 ..setRequiredItems(SPIRIT_MASK_ITEM, SAPPHIRE_ITEM, WOODEN_STAFF_ITEM)
 ..setResultItem(APPRENTICE_STAFF_ITEM)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionFrostBolt(FIREBOLT_ID)
+  new AbilityDefinitionFireBolt(FIREBOLT_ID)
   ..setDamage(1, FIREBOLT_DAMAGE.toReal())
   ..setDurationNormal(1, FIREBOLT_STUN)
   ..setDurationHero(1, FIREBOLT_STUN/2)

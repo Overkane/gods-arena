@@ -9,8 +9,6 @@ import CustomStatSystem
 import NinjaCloak
 import PhaseBoots
 
-constant EVASION_CHANCE = 15.
-
 constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
 constant MS_BONUS = 55
 
@@ -25,17 +23,17 @@ public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..setName("Cloak of Shadows")
 ..setInterfaceIcon(MapIcons.bTNCloakOfShadows)
 ..setActivelyUsed(true)
-..addBonus(Bonus.DAMAGE, 25)
+..addBonus(Bonus.DAMAGE, 15)
 ..addBonus(Bonus.ATTACKSPEED, 10)
 ..addBonus(Bonus.LIFE, 300)
-..addBonus(Bonus.AGILITY, 25)
+..addBonus(Bonus.AGILITY, 15)
 ..setAbilities(commaList(PHASE_STEP_ID, BONUS_SPEED_ID))
-..addCustomStat(CustomUnitStats.EVASION, EVASION_CHANCE)
+..addCustomStat(CustomUnitStats.EVASION, 15)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
-..gold(220)
+..gold(425)
 ..setRequiredItems(NINJA_CLOAK_ITEM, PHASE_BOOTS_ITEM)
 ..setResultItem(CLOAK_OF_SHADOWS_ITEM)
 

@@ -32,7 +32,7 @@ public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant WIZARD_STAFF_RECIPE = new ItemRecipe()
-..gold(290)
+..gold(705)
 ..setRequiredItems(ADEPT_STAFF_ITEM)
 ..setResultItem(WIZARD_STAFF_ITEM)
 

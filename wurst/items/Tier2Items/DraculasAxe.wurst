@@ -11,31 +11,28 @@ import CustomStatSystem
 
 constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant BONUS_LIFESTEAL = 40.
-
-constant LIFESTEAL_VALUE = 21.
-constant ATTACK_POWER = 40.
 constant DURATION = 8.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Bloodthirst", 
-  "Increases physical lifesteal by " + BONUS_LIFESTEAL.colorPerc(COLOR_GOLD_STR) + "." 
+  "Increases physical lifesteal by " + BONUS_LIFESTEAL.round().colorPerc(COLOR_GOLD_STR) + "." 
   + " Lasts " + DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
 
 public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 ..setName("Dracula's Axe")
 ..setInterfaceIcon(MapIcons.bTNDraculasAxe)
 ..setActivelyUsed(true)
-..addBonus(Bonus.DAMAGE, 90)
-..addBonus(Bonus.STRENGTH, 25)
+..addBonus(Bonus.DAMAGE, 60)
 ..addBonus(Bonus.ATTACKSPEED, -30)
-..addCustomStat(CustomUnitStats.ATTACK_POWER, ATTACK_POWER)
-..addCustomStat(CustomUnitStats.LIFESTEAL, LIFESTEAL_VALUE)
+..addBonus(Bonus.STRENGTH, 25)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, 15)
+..addCustomStat(CustomUnitStats.LIFESTEAL, 21)
 ..setAbilities(commaList(LIFESTEAL_ID))
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant DRACULAS_AXE_RECIPE = new ItemRecipe()
-..gold(350)
+..gold(470)
 ..setRequiredItems(RUBY_AXE_ITEM, RUBY_AXE_ITEM, MASK_OF_DEATH_ITEM)
 ..setResultItem(DRACULAS_AXE_ITEM)
 
