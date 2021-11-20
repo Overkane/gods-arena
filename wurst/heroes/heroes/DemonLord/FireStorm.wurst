@@ -8,6 +8,7 @@ import DemonLordIds
 import GameConstants
 import Reference
 import DamageSystem
+import BonusHandler
 
 RealLevelClosure DURATION = lvl -> 3
 RealLevelClosure DAMAGE = lvl -> 25 + 125. * lvl
@@ -36,9 +37,9 @@ init
             bonus_str.val += str_per_struck
         let bonus_str_ = bonus_str.into()
         if caster.isAlive()
-          caster.addStr(bonus_str_)
+          caster.addBonus(Bonus.STRENGTH, bonus_str_.toReal())
           doAfter(BONUS_DURATION.run(lvl)) ->
-            caster.addStr(-bonus_str_)
+            caster.addBonus(Bonus.STRENGTH, -bonus_str_.toReal())
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
