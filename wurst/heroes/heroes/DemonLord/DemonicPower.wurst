@@ -15,7 +15,7 @@ init
       u.addStr(STR_BONUS.run(1))
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Passivily increases base strength.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Passively increases base strength.")
   new PassiveAbilityPreset(DEMONIC_POWER_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.pASBTNCleavingAttack)

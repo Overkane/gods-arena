@@ -65,7 +65,7 @@ init
   ..presetManaCost(lvl -> 90)
   ..tooltipStopListen()
 
-  tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation hero burns enemies nearby based on his map HP.\nCan be deactivated.\nThe ability damage is fatal for the caster.")
+  tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation hero burns enemies nearby based on his max HP.\nCan be deactivated.\nThe ability damage is fatal for the caster.")
   new ChannelAbilityPreset(HELL_FIRE_TURN_OFF_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.bTNImmolationOff)
