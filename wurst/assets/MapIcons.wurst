@@ -32,6 +32,7 @@ public class MapIcons extends Icons
   static constant bTNShpereOfVoid = "ReplaceableTextures/CommandButtons/BTNShpereOfVoid.blp" // PeeKay
   static constant bTNWalkersOfDarkness = "ReplaceableTextures/CommandButtons/BTNWalkers of Darkness.blp" // PeeKay
   static constant bTNIronFistCannonPunch = "ReplaceableTextures/CommandButtons/BTNIronFistCannonPunch.blp" // PeeKay
+  static constant bTNBarbedTrapv3 = "ReplaceableTextures/CommandButtons/BTNBarbedTrapv3.blp" // 4eNNightmare
   // Passive Buttons
   static constant pASBTNBackstab = "ReplaceableTextures/PassiveButtons/PASBackStab.blp"
   static constant pASBTNWhirlwind = "ReplaceableTextures/PassiveButtons/PASwhirlwind.blp"

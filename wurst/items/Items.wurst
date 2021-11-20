@@ -38,6 +38,7 @@ import public WoodenStaff
 
 // Tier 1 items
 import public ApprenticeStaff
+import public BootsOfRoots
 import public ElementalStone
 import public Fury
 import public ManaBoots
