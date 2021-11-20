@@ -1,0 +1,23 @@
+package StatUp
+import AbilityTooltipGenerator
+
+public constant STAT_UP_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "Increases all attributes.")
+  new AbilityDefinitionAttributeModifierSkill(STAT_UP_ID)
+  ..registerTooltipGenerator(tooltip)
+  ..setRequiredLevel(1)
+  ..presetButtonPosNormal(1, 1)
+  ..presetButtonPosResearch(3, 1)
+  ..presetHotkey("D")
+  
+  ..tooltipStartListen()
+  ..setLevels(12)
+  ..setName("Stat Up")
+  ..presetStrengthBonus(lvl -> 3 * lvl)
+  ..presetAgilityBonus(lvl -> 3 * lvl)
+  ..presetIntelligenceBonus(lvl -> 3 * lvl)
+  ..tooltipStopListen()
+
+  ..presetHideButton(lvl -> true)

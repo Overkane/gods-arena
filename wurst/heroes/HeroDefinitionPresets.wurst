@@ -1,5 +1,6 @@
 package HeroDefinitionPresets
 import public HeroPreset
+import StatUp
 
 class BasePreset extends HeroPreset
   construct(int newId, int origId, string name)
@@ -7,6 +8,7 @@ class BasePreset extends HeroPreset
     setCollisionSize(24)
     setAttack1AttackType(AttackType.Hero)
     setArmorType(ArmorType.Hero)
+    addHeroAbility(STAT_UP_ID)
 
 public class StrHeroPreset extends BasePreset
   construct(int newId, int origId, string name)
