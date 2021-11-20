@@ -60,8 +60,8 @@ function wave_1() returns Wave
 
 function wave_2() returns Wave
   return new WaveBuilder()
-  ..expBounty(250)
-  ..goldBounty(95)
+  ..expBounty(200)
+  ..goldBounty(90)
 
   ..creep(UnitIds.foresttroll)
   ..hp(550)
@@ -97,7 +97,7 @@ function wave_2() returns Wave
 function wave_3() returns Wave
   return new WaveBuilder()
   ..expBounty(250)
-  ..goldBounty(115)
+  ..goldBounty(100)
 
   ..creep(UnitIds.furbolg)
   ..hp(750)
@@ -138,8 +138,8 @@ function wave_3() returns Wave
 
 function wave_4() returns Wave
   return new WaveBuilder()
-  ..expBounty(300)
-  ..goldBounty(140)
+  ..expBounty(250)
+  ..goldBounty(110)
 
   ..creep(UnitIds.gnoll1)
   ..hp(825)
@@ -180,8 +180,8 @@ function wave_4() returns Wave
 
 function wave_5() returns Wave
   return new WaveBuilder()
-  ..expBounty(350)
-  ..goldBounty(150)
+  ..expBounty(300)
+  ..goldBounty(120)
 
   ..creep(UnitIds.spider)
   ..hp(900)
@@ -221,8 +221,8 @@ function wave_5() returns Wave
 
 function wave_6() returns Wave
   return new WaveBuilder()
-  ..expBounty(450)
-  ..goldBounty(175)
+  ..expBounty(300)
+  ..goldBounty(130)
 
   ..creep(UnitIds.owlbear)
   ..hp(1950)
@@ -258,8 +258,8 @@ function wave_6() returns Wave
 
 function wave_7() returns Wave
   return new WaveBuilder()
-  ..expBounty(450)
-  ..goldBounty(175)
+  ..expBounty(350)
+  ..goldBounty(140)
 
   ..creep(UnitIds.sasquatch)
   ..hp(2500)
@@ -292,8 +292,8 @@ function wave_7() returns Wave
 
 function wave_8() returns Wave
   return new WaveBuilder()
-  ..expBounty(450)
-  ..goldBounty(200)
+  ..expBounty(350)
+  ..goldBounty(150)
 
   ..creep(UnitIds.stonemaulogre)
   ..hp(3200)
@@ -339,8 +339,8 @@ function wave_8() returns Wave
 
 function wave_9() returns Wave
   return new WaveBuilder()
-  ..expBounty(500)
-  ..goldBounty(200)
+  ..expBounty(350)
+  ..goldBounty(160)
 
   ..creep(UnitIds.druidoftheclaw)
   ..hp(1800)
@@ -390,8 +390,8 @@ function wave_9() returns Wave
 
 function boss_wave_10() returns Wave
   return new WaveBuilder()
-  ..expBounty(650)
-  ..goldBounty(200)
+  ..expBounty(400)
+  ..goldBounty(250)
   ..boss()
   .build()
   

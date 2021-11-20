@@ -9,8 +9,8 @@ public constant ARENA3_WAVE_4 = compiletime(wave_4())
 
 function wave_1() returns Wave
   return new WaveBuilder()
-  ..expBounty(700)
-  ..goldBounty(140)
+  ..expBounty(550)
+  ..goldBounty(270)
   
   ..creep(UnitIds.footman)
   ..hp(8600)
@@ -44,8 +44,8 @@ function wave_1() returns Wave
 
 function wave_2() returns Wave
   return new WaveBuilder()
-  ..expBounty(1000)
-  ..goldBounty(160)
+  ..expBounty(600)
+  ..goldBounty(300)
 
   ..creep(UnitIds.thecaptain)
   ..hp(9800)
@@ -89,8 +89,8 @@ function wave_2() returns Wave
 
 function wave_3() returns Wave
   return new WaveBuilder()
-  ..expBounty(1000)
-  ..goldBounty(175)
+  ..expBounty(600)
+  ..goldBounty(330)
 
   ..creep(UnitIds.paladin)
   ..hp(15000)
