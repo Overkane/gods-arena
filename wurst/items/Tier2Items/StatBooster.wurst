@@ -1,0 +1,45 @@
+package StatBooster
+import RecipeItem
+import ClosureEvents
+import TooltipFactory
+import ChannelAbilityPreset
+import CustomStatSystem
+import StatBoosterBuff
+import ElementalStone
+import WoodenStaff
+
+constant STAT_BOOST_ID = compiletime(ABIL_ID_GEN.next())
+constant STAT_BOOST_PERC_INCREASE = 50.
+constant STAT_BOOST_DURATION = 10.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Stat Boost", 
+  "Increases highest base stat by " + STAT_BOOST_PERC_INCREASE.round().colorPerc(COLOR_GOLD_STR) + "." 
+  + " Lasts " + STAT_BOOST_DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
+
+public constant STAT_BOOSTER_ITEM = compiletime(new RecipeItem()
+..setName("Stat Booster")
+..setInterfaceIcon(Icons.bTN3M3)
+..setActivelyUsed(true)
+..addBonus(Bonus.STRENGTH, 15)
+..addBonus(Bonus.AGILITY, 15)
+..addBonus(Bonus.INTELLIGENCE, 15)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, 10)
+..addCustomStat(CustomUnitStats.SPELL_POWER, 10)
+..setAbilities(commaList(STAT_BOOST_ID))
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant STAT_BOOSTER_RECIPE = new ItemRecipe()
+..gold(610)
+..setRequiredItems(WOODEN_STAFF_ITEM, ELEMENTAL_STONE_ITEM)
+..setResultItem(STAT_BOOSTER_ITEM)
+
+init
+  EventListener.onCast(STAT_BOOST_ID) (unit caster) ->
+    new StatBoosterBuff(STAT_BOOST_DURATION, STAT_BOOST_PERC_INCREASE / 100).apply(caster)
+
+@compiletime function genItemAbils()
+  new ChannelAbilityPreset(STAT_BOOST_ID, 1, true)
+  ..setManaCost(1, 100)
+  ..setCooldown(1, 45)

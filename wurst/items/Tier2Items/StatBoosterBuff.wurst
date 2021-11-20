@@ -1,0 +1,55 @@
+package StatBoosterBuff
+import PresetBuffs
+import BonusHandler
+import SoundUtils
+import Icons
+import TooltipFactory
+
+constant buffTuple = compiletime(createDummyBuffObject("Stat Boost".color(POSITIVE_COLOR), "Unit highest stat is increased",  Icons.bTN3M3))
+constant ON_APPLY_SOUND = new SoundDefinition(Sounds.disenchant)
+
+enum HeroStats
+  STR
+  AGI
+  INT
+
+public class StatBoosterBuff extends NormalBuff
+  constant statPercIncrease = 0.
+  var statTypeIncreased = HeroStats.STR
+  var statAdded = 0
+
+  construct(real dur, real statPercIncrease)
+    super(dur, buffTuple)
+    this.statPercIncrease = statPercIncrease
+    
+  override function onApply()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
+
+    let targetStr = target.getStr(false)
+    let targetAgi = target.getAgi(false)
+    let targetInt = target.getInt(false)
+
+    let maxStat = max(targetStr, targetAgi, targetInt)
+    
+    switch maxStat
+      case targetStr
+        statTypeIncreased = HeroStats.STR
+        statAdded = (targetStr * statPercIncrease).round()
+        target.addBonus(Bonus.STRENGTH, statAdded.toReal())
+      case targetAgi
+        statTypeIncreased = HeroStats.AGI
+        statAdded = (targetAgi * statPercIncrease).round()
+        target.addBonus(Bonus.AGILITY, statAdded.toReal())
+      case targetInt
+        statTypeIncreased = HeroStats.INT
+        statAdded = (targetInt * statPercIncrease).round()
+        target.addBonus(Bonus.INTELLIGENCE, statAdded.toReal())
+
+  override function onEnd()
+    switch statTypeIncreased
+      case HeroStats.STR
+        target.addBonus(Bonus.STRENGTH, -statAdded.toReal())
+      case HeroStats.AGI
+        target.addBonus(Bonus.AGILITY, -statAdded.toReal())
+      case HeroStats.INT
+        target.addBonus(Bonus.INTELLIGENCE, -statAdded.toReal())

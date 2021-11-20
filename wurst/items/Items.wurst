@@ -65,10 +65,11 @@ import public LightningShield
 import public MageKiller
 import public MagesSword
 import public MantleOfProtection
-import public SphereOfTheElements
 import public PlatedGauntlets
 import public ShamanStaff
 import public SpellNullifier
+import public SphereOfTheElements
+import public StatBooster
 import public Thornmail
 import public FoliantOfWizardry
 
