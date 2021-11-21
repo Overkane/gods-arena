@@ -4,7 +4,7 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import ApprenticeStaff
-import WoodenStaff
+import FoliantOfWizardry
 import TooltipFactory
 import CustomStatSystem
 import MapIcons
@@ -33,8 +33,8 @@ public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
-..gold(485)
-..setRequiredItems(APPRENTICE_STAFF_ITEM, WOODEN_STAFF_ITEM)
+..gold(265)
+..setRequiredItems(APPRENTICE_STAFF_ITEM, FOLIANT_OF_WIZ_ITEM)
 ..setResultItem(ADEPT_STAFF_ITEM)
 
 @compiletime function genItemAbils()
