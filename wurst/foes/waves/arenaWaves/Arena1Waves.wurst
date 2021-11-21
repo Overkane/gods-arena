@@ -44,7 +44,7 @@ function wave_1() returns Wave
 
   ..creep(UnitIds.direwolf)
   ..hp(1950)
-  ..damage(29)
+  ..damage(24)
   ..amount(1)
   ..scale(1.5)
 
@@ -70,25 +70,25 @@ function wave_2() returns Wave
 
   ..creep(UnitIds.foresttrolltrapper)
   ..hp(650)
-  ..damage(16)
+  ..damage(14)
   ..amount(4)
 
   ..wait(20)
 
   ..creep(UnitIds.foresttrollberserker)
   ..hp(700)
-  ..damage(24)
+  ..damage(18)
   ..amount(9)
 
   ..creep(UnitIds.foresttrollhighpriest)
   ..hp(650)
   ..mana(1000)
-  ..damage(15)
+  ..damage(13)
   ..amount(3)
 
   ..creep(UnitIds.foresttrollking)
   ..hp(3000)
-  ..damage(75)
+  ..damage(55)
   ..amount(1)
   ..scale(1.5)
 
@@ -106,7 +106,7 @@ function wave_3() returns Wave
 
   ..creep(UnitIds.furbolgtracker)
   ..hp(800)
-  ..damage(27)
+  ..damage(24)
   ..amount(4)
 
   ..creep(UnitIds.furbolgshaman)
@@ -123,7 +123,7 @@ function wave_3() returns Wave
 
   ..creep(UnitIds.furbolgeldershaman)
   ..hp(850)
-  ..damage(28)
+  ..damage(24)
   ..amount(3)
 
   ..wait(10)
@@ -167,12 +167,12 @@ function wave_4() returns Wave
 
   ..creep(UnitIds.gnollassassin)
   ..hp(850)
-  ..damage(29)
+  ..damage(22)
   ..amount(4)
 
   ..creep(UnitIds.gnollking)
   ..hp(6750)
-  ..damage(105)
+  ..damage(80)
   ..amount(1)
   ..scale(1.5)
 
@@ -212,7 +212,7 @@ function wave_5() returns Wave
 
   ..creep(UnitIds.broodmother)
   ..hp(9250)
-  ..damage(110)
+  ..damage(95)
   ..attackrate(0.75)
   ..amount(1)
   ..scale(2.4)
@@ -226,17 +226,17 @@ function wave_6() returns Wave
 
   ..creep(UnitIds.owlbear)
   ..hp(1950)
-  ..damage(52)
+  ..damage(32)
   ..amount(7)
 
   ..creep(UnitIds.enragedowlbear)
   ..hp(2450)
-  ..damage(55)
+  ..damage(35)
   ..amount(4)
 
   ..creep(UnitIds.berserkowlbear)
   ..hp(3550)
-  ..damage(75)
+  ..damage(65)
   ..amount(1)
   ..scale(1.5)
 
@@ -280,7 +280,7 @@ function wave_7() returns Wave
 
   ..creep(UnitIds.ancientsasquatch)
   ..hp(12500)
-  ..damage(125)
+  ..damage(110)
   ..attackrate(0.45)
   ..amount(1)
   ..scale(1.95)
@@ -309,7 +309,7 @@ function wave_8() returns Wave
 
   ..creep(UnitIds.stonemaulwarchief)
   ..hp(4250)
-  ..damage(115)
+  ..damage(100)
   ..armor(8)
   ..amount(1)
   ..scale(0.9)
@@ -318,7 +318,7 @@ function wave_8() returns Wave
 
   ..creep(UnitIds.stonemaulwarchief)
   ..hp(5500)
-  ..damage(120)
+  ..damage(110)
   ..amount(1)
   ..scale(1.8)
   ..rgb(255, 0, 0)
@@ -327,7 +327,7 @@ function wave_8() returns Wave
 
   ..creep(UnitIds.ogrelord)
   ..hp(12500)
-  ..damage(490)
+  ..damage(450)
   ..attackrate(1.70)
   ..amount(1)
   ..scale(1.2)
@@ -349,12 +349,13 @@ function wave_9() returns Wave
 
   ..creep(UnitIds.mountaingiant)
   ..hp(8000)
-  ..damage(60)
+  ..damage(200)
+  ..attackrate(1.90)
   ..amount(2)
 
   ..creep(UnitIds.archer)
   ..hp(2150)
-  ..damage(105)
+  ..damage(75)
   ..amount(12)
 
   ..creep(UnitIds.dryad)
@@ -366,7 +367,8 @@ function wave_9() returns Wave
 
   ..creep(UnitIds.huntress)
   ..hp(3500)
-  ..damage(150)
+  ..damage(100)
+  ..attackrate(1.0)
   ..amount(2)
   ..scale(2)
 
