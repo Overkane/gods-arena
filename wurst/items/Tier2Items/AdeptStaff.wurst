@@ -13,7 +13,7 @@ constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 350
 constant FIREBOLT_STUN = 0.5
 
-constant SPELL_POWER = 20.
+constant SPELL_POWER = 25.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Fire Bolt", 
@@ -24,7 +24,7 @@ public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Adept Staff")
 ..setInterfaceIcon(MapIcons.btnMage2)
 ..setActivelyUsed(true)
-..addBonus(Bonus.INTELLIGENCE, 20)
+..addBonus(Bonus.INTELLIGENCE, 25)
 ..addBonus(Bonus.MANAREGEN, 2)
 ..setAbilities(commaList(FIREBOLT_ID))
 ..setCooldownGroup(FIREBOLT_ID.toRawCode())
