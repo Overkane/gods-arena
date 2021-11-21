@@ -102,13 +102,13 @@ public function initItemShop()
     shop
     ..addSection("Tier 3 Recipes")
     ..addRecipe(STRIKER_RECIPE)
+    ..addRecipe(FROSTMOURNE_RECIPE) // TODO balance
     ..addRecipe(GOLDEN_ARMOR_RECIPE)
     ..addRecipe(WIZARD_STAFF_RECIPE)
     ..addRecipe(ARCHMAGE_ROBE_RECIPE)
   // ..addRecipe(MAGE_KILLER_RECIPE) temporary disabled
   // ..addRecipe(LIGHTNING_SHIELD_RECIPE) temporary disabled
   // ..addRecipe(FROSTWRATH_RECIPE) temporary disabled
-  // ..addRecipe(FROSTMOURNE_RECIPE) temporary disabled
 
   toggleShopButton = new ToggleShopButton(shop, "Shop (B)")
   pData.forEach() (player key, PlayerData value) ->
