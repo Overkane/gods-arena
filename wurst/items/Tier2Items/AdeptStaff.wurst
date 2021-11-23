@@ -17,7 +17,7 @@ constant SPELL_POWER = 25.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Fire Bolt", 
-  "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
+  "casts a firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
   + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD_STR) + " seconds.")
 
 public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()

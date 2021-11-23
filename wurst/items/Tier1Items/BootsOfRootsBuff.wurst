@@ -5,7 +5,7 @@ import Abilities
 import MapIcons
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Root".color(POSITIVE_COLOR), "Unit can't move, but they hp renegeration is increased",  MapIcons.bTNBarbedTrapv3, Abilities.entanglingRootsTarget))
+constant buffTuple = compiletime(createDummyBuffObject("Root".color(POSITIVE_COLOR), "Hero can't move, but their hp regeneration is increased",  MapIcons.bTNBarbedTrapv3, Abilities.entanglingRootsTarget))
 // constant ON_APPLY_SOUND = new SoundDefinition(Sounds.berserkerCaster)
 
 public class BootsOfRootsBuff extends NormalBuff

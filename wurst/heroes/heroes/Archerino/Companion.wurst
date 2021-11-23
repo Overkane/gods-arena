@@ -90,7 +90,7 @@ class Companion extends UnitEntity
   ..setDefenseBase(2)
   ..setNormalAbilities(commaList(BITE_ID, CANNIBALIZE_ID))
 
-  tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Hachi bites targeted unit and makes it |cffd803bctagged|r. Also |cffb93939taunts|r the target.")
+  tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Hachi bites the target unit, |cffd803bctagging|r and |cffb93939taunting|r it.")
   new ChannelAbilityPreset(BITE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..presetButtonPosNormal(0, 2)
   ..presetIcon(Icons.bTNRedDragonDevour)
@@ -107,7 +107,7 @@ class Companion extends UnitEntity
   ..presetCooldown(lvl -> 8)
   ..tooltipStopListen()
   
-  tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Hachi eats near corpse and restores health.")
+  tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Hachi consumes a nearby corpse to restore health.")
   new AbilityDefinitionCannibalize(CANNIBALIZE_ID)
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(1, 2)

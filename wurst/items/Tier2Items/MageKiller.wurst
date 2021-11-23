@@ -18,7 +18,7 @@ constant FEEDBACK_RATIO = 2
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Feedback", 
-  "burn out " + FEEDBACK_MP_BURN.color(COLOR_GOLD_STR) + " mana from attacked target. Deals " + FEEDBACK_RATIO.color(COLOR_GOLD_STR) + " damage per burned mana.")
+  "burn " + FEEDBACK_MP_BURN.color(COLOR_GOLD_STR) + " mana from attacked enemies. Deals " + FEEDBACK_RATIO.color(COLOR_GOLD_STR) + " damage per burned mana.")
 
 public constant MAGE_KILLER_ITEM = compiletime(new RecipeItem()
 ..setName("Mage Killer")

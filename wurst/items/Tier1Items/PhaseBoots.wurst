@@ -18,7 +18,7 @@ constant PHASE_STEP_DURATION = 5
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Phase Step", 
-  "allows owner to walk through other units. Lasts " + PHASE_STEP_DURATION.color(COLOR_GOLD_STR) + " seconds.")
+  "allows the owner to walk through other units. Lasts " + PHASE_STEP_DURATION.color(COLOR_GOLD_STR) + " seconds.")
 
 public constant PHASE_BOOTS_ITEM = compiletime(new RecipeItem()
 ..setName("Phase Boots")

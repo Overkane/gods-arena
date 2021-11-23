@@ -15,7 +15,7 @@ constant POISON_DURATION = 3.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Poison", 
-  "attacks poison the target which deals " + ("[Hero Agility] * " + POISON_AGI_MULTIPLIER.percRound()).color(COLOR_GOLD_STR) 
+  "add poison damage to attacks which deals " + ("[Hero Agility] * " + POISON_AGI_MULTIPLIER.percRound()).color(COLOR_GOLD_STR) 
   + " " + MAGICAL_DAMAGE_STRING + " damage per second and lasts " + POISON_DURATION.round().color(COLOR_GOLD_STR) + " seconds. Poison effect stacks, but multiple similar items don't.")
 
 public constant POISON_DAGGER_ITEM = compiletime(new RecipeItem()

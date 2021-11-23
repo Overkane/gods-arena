@@ -18,7 +18,7 @@ constant ROOT_DURATION = 5.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Root", 
-  "on activated roots caster to the ground and increases they hp regeneration by " + ROOT_LIFEREGEN.round().color(COLOR_GOLD_STR) + "."
+  "on activation roots the caster to the ground and increases their hp regeneration by " + ROOT_LIFEREGEN.round().color(COLOR_GOLD_STR) + "."
   + " Lasts " + ROOT_DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
 
 public constant BOOTS_OF_ROOTS_ITEM = compiletime(new RecipeItem()
