@@ -1,0 +1,4 @@
+package OrderStringFactory_config
+
+@config function isOrderBanned(string _order) returns boolean
+    return _order == "attributemodskill"
