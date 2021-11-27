@@ -38,7 +38,7 @@ public constant DRACULAS_AXE_RECIPE = new ItemRecipe()
 
 init
   EventListener.onCast(LIFESTEAL_ID) (unit caster) ->
-    new DraculasAxeBuff(DURATION, BONUS_LIFESTEAL).apply(caster)
+    new DraculasAxeBuff(DURATION, BONUS_LIFESTEAL/100).apply(caster)
 
 @compiletime function genItemAbils()
   new ChannelAbilityPreset(LIFESTEAL_ID, 1, true)
