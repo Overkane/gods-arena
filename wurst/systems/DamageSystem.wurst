@@ -58,7 +58,7 @@ init
     let damageType = DamageEvent.getType()
     let tunit = DamageEvent.getTarget()
 
-    if damageType == DamageType.ATTACK
+    if damageType == DamageType.ATTACK and tunit.hasStat(CustomUnitStats.EVASION)
       let tUnitEvasion = tunit.getStat(CustomUnitStats.EVASION)
 
       if tUnitEvasion > GetRandomReal(0, 1)
@@ -67,67 +67,66 @@ init
 
   DamageEvent.addUnreducedListener(DamageEvents.RELATIVE castTo int) ->
     let sunit = DamageEvent.getSource()
-    var damage = DamageEvent.getAmount()
+    var damage = 0.
 
-    if isPhysicalDamage()
-      damage = DamageEvent.getAmount() + DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.ATTACK_POWER)
+    if isPhysicalDamage() and sunit.hasStat(CustomUnitStats.ATTACK_POWER)
+      damage = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.ATTACK_POWER)
 
-    else if isMagicalDamage()
-      let tunit = DamageEvent.getTarget() 
-      damage = (1 - tunit.getStat(CustomUnitStats.MAGIC_RESISTANCE)) * (DamageEvent.getAmount() + DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.SPELL_POWER))
+    else if isMagicalDamage() and sunit.hasStat(CustomUnitStats.SPELL_POWER)
+      damage = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.SPELL_POWER)
       
-    DamageEvent.setAmount(damage)
+    DamageEvent.addAmount(damage)
 
   DamageEvent.addUnreducedListener(DamageEvents.ABSOLUTE castTo int) ->
     let damageType = DamageEvent.getType()
     let sunit = DamageEvent.getSource()
-    var damage = DamageEvent.getAmount()
+    var damage = 0.
 
     // Bonus attack damage applies only for default attacks.
-    if damageType == DamageType.ATTACK
-      damage = DamageEvent.getAmount() + sunit.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE)
+    if damageType == DamageType.ATTACK and sunit.hasStat(CustomUnitStats.BONUS_ATTACK_DAMAGE)
+      damage = sunit.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE)
 
-    else if isMagicalDamage()
-      damage = DamageEvent.getAmount() + sunit.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE)
+    else if isMagicalDamage() and sunit.hasStat(CustomUnitStats.BONUS_SPELL_DAMAGE)
+      damage = sunit.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE)
       
-    DamageEvent.setAmount(damage)
+    DamageEvent.addAmount(damage)
 
   DamageEvent.addUnreducedListener(DamageEvents.CRIT castTo int) ->
     let damageType = DamageEvent.getType()
     let sunit = DamageEvent.getSource()
-    var damage = DamageEvent.getAmount()
+    var damage = 0.
 
-    if damageType == DamageType.ATTACK
+    if damageType == DamageType.ATTACK and sunit.hasStat(CustomUnitStats.ATTACK_CRIT_CHANCE) and sunit.hasStat(CustomUnitStats.ATTACK_CRIT_POWER)
       let attackCritChance = sunit.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE)
       
       if attackCritChance > GetRandomReal(0, 1)
-        damage = DamageEvent.getAmount() + DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.ATTACK_CRIT_POWER)
+        damage = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.ATTACK_CRIT_POWER)
 
-    else if isMagicalDamage()
+    else if isMagicalDamage() and sunit.hasStat(CustomUnitStats.SPELL_CRIT_CHANCE) and sunit.hasStat(CustomUnitStats.SPELL_CRIT_POWER)
       let spellCritChance = sunit.getStat(CustomUnitStats.SPELL_CRIT_CHANCE)
       
       if spellCritChance > GetRandomReal(0, 1)
-        damage = DamageEvent.getAmount() + DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.SPELL_CRIT_POWER)
+        damage = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.SPELL_CRIT_POWER)
     
-    DamageEvent.setAmount(damage)
+    DamageEvent.addAmount(damage)
 
   DamageEvent.addUnreducedListener(DamageEvents.FINAL castTo int) ->
-    let sunit = DamageEvent.getSource()
-    var damage = DamageEvent.getAmount()
+    let tunit = DamageEvent.getTarget()
+    var damage = 0.
 
     // Applying magic resistance after all calculations.
     // Physical damage is reduced by default war3 mechanism.
-    if isMagicalDamage()
-      damage = DamageEvent.getAmount() * (1 - sunit.getStat(CustomUnitStats.MAGIC_RESISTANCE))
+    if isMagicalDamage() and tunit.hasStat(CustomUnitStats.MAGIC_RESISTANCE)
+      damage = DamageEvent.getAmount() * tunit.getStat(CustomUnitStats.MAGIC_RESISTANCE)
       
-    DamageEvent.setAmount(damage)
+    DamageEvent.subAmount(damage)
 
   // Lifesteal is calculated after all damage calculations
   DamageEvent.addListener() ->
     let damageType = DamageEvent.getType()
     let sunit = DamageEvent.getSource()
 
-    if damageType == DamageType.ATTACK
+    if damageType == DamageType.ATTACK and sunit.hasStat(CustomUnitStats.LIFESTEAL)
       let lifestealAmount = sunit.getStat(CustomUnitStats.LIFESTEAL)
       
       if lifestealAmount != 0
@@ -135,7 +134,7 @@ init
         if healValue > 1
           sunit.healTarget(sunit, healValue, false)
 
-    else if isMagicalDamage()
+    else if isMagicalDamage() and sunit.hasStat(CustomUnitStats.SPELL_LIFESTEAL)
       var attacker = sunit
       
       if sunit.hasAbility(LOCUST_ID) and sunit.getOwner().isHuman()
@@ -147,27 +146,3 @@ init
         let healValue = DamageEvent.getAmount() * lifestealAmount
         if healValue > 1
           attacker.healTarget(attacker, healValue, false)
-    
-  // // Cleave
-  // DamageEvent.addListener() ->
-  //   let damageType = DamageEvent.getType()
-  //   let sunit = DamageEvent.getSource()
-  //   let tunit = DamageEvent.getTarget()
-
-  //   if damageType == DamageType.ATTACK
-  //     let cleaveAmount = sunit.getStat(CustomUnitStats.CLEAVE)
-
-  //     if cleaveAmount > 0
-  //       let targetList = new LinkedList<unit>
-  //       forUnitsInRange(tunit.getPos(), CLEAVE_AOE) (unit u) ->
-  //         if u.isAlive() and u.isEnemyOf(sunit) and u != tunit
-  //           targetList.add(u)
-        
-  //       targetList.shuffle()
-  //       for i = 1 to CLEAVE_MAX_TARGET
-  //         if targetList.isEmpty()
-  //           break
-  //         let cleaveTarget = targetList.pop()
-  //         sunit.dealPhysicalDamage(cleaveTarget, DamageEvent.getAmount() * cleaveAmount)
-      
-  //       destroy targetList
