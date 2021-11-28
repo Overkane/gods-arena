@@ -4,61 +4,70 @@ import GameConstants
 import PassiveAbilityPreset
 import DamageSystem
 import MapIcons
+import MapModels
 import ClosureEvents
 import TooltipFactory
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure CRITICAL_CHANCE = lvl -> 10. + 2.5 * (lvl-1)
-constant RealLevelClosure CRITICAL_MULT = lvl -> 1.5 + 0.5 * (lvl-1)
+constant RealLevelClosure ATTACK_CRIT_CHANCE = lvl -> 0.1 + 0.025 * (lvl-1)
+constant RealLevelClosure ATTACK_CRIT_POWER = lvl -> 1.25 + 0.5 * (lvl-1)
 constant RealLevelClosure BACKSTAB_MULT = lvl -> 2.
 
-constant CONE_ANGLE = 140.
+constant CONE_ANGLE = 90.
 
 init
   DamageEvent.addUnreducedListener(DamageEvents.START castTo int) -> 
     let sunit = DamageEvent.getSource()
 
     if sunit.hasAbility(COUP_DE_GRACE_ID) and DamageEvent.getType() == DamageType.ATTACK 
-      let lvl = sunit.getAbilityLevel(COUP_DE_GRACE_ID)
       let tunit = DamageEvent.getTarget()
-      var chance = CRITICAL_CHANCE.run(lvl)
 
-      let facing = tunit.getFacingAngle()
-      let back = facing - (180).fromDeg()
-      let targetAngle = tunit.getPos().angleTo(sunit.getPos())
-      let delta = Atan2((targetAngle - back).sin(), (targetAngle - back).cos()).abs()
-      if (delta < CONE_ANGLE / 2.)
-        chance *= 2.
+      let sunitToTunitVector = sunit.getPos().normalizedPointerTo(tunit.getPos()) 
+      let tunitFacingVector = tunit.getFacingAngle().direction()
+      
+      if sunitToTunitVector.dot(tunitFacingVector) >= (CONE_ANGLE / 2).cos()
+        let lvl = sunit.getAbilityLevel(COUP_DE_GRACE_ID)
+        let chance = ATTACK_CRIT_CHANCE.run(lvl)
 
-      sunit
-      ..addOnetimeStat(CustomUnitStats.ATTACK_CRIT_CHANCE, chance/100)
+        flashEffect(MapModels.coupDeGrace, tunit.getPos(), 1, sunit.getFacingAngle())
+        sunit.addOnetimeStat(CustomUnitStats.ATTACK_CRIT_CHANCE, chance)
       
   EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
     let u = EventData.getTriggerUnit()
 
     if EventData.getLearnedSkill() == COUP_DE_GRACE_ID
       let lvl = u.getAbilityLevel(COUP_DE_GRACE_ID)
-      if lvl != 1
-        let multiplayerOld = CRITICAL_MULT.run(lvl-1)
-        u.addStat(CustomUnitStats.ATTACK_CRIT_POWER, -multiplayerOld)
       
-      let multiplayer = CRITICAL_MULT.run(lvl)
-      u.addStat(CustomUnitStats.ATTACK_CRIT_POWER, multiplayer)
+      if lvl != 1
+        let attackCritPowerOld = ATTACK_CRIT_POWER.run(lvl-1)
+        let attackCritChanceOld = ATTACK_CRIT_CHANCE.run(lvl-1)
+
+        u
+        ..addStat(CustomUnitStats.ATTACK_CRIT_POWER, -attackCritPowerOld)
+        ..addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, -attackCritChanceOld)
+      
+      let attackCritPower = ATTACK_CRIT_POWER.run(lvl)
+      let attackCritChance = ATTACK_CRIT_CHANCE.run(lvl)
+
+      u
+      ..addStat(CustomUnitStats.ATTACK_CRIT_POWER, attackCritPower)
+      ..addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, attackCritChance)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero empowers his ability to deal critical strikes greatly. Bonus chance to deal critical strike is doubled if target is attacked from behind.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "After long years Assassin honed her ability to find enemy weak points and deal deadly strikes."
+    + " Increases Attack Crit Chance and Attack Crit Power. Attack Crit Chance is doubled, if target is attacked from behind.")
   new PassiveAbilityPreset(COUP_DE_GRACE_ID, ULTIMATE_SPELL_LEVELS, tooltip)
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..presetIcon(MapIcons.pASBTNBackstab)
   ..presetButtonPosNormal(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetHotkey("R")
-  ..presetIcon(MapIcons.pASBTNBackstab)
 
   ..tooltipStartListen()
   ..setName("Coup De Grace")
-  ..addTooltipProperty("Critical Strike Chance", lvl -> CRITICAL_CHANCE.run(lvl).percRound())
-  ..addTooltipProperty("Damage Multiplayer", lvl -> (CRITICAL_MULT.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Attack Crit Chance", lvl -> (ATTACK_CRIT_CHANCE.run(lvl) * 100).percRound(1))
+  ..addTooltipProperty("Attack Crit Power", lvl -> (ATTACK_CRIT_POWER.run(lvl) * 100).percRound())
   ..addTooltipProperty("Backstab Chance Multiplayer", BACKSTAB_MULT)
   ..tooltipStopListen()
