@@ -2,6 +2,7 @@ package CustomStatSystem
 import HashMap
 import LinkedList
 import UnitIndexer
+import initlater GameStatistic
 
 // Constant unit stats
 HashMap<CustomUnitStats, LinkedList<real>> array customUnitStats
@@ -66,7 +67,8 @@ public function unit.addStat(CustomUnitStats stat, real value)
   if not customUnitStats[index].get(stat).remove(-value)
     customUnitStats[index].get(stat).add(value)
 
-  getNewStatValue(index, stat)
+  let newStatValue = getNewStatValue(index, stat)
+  updateCustomStatFrame(this.getOwner(), stat, newStatValue)
 
 public function unit.addOnetimeStat(CustomUnitStats stat, real value)
   let index = this.getIndex()

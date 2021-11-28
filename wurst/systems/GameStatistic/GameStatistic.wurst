@@ -1,112 +1,189 @@
-// package GameStatistic
-// import FrameMultiboard
-// import FrameMultiboardButton
-// import CustomStatSystem
-// import TimerUtils
-// import PlayerData
-// import HashMap
+package GameStatistic
+import CustomStatSystem
+import TableLayout
+import PlayerData
+import HashMap
+import ClosureTimers
+import BonusHandler
+import Icons
+import TooltipFactory
+import ErrorHandling
+import SoundUtils
 
-// FrameMultiboard mboardMain
-// public ToggleMultiboardButton toggleMultiboardButton
+constant toggleButtonSound = new SoundDefinition(Sounds.bigButtonClick)
 
-// FrameMultiboard mboardStats
-// public ToggleMultiboardButton toggleStatMultiboardButton
+constant pBasicStatFrames = new IterableMap<player, IterableMap<Bonus, framehandle>>
+constant pCustomStatFrames = new IterableMap<player, IterableMap<CustomUnitStats, framehandle>>
 
-// public function initMultiboard()
-//   mboardMain = new FrameMultiboard(FRAMEPOINT_TOP, vec2(0.4, 0.53))
-//   ..setColumnCount(10)
-//   ..setRowCount(1)
-//   ..setPadding(vec2(0.01, 0.01))
+public function createCustomUI(player p)
 
-//   mboardMain.setItemValue(0, 0, "Player")
-//   mboardMain.setItemValue(0, 1, "Kills")
-//   mboardMain.setItemValue(0, 2, "Deaths")
-//   mboardMain.setItemValue(0, 3, "Phys.D.")
-//   mboardMain.setItemValue(0, 4, "Spell D.")
-//   mboardMain.setItemValue(0, 5, "D. Taken")
-//   mboardMain.setItemValue(0, 6, "Full Phys. D.")
-//   mboardMain.setItemValue(0, 7, "Spell D.")
-//   mboardMain.setItemValue(0, 8, "D. Taken")
-//   mboardMain.setItemValue(0, 9, "Points")
+  let basicStatFrames = new IterableMap<Bonus, framehandle>
+  ..put(Bonus.LIFEREGEN, baseTextFrame())
+  ..put(Bonus.MANAREGEN, baseTextFrame())
+  ..put(Bonus.ATTACKSPEED, baseTextFrame())
 
-//   toggleMultiboardButton = new ToggleMultiboardButton(mboardMain, "Game Stats (G)")
-//   ..setSize(0.12, 0.032)
-//   ..setPoint(FRAMEPOINT_BOTTOM, vec2(0.46, 0.138))
+  pBasicStatFrames.put(p, basicStatFrames)
 
-//   pData.forEach() (player p, PlayerData value) ->
-//     toggleMultiboardButton
-//     ..addHotkeyForPlayer(p, OSKEY_G)
 
-//   mboardStats = new FrameMultiboard(FRAMEPOINT_TOP, vec2(0.4, 0.53))
-//   ..setColumnCount(12)
-//   ..setRowCount(1)
-//   ..setPadding(vec2(0.01, 0.01))
-//   ..setItemsSize(0.08, 0.018)
+  let customStatFrames = new IterableMap<CustomUnitStats, framehandle>
+  ..put(CustomUnitStats.ATTACK_POWER, baseTextFrame())
+  ..put(CustomUnitStats.ATTACK_CRIT_POWER, baseTextFrame())
+  ..put(CustomUnitStats.ATTACK_CRIT_CHANCE, baseTextFrame())
+  ..put(CustomUnitStats.LIFESTEAL, baseTextFrame())
+  ..put(CustomUnitStats.SPELL_POWER, baseTextFrame())
+  ..put(CustomUnitStats.SPELL_CRIT_POWER, baseTextFrame())
+  ..put(CustomUnitStats.SPELL_CRIT_CHANCE, baseTextFrame())
+  ..put(CustomUnitStats.SPELL_LIFESTEAL, baseTextFrame())
+  ..put(CustomUnitStats.EVASION, baseTextFrame())
+  ..put(CustomUnitStats.MAGIC_RESISTANCE, baseTextFrame())
+  ..put(CustomUnitStats.THREAT_GENERATION, baseTextFrame())
 
-//   mboardStats.setItemValue(0, 0, "Player")
-//   mboardStats.setItemValue(0, 1, "BAD")
-//   mboardStats.setItemValue(0, 2, "AP")
-//   mboardStats.setItemValue(0, 3, "ACP")
-//   mboardStats.setItemValue(0, 4, "ACC")
-//   mboardStats.setItemValue(0, 5, "L")
-//   mboardStats.setItemValue(0, 6, "E")
-//   mboardStats.setItemValue(0, 7, "BSD")
-//   mboardStats.setItemValue(0, 8, "SP")
-//   mboardStats.setItemValue(0, 9, "SCP")
-//   mboardStats.setItemValue(0, 10, "SCC")
-//   mboardStats.setItemValue(0, 11, "SL")
+  pCustomStatFrames.put(p, customStatFrames)
 
-//   toggleStatMultiboardButton = new ToggleMultiboardButton(mboardStats, "Hero Stats (Y)")
-//   ..setSize(0.12, 0.032)
-//   ..setPoint(FRAMEPOINT_BOTTOM, vec2(0.358, 0.138))
 
-//   pData.forEach() (player p, PlayerData value) ->
-//     toggleStatMultiboardButton
-//     ..addHotkeyForPlayer(p, OSKEY_Y)
+  let baseframe = createFrame("FRAME", "", GAME_UI, "", 0)
+  ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.362, 0.187))
+  ..hide()
+  ..show(p)
 
-//   update()
-//   getTimer().startPeriodic(1, () -> update())
+  new TableLayout(0.35, 0.055)
+  ..row()
+  ..add(baseIconFrame(Icons.bTNDeathPact, "Attack Power"))
+  ..add(customStatFrames.get(CustomUnitStats.ATTACK_POWER))
+  
+  ..add(baseIconFrame(Icons.bTNGolemThunderClap, "Attack Crit Power"))
+  ..add(customStatFrames.get(CustomUnitStats.ATTACK_CRIT_POWER))
+  
+  ..add(baseIconFrame(Icons.bTNCriticalStrike, "Attack Crit Chance"))
+  ..add(customStatFrames.get(CustomUnitStats.ATTACK_CRIT_CHANCE))
+  
+  ..add(baseIconFrame(Icons.bTNVampiricAura, "Lifesteal"))
+  ..add(customStatFrames.get(CustomUnitStats.LIFESTEAL))
+  
+  ..add(baseIconFrame(Icons.bTNHealthStone, "Health Regeneration"))
+  ..add(basicStatFrames.get(Bonus.LIFEREGEN))
 
-// function update()
-//   mboardMain
-//   ..setRowCount(pData.size()+1)
-//   ..setItemsSize(0.06, 0.018)
-//   ..setColumnWidth(0, 0.07)
+  ..add(baseIconFrame(Icons.bTNEvasion, "Evasion"))
+  ..add(customStatFrames.get(CustomUnitStats.EVASION))
 
-//   mboardStats
-//   ..setRowCount(pData.size()+1)
-//   ..setItemsSize(0.06, 0.018)
-//   ..setColumnWidth(0, 0.07)
+  ..add(baseIconFrame(Icons.bTNGlove, "Attack Speed"))
+  ..add(basicStatFrames.get(Bonus.ATTACKSPEED))
 
-//   var i = 1
-//   for p in pData
-//     let playerData = pData.get(p)
+  ..row()
+  ..add(baseIconFrame(Icons.bTNScourgeBuild, "Spell Power"))..padTop(0.002)
+  ..add(customStatFrames.get(CustomUnitStats.SPELL_POWER))..padTop(0.002)
+  
+  ..add(baseIconFrame(Icons.bTNWispSplode, "Spell Crit Power"))..padTop(0.002)
+  ..add(customStatFrames.get(CustomUnitStats.SPELL_CRIT_POWER))..padTop(0.002)
+  
+  ..add(baseIconFrame(Icons.bTNPriestMaster, "Spell Crit Chance"))..padTop(0.002)
+  ..add(customStatFrames.get(CustomUnitStats.SPELL_CRIT_CHANCE))..padTop(0.002)
+  
+  ..add(baseIconFrame(Icons.bTNWellSpring, "Spell Lifesteal"))..padTop(0.002)
+  ..add(customStatFrames.get(CustomUnitStats.SPELL_LIFESTEAL))..padTop(0.002)
 
-//     mboardMain.setItemValue(i, 0, p.getNameColored())
-//     mboardMain.setItemValue(i, 1, playerData.getKills().toString())
-//     mboardMain.setColumnWidth(1, 0.04)
-//     mboardMain.setItemValue(i, 2, playerData.getDeaths().toString())
-//     mboardMain.setColumnWidth(2, 0.04)
-//     mboardMain.setItemValue(i, 3, playerData.getPhysDamage().toString())
-//     mboardMain.setItemValue(i, 4, playerData.getSpellDamage().toString())
-//     mboardMain.setItemValue(i, 5, playerData.getDamageTaken().toString())
-//     mboardMain.setItemValue(i, 6, playerData.getOverallPhysDamage().toString())
-//     mboardMain.setItemValue(i, 7, playerData.getOverallSpellDamage().toString())
-//     mboardMain.setItemValue(i, 8, playerData.getOverallDamageTaken().toString())
-//     mboardMain.setItemValue(i, 9, playerData.getArenaPoints().toString())
+  ..add(baseIconFrame(Icons.bTNManaStone, "Mana Regeneration"))..padTop(0.002)
+  ..add(basicStatFrames.get(Bonus.MANAREGEN))..padTop(0.002)
 
-//     playerData.getHero().ifPresent() (h) ->
-//       mboardStats.setItemValue(i, 0, p.getNameColored())
-//       mboardStats.setItemValue(i, 1, h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString())
-//       mboardStats.setItemValue(i, 2, h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString())
-//       mboardStats.setItemValue(i, 3, h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString())
-//       mboardStats.setItemValue(i, 4, h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString())
-//       mboardStats.setItemValue(i, 5, h.actor.getStat(CustomUnitStats.LIFESTEAL).toString())
-//       mboardStats.setItemValue(i, 6, h.actor.getStat(CustomUnitStats.EVASION).toString())
-//       mboardStats.setItemValue(i, 7, h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString())
-//       mboardStats.setItemValue(i, 8, h.actor.getStat(CustomUnitStats.SPELL_POWER).toString())
-//       mboardStats.setItemValue(i, 9, h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString())
-//       mboardStats.setItemValue(i, 10, h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString())
-//       mboardStats.setItemValue(i, 11, h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString())
-    
-//     i++
+  ..add(baseIconFrame(Icons.bTNGenericSpellImmunity, "Magic Resistance"))..padTop(0.002)
+  ..add(customStatFrames.get(CustomUnitStats.MAGIC_RESISTANCE))..padTop(0.002)
+
+  ..add(baseIconFrame(Icons.bTNTaunt, "Threat Generation"))..padTop(0.002)
+  ..add(customStatFrames.get(CustomUnitStats.THREAT_GENERATION))..padTop(0.002)
+
+  ..applyTo(baseframe)
+
+
+  let baseFrameForButton = createFrame("FRAME", "", GAME_UI, "", 0)
+  ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.169, 0.18))
+  ..hide()
+  ..show(p)
+
+  let toggleButton = imgBtn(Icons.bTNStatUp)
+  ..setSize(0.02, 0.02)
+
+  let tooltip = createFrame("BoxedText", toggleButton, 0, 0)
+  ..setSize(0.12, 0.026)
+  ..setPoint(FRAMEPOINT_LEFT, toggleButton, FRAMEPOINT_RIGHT)
+  getFrame("BoxedTextTitle", 0).setText("Toggle stats UI")
+
+  toggleButton
+  ..setTooltip(tooltip)
+  ..onClick() ->
+    let clickedPlayer = GetTriggerPlayer()
+
+    toggleButtonSound.playForPlayer(p)
+    baseframe.toggle(clickedPlayer)
+    toggleButton.unfocus(clickedPlayer)
+
+  new TableLayout(0.02, 0.02)
+  ..row()
+  ..add(toggleButton)
+  ..applyTo(baseFrameForButton)
+
+function framehandle.toggle(player p)
+  if this.isVisible(p)
+    this.hide(p)
+  else
+    this.show(p)
+
+function baseIconFrame(string iconPath, string tooltipText) returns framehandle
+  let iconFrame = imgBtn(iconPath)
+  ..setSize(0.015, 0.015)
+
+  let tooltip = createFrame("BoxedText", iconFrame, 0, 0)
+  ..setSize(0.12, 0.03)
+  ..setPoint(FRAMEPOINT_LEFT, iconFrame, FRAMEPOINT_RIGHT)
+  getFrame("BoxedTextTitle", 0).setText(tooltipText)
+  
+  iconFrame
+  ..setTooltip(tooltip)
+  ..onClick() -> 
+    iconFrame.unfocus()
+
+  return iconFrame
+
+function baseTextFrame() returns framehandle
+  let textFrame = p("0")
+  ..setSize(0.025, 0.015)
+  ..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
+
+  return textFrame
+
+public function updateCustomStatFrame(player p, CustomUnitStats stat, real value)
+  pData.get(p).getHero().ifPresent() (h) ->
+    let customStatFrame = pCustomStatFrames.get(p)
+    let frame = customStatFrame.get(stat)
+    let statValue = (value * 100).round().toString() + stat.getMeasure() 
+
+    frame.setText(statValue)
+
+function updateBasicStateFrames()
+  for p in pBasicStatFrames
+    pData.get(p).getHero().ifPresent() (h) ->
+      let basicStatFrame = pBasicStatFrames.get(p)
+      let heroUnit = h.actor
+
+      for basicStat in basicStatFrame
+        var statValue = ""
+        framehandle frame = null
+
+        switch basicStat
+          case Bonus.LIFEREGEN
+            statValue = (heroUnit.getStr(true) * 0.05 + heroUnit.getBonus(Bonus.LIFEREGEN)).toString(1)
+            frame = basicStatFrame.get(basicStat)
+          case Bonus.MANAREGEN
+            // Mana reg bonus somehow return 5 for 0.5 regen, cuz of that divide by 10.
+            statValue = (heroUnit.getInt(true) * 0.05 + (heroUnit.getBonus(Bonus.MANAREGEN)) / 10).toString(1)
+            frame = basicStatFrame.get(basicStat)
+          case Bonus.ATTACKSPEED
+            statValue = (heroUnit.getAgi(true) * 0.01 * 100 + heroUnit.getBonus(Bonus.ATTACKSPEED)).round().toString() + "%"
+            frame = basicStatFrame.get(basicStat)
+          default
+            error("Trying to get unexpected basic stat: " + basicStat.toString() + ".")
+        
+        frame.setText(statValue)
+
+init
+  doPeriodically(1) (CallbackPeriodic cb) ->
+    updateBasicStateFrames()

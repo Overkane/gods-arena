@@ -16,6 +16,7 @@ import HonorShop
 import LinkedList
 import ObjectIdGenerator
 import Reference
+import GameStatistic
 
 public HeroPickUI heroPickUI
 
@@ -57,6 +58,8 @@ function createHero(int heroId, player owner)
 
   let h = new Hero(owner, heroId, HERO_PICK_RECT.randomPoint().toVec3(), angle(0))
   pData.get(owner).setHero(h)
+  
+  createCustomUI(owner)
   
   h.actor
   ..addAbility(SELL_ID)
