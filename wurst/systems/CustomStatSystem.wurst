@@ -37,57 +37,20 @@ public function CustomUnitStats.isAdditive() returns boolean
 public function CustomUnitStats.isMultiplicative() returns boolean
   return isAdditive[this castTo int] == 2
 
+public function unit.hasStat(CustomUnitStats stat) returns bool
+  let index = this.getIndex()
+
+  return customUnitStats[index] != null and customUnitStats[index].has(stat)
+    or customUnitOnetimeStats[index] != null and customUnitOnetimeStats[index].has(stat)
+
 public function unit.getStat(CustomUnitStats stat) returns real
   let index = this.getIndex()
-  // If cache exists for this stat, use it
+
+  // Use cache, if there aren't one-time stats. Otherwise recalculate value on getting it.
   if statCache[index] != null and statCache[index].has(stat)
     return statCache[index].get(stat)
-
-  let allStats = new LinkedList<real>
-
-  if customUnitStats[index] != null and customUnitStats[index].has(stat)
-    allStats.addAll(customUnitStats[index].get(stat))
-
-  let hasOnetimeStat = customUnitOnetimeStats[index] != null and customUnitOnetimeStats[index].has(stat)
-  if hasOnetimeStat
-    allStats.addAll(customUnitOnetimeStats[index].get(stat))
-
-    customUnitOnetimeStats[index].get(stat).clear()
-
-  var overallStatValue = 0.
-
-  if stat.isAdditive()
-    for elem in allStats
-      overallStatValue += elem
-      
-  else if stat.isMultiplicative()
-    var multiplicativePositiveValue = 1.
-    var multiplicativeNegativeValue = 1.
-
-    for elem in allStats
-      if elem > 0
-        multiplicativePositiveValue *= 1 - elem
-      else
-        multiplicativeNegativeValue *= 1 - elem.abs()
-
-    multiplicativePositiveValue = 1 - multiplicativePositiveValue
-    multiplicativeNegativeValue = 1 - multiplicativeNegativeValue
-
-    overallStatValue = multiplicativePositiveValue - multiplicativeNegativeValue 
-
   else
-    print("Unknown stat " + (stat castTo int).toString())
-
-  if not hasOnetimeStat
-    // Cache newly calculated value if it didn't contain one time bonuses
-    if statCache[index] == null
-      statCache[index] = new HashMap<CustomUnitStats, real>()
-
-    statCache[index].put(stat, overallStatValue)
-
-  destroy allStats
-  
-  return overallStatValue
+    return getNewStatValue(index, stat)
 
 public function unit.addStat(CustomUnitStats stat, real value)
   let index = this.getIndex()
@@ -103,12 +66,11 @@ public function unit.addStat(CustomUnitStats stat, real value)
   if not customUnitStats[index].get(stat).remove(-value)
     customUnitStats[index].get(stat).add(value)
 
-  // Remove cached value if it exists to trigger re-calculation
-  if statCache[index] != null
-    statCache[index].remove(stat)
+  getNewStatValue(index, stat)
 
 public function unit.addOnetimeStat(CustomUnitStats stat, real value)
   let index = this.getIndex()
+
   if customUnitOnetimeStats[index] == null
     customUnitOnetimeStats[index] = new HashMap<CustomUnitStats, LinkedList<real>>
   
@@ -158,6 +120,52 @@ public function unit.removeStats()
   if statCache[index] != null
     destroy statCache[index]
     statCache[index] = null
+
+function getNewStatValue(int index, CustomUnitStats stat) returns real
+  let allStats = new LinkedList<real>
+
+  if customUnitStats[index] != null and customUnitStats[index].has(stat)
+    allStats.addAll(customUnitStats[index].get(stat))
+
+  let hasOnetimeStat = customUnitOnetimeStats[index] != null and customUnitOnetimeStats[index].has(stat)
+  if hasOnetimeStat
+    allStats.addAll(customUnitOnetimeStats[index].get(stat))
+    customUnitOnetimeStats[index].get(stat).clear()
+
+  var overallStatValue = 0.
+
+  if stat.isAdditive()
+    for elem in allStats
+      overallStatValue += elem
+      
+  else if stat.isMultiplicative()
+    var multiplicativePositiveValue = 1.
+    var multiplicativeNegativeValue = 1.
+
+    for elem in allStats
+      if elem > 0
+        multiplicativePositiveValue *= 1 - elem
+      else
+        multiplicativeNegativeValue *= 1 - elem.abs()
+
+    multiplicativePositiveValue = 1 - multiplicativePositiveValue
+    multiplicativeNegativeValue = 1 - multiplicativeNegativeValue
+
+    overallStatValue = multiplicativePositiveValue - multiplicativeNegativeValue 
+
+  else
+    print("Unknown stat " + (stat castTo int).toString())
+
+  if not hasOnetimeStat
+    // Cache newly calculated value if it didn't contain one time bonuses
+    if statCache[index] == null
+      statCache[index] = new HashMap<CustomUnitStats, real>()
+
+    statCache[index].put(stat, overallStatValue)
+  
+  destroy allStats
+
+  return overallStatValue
 
 init
   onUnitDeindex() ->
