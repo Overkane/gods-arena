@@ -94,6 +94,7 @@ public function createCustomUI(player p)
   ..applyTo(baseframe)
 
 
+  // TODO use 1 toggle button instead of 1 per each player.
   let baseFrameForButton = createFrame("FRAME", "", GAME_UI, "", 0)
   ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.169, 0.18))
   ..hide()
@@ -120,6 +121,31 @@ public function createCustomUI(player p)
   ..row()
   ..add(toggleButton)
   ..applyTo(baseFrameForButton)
+
+public function updateCustomStatFrame(player p, CustomUnitStats stat, real value)
+  pData.get(p).getHero().ifPresent() (h) ->
+    let customStatFrame = pCustomStatFrames.get(p)
+    let frame = customStatFrame.get(stat)
+    let statValue = (value * 100).round().toString() + stat.getMeasure() 
+
+    frame.setText(statValue)
+
+public function player.clearPlayerCustomStatUI()
+  if pBasicStatFrames.has(this)
+    let basicFrames = pBasicStatFrames.get(this)
+    for stat in basicFrames
+      basicFrames.get(stat).remove()
+    destroy basicFrames
+
+    pBasicStatFrames.remove(this)
+
+  if pCustomStatFrames.has(this)
+    let customFrames = pCustomStatFrames.get(this)
+    for stat in customFrames
+      customFrames.get(stat).remove()
+    destroy customFrames
+
+    pCustomStatFrames.remove(this)
 
 function framehandle.toggle(player p)
   if this.isVisible(p)
@@ -149,14 +175,6 @@ function baseTextFrame() returns framehandle
   ..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
 
   return textFrame
-
-public function updateCustomStatFrame(player p, CustomUnitStats stat, real value)
-  pData.get(p).getHero().ifPresent() (h) ->
-    let customStatFrame = pCustomStatFrames.get(p)
-    let frame = customStatFrame.get(stat)
-    let statValue = (value * 100).round().toString() + stat.getMeasure() 
-
-    frame.setText(statValue)
 
 function updateBasicStateFrames()
   for p in pBasicStatFrames

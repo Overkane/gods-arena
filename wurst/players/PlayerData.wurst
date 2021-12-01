@@ -4,6 +4,7 @@ import Hero
 import Players
 import initlater Backpack
 import initlater HonorShop
+import initlater GameStatistic
 import HashMap
 import Entity
 import initlater WaveRewards
@@ -145,6 +146,8 @@ public function initPlayers()
       if honorShop.getOwner() == p
         destroy honorShop.getEntity()
         break
+
+    p.clearPlayerCustomStatUI()
 
     printTimed(p.getNameColored() + " has left the game", 15.)
     printTimed("All players get " + expCompensationOnPlayerLeave.toString().color(COLOR_GOLD_STR) + " experience and "
