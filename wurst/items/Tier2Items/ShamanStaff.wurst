@@ -17,7 +17,8 @@ constant HEALING_WARD_DURATION = 15
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Healing Ward", 
-  "places healing ward, which heals " + HEALING_WARD_PERC_HEAL.colorPerc(COLOR_GOLD_STR) + " hp per second. Lasts " + HEALING_WARD_DURATION.color(COLOR_GOLD_STR) + " seconds.")
+  "places healing ward, which heals " + HEALING_WARD_PERC_HEAL.colorPerc(COLOR_GOLD_STR) + " hp per second. "
+    + getDurationString(HEALING_WARD_DURATION))
 
 public constant SHAMAN_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Shaman Staff")

@@ -15,8 +15,8 @@ constant DURATION = 8.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Bloodthirst", 
-  "Increases physical lifesteal by " + BONUS_LIFESTEAL.round().colorPerc(COLOR_GOLD_STR) + "." 
-  + " Lasts " + DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
+  "Increases physical lifesteal by " + BONUS_LIFESTEAL.round().colorPerc(COLOR_GOLD_STR) + ". " 
+    + getDurationString(DURATION.round()))
 
 public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 ..setName("Dracula's Axe")

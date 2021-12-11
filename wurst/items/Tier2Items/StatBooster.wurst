@@ -14,8 +14,8 @@ constant STAT_BOOST_DURATION = 10.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Stat Boost", 
-  "Increases highest base stat by " + STAT_BOOST_PERC_INCREASE.round().colorPerc(COLOR_GOLD_STR) + "." 
-  + " Lasts " + STAT_BOOST_DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
+  "Increases highest base stat by " + STAT_BOOST_PERC_INCREASE.round().colorPerc(COLOR_GOLD_STR) + ". " 
+    + getDurationString(STAT_BOOST_DURATION.round()))
 
 public constant STAT_BOOSTER_ITEM = compiletime(new RecipeItem()
 ..setName("Stat Booster")

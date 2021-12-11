@@ -20,13 +20,13 @@ constant BLOCK_MULTIPLIER = 2
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Blockade", 
-  "increases armor by " + BLOCKADE_ARMOR.round().color(COLOR_GOLD_STR) + ". Lasts for " + BLOCKADE_DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
+  "increases armor by " + BLOCKADE_ARMOR.round().color(COLOR_GOLD_STR) + ". "
+    + getDurationString(BLOCKADE_DURATION.round()))
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Block", 
   BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + ("[Hero Armor] * " 
-    +  BLOCK_MULTIPLIER.toString()).color(COLOR_GOLD_STR) + " damage. " 
-    + "Multiple items don't stack.".color(IMPORTANT_COLOR))
+    +  BLOCK_MULTIPLIER.toString()).color(COLOR_GOLD_STR) + " damage.")
 
 public constant BLOCKADE_ITEM = compiletime(new RecipeItem()
 ..setName("Blockade")

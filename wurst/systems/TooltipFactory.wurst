@@ -11,14 +11,14 @@ public constant MAGICAL_COLOR = colorA(91, 147, 209, 255).toColorString()
 public constant PURE_COLOR = colorA(194, 156, 74, 255).toColorString()
 public constant UTILITY_COLOR = colorA(35, 170, 58, 255).toColorString()
 
-public constant PHYSICAL_DAMAGE_STRING = "Physical".color(PHYSICAL_COLOR)
-public constant MAGICAL_DAMAGE_STRING = "Magical".color(MAGICAL_COLOR)
-public constant PURE_DAMAGE_STRING = "Pure".color(PURE_COLOR)
-
 public constant POSITIVE_COLOR = color(0, 255, 0).toColorString()
 public constant NEGATIVE_COLOR = color(205, 55, 55).toColorString()
 
 public constant IMPORTANT_COLOR = NEGATIVE_COLOR
+
+public constant PHYSICAL_DAMAGE_STRING = "Physical".color(PHYSICAL_COLOR)
+public constant MAGICAL_DAMAGE_STRING = "Magical".color(MAGICAL_COLOR)
+public constant PURE_DAMAGE_STRING = "Pure".color(PURE_COLOR)
 
 enum CustomStatType
   PHYSICAL
@@ -28,6 +28,52 @@ enum CustomStatType
 public enum AbilityType
   PASSIVE
   ACTIVE
+
+public function real.percRound() returns string
+  return (this.toString(0) + "%")
+
+public function real.percRound(int precision) returns string
+  return (this.toString(precision) + "%")
+
+// To avoid redundant toString() calls.
+public function real.color(string which) returns string
+  return this.toString().color(which)
+
+// To avoid redundant toString() calls.
+public function int.color(string which) returns string
+  return this.toString().color(which)
+
+// To avoid redundant toString() calls and % uses.
+public function real.colorPerc(string which) returns string
+  return (this.toString() + "%").color(which)
+
+// To avoid redundant toString() calls and % uses.
+public function int.colorPerc(string which) returns string
+  return (this.toString() + "%").color(which)
+
+
+public function getDurationString(real duration) returns string
+  let durationString = duration.toString().color(COLOR_GOLD_STR)
+  let stringEnd = duration == 1 ? "" : "s" 
+  
+  return "Lasts {0} second{1}.".format(durationString, stringEnd)
+
+public function getDurationString(int duration) returns string
+  let durationString = duration.toString().color(COLOR_GOLD_STR)
+  let stringEnd = duration == 1 ? "" : "s" 
+  
+  return "Lasts {0} second{1}.".format(durationString, stringEnd)
+
+public function getFuryString(real bonusAS, real maxAS, real duration) returns string
+  let bonusASString = bonusAS.round().colorPerc(COLOR_GOLD_STR)
+  let maxASString = maxAS.round().colorPerc(COLOR_GOLD_STR)
+  let durationString = duration.round().color(COLOR_GOLD_STR)
+  
+  return ("each attack on the same target increase attack speed by {0}. "
+    + "Max attack speed bonus is {1}. "
+    + "When attack target is changed or {2} seconds are passed effect disappears and all accumulated attack speed is lost.")
+    .format(bonusASString, maxASString, durationString)
+
 
 public function CustomUnitStats.getStatType() returns CustomStatType
   switch this
@@ -96,28 +142,6 @@ public function CustomUnitStats.getMeasure() returns string
     case THREAT_GENERATION
       return "%"
 
-public function real.percRound() returns string
-  return (this.toString(0) + "%")
-
-public function real.percRound(int precision) returns string
-  return (this.toString(precision) + "%")
-
-// To avoid redundant toString() calls.
-public function real.color(string which) returns string
-  return this.toString().color(which)
-
-// To avoid redundant toString() calls.
-public function int.color(string which) returns string
-  return this.toString().color(which)
-
-// To avoid redundant toString() calls and % uses.
-public function real.colorPerc(string which) returns string
-  return (this.toString() + "%").color(which)
-
-// To avoid redundant toString() calls and % uses.
-public function int.colorPerc(string which) returns string
-  return (this.toString() + "%").color(which)
-
 public function RecipeItem.addCustomStat(CustomUnitStats customStat, real amount)
   var result = ""
 
@@ -143,7 +167,6 @@ public function RecipeItem.addCustomStat(CustomUnitStats customStat, real amount
 
   this.addTooltipProperty(result, u -> u.addStat(customStat, statAmount),  u -> u.addStat(customStat, -statAmount))
     
-  
 
 public function itemAbilityTooltip(AbilityType abilityType, string abilityName, string abilityDescription) returns string
   var itemAbilityTooltip = ""

@@ -16,10 +16,7 @@ constant FURY_DURATION = 5.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Fury", 
-  "each attack on the same target increases attack speed by " + FURY_BONUS_AS.round().colorPerc(COLOR_GOLD_STR)
-    + " up to a maximum of " + FURY_MAX_AS.round().color(COLOR_GOLD_STR) + ". "
-    + "When attack target is changed or "+ FURY_DURATION.round().color(COLOR_GOLD_STR) + " seconds passed, the effect disappears and all accumulated attack speed bonus is lost. " 
-    + "Multiple items don't stack.".color(IMPORTANT_COLOR))
+  getFuryString(FURY_BONUS_AS, FURY_MAX_AS, FURY_DURATION))
 
 public constant FURY_ITEM = compiletime(new RecipeItem()
 ..setName("Fury")

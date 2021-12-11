@@ -10,7 +10,7 @@ constant BLOCK_VALUE = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Block", 
-  BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD_STR) + " damage. " + "Multiple items don't stack.".color(IMPORTANT_COLOR))
+  BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD_STR) + " damage.")
 
 public constant IRON_SHIELD_ITEM = compiletime(new RecipeItem()
 ..setName("Iron Shield")

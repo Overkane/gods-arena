@@ -14,7 +14,9 @@ constant FROSTBITE_DURATION = 3.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Frostbite", 
-  "attacks frostbite the target which deals " + ("[Hero Agility] * " + FROSTBITE_INT_MULTIPLIER.percRound()).color(COLOR_GOLD_STR) + " " + MAGICAL_DAMAGE_STRING + " damage per second. Lasts " + FROSTBITE_DURATION.color(COLOR_GOLD_STR) + " seconds. Stacks.")
+  "attacks frostbite the target which deals " + ("[Hero Agility] * " + FROSTBITE_INT_MULTIPLIER.percRound()).color(COLOR_GOLD_STR) + " " + MAGICAL_DAMAGE_STRING + " damage per second. "
+    + getDurationString(FROSTBITE_DURATION.round()) 
+    + " Stacks.")
 
 public constant FROSTWRATH_ITEM = compiletime(new RecipeItem()
 ..setName("Frostwrath")

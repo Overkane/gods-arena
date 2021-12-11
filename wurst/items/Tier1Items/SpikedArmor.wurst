@@ -13,7 +13,7 @@ constant RETALIATE_VALUE = 4
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Retaliate", 
-  "deals " + ("[Hero Level] * " + RETALIATE_VALUE.toString()).color(COLOR_GOLD_STR) + " " + PURE_DAMAGE_STRING + " damage to the attacker. " + "Multiple and similar items don't stack.".color(IMPORTANT_COLOR))
+  "deals " + ("[Hero Level] * " + RETALIATE_VALUE.toString()).color(COLOR_GOLD_STR) + " " + PURE_DAMAGE_STRING + " damage to the attacker.")
 
 public constant SPIKED_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Spiked Armor")

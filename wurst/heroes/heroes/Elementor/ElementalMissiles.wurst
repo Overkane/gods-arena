@@ -70,7 +70,7 @@ init
         sunit.dealMagicalDamage(tunit, sunit.getInt(true) * 6.)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("The elementor enhances his attack with elemental missiles, adding bonus damage based on the hero's intelligence.\n" +
+  let tooltip = new AbilityTooltipGenerator("The Elementor enhances his attack with elemental missiles, adding bonus damage based on the hero's intelligence.\n" +
     "The impact of elemental missiles may produce random elemental reactions.")
   new AbilityDefinitionDarkRangerBlackArrow(ELEMENTAL_MISSILE_ID)
   ..registerTooltipGenerator(tooltip)
