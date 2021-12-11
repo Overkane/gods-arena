@@ -17,10 +17,11 @@ constant RealLevelClosure DAMAGE_PER_SEC = lvl -> 15. * lvl
 constant RealLevelClosure BONUS_STR_DAMAGE = lvl -> 0.5 * lvl
 constant RealLevelClosure HEAL_PER_SEC = lvl -> 10. * lvl
 constant RealLevelClosure BONUS_INT_HEALING = lvl -> 0.5 * lvl
-constant RealLevelClosure DURATION = lvl -> 4. + (lvl / 2).ceil()
+constant RealLevelClosure DURATION = lvl -> 6. // Corresponds to loop sound duration, so shouldn't be changed. 
 constant RealLevelClosure AOE = lvl -> 300.
 
-constant LOOP_SOUND = new SoundDefinition(Sounds.manaFlareLoop)
+constant ON_APPLY_SOUND = new SoundDefinition(Sounds.resurrectTarget)
+constant LOOP_SOUND = new SoundDefinition("Doodads\\Dungeon\\Props\\Forcewall\\MagicWallLoop1.flac")
 
 init 
   EventListener.onPointCast(SACRED_GROUNDS_ID) (unit caster, vec2 target) ->
@@ -40,9 +41,10 @@ init
 
     let sacredGrounds = addEffect(MapModels.heavensGateChannel, target)..setScale(effectScale)
     
-    doPeriodicallyCounted(1., (duration).toInt()) (CallbackCounted cb) ->
-      LOOP_SOUND.play()
+    ON_APPLY_SOUND.play()
+    LOOP_SOUND.play()
 
+    doPeriodicallyCounted(1., (duration).toInt()) (CallbackCounted cb) ->
       forUnitsInRange(target, aoe) (unit u) ->
         if u.isAlive()
           if u.isAllyOf(caster)
@@ -71,11 +73,9 @@ init
   ..addTooltipProperty("Bonus Str Damage", lvl -> (BONUS_STR_DAMAGE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Healing per sec", HEAL_PER_SEC)
   ..addTooltipProperty("Bonus Int Healing", lvl -> (BONUS_INT_HEALING.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
-  ..presetCooldown(lvl -> 18)
+  ..presetCooldown(lvl -> 24)
   ..tooltipStopListen()
-
-  ..presetDurationNormal(lvl -> 15)
-  ..presetDurationHero(lvl -> 15)
