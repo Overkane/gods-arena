@@ -1,0 +1,26 @@
+package StarPotionBuff
+import PresetBuffs
+import MapIcons
+import SoundUtils
+import CustomStatSystem
+import TooltipFactory
+
+constant buffTuple = compiletime(createDummyBuffObject("Magic Amplification".color(POSITIVE_COLOR), "Unit's spell power is increased",  MapIcons.bTNPixieDust))
+constant ON_APPLY_SOUND = new SoundDefinition(Sounds.faerieDragonAttack)
+
+public class StarPotionBuff extends NormalBuff
+  var spellPowerIncrease = 0.
+
+  construct(real dur, real spellPowerIncrease)
+    super(dur, buffTuple)
+    this.spellPowerIncrease = spellPowerIncrease
+    
+  override function onApply()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
+
+    target
+    ..addStat(CustomUnitStats.SPELL_POWER, spellPowerIncrease)
+
+  override function onEnd()
+    target
+    ..addStat(CustomUnitStats.SPELL_POWER, -spellPowerIncrease)

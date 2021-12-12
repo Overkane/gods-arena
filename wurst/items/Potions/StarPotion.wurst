@@ -1,0 +1,38 @@
+package StarPotion
+import RecipeItem
+import TooltipFactory
+import ClosureEvents
+import MapIcons
+import ChannelAbilityPreset
+import StarPotionBuff
+
+constant MAGIC_AMPLIFICATION_ID = compiletime(ABIL_ID_GEN.next())
+constant BONUS_SPELL_POWER = 30.
+constant DURATION = 45.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Magic Amplification", 
+  "Increases {0} by {1}. ".format("Spell Power".color(COLOR_GOLD_STR), BONUS_SPELL_POWER.round().colorPerc(COLOR_GOLD_STR))
+    + getDurationString(DURATION.round()))
+
+public constant STAR_POTION_ITEM = compiletime(new RecipeItem('vamp')
+  ..setName("Star Potion")
+  ..setInterfaceIcon(MapIcons.bTNPixieDust)
+  ..setGoldCost(200)
+  ..generateTooltip(ABIL_TOOLTIP)
+  ..setActivelyUsed(true)
+  ..setPerishable(true)
+  ..setNumberofCharges(1)
+  ..setMaxStack(1)
+  ..setAbilities(MAGIC_AMPLIFICATION_ID.toRawCode())
+  ..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+init 
+  EventListener.onCast(MAGIC_AMPLIFICATION_ID) (unit caster) ->
+    new StarPotionBuff(DURATION, BONUS_SPELL_POWER / 100).apply(caster)
+
+@compiletime function gen()
+  new ChannelAbilityPreset(MAGIC_AMPLIFICATION_ID, 1, true)
+  ..setCooldown(1, 120)
+

@@ -11,7 +11,7 @@ public class MapIcons extends Icons
   static constant bTNBigHealingPotion = "ReplaceableTextures/CommandButtons/BTNBigHealingPotion.blp"
   static constant bTNDarkShaft = "ReplaceableTextures/CommandButtons/BTNDarkShaft.blp"
   static constant bTNPlateGauntlet = "ReplaceableTextures/CommandButtons/BTNPlateGauntlet.blp"
-  static constant bTNDraculasAxe = "ReplaceableTextures/CommandButtons/BTNAxeOfAshes.blp"
+  static constant bTNDraculasAxe = "ReplaceableTextures/CommandButtons/BTNAxeOfAshes.blp" // Hellx-Magnus
   static constant bTNMoonAmulet = "ReplaceableTextures/CommandButtons/BTNMoonAmulet.blp"
   static constant bTNJewelryNecklace = "ReplaceableTextures/CommandButtons/BTNJewelry_Necklace.blp"
   static constant bTNEmerald = "ReplaceableTextures/CommandButtons/BTNEmerald.blp"
@@ -34,6 +34,7 @@ public class MapIcons extends Icons
   static constant bTNIronFistCannonPunch = "ReplaceableTextures/CommandButtons/BTNIronFistCannonPunch.blp" // PeeKay
   static constant bTNBarbedTrapv3 = "ReplaceableTextures/CommandButtons/BTNBarbedTrapv3.blp" // 4eNNightmare
   static constant bTNNatureArmor = "ReplaceableTextures/CommandButtons/BTNNature Armor.blp" // PeeKay
+  static constant bTNPixieDust = "ReplaceableTextures/CommandButtons/BTNPixieDust.blp" // JollyD
   // Passive Buttons
   static constant pASBTNBackstab = "ReplaceableTextures/PassiveButtons/PASBackStab.blp"
   static constant pASBTNWhirlwind = "ReplaceableTextures/PassiveButtons/PASwhirlwind.blp"

@@ -9,6 +9,7 @@ import public SmallManaPotion
 import public MediumManaPotion
 import public BigManaPotion
 import public DivinePotion
+import public StarPotion
 import public Tomes
 
 // Basic items

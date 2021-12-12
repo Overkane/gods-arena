@@ -29,6 +29,7 @@ public function initItemShop()
   ..addItem(S_MANA_POT_ITEM)
   ..addItem(M_MANA_POT_ITEM)
   ..addItem(B_MANA_POT_ITEM)
+  ..addItem(STAR_POTION_ITEM)
   ..addItem(DIVINE_POTION_ITEM)
 
   execute() ->
