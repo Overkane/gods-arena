@@ -1,0 +1,22 @@
+package SerenityBootsBuff
+import PresetBuffs
+import BonusHandler
+import MapIcons
+import TooltipFactory
+
+constant buffTuple = compiletime(createDummyBuffObject("Serenity".color(POSITIVE_COLOR), "Unit life regeneration is increased.",  MapIcons.bTNBarbedTrapv3))
+
+public class SerenityBootsBuff extends NormalBuff
+  constant hpRegIncrease = 0.
+
+  construct(real hpRegIncrease)
+    super(999999, buffTuple)
+    this.hpRegIncrease = hpRegIncrease
+    
+  override function onApply()
+    target
+    ..addBonus(Bonus.LIFEREGEN, hpRegIncrease)
+
+  override function onEnd()
+    target
+    ..addBonus(Bonus.LIFEREGEN, -hpRegIncrease)

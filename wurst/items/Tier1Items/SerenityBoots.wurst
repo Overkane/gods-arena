@@ -1,0 +1,91 @@
+package SerenityBoots
+import RecipeItem
+import TooltipFactory
+import MapIcons
+import ChannelAbilityPreset
+import ClosureTimers
+import Buff
+import ClosureEvents
+import TimerUtils
+import UnitIndexer
+import SerenityBootsBuff
+import BootsOfSpeed
+import VitalityStone
+import RingOfRegeneration
+
+constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
+constant MS_BONUS = 25
+
+constant SERENITY_ID = compiletime(ABIL_ID_GEN.next())
+constant SERENITY_LIFEREGEN = 10.
+constant SERENITY_DURATION = 5.
+
+timer array buffTimers
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Serenity", 
+  "increases hp regeneration by {0} if hero wasn't attacked for {1} seconds. Any recieved damage breaks the buff."
+    .format(SERENITY_LIFEREGEN.round().color(COLOR_GOLD_STR), 
+      SERENITY_DURATION.round().color(COLOR_GOLD_STR)))
+
+public constant SERENITY_BOOTS_ITEM = compiletime(new RecipeItem()
+..setName("Serenity Boots")
+..setInterfaceIcon(MapIcons.bTNBarbedTrapv3)
+..addBonus(Bonus.LIFE, 200)
+..addBonus(Bonus.LIFEREGEN, 3)
+..onPickup((unit actor) -> createBuffTimer(actor))
+..onDrop((unit actor) -> createBuffTimer(actor))
+..setAbilities(commaList(SERENITY_ID, BONUS_SPEED_ID))
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR) + "\n\n" + ABIL_TOOLTIP)
+)..register()
+
+public constant SERENITY_BOOTS_RECIPE = new ItemRecipe()
+..gold(95)
+..setRequiredItems(VITALITY_STONE_ITEM, RING_OF_REGENERATION_ITEM, BOOTS_OF_SPEED_ITEM)
+..setResultItem(SERENITY_BOOTS_ITEM)
+
+init
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if DamageEvent.getType() == DamageType.ATTACK and tunit.hasItemById(SERENITY_BOOTS_ITEM.getNewId()) and not tunit.isIllusion() and sunit.isEnemyOf(tunit)
+      tunit.removeBuffById(SerenityBootsBuff.typeId)
+      
+      let index = tunit.getIndex()
+      let buffTimer = buffTimers[index]
+
+      buffTimer.doAfter(SERENITY_DURATION) ->
+        new SerenityBootsBuff(SERENITY_LIFEREGEN).apply(tunit)
+
+  EventListener.add(EVENT_PLAYER_HERO_REVIVE_FINISH) -> 
+    let revivedUnit = EventData.getTriggerUnit()
+    
+    if revivedUnit.hasItemById(SERENITY_BOOTS_ITEM.getNewId())
+      let index = revivedUnit.getIndex()
+      let buffTimer = buffTimers[index]
+
+      buffTimer.doAfter(SERENITY_DURATION) ->
+        new SerenityBootsBuff(SERENITY_LIFEREGEN).apply(revivedUnit)
+
+function createBuffTimer(unit itemHolder)
+  let index = itemHolder.getIndex()
+  let buffTimer = getTimer()
+  
+  buffTimers[index] = buffTimer
+
+  buffTimer.doAfter(SERENITY_DURATION) ->
+    new SerenityBootsBuff(SERENITY_LIFEREGEN).apply(itemHolder)
+
+function destroyBuffTimer(unit itemHolder)
+  let index = itemHolder.getIndex()
+  
+  if buffTimers[index] != null
+    buffTimers[index].release()
+    buffTimers[index] = null
+
+    itemHolder.removeBuffById(SerenityBootsBuff.typeId)
+
+@compiletime function gen()
+  new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
+  ..setMovementSpeedBonus(1, MS_BONUS)
