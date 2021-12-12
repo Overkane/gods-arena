@@ -81,7 +81,7 @@ function destroyBuffTimer(unit itemHolder)
   let index = itemHolder.getIndex()
   
   if buffTimers[index] != null
-    buffTimers[index].destr() // TODO change to release() but it returns an error on instant drop.
+    buffTimers[index].destr() // TODO change to release() but it returns an error on drop after buff is recieved.
     buffTimers[index] = null
 
     itemHolder.removeBuffById(SerenityBootsBuff.typeId)

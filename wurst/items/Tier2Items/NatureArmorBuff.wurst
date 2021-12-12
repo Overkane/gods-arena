@@ -5,8 +5,7 @@ import Abilities
 import MapIcons
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Root".color(POSITIVE_COLOR), "Hero can't move, but their hp regeneration is increased",  MapIcons.bTNBarbedTrapv3, Abilities.entanglingRootsTarget))
-// constant ON_APPLY_SOUND = new SoundDefinition(Sounds.berserkerCaster)
+constant buffTuple = compiletime(createDummyBuffObject("Nourish".color(POSITIVE_COLOR), "Unit is can't move, but its hp regeneration is greatly increased",  MapIcons.bTNNatureArmor, Abilities.entanglingRootsTarget))
 
 public class NatureArmorBuff extends NormalBuff
   constant hpRegIncrease = 0.
@@ -16,8 +15,6 @@ public class NatureArmorBuff extends NormalBuff
     this.hpRegIncrease = hpRegIncrease
     
   override function onApply()
-    // ON_APPLY_SOUND.playForPlayer(target.getOwner())
-
     target
     ..addBonus(Bonus.LIFEREGEN, hpRegIncrease)
     ..setPropWindow(0 .fromDeg())
