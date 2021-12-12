@@ -1,0 +1,49 @@
+package NatureArmor
+import RecipeItem
+import TooltipFactory
+import MapIcons
+import ChannelAbilityPreset
+import ClosureEvents
+import NatureArmorBuff
+import HeartAmulet
+import RingOfRecovery
+import SerenityBoots
+
+constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
+constant MS_BONUS = 30
+
+constant NOURISH_ID = compiletime(ABIL_ID_GEN.next())
+constant NOURISH_LIFEREGEN = 80.
+constant ROOT_DURATION = 6.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Nourish", 
+  "on activation roots the caster to the ground and increases their hp regeneration by " + NOURISH_LIFEREGEN.round().color(COLOR_GOLD_STR) + ". "
+    + getDurationString(ROOT_DURATION.round()))
+
+public constant NATURE_ARMOR_ITEM = compiletime(new RecipeItem()
+..setName("Nature Armor")
+..setInterfaceIcon(MapIcons.bTNNatureArmor)
+..setActivelyUsed(true)
+..addBonus(Bonus.LIFE, 1000)
+..addBonus(Bonus.LIFEREGEN, 15)
+..setAbilities(commaList(NOURISH_ID, BONUS_SPEED_ID))
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR) + "\n\n" + ABIL_TOOLTIP)
+)..register()
+
+public constant NATURE_ARMOR_RECIPE = new ItemRecipe()
+..gold(590)
+..setRequiredItems(HEART_AMULET_ITEM, RING_OF_RECOVERY_ITEM, SERENITY_BOOTS_ITEM)
+..setResultItem(NATURE_ARMOR_ITEM)
+
+init
+  EventListener.onCast(NOURISH_ID) (unit caster) ->
+    new NatureArmorBuff(ROOT_DURATION, NOURISH_LIFEREGEN).apply(caster)
+
+@compiletime function gen()
+  new ChannelAbilityPreset(NOURISH_ID, 1, true)
+  ..setManaCost(1, 50)
+  ..setCooldown(1, 40)
+
+  new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
+  ..setMovementSpeedBonus(1, MS_BONUS)
