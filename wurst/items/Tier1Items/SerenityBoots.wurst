@@ -22,7 +22,7 @@ constant SERENITY_DURATION = 5.
 
 timer array buffTimers
 
-constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Serenity", 
   "increases hp regeneration by {0} if hero wasn't attacked for {1} seconds. Any recieved damage breaks the buff."
     .format(SERENITY_LIFEREGEN.round().color(COLOR_GOLD_STR), 
@@ -34,7 +34,7 @@ public constant SERENITY_BOOTS_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.LIFE, 200)
 ..addBonus(Bonus.LIFEREGEN, 3)
 ..onPickup((unit actor) -> createBuffTimer(actor))
-..onDrop((unit actor) -> createBuffTimer(actor))
+..onDrop((unit actor) -> destroyBuffTimer(actor))
 ..setAbilities(commaList(SERENITY_ID, BONUS_SPEED_ID))
 ..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR) + "\n\n" + ABIL_TOOLTIP)
 )..register()
@@ -81,7 +81,7 @@ function destroyBuffTimer(unit itemHolder)
   let index = itemHolder.getIndex()
   
   if buffTimers[index] != null
-    buffTimers[index].release()
+    buffTimers[index].destr() // TODO change to release() but it returns an error on instant drop.
     buffTimers[index] = null
 
     itemHolder.removeBuffById(SerenityBootsBuff.typeId)
