@@ -41,8 +41,8 @@ public function CustomUnitStats.isMultiplicative() returns boolean
 public function unit.hasStat(CustomUnitStats stat) returns bool
   let index = this.getIndex()
 
-  return customUnitStats[index] != null and customUnitStats[index].has(stat)
-    or customUnitOnetimeStats[index] != null and customUnitOnetimeStats[index].has(stat)
+  return customUnitStats[index] != null and customUnitStats[index].has(stat) and not customUnitStats[index].get(stat).isEmpty()
+    or customUnitOnetimeStats[index] != null and customUnitOnetimeStats[index].has(stat) and not customUnitOnetimeStats[index].get(stat).isEmpty()
 
 public function unit.getStat(CustomUnitStats stat) returns real
   let index = this.getIndex()
