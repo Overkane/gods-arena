@@ -9,6 +9,7 @@ import SimpleArmor
 import HelmOfProtection
 import ClosureEvents
 import BlockadeBuff
+import MapIcons
 
 constant BLOCKADE_ID = compiletime(ABIL_ID_GEN.next())
 constant BLOCKADE_ARMOR = 30.
@@ -30,7 +31,7 @@ constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
 
 public constant BLOCKADE_ITEM = compiletime(new RecipeItem()
 ..setName("Blockade")
-..setInterfaceIcon(Icons.bTNAdvancedReinforcedHides)
+..setInterfaceIcon(MapIcons.bTNLancelotShield)
 ..setActivelyUsed(true)
 ..addBonus(Bonus.LIFE, 300)
 ..addBonus(Bonus.ARMOR, 12)

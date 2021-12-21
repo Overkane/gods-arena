@@ -35,6 +35,7 @@ public class MapIcons extends Icons
   static constant bTNBarbedTrapv3 = "ReplaceableTextures/CommandButtons/BTNBarbedTrapv3.blp" // 4eNNightmare
   static constant bTNNatureArmor = "ReplaceableTextures/CommandButtons/BTNNature Armor.blp" // PeeKay
   static constant bTNPixieDust = "ReplaceableTextures/CommandButtons/BTNPixieDust.blp" // JollyD
+  static constant bTNLancelotShield = "ReplaceableTextures/CommandButtons/BTNLancelot_Shield.blp" // JollyD
   // Passive Buttons
   static constant pASBTNBackstab = "ReplaceableTextures/PassiveButtons/PASBackStab.blp"
   static constant pASBTNWhirlwind = "ReplaceableTextures/PassiveButtons/PASwhirlwind.blp"
