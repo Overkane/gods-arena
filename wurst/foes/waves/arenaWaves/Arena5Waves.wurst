@@ -1,60 +1,40 @@
-package Arena3Waves
+package Arena5Waves
 import UnitIds
 import Wave
 
-public constant ARENA3_WAVE_1 = compiletime(wave_1())
-public constant ARENA3_WAVE_2 = compiletime(wave_2())
-public constant ARENA3_WAVE_3 = compiletime(wave_3())
-public constant ARENA3_WAVE_4 = compiletime(wave_4())
-public constant ARENA3_WAVE_5 = compiletime(wave_5())
-public constant ARENA3_WAVE_6 = compiletime(wave_6())
-public constant ARENA3_WAVE_7 = compiletime(wave_7())
-public constant ARENA3_BOSS_WAVE = compiletime(boss_wave())
+public constant ARENA5_WAVE_1 = compiletime(wave_1())
+public constant ARENA5_WAVE_2 = compiletime(wave_2())
+public constant ARENA5_WAVE_3 = compiletime(wave_3())
+public constant ARENA5_WAVE_4 = compiletime(wave_4())
+public constant ARENA5_WAVE_5 = compiletime(wave_5())
+public constant ARENA5_WAVE_6 = compiletime(wave_6())
+public constant ARENA5_WAVE_7 = compiletime(wave_7())
+public constant ARENA5_BOSS_WAVE = compiletime(boss_wave())
 
 function wave_1() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
 
-  ..creep(UnitIds.stonemaulogre)
+  ..creep(UnitIds.wendigo1)
   ..hp(3200)
   ..damage(45)
   ..amount(15)
 
-  ..creep(UnitIds.stonemaulmagi)
-  ..hp(2350)
-  ..damage(40)
-  ..amount(6)
+  ..creep(UnitIds.wendigoshaman)
+  ..hp(3200)
+  ..damage(45)
+  ..amount(15)
 
-  ..wait(25)
+  ..creep(UnitIds.ancientwendigo)
+  ..hp(3200)
+  ..damage(45)
+  ..amount(15)
 
-  ..creep(UnitIds.stonemaulwarchief)
-  ..hp(4250)
-  ..damage(100)
-  ..armor(8)
-  ..amount(1)
-  ..scale(0.9)
-  ..movespeed(475)
-  ..rgb(0, 0, 255)
-
-  ..creep(UnitIds.stonemaulwarchief)
-  ..hp(5500)
-  ..damage(110)
-  ..amount(1)
-  ..scale(1.8)
-  ..rgb(255, 0, 0)
-
-  ..wait(25)
-
-  ..creep(UnitIds.ogrelord)
-  ..hp(12500)
-  ..damage(450)
-  ..attackrate(1.70)
-  ..amount(1)
-  ..scale(1.2)
-  ..movespeed(140)
-  ..armor(9)
-  ..rgb(125, 125, 25)
+  ..creep(UnitIds.elderwendigo)
+  ..hp(3200)
+  ..damage(45)
+  ..amount(15)
 
   .build()
 
@@ -63,41 +43,27 @@ function wave_2() returns Wave
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
 
-  ..creep(UnitIds.centaurarcher)
+  ..creep(UnitIds.whitewolf)
   ..hp(9800)
   ..damage(288)
   ..amount(18)
   ..scale(1.05)
 
-  ..creep(UnitIds.centaurdrudge)
-  ..hp(9800)
-  ..damage(288)
-  ..amount(18)
-  ..scale(1.05)
+  ..creep(UnitIds.whitedirewolf)
+  ..hp(12000)
+  ..damage(88)
+  ..attackrate(0.25)
+  ..amount(8)
+  ..scale(1.15)
 
-  ..creep(UnitIds.centaurimpaler)
-  ..hp(9800)
-  ..damage(288)
-  ..amount(18)
-  ..scale(1.05)
+  ..wait(15)
 
-  ..creep(UnitIds.centaurkhan)
-  ..hp(9800)
-  ..damage(288)
-  ..amount(18)
-  ..scale(1.05)
-
-  ..creep(UnitIds.centauroutrunner)
-  ..hp(9800)
-  ..damage(288)
-  ..amount(18)
-  ..scale(1.05)
-
-  ..creep(UnitIds.centaursorceror)
-  ..hp(9800)
-  ..damage(288)
-  ..amount(18)
-  ..scale(1.05)
+  ..creep(UnitIds.giantwhitewolf)
+  ..hp(25000)
+  ..damage(666)
+  ..attackrate(0.45)
+  ..amount(2)
+  ..scale(1.55)
 
   .build()
 
@@ -106,44 +72,53 @@ function wave_3() returns Wave
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
 
-  ..creep(UnitIds.crystalarachnathid)
+  ..creep(UnitIds.tuskarrchieftain)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(15)
+
+  ..creep(UnitIds.tuskarrfighter)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(15)
+
+  ..creep(UnitIds.tuskarrhealer)
   ..hp(15000)
   ..damage(628)
   ..attackrate(0.72)
   ..scale(1.25)
   ..amount(10)
 
-  ..creep(UnitIds.barbedarachnathidmerc)
+  ..creep(UnitIds.tuskarrsorceror)
   ..hp(15000)
   ..damage(628)
   ..attackrate(0.72)
   ..scale(1.25)
-  ..amount(5)
-  
-  ..creep(UnitIds.warriorarachnathid)
+  ..amount(10)
+
+  ..creep(UnitIds.tuskarrspearman)
   ..hp(15000)
   ..damage(628)
   ..attackrate(0.72)
   ..scale(1.25)
-  ..amount(5)
+  ..amount(10)
 
-  ..creep(UnitIds.barbedarachnathid)
+  ..creep(UnitIds.tuskarrtrapper)
   ..hp(15000)
   ..damage(628)
   ..attackrate(0.72)
   ..scale(1.25)
-  ..amount(5)
+  ..amount(10)
 
-  ..creep(UnitIds.earthborerarachnathid)
-  ..hp(15000)
-  ..damage(628)
-  ..attackrate(0.72)
-  ..scale(1.25)
-  ..amount(5)
-
-  ..wait(10)
-
-  ..creep(UnitIds.overlordarachnathid)
+  ..creep(UnitIds.tuskarrwarrior)
   ..hp(15000)
   ..damage(628)
   ..attackrate(0.72)
@@ -155,7 +130,7 @@ function wave_3() returns Wave
 function wave_4() returns Wave
   return new WaveBuilder()
 
-  ..creep(UnitIds.bluedragonspawnapprentice)
+  ..creep(UnitIds.polarfurbolg)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -163,7 +138,7 @@ function wave_4() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.bluedragonspawnmeddler)
+  ..creep(UnitIds.polarfurbolgchampion)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -171,7 +146,7 @@ function wave_4() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.bluedragonspawnoverseer)
+  ..creep(UnitIds.polarfurbolgeldershaman)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -179,7 +154,7 @@ function wave_4() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.bluedragonspawnsorceror)
+  ..creep(UnitIds.polarfurbolgtracker)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -187,7 +162,15 @@ function wave_4() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.bluedragonspawnwarrior)
+  ..creep(UnitIds.polarfurbolgursawarrior)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.polarfurbolgshaman)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -196,11 +179,11 @@ function wave_4() returns Wave
   ..movespeed(350)
 
   .build()
-
+  
 function wave_5() returns Wave
   return new WaveBuilder()
 
-  ..creep(UnitIds.kobold)
+  ..creep(UnitIds.polarbear)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -208,23 +191,7 @@ function wave_5() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.koboldgeomancer)
-  ..hp(75000)
-  ..damage(1500)
-  ..attackrate(0.25)
-  ..amount(4)
-  ..scale(2.45)
-  ..movespeed(350)
-
-  ..creep(UnitIds.koboldtaskmaster)
-  ..hp(75000)
-  ..damage(1500)
-  ..attackrate(0.25)
-  ..amount(4)
-  ..scale(2.45)
-  ..movespeed(350)
-
-  ..creep(UnitIds.kobolttunneler)
+  ..creep(UnitIds.giantpolarbear)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -237,7 +204,7 @@ function wave_5() returns Wave
 function wave_6() returns Wave
   return new WaveBuilder()
 
-  ..creep(UnitIds.quillbeast1)
+  ..creep(UnitIds.icetroll)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -245,7 +212,7 @@ function wave_6() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.quillbeast2)
+  ..creep(UnitIds.icetrollberserker)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -253,7 +220,7 @@ function wave_6() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.quillbeast3)
+  ..creep(UnitIds.icetrollhighpriest)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -261,7 +228,7 @@ function wave_6() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.quillbeast4)
+  ..creep(UnitIds.icetrollshadowpriest)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -269,7 +236,7 @@ function wave_6() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.quillboar)
+  ..creep(UnitIds.icetrolltrapper)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -277,7 +244,7 @@ function wave_6() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.quillboarhunter)
+  ..creep(UnitIds.icetrollwarlord)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -290,7 +257,7 @@ function wave_6() returns Wave
 function wave_7() returns Wave
   return new WaveBuilder()
 
-  ..creep(UnitIds.harpyhag)
+  ..creep(UnitIds.magnataurreaver)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -298,7 +265,7 @@ function wave_7() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.harpyqueen)
+  ..creep(UnitIds.magnataurdestroyer)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -306,7 +273,7 @@ function wave_7() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.harpyrogue)
+  ..creep(UnitIds.magnataurwarrior)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -314,7 +281,7 @@ function wave_7() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.harpyscout)
+  ..creep(UnitIds.mammoth)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)
@@ -322,7 +289,15 @@ function wave_7() returns Wave
   ..scale(2.45)
   ..movespeed(350)
 
-  ..creep(UnitIds.harpywitch)
+  ..creep(UnitIds.diremammoth)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.icetuskmammoth)
   ..hp(75000)
   ..damage(1500)
   ..attackrate(0.25)

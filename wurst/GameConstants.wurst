@@ -2,7 +2,7 @@ package GameConstants
 
 public constant ENEMY_PLAYER = players[8]
 public constant HERO_PICK_TIME = 30.0
-public constant HERO_PICK_RECT = Rect(-288, -416, 288, 64)
+public constant HERO_PICK_RECT = gg_rct_ArenaForestRespawnPoint
 
 // Spell related
 public constant NORMAL_SPELL_LEVELS = 5

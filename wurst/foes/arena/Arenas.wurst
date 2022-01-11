@@ -4,34 +4,60 @@ import ClosureTimers
 import Arena1Waves
 import Arena2Waves
 import Arena3Waves
+import Arena4Waves
 
 public function startArenas()
   Arena.first.start(false)
 
 init
   nullTimer() -> 
-    new Arena("The Forest", gg_rct_Arena1, null)
-    ..setSpawnPoint(() -> gg_rct_Arena1SpawnPoint.randomPoint())
+    new Arena("The Forest", gg_rct_ArenaForest, gg_rct_ArenaForestRespawnPoint)
+    ..setSpawnPoint(() -> begin
+      let rand = GetRandomInt(0, 1)
+      var spawnLoc = ZERO2
+      switch rand
+        case 0
+          spawnLoc = gg_rct_ArenaForestTopLeftSpawn.randomPoint()
+        case 1
+          spawnLoc = gg_rct_ArenaForestTopRightSpawn.randomPoint()
+      return spawnLoc
+    end)
     ..setWaves(ARENA1_WAVE_1, ARENA1_WAVE_2, ARENA1_WAVE_3, ARENA1_WAVE_4, ARENA1_WAVE_5, 
-      ARENA1_WAVE_6, ARENA1_WAVE_7, ARENA1_WAVE_8, ARENA1_WAVE_9, ARENA1_WAVE_10)
+      ARENA1_WAVE_6, ARENA1_WAVE_7, ARENA1_BOSS_WAVE)
 
-    new Arena("The Pond", gg_rct_Arena2, gg_rct_Arena2Center)
-    ..setSpawnPoint(() -> gg_rct_Arena2Center.getCenter().polarOffset(GetRandomReal(0, 360).fromDeg(), 1800))
-    ..setWaves(ARENA2_WAVE_1, ARENA2_WAVE_2, ARENA2_WAVE_3, ARENA2_WAVE_4, ARENA2_WAVE_5, ARENA2_WAVE_6)
+    new Arena("The Pond", gg_rct_ArenaPond, gg_rct_ArenaPondRespawnPoint)
+    ..setSpawnPoint(() -> gg_rct_ArenaPond.getCenter().polarOffset(GetRandomReal(0, 360).fromDeg(), 1800))
+    ..setWaves(ARENA2_WAVE_1, ARENA2_WAVE_2, ARENA2_WAVE_3, ARENA2_WAVE_4, ARENA2_WAVE_5, 
+      ARENA2_WAVE_6, ARENA2_WAVE_7, ARENA2_BOSS_WAVE)
 
-    new Arena("The City", gg_rct_Arena3, gg_rct_Arena3Center)
+    new Arena("The Barrens", gg_rct_ArenaBarrens, gg_rct_ArenaBarrensRespawnPoint)
+    ..setSpawnPoint(() -> begin
+      let rand = GetRandomInt(0, 1)
+      var spawnLoc = ZERO2
+      switch rand
+        case 0
+          spawnLoc = gg_rct_ArenaBarrensTopSpawn.randomPoint()
+        case 1
+          spawnLoc = gg_rct_ArenaBarrensBotSpawn.randomPoint()
+      return spawnLoc
+    end)
+    ..setWaves(ARENA3_WAVE_1, ARENA3_WAVE_2, ARENA3_WAVE_3, ARENA3_WAVE_4, ARENA3_WAVE_5, 
+      ARENA3_WAVE_6, ARENA3_WAVE_7, ARENA3_BOSS_WAVE)
+    
+    new Arena("The Volcano", gg_rct_ArenaVolcano, gg_rct_ArenaVolcanoRespawnPoint)
     ..setSpawnPoint(() -> begin
       let rand = GetRandomInt(0, 3)
       var spawnLoc = ZERO2
       switch rand
         case 0
-          spawnLoc = gg_rct_Arena3Spawn1.getCenter()
+          spawnLoc = gg_rct_ArenaVolcanoTopSpawn.randomPoint()
         case 1
-          spawnLoc = gg_rct_Arena3Spawn2.getCenter()
+          spawnLoc = gg_rct_ArenaVolcanoBotSpawn.randomPoint()
         case 2
-          spawnLoc = gg_rct_Arena3Spawn3.getCenter()
+          spawnLoc = gg_rct_ArenaVolcanoLeftSpawn.randomPoint()
         case 3
-          spawnLoc = gg_rct_Arena3Spawn4.getCenter()
+          spawnLoc = gg_rct_ArenaVolcanoRightSpawn.randomPoint()
       return spawnLoc
     end)
-    ..setWaves(ARENA3_WAVE_1, ARENA3_WAVE_2, ARENA3_WAVE_3, ARENA3_WAVE_4)
+    ..setWaves(ARENA4_WAVE_1, ARENA4_WAVE_2, ARENA4_WAVE_3, ARENA4_WAVE_4, ARENA4_WAVE_5, 
+      ARENA4_WAVE_6, ARENA4_WAVE_7, ARENA4_BOSS_WAVE)

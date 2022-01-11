@@ -11,6 +11,18 @@ import Funcs
 import GodOfNature
 import GodOfWater
 
+public constant waveExpList = new LinkedList<int>
+..add(200)..add(250)..add(300)..add(350)..add(400)..add(450)..add(500)..add(550)
+..add(600)..add(650)..add(700)..add(750)..add(800)..add(850)..add(900)..add(950)
+..add(1000)..add(1050)..add(1100)..add(1150)..add(1200)..add(1250)..add(1300)..add(1350)
+..add(1400)..add(1450)..add(1500)..add(1550)..add(1600)..add(1650)..add(1700)..add(1800)
+
+public constant waveGoldList = new LinkedList<int>
+..add(150)..add(150)..add(150)..add(150)..add(150)..add(150)..add(150)..add(300)
+..add(200)..add(200)..add(200)..add(200)..add(200)..add(200)..add(200)..add(400)
+..add(250)..add(250)..add(250)..add(250)..add(250)..add(250)..add(250)..add(500)
+..add(300)..add(300)..add(300)..add(300)..add(300)..add(300)..add(300)..add(600)
+
 constant AFTER_WAVE_RESTORATION_SOUND = new SoundDefinition(Sounds.restorationPotion)
 
 interface NextStepListener

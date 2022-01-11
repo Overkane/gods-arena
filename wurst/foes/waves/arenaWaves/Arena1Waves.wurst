@@ -11,14 +11,12 @@ public constant ARENA1_WAVE_4 = compiletime(wave_4())
 public constant ARENA1_WAVE_5 = compiletime(wave_5())
 public constant ARENA1_WAVE_6 = compiletime(wave_6())
 public constant ARENA1_WAVE_7 = compiletime(wave_7())
-public constant ARENA1_WAVE_8 = compiletime(wave_8())
-public constant ARENA1_WAVE_9 = compiletime(wave_9())
-public constant ARENA1_WAVE_10 = compiletime(boss_wave_10())
+public constant ARENA1_BOSS_WAVE = compiletime(boss_wave())
 
 function wave_1() returns Wave
   return new WaveBuilder()
-  ..expBounty(200)
-  ..goldBounty(80)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.timberwolf)
   ..hp(375)
@@ -60,8 +58,8 @@ function wave_1() returns Wave
 
 function wave_2() returns Wave
   return new WaveBuilder()
-  ..expBounty(200)
-  ..goldBounty(90)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.foresttroll)
   ..hp(550)
@@ -96,8 +94,8 @@ function wave_2() returns Wave
 
 function wave_3() returns Wave
   return new WaveBuilder()
-  ..expBounty(250)
-  ..goldBounty(100)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.furbolg)
   ..hp(750)
@@ -138,8 +136,8 @@ function wave_3() returns Wave
 
 function wave_4() returns Wave
   return new WaveBuilder()
-  ..expBounty(250)
-  ..goldBounty(110)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.gnoll1)
   ..hp(825)
@@ -180,8 +178,8 @@ function wave_4() returns Wave
 
 function wave_5() returns Wave
   return new WaveBuilder()
-  ..expBounty(300)
-  ..goldBounty(120)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.spider)
   ..hp(900)
@@ -211,7 +209,7 @@ function wave_5() returns Wave
   ..amount(4)
 
   ..creep(UnitIds.broodmother)
-  ..hp(9250)
+  ..hp(6250)
   ..damage(95)
   ..attackrate(0.75)
   ..amount(1)
@@ -221,8 +219,8 @@ function wave_5() returns Wave
 
 function wave_6() returns Wave
   return new WaveBuilder()
-  ..expBounty(300)
-  ..goldBounty(130)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.owlbear)
   ..hp(1950)
@@ -258,8 +256,8 @@ function wave_6() returns Wave
 
 function wave_7() returns Wave
   return new WaveBuilder()
-  ..expBounty(350)
-  ..goldBounty(140)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.sasquatch)
   ..hp(2500)
@@ -279,7 +277,7 @@ function wave_7() returns Wave
   ..amount(5)
 
   ..creep(UnitIds.ancientsasquatch)
-  ..hp(12500)
+  ..hp(10500)
   ..damage(110)
   ..attackrate(0.45)
   ..amount(1)
@@ -290,110 +288,65 @@ function wave_7() returns Wave
 
   .build()
 
-function wave_8() returns Wave
+// TODO Maybe will be useful later
+// function wave_9() returns Wave
+//   return new WaveBuilder()
+//   ..expBounty(waveExpList.dequeue())
+//   ..goldBounty(waveGoldList.dequeue())
+
+//   ..creep(UnitIds.druidoftheclaw)
+//   ..hp(1800)
+//   ..damage(65)
+//   ..amount(4)
+
+//   ..creep(UnitIds.mountaingiant)
+//   ..hp(8000)
+//   ..damage(200)
+  
+//   ..attackrate(1.90)
+//   ..amount(2)
+
+//   ..creep(UnitIds.archer)
+//   ..hp(2150)
+//   ..damage(75)
+//   ..amount(12)
+
+//   ..creep(UnitIds.dryad)
+//   ..hp(2800)
+//   ..damage(75)
+//   ..amount(2)
+
+//   ..wait(15)
+
+//   ..creep(UnitIds.huntress)
+//   ..hp(3500)
+//   ..damage(100)
+//   ..attackrate(1.0)
+//   ..amount(2)
+//   ..scale(2)
+
+//   ..wait(30)
+
+//   ..creep(UnitIds.druidoftheclawmorphed)
+//   ..hp(3500)
+//   ..damage(75)
+//   ..attackrate(0.25)
+//   ..amount(6)
+//   ..scale(2)
+
+//   ..creep(UnitIds.druidoftheclaw)
+//   ..hp(4500)
+//   ..damage(90)
+//   ..attackrate(0.85)
+//   ..amount(8)
+//   ..scale(1.65)
+
+//   .build()
+
+function boss_wave() returns Wave
   return new WaveBuilder()
-  ..expBounty(350)
-  ..goldBounty(150)
-
-  ..creep(UnitIds.stonemaulogre)
-  ..hp(3200)
-  ..damage(45)
-  ..amount(15)
-
-  ..creep(UnitIds.stonemaulmagi)
-  ..hp(2350)
-  ..damage(40)
-  ..amount(6)
-
-  ..wait(25)
-
-  ..creep(UnitIds.stonemaulwarchief)
-  ..hp(4250)
-  ..damage(100)
-  ..armor(8)
-  ..amount(1)
-  ..scale(0.9)
-  ..movespeed(475)
-  ..rgb(0, 0, 255)
-
-  ..creep(UnitIds.stonemaulwarchief)
-  ..hp(5500)
-  ..damage(110)
-  ..amount(1)
-  ..scale(1.8)
-  ..rgb(255, 0, 0)
-
-  ..wait(25)
-
-  ..creep(UnitIds.ogrelord)
-  ..hp(12500)
-  ..damage(450)
-  ..attackrate(1.70)
-  ..amount(1)
-  ..scale(1.2)
-  ..movespeed(140)
-  ..armor(9)
-  ..rgb(125, 125, 25)
-
-  .build()
-
-function wave_9() returns Wave
-  return new WaveBuilder()
-  ..expBounty(350)
-  ..goldBounty(160)
-
-  ..creep(UnitIds.druidoftheclaw)
-  ..hp(1800)
-  ..damage(65)
-  ..amount(4)
-
-  ..creep(UnitIds.mountaingiant)
-  ..hp(8000)
-  ..damage(200)
-  ..attackrate(1.90)
-  ..amount(2)
-
-  ..creep(UnitIds.archer)
-  ..hp(2150)
-  ..damage(75)
-  ..amount(12)
-
-  ..creep(UnitIds.dryad)
-  ..hp(2800)
-  ..damage(75)
-  ..amount(2)
-
-  ..wait(15)
-
-  ..creep(UnitIds.huntress)
-  ..hp(3500)
-  ..damage(100)
-  ..attackrate(1.0)
-  ..amount(2)
-  ..scale(2)
-
-  ..wait(30)
-
-  ..creep(UnitIds.druidoftheclawmorphed)
-  ..hp(3500)
-  ..damage(75)
-  ..attackrate(0.25)
-  ..amount(6)
-  ..scale(2)
-
-  ..creep(UnitIds.druidoftheclaw)
-  ..hp(4500)
-  ..damage(90)
-  ..attackrate(0.85)
-  ..amount(8)
-  ..scale(1.65)
-
-  .build()
-
-function boss_wave_10() returns Wave
-  return new WaveBuilder()
-  ..expBounty(400)
-  ..goldBounty(250)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
   ..boss()
   .build()
   

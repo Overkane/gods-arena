@@ -23,7 +23,7 @@ constant WISP_HEAL_DEF = compiletime(new ChannelAbilityPreset(WISP_HEAL_ID, 1, t
 constant GOD_OF_NATURE_ID = compiletime(UNIT_ID_GEN.next())
 constant WISP_ID = compiletime(UNIT_ID_GEN.next())
 constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
-vec2 array WISP_SPAWN_POINTS = [gg_rct_Arena2.getRightTop(), gg_rct_Arena2.getLeftTop(), gg_rct_Arena2.getLeftBot(), gg_rct_Arena2.getRightBot()]
+vec2 array WISP_SPAWN_POINTS = [gg_rct_ArenaPond.getRightTop(), gg_rct_ArenaPond.getLeftTop(), gg_rct_ArenaPond.getLeftBot(), gg_rct_ArenaPond.getRightBot()]
 
 constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.doom)
 
@@ -64,7 +64,7 @@ public class GodOfNatureStrong extends Boss
 
   function summonTreants()
     for i = 0 to 8
-      let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena2.randomPoint(), angle(GetRandomReal(0, 359)))
+      let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_ArenaPond.randomPoint(), angle(GetRandomReal(0, 359)))
       doPeriodicallyCounted(1.5, 10) (CallbackCounted cb) ->
         u..addBonus(Bonus.LIFE, 75)
         ..addBonus(Bonus.DAMAGE, 50)

@@ -1,7 +1,6 @@
 package Arena2Waves
 import UnitIds
 import Wave
-import ObjEditingCommons
 
 public constant ARENA2_WAVE_1 = compiletime(wave_1())
 public constant ARENA2_WAVE_2 = compiletime(wave_2())
@@ -9,17 +8,13 @@ public constant ARENA2_WAVE_3 = compiletime(wave_3())
 public constant ARENA2_WAVE_4 = compiletime(wave_4())
 public constant ARENA2_WAVE_5 = compiletime(wave_5())
 public constant ARENA2_WAVE_6 = compiletime(wave_6())
-// public constant ARENA2_WAVE_5 = compiletime(wave_5())
-// public constant ARENA2_WAVE_6 = compiletime(wave_6())
-// public constant ARENA2_WAVE_7 = compiletime(wave_7())
-// public constant ARENA2_WAVE_8 = compiletime(wave_8())
-// public constant ARENA2_WAVE_9 = compiletime(wave_9())
-// public constant ARENA2_WAVE_10 = compiletime(boss_wave_10())
+public constant ARENA2_WAVE_7 = compiletime(wave_7())
+public constant ARENA2_BOSS_WAVE = compiletime(boss_wave())
 
 function wave_1() returns Wave
   return new WaveBuilder()
-  ..expBounty(400)
-  ..goldBounty(170)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.murlochuntsman)
   ..hp(2250)
@@ -54,56 +49,58 @@ function wave_1() returns Wave
 
 function wave_2() returns Wave
   return new WaveBuilder()
-  ..expBounty(450)
-  ..goldBounty(190)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
-  ..creep(UnitIds.nagamyrmidon)
+  ..creep(UnitIds.hydra)
+  ..hp(3000)
+  ..damage(65)
+  ..amount(18)
+
+  ..creep(UnitIds.hydrahatchling)
   ..hp(3000)
   ..damage(65)
   ..amount(18)
 
   ..wait(5)
 
-  ..creep(UnitIds.siren)
+  ..creep(UnitIds.ancienthydra)
   ..hp(2000)
   ..damage(90)
   ..amount(7)
   ..scale(1.15)
 
-  ..creep(UnitIds.murgulsnarecaster)
+  ..creep(UnitIds.elderhydra)
   ..hp(1550)
   ..damage(60)
   ..amount(7)
   ..scale(1.1)
 
-  ..wait(10)
-
-  ..creep(UnitIds.nagaroyalguard)
-  ..hp(14500)
-  ..mana(5000)
-  ..attackrate(0.35)
-  ..damage(220)
-  ..armor(12)
-  ..amount(2)
-
   .build()
 
 function wave_3() returns Wave
   return new WaveBuilder()
-  ..expBounty(450)
-  ..goldBounty(210)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.giantseaturtle)
+  ..hp(9500)
+  ..damage(185)
+  ..amount(3)
+  ..scale(1.15)
 
   ..creep(UnitIds.seaturtle)
   ..hp(4500)
   ..damage(85)
   ..amount(22)
 
-  ..wait(15)
+  ..creep(UnitIds.seaturtlehatchling)
+  ..hp(9500)
+  ..damage(185)
+  ..amount(3)
+  ..scale(1.15)
 
-  ..creep(UnitIds.seaturtle)
-  ..hp(4500)
-  ..damage(85)
-  ..amount(11)
+  ..wait(15)
 
   ..wait(15)
 
@@ -113,31 +110,19 @@ function wave_3() returns Wave
   ..amount(3)
   ..scale(1.15)
 
-  ..wait(20)
-
-  ..creep(UnitIds.sludgeflinger)
-  ..hp(4250)
-  ..damage(190)
-  ..attackrate(1.05)
-  ..armor(9)
-  ..amount(8)
-  ..scale(1.1)
+  ..creep(UnitIds.gargantuanseaturtle)
+  ..hp(4500)
+  ..damage(85)
+  ..amount(11)
 
   ..wait(20)
-
-  ..creep(UnitIds.wateryminiontidewarrior)
-  ..hp(3850)
-  ..damage(290)
-  ..armor(8)
-  ..amount(6)
-  ..scale(1.1)
 
   .build()
 
 function wave_4() returns Wave
   return new WaveBuilder()
-  ..expBounty(500)
-  ..goldBounty(230)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.seagiant)
   ..hp(11550)
@@ -145,7 +130,7 @@ function wave_4() returns Wave
   ..damage(215)
   ..amount(5)
 
-  ..creep(UnitIds.seawitch)
+  ..creep(UnitIds.seagianthunter)
   ..hp(11600)
   ..damage(128)
   ..attackrate(0.85)
@@ -157,9 +142,110 @@ function wave_4() returns Wave
   ..damage(218)
   ..amount(5)
 
-  ..wait(20)
+  .build()
 
-  ..creep(UnitIds.hydra)
+function wave_5() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.lobstrokkdeepseer)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  ..creep(UnitIds.lobstrokkpooldweller)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  ..creep(UnitIds.lobstrokkprawn)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  ..creep(UnitIds.lobstrokksnapper)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  ..creep(UnitIds.lobstrokktidallord)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  ..creep(UnitIds.lobstrokktidecaller)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  .build()
+
+function wave_6() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.revenantofthetides)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+  
+  ..creep(UnitIds.revenantoftheseas)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  ..creep(UnitIds.revenantofthetides)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  ..creep(UnitIds.deeplordrevenant)
+  ..hp(13450)
+  ..damage(248)
+  ..attackrate(0.75)
+  ..amount(2)
+  ..armor(15)
+
+  .build()
+
+function wave_7() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+  
+  ..creep(UnitIds.junglestalker)
+  ..hp(41450)
+  ..damage(280)
+  ..attackrate(0.85)
+  ..amount(1)
+  
+  ..creep(UnitIds.elderjunglestalker)
+  ..hp(41450)
+  ..damage(280)
+  ..attackrate(0.85)
+  ..amount(1)
+  
+  ..creep(UnitIds.enrangedjunglestalker)
   ..hp(41450)
   ..damage(280)
   ..attackrate(0.85)
@@ -167,88 +253,9 @@ function wave_4() returns Wave
 
   .build()
 
-function wave_5() returns Wave
+function boss_wave() returns Wave
   return new WaveBuilder()
-  ..expBounty(500)
-  ..goldBounty(250)
-
-  ..creep(UnitIds.tichondrius)
-  ..hp(13450)
-  ..damage(248)
-  ..attackrate(0.75)
-  ..amount(2)
-  ..armorType(ArmorType.Fortified)
-  ..armor(15)
-
-  ..wait(5)
-
-  ..creep(UnitIds.quillboar)
-  ..hp(7600)
-  ..damage(170)
-  ..amount(5)
-  ..scale(1.25)
-
-  ..wait(5)
-
-  ..creep(UnitIds.quillboar)
-  ..hp(7600)
-  ..damage(170)
-  ..amount(5)
-  ..scale(1.25)
-
-  ..wait(5)
-
-  ..creep(UnitIds.quillboar)
-  ..hp(7600)
-  ..damage(170)
-  ..amount(5)
-  ..scale(1.25)
-
-  ..wait(5)
-
-  ..creep(UnitIds.quillboar)
-  ..hp(7600)
-  ..damage(170)
-  ..amount(5)
-  ..scale(1.25)
-
-  ..wait(5)
-
-  ..creep(UnitIds.quillboar)
-  ..hp(7600)
-  ..damage(170)
-  ..amount(5)
-  ..scale(1.25)
-
-  ..wait(5)
-
-  ..creep(UnitIds.quillboar)
-  ..hp(7600)
-  ..damage(170)
-  ..amount(5)
-  ..scale(1.25)
-
-  ..wait(5)
-
-  ..creep(UnitIds.quillboar)
-  ..hp(7600)
-  ..damage(170)
-  ..amount(5)
-  ..scale(1.25)
-
-  ..wait(5)
-
-  ..creep(UnitIds.quillboar)
-  ..hp(7600)
-  ..damage(170)
-  ..amount(5)
-  ..scale(1.25)
-
-  .build()
-
-function wave_6() returns Wave
-  return new WaveBuilder()
-  ..expBounty(550)
-  ..goldBounty(350)
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
   ..boss()
   .build()

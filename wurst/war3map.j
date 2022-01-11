@@ -1,22 +1,28 @@
 globals
     // Generated
-rect gg_rct_Arena1= null
-rect gg_rct_HeroPickArea= null
-rect gg_rct_Arena1SpawnPoint= null
-rect gg_rct_Arena2= null
-rect gg_rct_Arena2Center= null
 rect gg_rct_Arena3= null
 rect gg_rct_Arena3Center= null
 rect gg_rct_Arena3Spawn1= null
 rect gg_rct_Arena3Spawn2= null
 rect gg_rct_Arena3Spawn3= null
 rect gg_rct_Arena3Spawn4= null
-rect gg_rct_Arena4= null
-rect gg_rct_Arena4Center= null
-rect gg_rct_Arena3SpawnTL= null
-rect gg_rct_Arena3SpawnTR= null
-rect gg_rct_Arena3SpawnBR= null
-rect gg_rct_Arena3SpawnBL= null
+rect gg_rct_ArenaBarrens= null
+rect gg_rct_ArenaBarrensBotSpawn= null
+rect gg_rct_ArenaBarrensRespawnPoint= null
+rect gg_rct_ArenaBarrensTopSpawn= null
+rect gg_rct_ArenaForest= null
+rect gg_rct_ArenaForestRespawnPoint= null
+rect gg_rct_ArenaForestTopLeftSpawn= null
+rect gg_rct_ArenaForestTopRightSpawn= null
+rect gg_rct_ArenaPond= null
+rect gg_rct_ArenaPondRespawnPoint= null
+rect gg_rct_ArenaVolcano= null
+rect gg_rct_ArenaVolcanoTopSpawn= null
+rect gg_rct_ArenaVolcanoBotSpawn= null
+rect gg_rct_ArenaVolcanoRightSpawn= null
+rect gg_rct_ArenaVolcanoLeftSpawn= null
+rect gg_rct_ArenaVolcanoRespawnPoint= null
+rect gg_rct_ArenaVolcanoDecor= null
 trigger gg_trg_rect_vars= null
 
 
@@ -60,11 +66,6 @@ endfunction
 function CreateRegions takes nothing returns nothing
     local weathereffect we
 
-    set gg_rct_Arena1=Rect(- 1856.0, - 1344.0, 2080.0, 1312.0)
-    set gg_rct_HeroPickArea=Rect(- 224.0, - 928.0, 352.0, - 448.0)
-    set gg_rct_Arena1SpawnPoint=Rect(- 480.0, 480.0, 352.0, 832.0)
-    set gg_rct_Arena2=Rect(- 2208.0, - 7712.0, 2560.0, - 2272.0)
-    set gg_rct_Arena2Center=Rect(- 160.0, - 5056.0, 192.0, - 4672.0)
     set gg_rct_Arena3=Rect(2944.0, - 2240.0, 7296.0, 1664.0)
     set we=AddWeatherEffect(gg_rct_Arena3, 'RLlr')
     call EnableWeatherEffect(we, true)
@@ -73,12 +74,27 @@ function CreateRegions takes nothing returns nothing
     set gg_rct_Arena3Spawn2=Rect(6816.0, 1152.0, 7104.0, 1472.0)
     set gg_rct_Arena3Spawn3=Rect(6784.0, - 2144.0, 7072.0, - 1824.0)
     set gg_rct_Arena3Spawn4=Rect(3168.0, - 2112.0, 3456.0, - 1792.0)
-    set gg_rct_Arena4=Rect(9984.0, - 2816.0, 14624.0, 1696.0)
-    set gg_rct_Arena4Center=Rect(11904.0, - 768.0, 12672.0, 0.0)
-    set gg_rct_Arena3SpawnTL=Rect(10208.0, 1216.0, 10560.0, 1536.0)
-    set gg_rct_Arena3SpawnTR=Rect(14144.0, 1248.0, 14496.0, 1568.0)
-    set gg_rct_Arena3SpawnBR=Rect(14080.0, - 2656.0, 14432.0, - 2336.0)
-    set gg_rct_Arena3SpawnBL=Rect(10144.0, - 2656.0, 10496.0, - 2336.0)
+    set gg_rct_ArenaBarrens=Rect(9888.0, - 3168.0, 14720.0, 1696.0)
+    set we=AddWeatherEffect(gg_rct_ArenaBarrens, 'WOlw')
+    call EnableWeatherEffect(we, true)
+    set gg_rct_ArenaBarrensBotSpawn=Rect(11168.0, - 3104.0, 14592.0, - 2784.0)
+    set gg_rct_ArenaBarrensRespawnPoint=Rect(12288.0, - 1792.0, 13056.0, - 1024.0)
+    set gg_rct_ArenaBarrensTopSpawn=Rect(9984.0, 1376.0, 13152.0, 1696.0)
+    set gg_rct_ArenaForest=Rect(- 1856.0, - 1344.0, 2080.0, 1312.0)
+    set gg_rct_ArenaForestRespawnPoint=Rect(- 224.0, - 928.0, 352.0, - 448.0)
+    set gg_rct_ArenaForestTopLeftSpawn=Rect(- 1536.0, 544.0, - 960.0, 1056.0)
+    set gg_rct_ArenaForestTopRightSpawn=Rect(1056.0, 512.0, 1632.0, 1024.0)
+    set gg_rct_ArenaPond=Rect(- 2208.0, - 7712.0, 2560.0, - 2272.0)
+    set gg_rct_ArenaPondRespawnPoint=Rect(- 160.0, - 5056.0, 192.0, - 4672.0)
+    set gg_rct_ArenaVolcano=Rect(9856.0, - 14592.0, 14688.0, - 8704.0)
+    set gg_rct_ArenaVolcanoTopSpawn=Rect(11648.0, - 9056.0, 12576.0, - 8832.0)
+    set gg_rct_ArenaVolcanoBotSpawn=Rect(11648.0, - 14432.0, 12576.0, - 14208.0)
+    set gg_rct_ArenaVolcanoRightSpawn=Rect(14304.0, - 11488.0, 14496.0, - 10720.0)
+    set gg_rct_ArenaVolcanoLeftSpawn=Rect(10080.0, - 11488.0, 10272.0, - 10720.0)
+    set gg_rct_ArenaVolcanoRespawnPoint=Rect(12384.0, - 12928.0, 13152.0, - 12352.0)
+    set gg_rct_ArenaVolcanoDecor=Rect(11520.0, - 12064.0, 13088.0, - 10496.0)
+    set we=AddWeatherEffect(gg_rct_ArenaVolcanoDecor, 'FDrh')
+    call EnableWeatherEffect(we, true)
 endfunction
 
 //***************************************************************************
@@ -91,7 +107,7 @@ endfunction
 // Trigger: rect vars
 //===========================================================================
 function Trig_rect_vars_Actions takes nothing returns nothing
-    call MoveRectToLoc(gg_rct_Arena1SpawnPoint, GetRectCenter(GetPlayableMapRect()))
+    call MoveRectToLoc(gg_rct_ArenaForestTopRightSpawn, GetRectCenter(GetPlayableMapRect()))
 endfunction
 
 //===========================================================================

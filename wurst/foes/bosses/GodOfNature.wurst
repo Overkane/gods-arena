@@ -25,8 +25,8 @@ constant WISP_HEAL_DEF = compiletime(new ChannelAbilityPreset(WISP_HEAL_ID, 1, t
 constant GOD_OF_NATURE_ID = compiletime(UNIT_ID_GEN.next())
 constant WISP_ID = compiletime(UNIT_ID_GEN.next())
 constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
-vec2 array WISP_SPAWN_POINTS = [gg_rct_Arena1.getRightTop(), gg_rct_Arena1.getLeftTop(), gg_rct_Arena1.getLeftBot(), gg_rct_Arena1.getRightBot()]
-vec2 array ROOTS_PROJECTILES_SPAWN_POINTS = [gg_rct_Arena1.getRightTop(), gg_rct_Arena1.getLeftTop(), gg_rct_Arena1.getLeftBot(), gg_rct_Arena1.getRightBot()]
+vec2 array WISP_SPAWN_POINTS = [gg_rct_ArenaForest.getRightTop(), gg_rct_ArenaForest.getLeftTop(), gg_rct_ArenaForest.getLeftBot(), gg_rct_ArenaForest.getRightBot()]
+vec2 array ROOTS_PROJECTILES_SPAWN_POINTS = [gg_rct_ArenaForest.getRightTop(), gg_rct_ArenaForest.getLeftTop(), gg_rct_ArenaForest.getLeftBot(), gg_rct_ArenaForest.getRightBot()]
 
 constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.doom)
 
@@ -67,7 +67,7 @@ public class GodOfNature extends Boss
 
   function summonTreants()
     for i = 0 to 5
-      let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_Arena1.randomPoint(), angle(GetRandomReal(0, 359)))
+      let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_ArenaForest.randomPoint(), angle(GetRandomReal(0, 359)))
       flashEffect(Abilities.howlTarget, u.getPos())
       doPeriodicallyCounted(2.5, 10) cb ->
         u..addBonus(Bonus.LIFE, 50)

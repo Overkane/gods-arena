@@ -1,0 +1,242 @@
+package Arena4Waves
+import UnitIds
+import Wave
+
+public constant ARENA4_WAVE_1 = compiletime(wave_1())
+public constant ARENA4_WAVE_2 = compiletime(wave_2())
+public constant ARENA4_WAVE_3 = compiletime(wave_3())
+public constant ARENA4_WAVE_4 = compiletime(wave_4())
+public constant ARENA4_WAVE_5 = compiletime(wave_5())
+public constant ARENA4_WAVE_6 = compiletime(wave_6())
+public constant ARENA4_WAVE_7 = compiletime(wave_7())
+public constant ARENA4_BOSS_WAVE = compiletime(boss_wave())
+
+function wave_1() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.felguard)
+  ..hp(3200)
+  ..damage(45)
+  ..amount(15)
+
+  ..creep(UnitIds.bloodfiend)
+  ..hp(3200)
+  ..damage(45)
+  ..amount(15)
+
+  ..creep(UnitIds.overlord)
+  ..hp(3200)
+  ..damage(45)
+  ..amount(15)
+
+  .build()
+
+function wave_2() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.purplefelstalker)
+  ..hp(9800)
+  ..damage(288)
+  ..amount(18)
+  ..scale(1.05)
+
+  ..creep(UnitIds.felstalker)
+  ..hp(12000)
+  ..damage(88)
+  ..attackrate(0.25)
+  ..amount(8)
+  ..scale(1.15)
+
+  ..wait(15)
+
+  ..creep(UnitIds.felravager)
+  ..hp(25000)
+  ..damage(666)
+  ..attackrate(0.45)
+  ..amount(2)
+  ..scale(1.55)
+
+  .build()
+
+function wave_3() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.infernalcontraption)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(15)
+
+  ..creep(UnitIds.infernaljuggernaut)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(5)
+
+  ..wait(15)
+
+  ..creep(UnitIds.infernalmachine)
+  ..hp(15000)
+  ..damage(628)
+  ..attackrate(0.72)
+  ..scale(1.25)
+  ..amount(10)
+
+  .build()
+
+function wave_4() returns Wave
+  return new WaveBuilder()
+
+  ..creep(UnitIds.salamanderhatchling)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.salamander)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.salamandervizier)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.salamanderlord)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  .build()
+  
+function wave_5() returns Wave
+  return new WaveBuilder()
+
+  ..creep(UnitIds.infernal)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.doomguard)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  .build()
+
+function wave_6() returns Wave
+  return new WaveBuilder()
+
+  ..creep(UnitIds.succubus)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.viletormentor)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.viletemptress)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.queenofsuffering)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.maidenofpain)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  .build()
+
+function wave_7() returns Wave
+  return new WaveBuilder()
+
+  ..creep(UnitIds.voidwalker)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.lesservoidwalker)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.eldervoidwalker)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.greatervoidwalker)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  .build()
+
+function boss_wave() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+  ..boss()
+  .build()
