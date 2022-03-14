@@ -4,18 +4,9 @@ import EntityManagement
 import PlayerData
 import ItemShopUI
 import ClosureTimers
-import DamageEvent
-import GeneralFunctions
 import SaveLoadSystem
-import CustomStatSystem
+import ChatCommands
 import GameSetupDialog
-import UnitIds
-import ClosureForGroups
-import Hero
-import Backpack
-import HonorShop
-
-var dummyHp = 500
 
 function initFrames()
   let loadingResult = BlzLoadTOCFile("MyFiles.toc")
@@ -27,88 +18,6 @@ function initEnemyVision()
 
 function initEnemyHandicap()
   SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (pData.size() / 8.))
-
-function initChatCommands()
-  EventListener.add(EVENT_PLAYER_CHAT_FILTER) () ->
-    let message = EventData.getChatMessage()
-    let p = EventData.getTriggerPlayer()
-    let isCreator = p.getName() == "Overkane#2142" or p.getName() == "Frotty#2739" or p.getName() == "Local Player" or p.getName() == "Игрок"
-
-    // Cheat commands
-    if isCreator
-      // Refresh command
-      if message == "-r"
-        pData.get(p).getHero().ifPresent() h ->
-          h.actor
-          ..setMana(h.actor.getMaxMana())
-          ..setHP(h.actor.getMaxHP())
-          ..resetCooldown()
-      // Damage debug command
-      else if message == "-d"
-        DamageEvent.addListener() ->
-          if DamageEvent.getSource().isAllyOf(players[0])
-            print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
-            print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
-            print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
-      else if message.startsWith("-gold ")
-        let goldAmount = message.ltrim("-gold ").toInt()
-        p.addGold(goldAmount)
-      else if message.startsWith("-hp ")
-        let honorPointsAmount = message.ltrim("-hp ").toInt()
-        p.addLumber(honorPointsAmount)
-      else if message.startsWith("-lvl ")
-        let heroLevel = message.ltrim("-lvl ").toInt()
-        pData.get(p).getHero().ifPresent(h -> h.actor.setLevel(heroLevel, false))
-    // Summons friendly dummy
-      else if message.startsWith("-fd ")
-        let numberOfDummies = message.ltrim("-fd ").toInt()
-        for i = 0 to numberOfDummies - 1
-          createUnit(p, UnitIds.footman, gg_rct_ArenaForestTopLeftSpawn.getCenter(), angle(0))
-          ..setHP(250) // To test heal and stuff
-    // Summons enemy dummy
-      else if message.startsWith("-ed ")
-        let numberOfDummies = message.ltrim("-ed ").toInt()
-        for i = 0 to numberOfDummies - 1
-          let u = createUnit(ENEMY_PLAYER, UnitIds.footman, gg_rct_ArenaForestTopLeftSpawn.getCenter(), angle(0))
-          u
-          ..setMaxHP(dummyHp)
-          ..setHP(u.getMaxHP())
-    // Sets dummy hp to test damage in different variations
-      else if message.startsWith("-sdh ")
-        dummyHp = message.ltrim("-sdh ").toInt()
-    // Kills all units except heroes
-      else if message.startsWith("-ka")
-        forUnitsAll() (unit u) ->
-          if not heroUnitMap.has(u) and not backpackUnits.has(u) and not honorShopUnits.has(u)
-            u.kill()
-
-    // Host commands
-    if p == players[0]
-      if message.startsWith("-kick ")
-        let playerNumber = message.charAt(6).toInt()
-        let kickedPlayer = players[playerNumber - 1]
-
-        if kickedPlayer.isIngame() and kickedPlayer != ENEMY_PLAYER
-          kickedPlayer.defeat("You was kicked.")
-
-    // General commands
-    if message.startsWith("-z ")
-      let zoomValue = message.ltrim("-z ").toReal()
-      p.setCameraField(CAMERA_FIELD_TARGET_DISTANCE, zoomValue, 0.3)
-    else if message == "-stats"
-      pData.get(p).getHero().ifPresent() (h) ->
-        p
-        ..print("Bonus Attack Damage: " + h.actor.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE).toString(), 5)
-        ..print("Attack Power: " + h.actor.getStat(CustomUnitStats.ATTACK_POWER).toString(), 5)
-        ..print("Attack Crit Power: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_POWER).toString(), 5)
-        ..print("Attack Crit Chance: " + h.actor.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE).toString(), 5)
-        ..print("Lifesteal: " + h.actor.getStat(CustomUnitStats.LIFESTEAL).toString(), 5)
-        ..print("Bonus Spell Damage: " + h.actor.getStat(CustomUnitStats.BONUS_SPELL_DAMAGE).toString(), 5)
-        ..print("Spell Power: " + h.actor.getStat(CustomUnitStats.SPELL_POWER).toString(), 5)
-        ..print("Spell Crit Power: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_POWER).toString(), 5)
-        ..print("Spell Crit Chance: " + h.actor.getStat(CustomUnitStats.SPELL_CRIT_CHANCE).toString(), 5)
-        ..print("Spell Lifesteal: " + h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString(), 5)
-        ..print("Evasion: " + h.actor.getStat(CustomUnitStats.EVASION).toString(), 5)
 
 init
   nullTimer() ->
