@@ -17,6 +17,8 @@ function trigger.setPrayBuff(PrayMainBuff buffInstance)
   prayMap.put(this, buffInstance)
 
 public class PrayMainBuff extends NormalBuff
+  static constant RANGE_BUFFER = 32
+
   effect buffEffect
   constant affected = CreateGroup()
   constant inRangeTrig = CreateTrigger()..setPrayBuff(this)
@@ -25,8 +27,9 @@ public class PrayMainBuff extends NormalBuff
     super(99999, buffTuple)
 
   function onInRange(unit u)
-    affected.add(u)
-    new PrayMinorBuff(99999)..apply(u)
+    if u.isAlive() and u.isAllyOf(target) and not affected.has(u)
+      affected.add(u)
+      new PrayMinorBuff(99999)..apply(u)
 
   override function onApply()
     buffEffect = target.addEffect(Abilities.devotionAura, AttachmentPoints.origin)
@@ -34,8 +37,7 @@ public class PrayMainBuff extends NormalBuff
     ..addAction(() -> GetTriggeringTrigger().getPrayBuff().onInRange(GetTriggerUnit()))
 
     forUnitsInRange(target.getPos(), PRAY_AOE) (unit u) ->
-      if u.isAlive() and u.isAllyOf(target) and not affected.has(u)
-        onInRange(u)
+      onInRange(u)
   
   override function onEnd()
     buffEffect.destr()
@@ -51,7 +53,8 @@ public class PrayMainBuff extends NormalBuff
     super.update()
 
     for u in affected
-      if u.getPos().distanceToSq(target.getPos()) > PRAY_AOE.squared()
+      // Adding additional range for buff AOE, so it's squared value will be bigger then squared distance.
+      if u.getPos().distanceToSq(target.getPos()) > (PRAY_AOE + RANGE_BUFFER).squared()
         u.removeBuffById(PrayMinorBuff.typeId)
         affected.remove(u)
 
