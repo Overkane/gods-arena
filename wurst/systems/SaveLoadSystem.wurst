@@ -1,4 +1,5 @@
 package SaveLoadSystem
+import GameConstants
 import PlayerData
 import SaveLoadData
 import ClosureEvents
@@ -21,24 +22,28 @@ public function initSaveLoadSystem()
     let msg = EventData.getChatMessage()
     if msg == "-save"
       let p = GetTriggerPlayer()
-      let arenaPoints = pData.get(p).getArenaPoints()
 
-      if arenaPoints >= ARENA_POINTS_THRESHOLD
-        let honorPoints = (arenaPoints / ARENA_POINTS_THRESHOLD).floor()
-        let fileName = FILE_NAME.format(p.getName())
-        p.loadData(fileName) (status, data) ->
-          if status == LoadStatus.SUCCESS
-            let dataString = sl_decrypt(data.getUnsafeString())
+      if not allowSave
+        p.print("You can't save in single player.", 5)
+      else
+        let arenaPoints = pData.get(p).getArenaPoints()
 
-            if dataString.toInt() >= honorPoints
-              p.print("Your save file has more honor points than you want to save. Saving is aborted.", 5)
+        if arenaPoints >= ARENA_POINTS_THRESHOLD
+          let honorPoints = (arenaPoints / ARENA_POINTS_THRESHOLD).floor()
+          let fileName = FILE_NAME.format(p.getName())
+          p.loadData(fileName) (status, data) ->
+            if status == LoadStatus.SUCCESS
+              let dataString = sl_decrypt(data.getUnsafeString())
+
+              if dataString.toInt() >= honorPoints
+                p.print("Your save file has more honor points than you want to save. Saving is aborted.", 5)
+              else
+                p..print("You successfully saved " + honorPoints.toString() + " honor points.", 5)
+                ..saveData(fileName, sl_encrypt(honorPoints.toString()))
             else
               p..print("You successfully saved " + honorPoints.toString() + " honor points.", 5)
-              ..saveData(fileName, sl_encrypt(honorPoints.toString()))
-          else
-            p..print("You successfully saved " + honorPoints.toString() + " honor points.", 5)
-            ..saveData(fileName, sl_encrypt(honorPoints.toString())) 
-      else 
-        p.print("You don't have enough points to save.", 5)
+              ..saveData(fileName, sl_encrypt(honorPoints.toString())) 
+        else 
+          p.print("You don't have enough points to save.", 5)
 
 

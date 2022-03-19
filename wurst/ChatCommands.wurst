@@ -17,10 +17,9 @@ public function initChatCommands()
   EventListener.add(EVENT_PLAYER_CHAT_FILTER) () ->
     let message = EventData.getChatMessage()
     let p = EventData.getTriggerPlayer()
-    let isCreator = p.getName() == "Overkane#2142" or p.getName() == "Frotty#2739" or p.getName() == "Local Player" or p.getName() == "Игрок"
 
     // Cheat commands
-    if isCreator
+    if allowCheats
       // Refresh command
       if message == "-r"
         pData.get(p).getHero().ifPresent() h ->
