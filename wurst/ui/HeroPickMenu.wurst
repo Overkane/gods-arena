@@ -66,6 +66,8 @@ function createHero(int heroId, player owner)
   // Base custom stats for heroes
   ..addStat(CustomUnitStats.ATTACK_CRIT_POWER, 0.25)
   ..addStat(CustomUnitStats.SPELL_CRIT_POWER, 0.25)
+  ..addStat(CustomUnitStats.ATTACK_CRIT_CHANCE, 0.05)
+  ..addStat(CustomUnitStats.SPELL_CRIT_CHANCE, 0.05)
   
   owner
   ..selectSingle(h.actor)
