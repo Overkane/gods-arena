@@ -134,6 +134,9 @@ public class WaveBuilder
   function hp(int hp)
     creepStep.creepDef.setHitPointsMaximumBase(hp)
 
+  function hpReg(real hpReg)
+    creepStep.creepDef.setHitPointsRegenerationRate(hpReg)
+
   function mana(int mana)
     creepStep.creepDef.setManaMaximum(mana)
     creepStep.creepDef.setManaInitialAmount(mana)
