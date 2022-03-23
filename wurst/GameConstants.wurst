@@ -11,6 +11,7 @@ public constant HERO_PICK_TIME = 30.0
 public constant HERO_PICK_RECT = gg_rct_ArenaForestRespawnPoint
 
 // Spell related
+public constant INNATE_SPELL_LEVELS = 3
 public constant NORMAL_SPELL_LEVELS = 5
 public constant ULTIMATE_SPELL_LEVELS = 3
 public constant ULTIMATE_LEVEL_REQ = 6

@@ -1,7 +1,6 @@
 package SeaAura
 import AbilityTooltipGenerator
-// import ClosureEvents
-// import ClosureForGroups
+import GameConstants
 
 public constant SEA_AURA_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -16,7 +15,7 @@ constant RealLevelClosure MANA_REGENERATION = lvl -> 1. * lvl
   ..presetHotkey("D")
 
   ..tooltipStartListen()
-  ..setLevels(1)
+  ..setLevels(INNATE_SPELL_LEVELS)
   ..setName("Sea Aura")
   ..presetManaRegenerationIncrease(MANA_REGENERATION)
   ..tooltipStopListen()

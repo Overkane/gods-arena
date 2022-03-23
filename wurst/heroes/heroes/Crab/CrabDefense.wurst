@@ -12,6 +12,8 @@ import CustomStatSystem
 public constant CRAB_DEFENSE_ID = compiletime(ABIL_ID_GEN.next())
 public constant CRABLING_ID = compiletime(UNIT_ID_GEN.next())
 
+constant RealLevelClosure SPAWN_CHANCE = lvl -> 0.2 + 0.05 * lvl
+constant RealLevelClosure STRENGTH_DAMAGE = lvl -> 0.2 * lvl
 
 init
   DamageEvent.addListener() -> 
@@ -19,20 +21,24 @@ init
     let source = DamageEvent.getSource()
 
     if target.hasAbility(CRAB_DEFENSE_ID) and source.isEnemyOf(target)
-      let chance = 0.25
+      let lvl = target.getAbilityLevel(CRAB_DEFENSE_ID)
+      let chance = SPAWN_CHANCE.run(lvl)
       let rand = GetRandomReal(0, 1)
+
       if rand < chance
+        let strMultiplier = STRENGTH_DAMAGE.run(lvl)
+
         createUnit(target.getOwner(), CRABLING_ID, target.getPos(), target.getPos().angleTo(target.getPos()))
         ..setAnimation("birth")
         ..issueTargetOrderById(OrderIds.attack, source)
         ..setTimedLife(7.5)
-        ..addBonus(Bonus.DAMAGE, target.getStr(true) * 0.25 * (1 + target.getStat(CustomUnitStats.SPELL_POWER)))
+        ..addBonus(Bonus.DAMAGE, target.getStr(true) * strMultiplier * (1 + target.getStat(CustomUnitStats.SPELL_POWER)))
         ..addAbility(LOCUST_ID)
         ..setXY(target.getPos())
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Has a chance to spawn a defensive |cffce951acrabling|r when attacked")
-  new PassiveAbilityPreset(CRAB_DEFENSE_ID, NORMAL_SPELL_LEVELS, tooltip)
+  new PassiveAbilityPreset(CRAB_DEFENSE_ID, INNATE_SPELL_LEVELS, tooltip)
   ..presetIcon(Icons.pASBTNBerserk)
   ..registerTooltipGenerator(tooltip)
   ..presetButtonPosNormal(1, 1)
@@ -41,8 +47,8 @@ init
 
   ..tooltipStartListen()
   ..setName("Crab Defense")
-  ..addTooltipProperty("Chance to spawn", lvl -> (25).percRound())
-  ..addTooltipProperty("Crab Damage", lvl -> "Strength * 0.25")
+  ..addTooltipProperty("Chance to spawn", lvl -> (SPAWN_CHANCE.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Crab Str Damage Multiplier", lvl -> (STRENGTH_DAMAGE.run(lvl) * 100).percRound())
   ..tooltipStopListen()
 
   new UnitDefinition(CRABLING_ID, UnitIds.spidercrab)

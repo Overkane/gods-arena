@@ -68,7 +68,7 @@ class Companion extends UnitEntity
 
 @compiletime function genAbility()
   var tooltip = new AbilityTooltipGenerator(Targettype.NONE, "Hero summons his loyal companion.")
-  new ChannelAbilityPreset(COMPANION_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  new ChannelAbilityPreset(COMPANION_ID, INNATE_SPELL_LEVELS, true, tooltip)
   ..presetButtonPosNormal(1, 1)
   ..presetButtonPosResearch(1, 0)
   ..presetIcon(Icons.bTNWolf)

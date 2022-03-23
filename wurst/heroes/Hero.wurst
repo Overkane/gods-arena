@@ -2,6 +2,7 @@ package Hero
 import Entity
 import HashMap
 import CurrentArena
+import HeroDefinitionPresets
 
 public constant heroUnitMap = new IterableMap<unit, Hero>
 public constant heroUnitList = new LinkedList<unit>
@@ -11,6 +12,9 @@ public class Hero extends UnitEntity
     super(createUnit(p, typId, pos.toVec2(), ang))
     heroUnitMap.put(this.actor, this)
     heroUnitList.add(this.actor)
+
+    let innateAbilId = heroInnateSkills.loadInt(typId, typId)
+    registerInnateAbilityUpgradeEvent(innateAbilId)
 
   function addXp(int toAdd, boolean showEyeCandy)
     AddHeroXP(this.actor, toAdd, showEyeCandy)
@@ -29,3 +33,10 @@ public class Hero extends UnitEntity
   ondestroy
     heroUnitMap.remove(this.actor)
     heroUnitList.remove(this.actor)
+
+function registerInnateAbilityUpgradeEvent(int abilId)
+  EventListener.add(EVENT_PLAYER_HERO_LEVEL) ->
+    let u = EventData.getTriggerUnit()
+    if u.hasAbility(abilId)
+      if u.getLevel() == 10 or u.getLevel() == 18
+        u.incAbilityLevel(abilId)

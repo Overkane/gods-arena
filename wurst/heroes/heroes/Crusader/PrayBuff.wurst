@@ -53,7 +53,7 @@ public class PrayMainBuff extends NormalBuff
     super.update()
 
     for u in affected
-      // Adding additional range for buff AOE, so it's squared value will be bigger then squared distance.
+      // Adding additional range for buff AOE, so its squared value will be higher than squared distance.
       if u.getPos().distanceToSq(target.getPos()) > (PRAY_AOE + RANGE_BUFFER).squared()
         u.removeBuffById(PrayMinorBuff.typeId)
         affected.remove(u)

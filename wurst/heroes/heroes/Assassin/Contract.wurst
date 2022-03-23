@@ -8,6 +8,7 @@ import DamageSystem
 import Buff
 import TooltipFactory
 import GeneralFunctions
+import GameConstants
 
 public constant CONTRACT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -65,7 +66,7 @@ init
   + "She will deal additional damage to the contract target and if she kills it, she also will get additional bounty. "
   + "If she doesn't kill the target, but is in 225 range of it, then Assassin will get half of the bounty, otherwise nothing. "
   + "If there is no appropriate target nearby, the spell cooldown will be reset.")
-  new ChannelAbilityPreset(CONTRACT_ID, 1, true, tooltip)
+  new ChannelAbilityPreset(CONTRACT_ID, INNATE_SPELL_LEVELS, true, tooltip)
   ..presetIcon(Icons.bTNSnazzyScrollPurple)
   ..presetButtonPosNormal(1, 1)
   ..presetButtonPosResearch(1, 0)

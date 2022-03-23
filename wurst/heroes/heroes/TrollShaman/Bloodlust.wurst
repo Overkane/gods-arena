@@ -5,8 +5,8 @@ import TooltipFactory
 
 public constant BLOODLUST_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure AS_BONUS = lvl -> 0.4
-constant RealLevelClosure MS_BONUS = lvl -> 0.15
+constant RealLevelClosure AS_BONUS = lvl -> 0.2 * lvl
+constant RealLevelClosure MS_BONUS = lvl -> 0.1 * lvl
 constant RealLevelClosure DURATION = lvl -> 15.
 
 @compiletime function genAbility()
@@ -21,7 +21,7 @@ constant RealLevelClosure DURATION = lvl -> 15.
   ..presetHotkey("D")
   
   ..tooltipStartListen()
-  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setLevels(INNATE_SPELL_LEVELS)
   ..setName("Bloodlust")
   ..addTooltipProperty("Attack Speed Bonus", lvl -> (AS_BONUS.run(lvl) * 100).percRound())
   ..addTooltipProperty("Movespeed Bonus", lvl -> (MS_BONUS.run(lvl) * 100).percRound())

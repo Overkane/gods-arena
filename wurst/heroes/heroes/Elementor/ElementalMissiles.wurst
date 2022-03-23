@@ -18,7 +18,7 @@ constant ELEMENTAL_DISCHARGE_ID = compiletime(BUFF_ID_GEN.next())
 constant FROSTNOVA_ID = compiletime(ABIL_ID_GEN.next())
 constant LIGHTNING_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
-constant INT_AS_DAMAGE = 0.8
+constant RealLevelClosure INT_AS_DAMAGE = lvl -> 0.8 * lvl
 
 init
   DamageEvent.addUnreducedListener(DamageEvents.START castTo int) -> 
@@ -28,7 +28,9 @@ init
     if tunit.hasAbility(ELEMENTAL_DISCHARGE_ID) and sunit.hasAbility(ELEMENTAL_MISSILE_ID)
       and DamageEvent.getType() == DamageType.ATTACK
 
-      sunit.addOnetimeStat(CustomUnitStats.BONUS_ATTACK_DAMAGE, sunit.getInt(true) * INT_AS_DAMAGE)
+      let lvl = tunit.getAbilityLevel(ELEMENTAL_MISSILE_ID)
+      let intMultiplier = INT_AS_DAMAGE.run(lvl)
+      sunit.addOnetimeStat(CustomUnitStats.BONUS_ATTACK_DAMAGE, sunit.getInt(true) * intMultiplier)
 
   // Effects work only if target couldn't evade
   DamageEvent.addListener() -> 
@@ -84,9 +86,9 @@ init
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
-  ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setLevels(INNATE_SPELL_LEVELS)
   ..setName("Elemental Missile")
-  ..addTooltipProperty("Int as Damage", lvl -> (INT_AS_DAMAGE * 100).percRound())
+  ..addTooltipProperty("Int as Damage", lvl -> (INT_AS_DAMAGE.run(lvl) * 100).percRound())
   ..presetManaCost(lvl -> 90)
   ..tooltipStopListen()
 

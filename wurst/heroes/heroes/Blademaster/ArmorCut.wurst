@@ -8,8 +8,8 @@ import DamageEvent
 
 public constant ARMOR_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
-public constant RealLevelClosure ARMOR_CUT_CHANCE = lvl -> 15.
-public constant RealLevelClosure ARMOR_CUT_ARMOR_REDUCE = lvl -> 2.
+public constant RealLevelClosure ARMOR_CUT_CHANCE = lvl -> 10. + 5. * lvl
+public constant RealLevelClosure ARMOR_CUT_ARMOR_REDUCE = lvl -> 1. + lvl
 public constant RealLevelClosure ARMOR_CUT_DURATION = lvl -> 20.
 
 init 
@@ -29,7 +29,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero cuts his foes armor, reducing its armor for a duration. Stacks.")
-  new PassiveAbilityPreset(ARMOR_CUT_ID, NORMAL_SPELL_LEVELS, tooltip)
+  new PassiveAbilityPreset(ARMOR_CUT_ID, INNATE_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..presetIcon(Icons.pASBTNCriticalStrike)
   ..presetButtonPosNormal(1, 1)

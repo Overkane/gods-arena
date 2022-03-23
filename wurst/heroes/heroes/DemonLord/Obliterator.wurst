@@ -1,35 +1,35 @@
 package Obliterator
-
 import AbilityTooltipGenerator
 import Buff
 import DemonLordIds
 import ObliteratorBuff
 import PassiveAbilityPreset
+import GameConstants
+import TooltipFactory
 
-constant IntLevelClosure BONUS_ATTACK_SPEED = _ -> 50
-constant RealLevelClosure CREEP_AGGRO = _ -> 600.
-constant RealLevelClosure CREEP_AGGRO_RANGE = _ -> 400.
-constant RealLevelClosure BONUS_HEALTH_THRESHOLD = _ -> .35
-constant RealLevelClosure SLAY_RATIO = _ -> 0.05
-constant RealLevelClosure SLAY_BONUS_DAMAGE_MULTIPLIER = _ -> 10.
+constant RealLevelClosure BONUS_ATTACK_SPEED = lvl -> 50. + 25 * (lvl-1)
+constant RealLevelClosure CREEP_AGGRO = lvl -> 600.
+constant RealLevelClosure CREEP_AGGRO_RANGE = lvl -> 400.
+constant RealLevelClosure BONUS_HEALTH_THRESHOLD = lvl -> .35
+constant RealLevelClosure SLAY_RATIO = lvl -> 0.05 + 0.02 * (lvl-1)
+constant RealLevelClosure SLAY_BONUS_DAMAGE_MULTIPLIER = lvl -> 10.
 
 init
-  DamageEvent.addListener(1) ->
+  DamageEvent.addListener() ->
     let target = DamageEvent.getTarget()
     let source = DamageEvent.getSource()
-    if target.getTypeId() == DEMON_LORD_ID and target.getHPRatio() < BONUS_HEALTH_THRESHOLD.run(1)
-      new ObliteratorBuff(
-        BONUS_HEALTH_THRESHOLD.run(1),
-        CREEP_AGGRO_RANGE.run(1),
-        CREEP_AGGRO.run(1),
-        BONUS_ATTACK_SPEED.run(1).toReal()
-      ).apply(target)
-    else if (
-      source.getTypeId() == DEMON_LORD_ID
-      and source.hasBuff(ObliteratorBuff.typeId)
-      and target.getHPRatio() < SLAY_RATIO.run(1)
-    )
-      DamageEvent.addAmount(DamageEvent.getAmount() * (SLAY_BONUS_DAMAGE_MULTIPLIER.run(1) - 1.))
+    if target.hasAbility(OBLITERATOR_ID)
+      let lvl = target.getAbilityLevel(OBLITERATOR_ID)
+
+      if target.getHPRatio() < BONUS_HEALTH_THRESHOLD.run(lvl)
+        new ObliteratorBuff(
+          BONUS_HEALTH_THRESHOLD.run(lvl),
+          CREEP_AGGRO_RANGE.run(lvl),
+          CREEP_AGGRO.run(lvl),
+          BONUS_ATTACK_SPEED.run(lvl)
+        ).apply(target)
+      else if source.hasBuff(ObliteratorBuff.typeId) and target.getHPRatio() < SLAY_RATIO.run(lvl)
+        DamageEvent.addAmount(DamageEvent.getAmount() * (SLAY_BONUS_DAMAGE_MULTIPLIER.run(lvl) - 1.))
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
@@ -37,7 +37,7 @@ init
     "Passively grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units, when the Demon "
     + "Lord has low HP."
   )
-  new PassiveAbilityPreset(OBLITERATOR_ID, 1, tooltip)
+  new PassiveAbilityPreset(OBLITERATOR_ID, INNATE_SPELL_LEVELS, tooltip)
   ..presetButtonPosNormal(1, 1)
   ..presetButtonPosResearch(1, 0)
   ..setIconNormal(Icons.pASBTNFireRocks)
@@ -46,7 +46,7 @@ init
   ..addTooltipProperty("Creep Aggro", CREEP_AGGRO)
   ..addTooltipProperty("Creep Aggro Range", CREEP_AGGRO_RANGE)
   ..addTooltipProperty("Health Threshold", BONUS_HEALTH_THRESHOLD)
-  ..addTooltipProperty("Bonus Damage HP Threshold", SLAY_RATIO)
+  ..addTooltipProperty("Bonus Damage HP Threshold", lvl -> (SLAY_RATIO.run(lvl) * 100).percRound())
   ..addTooltipProperty("Bonus Damage Multiplier", SLAY_BONUS_DAMAGE_MULTIPLIER)
   ..setName("Obliterator")
   ..tooltipStopListen()

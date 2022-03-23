@@ -6,8 +6,9 @@ import CustomStatSystem
 import TooltipFactory
 
 constant buffTuple1 = compiletime(createDummyBuffObject("Overcharge Buff".color(POSITIVE_COLOR), "Hero deals increased magic damage",  Icons.bTNControlMagic))
-constant buffTuple2 = compiletime(createDummyBuffObject("Overcharge Debuff", "Hero deals decreased magic damage",  Icons.bTNControlMagic))
+constant buffTuple2 = compiletime(createDummyBuffObject("Overcharge Debuff", "Hero deals decreased magic damage and slowed",  Icons.bTNControlMagic))
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.purgeTarget1)
+constant MOVESPEED_DEBUFF = 100
 
 public class OverchargeBuff extends NormalBuff
   constant bonusSP = 0.
@@ -36,7 +37,7 @@ public class OverchargeDebuff extends NormalBuff
 
   override function onApply()
     target.addStat(CustomUnitStats.SPELL_POWER, -bonusSP)
-    target.setMoveSpeed(target.getDefaultMovespeed() - 100)
+    target.setMoveSpeed(target.getDefaultMovespeed() - MOVESPEED_DEBUFF)
     ON_APPLY_SOUND.playForPlayer(target.getOwner())
 
 

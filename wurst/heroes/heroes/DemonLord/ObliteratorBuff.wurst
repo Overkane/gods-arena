@@ -35,9 +35,9 @@ public class ObliteratorBuff extends NormalBuff
     if this.target.getHPRatio() > this.bonus_health_threshold
       terminate()
     if not done
-      forUnitsInRange(this.target.getPos(), this.creep_aggro_range) fog ->
-        if fog.isEnemyOf(this.target)
-          this.target.maxAggro(fog, this.creep_aggro)
+      forUnitsInRange(this.target.getPos(), this.creep_aggro_range) u ->
+        if u.isEnemyOf(this.target)
+          this.target.maxAggro(u, this.creep_aggro)
 
   override function onApply()
     this.target.addBonus(Bonus.ATTACKSPEED, this.bonus_attack_speed)

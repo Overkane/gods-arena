@@ -10,7 +10,7 @@ import DemonLordIds
   ..addHeroAbility(HOWL_OF_TERROR_ID)
   ..addHeroAbility(DEMONIC_POWER_ID)
   ..addHeroAbility(HELL_FIRE_ID)
-  ..addNormalAbility(OBLITERATOR_ID)
+  ..addInnateHeroAbility(OBLITERATOR_ID)
   ..setStartingStrength(28)
   ..setStrengthPerLevel(3.4)
   ..setStartingAgility(15)
