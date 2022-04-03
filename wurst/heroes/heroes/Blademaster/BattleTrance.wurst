@@ -3,13 +3,15 @@ import AbilityTooltipGenerator
 import GameConstants
 import BattleTranceBuff
 import ClosureEvents
+import AbilityDefinitionExtension
 
 public constant BATTLE_TRANCE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DURATION = lvl -> 10.
-constant RealLevelClosure BONUS_AS = lvl -> 50. * lvl
-constant RealLevelClosure BONUS_MS = lvl -> 50. * lvl
+constant RealLevelClosure DURATION = lvl -> 12.
+constant RealLevelClosure BONUS_AS = lvl -> 40. * lvl
+constant RealLevelClosure BONUS_MS = lvl -> 30. * lvl
 constant RealLevelClosure ATTACK_COOLDOWN_TIME = lvl -> 1.7 - 0.1 * lvl
+
 
 init 
   EventListener.onCast(BATTLE_TRANCE_ID) (unit caster) ->
@@ -21,17 +23,14 @@ init
 
     new BattleTranceBuff(duration, bonusAS, bonusMS, attackCooldownTime).apply(caster)
     
+    
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "After a delay the hero gets bonus to attackspeed, movement speed and get decreased base attack cooldown. " +
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "After a delay gives bonus to attackspeed, movement speed and decreases base attack cooldown. " +
     "After buff ends hero gets reversed buff for a half of original buff duration.")
   new ChannelAbilityPreset(BATTLE_TRANCE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
-  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
-  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  ..makeRAbility()
   ..presetIcon(Icons.bTNMirrorImage)
-  ..presetButtonPosNormal(3, 2)
-  ..presetButtonPosResearch(3, 0)
   ..presetCastingTime(lvl -> 1)
-  ..presetHotkey("R")
 
   ..tooltipStartListen()
   ..setName("Battle Trance")
@@ -39,7 +38,7 @@ init
   ..addTooltipProperty("Bonus Movespeed", BONUS_MS)
   ..addTooltipProperty("Base Attack Cooldown", lvl -> ATTACK_COOLDOWN_TIME.run(lvl).toString(1))
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 75 + 25 * lvl)
+  ..presetManaCost(lvl -> 55 + 55 * lvl)
   ..presetCooldown(lvl -> 60)
   ..tooltipStopListen()
 

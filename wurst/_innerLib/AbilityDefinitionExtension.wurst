@@ -1,5 +1,6 @@
 package AbilityDefinitionExtension
 import AbilityObjEditing
+import GameConstants
 
 public function AbilityDefinition.makeQAbility()
   this
@@ -28,6 +29,8 @@ public function AbilityDefinition.makeRAbility()
   ..presetButtonPosTurnOff(3, 2)
   ..presetButtonPosResearch(3, 0)
   ..presetHotkey("R")
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
 
 public function AbilityDefinition.makeDAbility()
   this

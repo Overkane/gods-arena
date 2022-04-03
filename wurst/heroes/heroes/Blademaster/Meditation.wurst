@@ -12,6 +12,8 @@ import OrderIds
 import BuffIds
 import AttachmentPoints
 import UnitAnimations
+import AbilityDefinitionExtension
+
 
 public constant MEDITATION_ID = compiletime(ABIL_ID_GEN.next())
 public constant MEDITATION_DAMAGE_ID = compiletime(ABIL_ID_GEN.next())
@@ -20,10 +22,11 @@ public constant MEDITATION_DAMAGE_BUFF_ID = compiletime(BUFF_ID_GEN.next())
 constant RealLevelClosure PERC_HP = lvl -> 3. * lvl
 constant RealLevelClosure PERC_MP = lvl -> 1. + 1 * lvl
 constant RealLevelClosure MEDITATION_DURATION = lvl -> 5.5
-constant RealLevelClosure DAMAGE_BUFF = lvl -> 25. * lvl
+constant RealLevelClosure DAMAGE_BUFF = lvl -> 20. * lvl
 constant RealLevelClosure DAMAGE_DURATION = lvl -> 30.
 
 constant castingUnits = new LinkedList<unit>
+
 
 init
   EventListener.onCast(MEDITATION_ID) (unit caster) ->
@@ -59,15 +62,13 @@ init
     if tunit.hasBuff(MeditationBuff.typeId) and DamageEvent.getAmount() > 0
       tunit.issueImmediateOrderById(OrderIds.stop)
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero meditates and restores his hp and mp over time. "
-    + "Any received damage during meditation interrupts it. If meditation was fully completed, hero also receives attack damage buff.")
+  let tooltip = new AbilityTooltipGenerator("Restores hp and mp over time. "
+    + "Any received damage during meditation interrupts it. If meditation was fully completed, gives attack damage buff.")
   new ChannelAbilityPreset(MEDITATION_ID, NORMAL_SPELL_LEVELS, false, tooltip)
-  ..registerTooltipGenerator(tooltip)
+  ..makeWAbility()
   ..presetIcon(Icons.bTNSleep)
-  ..presetButtonPosNormal(1, 2)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("W")
   ..setArtCaster(Abilities.healTarget)
   ..presetOption(Option.VISIBLE, true)
   ..presetDisableOtherAbilities(lvl -> false)

@@ -1,0 +1,46 @@
+package LimitedStackingBuff
+import public PresetBuffs
+import HashMap
+
+/** When applied to a unit that already has the buff, another buff instance is added, 
+If max amount of buffs is reached, the lowest duration buff duration is refreshed.
+After that excess buff instance is destroyed without triggering onApply() and onEnd() */
+public abstract class LimitedStackingBuff extends StackingBuff
+  private static constant targetBuffAmountMap = new HashMap<unit, int>
+  private static var maxBuffAmount = 1
+
+  construct(real dur, buffTuple buffData)
+    super(dur, buffData)
+
+  static function setMaxBuffAmount(int buffAmount)
+    maxBuffAmount = buffAmount
+
+  override function apply(unit target)
+    if not targetBuffAmountMap.has(target)
+      targetBuffAmountMap.put(target, 1)
+    else
+      let currentBuffAmount = targetBuffAmountMap.get(target)
+      
+      if currentBuffAmount == maxBuffAmount
+        let currentBuffs = target.getBuffs().filter((Buff t) -> t.typeId == this.typeId) 
+        currentBuffs
+        ..sortWith((Buff b1, Buff b2) -> (b1.duration - b2.duration).toInt())
+        .getFirst().duration = duration
+        destroy currentBuffs
+        
+        // Not terminate() because we don't need onEnd() event in this case
+        destroy this
+        return
+      else
+        let newBuffAmount = targetBuffAmountMap.get(target) + 1
+        targetBuffAmountMap.put(target, newBuffAmount)
+
+    super.apply(target)
+
+  override function onEnd()
+    let newBuffAmount = targetBuffAmountMap.get(target) - 1
+    
+    if newBuffAmount == 0
+      targetBuffAmountMap.remove(target)
+    else
+      targetBuffAmountMap.put(target, newBuffAmount)

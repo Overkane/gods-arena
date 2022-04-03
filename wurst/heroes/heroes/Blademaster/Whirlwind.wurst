@@ -7,12 +7,14 @@ import ClosureForGroups
 import MapIcons
 import UnitAnimations
 import DamageSystem
+import AbilityDefinitionExtension
 
 public constant WHIRLWIND_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure CHANCE = lvl -> 17. + 1 * ((lvl-1) / 2).floor()
+constant RealLevelClosure CHANCE = lvl -> 16. + 1 * lvl
 constant RealLevelClosure DAMAGE = lvl -> 0.5 + 0.1 * (lvl-1)
 constant RealLevelClosure RADIUS = lvl -> 250.
+
 
 init 
   DamageEvent.addListener() -> 
@@ -28,19 +30,20 @@ init
         let spellDamage = DAMAGE.run(lvl)
         let spellRadius = RADIUS.run(lvl)
 
-        sunit.setAnimation((UnitAnimations.HeroBladeMaster.attackWalkStandSpin.idx))
+        sunit
+        ..setAnimation((UnitAnimations.HeroBladeMaster.attackWalkStandSpin.idx))
+        ..queueAnimation("stand")
 
         forUnitsInRange(tunit.getPos(), spellRadius) target ->
           if target.isEnemyOf(sunit) and target.isAlive()
             sunit.dealPhysicalDamage(target, DamageEvent.getAmount() * spellDamage)
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Adds a chance to execute a whirlwind on each attack, damaging enemies around the hero.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Adds a chance to perform a whirlwind attack on each normal attack. Whirlwind attack deal damage to all enemies around as a percent of dealt damage by normal attack.")
   new PassiveAbilityPreset(WHIRLWIND_ID, NORMAL_SPELL_LEVELS, tooltip)
+  ..makeEAbility()
   ..presetIcon(MapIcons.pASBTNWhirlwind)
-  ..presetButtonPosNormal(2, 2)
-  ..presetButtonPosResearch(2, 0)
-  ..presetHotkey("E")
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)

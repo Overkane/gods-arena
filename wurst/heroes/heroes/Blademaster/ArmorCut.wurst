@@ -5,17 +5,21 @@ import TooltipFactory
 import public ArmorCutBuff
 import PassiveAbilityPreset
 import DamageEvent
+import AbilityDefinitionExtension
 
 public constant ARMOR_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
 public constant RealLevelClosure ARMOR_CUT_CHANCE = lvl -> 10. + 5. * lvl
 public constant RealLevelClosure ARMOR_CUT_ARMOR_REDUCE = lvl -> 1. + lvl
 public constant RealLevelClosure ARMOR_CUT_DURATION = lvl -> 20.
+public constant ARMOR_CUT_MAX_STACKS_AMOUNT = 8
 
-init 
+
+init
+  ArmorCutBuff.setMaxBuffAmount(ARMOR_CUT_MAX_STACKS_AMOUNT)
+
   DamageEvent.addListener() -> 
     let sunit = DamageEvent.getSource()
-
     if sunit.hasAbility(ARMOR_CUT_ID) and DamageEvent.getType() == DamageType.ATTACK 
       let lvl = sunit.getAbilityLevel(ARMOR_CUT_ID)
       let chance = ARMOR_CUT_CHANCE.run(lvl)
@@ -27,18 +31,18 @@ init
 
         new ArmorCutBuff(duration, armorReduction).apply(tunit)
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero cuts his foes armor, reducing its armor for a duration. Stacks.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Cuts enemy armor, reducing their armor for a duration. Stacks.")
   new PassiveAbilityPreset(ARMOR_CUT_ID, INNATE_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
+  ..makeDAbility()
   ..presetIcon(Icons.pASBTNCriticalStrike)
-  ..presetButtonPosNormal(1, 1)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("D")
   
   ..tooltipStartListen()
   ..setName("Armor Cut")
   ..addTooltipProperty("Armor Reduction Chance", lvl -> ARMOR_CUT_CHANCE.run(lvl).percRound())
   ..addTooltipProperty("Armor Reduction", ARMOR_CUT_ARMOR_REDUCE)
   ..addTooltipProperty("Duration", ARMOR_CUT_DURATION)
+  ..addTooltipProperty("Max Stacks Amount", lvl -> ARMOR_CUT_MAX_STACKS_AMOUNT)
   ..tooltipStopListen()

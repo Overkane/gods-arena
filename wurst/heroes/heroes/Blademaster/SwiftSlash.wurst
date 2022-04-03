@@ -3,7 +3,6 @@ import AbilityTooltipGenerator
 import GameConstants
 import ClosureEvents
 import ClosureTimers
-import MeditationBuff
 import TooltipFactory
 import HashSet
 import OrderIds
@@ -16,6 +15,7 @@ import LinkedList
 import MapModels
 import AttachmentPoints
 import DamageSystem
+import AbilityDefinitionExtension
 
 public constant SWIFT_SLASH_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -26,6 +26,7 @@ constant HIT_SOUNDS = new LinkedList<SoundDefinition>
 ..add(new SoundDefinition(Sounds.metalMediumSliceFlesh1))
 ..add(new SoundDefinition(Sounds.metalMediumSliceFlesh2))
 ..add(new SoundDefinition(Sounds.metalMediumSliceFlesh3))
+
 
 init
   EventListener.onPointCast(SWIFT_SLASH_ID) (unit caster, vec2 target) ->
@@ -78,14 +79,12 @@ init
           destroy damagedTargets
           destroy cb
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all enemies on the way. Hit enemies receive current level of Armor Cut debuff if skilled.")
+  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all enemies on the way. Affected enemies receive current level of Armor Cut debuff.")
   new ChannelAbilityPreset(SWIFT_SLASH_ID, NORMAL_SPELL_LEVELS, true, tooltip)
-  ..registerTooltipGenerator(tooltip)
+  ..makeQAbility()
   ..presetIcon(Icons.bTNWindWalkOn)
-  ..presetButtonPosNormal(0, 2)
-  ..presetButtonPosResearch(0, 0)
-  ..presetHotkey("Q")
   
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
@@ -95,6 +94,6 @@ init
   ..addTooltipProperty("Damage", lvl -> RAW_DAMAGE.run(lvl).round().toString())
   ..addTooltipProperty("Bonus Agility Damage", lvl -> (AGI_DAMAGE.run(lvl)*100).percRound())
   ..presetCastRange(lvl -> 650. + 50. * lvl)
-  ..presetManaCost(lvl -> 60 + 5 * lvl)
+  ..presetManaCost(lvl -> 60 + 15 * lvl)
   ..presetCooldown(lvl -> 12. - lvl)
   ..tooltipStopListen()
