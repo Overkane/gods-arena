@@ -21,3 +21,6 @@ public constant REFUND_VALUE = 0.8
 
 public function player.isHuman() returns boolean
     return this.getId() < 8
+
+public function getHeroStunDuration(real defaultStunDuration) returns real
+    return defaultStunDuration / 3

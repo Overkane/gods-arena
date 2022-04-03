@@ -1,0 +1,27 @@
+package SummonEntity
+import Entity
+import BonusHandler
+import CustomStatSystem
+
+public class SummonEntity extends UnitEntity
+  construct(unit summoner, int typId, vec3 pos, angle ang)
+    super(createUnit(summoner.getOwner(), typId, pos.toVec2(), ang))
+    actor
+    ..setAnimation("birth")
+    ..queueAnimation("stand")
+
+    let casterSP = summoner.getStat(CustomUnitStats.SPELL_POWER)
+    let bonusDamage = actor.getBaseDamage(0) * casterSP
+    let bonusAS = 2 * (1 + casterSP) / actor.getAttackCooldown(0)
+    let bonusHP = actor.getMaxHP() * casterSP
+    let bonusArmor = actor.getArmor() * casterSP
+
+    actor
+    ..addBonus(Bonus.DAMAGE, bonusDamage)
+    ..addBonus(Bonus.ATTACKSPEED, bonusAS)
+    ..addBonus(Bonus.LIFE, bonusHP)
+    ..addBonus(Bonus.ARMOR, bonusArmor)
+
+    if actor.getMaxMana() != 0
+      let bonusMP = actor.getMaxMana() * casterSP
+      actor.addBonus(Bonus.MANA, bonusMP)

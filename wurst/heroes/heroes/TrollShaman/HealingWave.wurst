@@ -7,6 +7,7 @@ import ClosureTimers
 import CustomHeal
 import ClosureForGroups
 import Reference
+import AbilityDefinitionExtension
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -57,13 +58,11 @@ init
     
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Calls forth a wave of energy that heals a target and bounces to nearby allies. Each bounce heals less damage.")
+  let tooltip = new AbilityTooltipGenerator("Calls forth a wave of energy that heals a target and bounces to nearby allies. Each bounce heals less damage.")
   new ChannelAbilityPreset(HEALING_WAVE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
-  ..presetButtonPosNormal(0, 2)
-  ..presetButtonPosResearch(0, 0)
+  ..makeQAbility()
   ..presetIcon(Icons.bTNHealingWave)
   ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self))
-  ..presetHotkey("Q")
   
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.UNIT)

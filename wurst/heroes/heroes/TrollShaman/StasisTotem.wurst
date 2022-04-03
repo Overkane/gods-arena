@@ -9,18 +9,23 @@ import StunAbilityPreset
 import InstantDummyCaster
 import OrderIds
 import Abilities
+import DamageSystem
+import AbilityDefinitionExtension
 
 public constant STASIS_TOTEM_ID = compiletime(ABIL_ID_GEN.next())
 public constant STASIS_TOTEM_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
+constant RealLevelClosure TOTEM_DAMAGE = lvl -> 20. + 10 * (lvl-1)
 constant RealLevelClosure TOTEM_DURATION = lvl -> 4. + (lvl / 2).floor()
-constant RealLevelClosure STUN_INTERVAL = lvl -> 1.25
-constant RealLevelClosure STUN_DURATION = lvl -> 0.25 + 0.1 * lvl
+constant RealLevelClosure STUN_INTERVAL = lvl -> 1
+constant RealLevelClosure STUN_DURATION = lvl -> 0.3 + 0.05 * lvl
 constant RealLevelClosure AOE = lvl -> 300
+
 
 init
   EventListener.onPointCast(STASIS_TOTEM_ID) (unit caster, vec2 target) ->
     let lvl = caster.getAbilityLevel(STASIS_TOTEM_ID)
+    let totemDamage = TOTEM_DAMAGE.run(lvl)
     let totemDuration = TOTEM_DURATION.run(lvl)
     let stunInverval = STUN_INTERVAL.run(lvl)
     let areaOfEffect = AOE.run(lvl)
@@ -32,31 +37,33 @@ init
       forUnitsInRange(target, areaOfEffect) (unit u) ->
         if u.getOwner() == ENEMY_PLAYER and u.isAlive()
           InstantDummyCaster.castTarget(caster.getOwner(), STASIS_TOTEM_STUN_ID, 1, OrderIds.thunderbolt, u)
+          caster.dealMagicalDamage(u, totemDamage)
         
     doAfter(totemDuration) -> 
       totem.destr()
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Hero places a totem, which stuns enemies around it.")
+  let tooltip = new AbilityTooltipGenerator("Places a totem, which stuns enemies around it and damages them.")
   new ChannelAbilityPreset(STASIS_TOTEM_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..makeWAbility()
   ..presetIcon(Icons.bTNStasisTrap)
-  ..presetButtonPosNormal(1, 2)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("W")
   ..presetOption(Option.TARGETIMAGE, true)
 
   ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..presetTargetTypes(Targettype.POINT)
   ..setName("Stasis Totem")
+  ..addTooltipProperty("Totem Damage", TOTEM_DAMAGE)
   ..addTooltipProperty("Totem Duration", TOTEM_DURATION)
   ..addTooltipProperty("Stun Inverval", STUN_INTERVAL)
-  ..addTooltipProperty("Stun Duration", STUN_DURATION)
+  ..addTooltipProperty("Stun Duration", lvl -> STUN_DURATION.run(lvl).toString(2))
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 50 + 15 * lvl)
+  ..presetManaCost(lvl -> 50 + 10 * lvl)
   ..presetCooldown(lvl -> 22. - lvl)
   ..tooltipStopListen()
 
   new StunAbilityPreset(STASIS_TOTEM_STUN_ID, NORMAL_SPELL_LEVELS)
-  ..presetDurationHero(STUN_DURATION)
+  ..presetDurationHero(lvl -> getHeroStunDuration(STUN_DURATION.run(lvl)))
   ..presetDurationNormal(STUN_DURATION)

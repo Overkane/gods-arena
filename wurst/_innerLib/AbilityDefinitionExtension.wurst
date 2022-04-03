@@ -1,0 +1,37 @@
+package AbilityDefinitionExtension
+import AbilityObjEditing
+
+public function AbilityDefinition.makeQAbility()
+  this
+  ..presetButtonPosNormal(0, 2)
+  ..presetButtonPosTurnOff(0, 2)
+  ..presetButtonPosResearch(0, 0)
+  ..presetHotkey("Q")
+
+public function AbilityDefinition.makeWAbility()
+  this
+  ..presetButtonPosNormal(1, 2)
+  ..presetButtonPosTurnOff(1, 2)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("W")
+
+public function AbilityDefinition.makeEAbility()
+  this
+  ..presetButtonPosNormal(2, 2)
+  ..presetButtonPosTurnOff(2, 2)
+  ..presetButtonPosResearch(2, 0)
+  ..presetHotkey("E")
+
+public function AbilityDefinition.makeRAbility()
+  this
+  ..presetButtonPosNormal(3, 2)
+  ..presetButtonPosTurnOff(3, 2)
+  ..presetButtonPosResearch(3, 0)
+  ..presetHotkey("R")
+
+public function AbilityDefinition.makeDAbility()
+  this
+  ..presetButtonPosNormal(1, 1)
+  ..presetButtonPosTurnOff(1, 1)
+  ..presetButtonPosResearch(1, 0)
+  ..presetHotkey("D")

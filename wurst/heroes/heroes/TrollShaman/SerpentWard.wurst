@@ -1,0 +1,104 @@
+package SerpentWard
+import AbilityTooltipGenerator
+import GameConstants
+import ClosureEvents
+import AbilityDefinitionExtension
+import SummonEntity
+import LinkedList
+import UnitIds
+
+public constant SERPENT_WARD_ID = compiletime(ABIL_ID_GEN.next())
+
+constant SUMMON1 = compiletime(UNIT_ID_GEN.next())
+constant SUMMON2 = compiletime(UNIT_ID_GEN.next())
+constant SUMMON3 = compiletime(UNIT_ID_GEN.next())
+constant SUMMON4 = compiletime(UNIT_ID_GEN.next())
+constant SUMMON5 = compiletime(UNIT_ID_GEN.next())
+
+constant SUMMON_LIST = new LinkedList<int>..add(SUMMON1, SUMMON2, SUMMON3, SUMMON4, SUMMON5)
+constant IntLevelClosure SUMMON_TYPE = lvl -> SUMMON_LIST.get(lvl-1)
+
+constant IntLevelClosure BASE_DAMAGE = lvl -> 12 * lvl
+constant RealLevelClosure ATTACK_COOLDOWN = lvl -> 1.7
+constant IntLevelClosure ATTACK_RANGE = lvl -> 400
+constant IntLevelClosure DURATION = lvl -> 20
+
+init
+  EventListener.onPointCast(SERPENT_WARD_ID) (unit caster, vec2 target)  ->
+    let lvl = caster.getAbilityLevel(SERPENT_WARD_ID)
+    let summonTypeId = SUMMON_TYPE.run(lvl)
+      
+    new SerpentWard(caster, summonTypeId, target.toVec3(), angle(GetRandomDirectionDeg()))
+
+
+class SerpentWard extends SummonEntity
+
+  construct(unit summoner, int typId, vec3 pos, angle ang)
+    super(summoner, typId, pos, ang)
+
+    let lvl = summoner.getAbilityLevel(SERPENT_WARD_ID)
+    let duration = DURATION.run(lvl)
+
+    actor
+    ..setTimedLife(duration.toReal())
+    ..addAbility(LOCUST_ID)
+
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Summons a serpent ward to attack hero enemies.")
+  new ChannelAbilityPreset(SERPENT_WARD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..makeEAbility()
+  ..presetIcon(Icons.bTNSerpentWard)
+  
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.POINT)
+  ..setName("Serpent Ward")
+  ..addTooltipProperty("Base Damage", BASE_DAMAGE)
+  ..addTooltipProperty("Attack Cooldown", lvl -> ATTACK_COOLDOWN.run(lvl).toString(1))
+  ..addTooltipProperty("Attack Range", ATTACK_RANGE)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
+  ..presetCastRange(lvl -> 400)
+  ..tooltipStopListen()
+
+  ..presetCooldown(lvl -> 7)
+  
+  
+  new UnitDefinition(SUMMON1, UnitIds.serpentward1)
+  ..setAttack1DamageBase(BASE_DAMAGE.run(1))
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(1)
+  ..setAttack1Range(ATTACK_RANGE.run(1))
+  ..setAttack1CooldownTime(ATTACK_COOLDOWN.run(1))
+
+  new UnitDefinition(SUMMON2, UnitIds.serpentward2)
+  ..setAttack1DamageBase(BASE_DAMAGE.run(2))
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(1)
+  ..setAttack1Range(ATTACK_RANGE.run(2))
+  ..setAttack1CooldownTime(ATTACK_COOLDOWN.run(2))
+
+  new UnitDefinition(SUMMON3, UnitIds.serpentward2)
+  ..setAttack1DamageBase(BASE_DAMAGE.run(3))
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(1)
+  ..setAttack1Range(ATTACK_RANGE.run(3))
+  ..setAttack1AttackType(AttackType.Chaos)
+  ..setAttack1CooldownTime(ATTACK_COOLDOWN.run(3))
+
+  new UnitDefinition(SUMMON4, UnitIds.serpentward3)
+  ..setAttack1DamageBase(BASE_DAMAGE.run(4))
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(1)
+  ..setAttack1Range(ATTACK_RANGE.run(4))
+  ..setAttack1AttackType(AttackType.Chaos)
+  ..setAttack1CooldownTime(ATTACK_COOLDOWN.run(4))
+
+  new UnitDefinition(SUMMON5, UnitIds.serpentward4)
+  ..setAttack1DamageBase(BASE_DAMAGE.run(5))
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(1)
+  ..setAttack1Range(ATTACK_RANGE.run(5))
+  ..setAttack1CooldownTime(ATTACK_COOLDOWN.run(5))
+  // Unit originally has splash
+  ..setAttack1WeaponType(WeaponType.Missile)

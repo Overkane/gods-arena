@@ -5,9 +5,8 @@ import ObjectIdGenerator
 import HealingWave
 import StasisTotem
 import Bloodlust
-import BouncingChakram
+import SerpentWard
 import RestorationRitual
-import ObjectIds
 
 public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
 
@@ -16,7 +15,7 @@ public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
   ..addProperName("Trall")
   ..addHeroAbility(HEALING_WAVE_ID)
   ..addHeroAbility(STASIS_TOTEM_ID)
-  ..addHeroAbility(BOUNCING_CHAKRAM_ID)
+  ..addHeroAbility(SERPENT_WARD_ID)
   ..addHeroAbility(RESTORATION_RITUAL_ID)
   ..addInnateHeroAbility(BLOODLUST_ID)
   ..setStartingStrength(16)
@@ -28,8 +27,4 @@ public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
   ..setAttack1DamageBase(5)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(5)
-  ..setAttack1DamageLossFactor(0.15)
-  ..setAttack1AreaofEffectFullDamage(400)
-  ..setAttack1WeaponType(WeaponType.MissileBounce)
-  ..setUpgradesUsed(BOUNCING_CHAKRAM_UPGRADE_ID.toRawCode())
   ..buildHero()

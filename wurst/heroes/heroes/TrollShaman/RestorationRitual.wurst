@@ -8,6 +8,7 @@ import RestorationRitualBuff
 import TooltipFactory
 import Abilities
 import LinkedList
+import AbilityDefinitionExtension
 
 public constant RESTORATION_RITUAL_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -17,6 +18,7 @@ constant RealLevelClosure DURATION = lvl -> 10.
 constant RealLevelClosure AOE = lvl -> 650
 
 constant castingUnits = new LinkedList<unit>
+
 
 init
   EventListener.onCast(RESTORATION_RITUAL_ID) (unit caster) ->
@@ -40,13 +42,12 @@ init
     if EventData.getSpellAbilityId() == RESTORATION_RITUAL_ID
       castingUnits.remove(EventData.getTriggerUnit())
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero performs a ritual to restore his allies hp and mp.")
+  let tooltip = new AbilityTooltipGenerator("Performs a ritual to restore his allies hp and mp.")
   new ChannelAbilityPreset(RESTORATION_RITUAL_ID, ULTIMATE_SPELL_LEVELS, false, tooltip)
+  ..makeRAbility()
   ..presetIcon(Icons.bTNBigBadVoodooSpell)
-  ..presetButtonPosNormal(3, 2)
-  ..presetButtonPosResearch(3, 0)
-  ..presetHotkey("R")
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
   ..setArtCaster(Abilities.voodooAura)

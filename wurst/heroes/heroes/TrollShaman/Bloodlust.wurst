@@ -2,6 +2,7 @@ package Bloodlust
 import AbilityTooltipGenerator
 import GameConstants
 import TooltipFactory
+import AbilityDefinitionExtension
 
 public constant BLOODLUST_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -12,6 +13,7 @@ constant RealLevelClosure DURATION = lvl -> 15.
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Increases a friendly unit's attack rate and movement speed.")
   new AbilityDefinitionBloodlustCreep(BLOODLUST_ID)
+  ..makeDAbility()
   ..registerTooltipGenerator(tooltip)
   ..setRequiredLevel(1)
   ..presetIcon(Icons.bTNBloodLust)
