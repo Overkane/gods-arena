@@ -7,13 +7,15 @@ import ClosureEvents
 import GameConstants
 import DummyStatCaster
 import DamageSystem
+import AbilityDefinitionExtension
 
 public constant STORM_HAMMER_ID = compiletime(ABIL_ID_GEN.next())
 public constant STORM_HAMMER_CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure CHAIN_LIGHTNING_DAMAGE = lvl -> 30. + 30. * (lvl-1)
-IntLevelClosure CHAIN_LIGHTNING_NUMBER_OF_TARGETS = lvl -> 3 + lvl
+RealLevelClosure CHAIN_LIGHTNING_DAMAGE = lvl -> 30. + 25. * (lvl-1)
+IntLevelClosure CHAIN_LIGHTNING_NUMBER_OF_TARGETS = lvl -> 3 + (lvl / 2).floor()
 RealLevelClosure CHARGE_DURATION = lvl -> 4.5 + 0.5 * lvl
+
 
 init 
   EventListener.onCast(STORM_HAMMER_ID) (unit caster) ->
@@ -34,14 +36,12 @@ init
       ..caster(sunit)
       ..castTarget(STORM_HAMMER_CHAIN_LIGHTNING_ID, lvl, OrderIds.chainlightning, tunit)
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero charges his hammer for a short duration. While hammer charged, each hero attack calls chain lightning.")
+  let tooltip = new AbilityTooltipGenerator("Charges hammer for a short duration. While hammer is charged, each normal attack calls chain lightning.")
   new ChannelAbilityPreset(STORM_HAMMER_ID, NORMAL_SPELL_LEVELS, true, tooltip)
-  ..setLevelSkipRequirement(0)
+  ..makeQAbility()
   ..presetIcon(Icons.bTNStormHammer)
-  ..presetButtonPosNormal(0, 2)
-  ..presetButtonPosResearch(0, 0)
-  ..presetHotkey("Q")
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)

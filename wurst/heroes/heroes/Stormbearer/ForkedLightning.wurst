@@ -2,20 +2,20 @@ package ForkedLightning
 import AbilityTooltipGenerator
 import GameConstants
 import DamageSystem
+import AbilityDefinitionExtension
 
 public constant FORKED_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE_PER_TARGET = lvl -> 125. + 125. * (lvl-1)
+RealLevelClosure DAMAGE_PER_TARGET = lvl -> 115. + 115. * (lvl-1)
 IntLevelClosure NUMBER_OF_TARGETS = lvl -> 3 + 2 * lvl
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Calls forth a cone of lightning.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Calls forth a cone of lightning.")
   new AbilityDefinitionSeaWitchForkedLightning(FORKED_LIGHTNING_ID)
+  ..makeWAbility()
   ..registerTooltipGenerator(tooltip)
   ..setRequiredLevel(1)
-  ..presetButtonPosNormal(1, 2)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("W")
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)

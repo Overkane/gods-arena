@@ -2,6 +2,7 @@ package Tempest
 import AbilityTooltipGenerator
 import GameConstants
 import DamageSystem
+import AbilityDefinitionExtension
 
 public constant TEMPEST_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -10,14 +11,13 @@ RealLevelClosure DAMAGE_INTERVAL = lvl -> 1
 RealLevelClosure AOE = lvl -> 350. + 75. * (lvl-1)
 RealLevelClosure DURATION = lvl -> 10.
 
+
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Calls down a storm of lightning to strike enemy units.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Calls down a storm of lightning to strike enemy units.")
   new AbilityDefinitionMonsoon(TEMPEST_ID)
   ..registerTooltipGenerator(tooltip)
+  ..makeRAbility()
   ..presetIcon(Icons.bTNPurge)
-  ..presetButtonPosNormal(3, 2)
-  ..presetButtonPosResearch(3, 0)
-  ..presetHotkey("R")
   ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
   ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   
@@ -30,7 +30,7 @@ RealLevelClosure DURATION = lvl -> 10.
   ..presetDamageInterval(DAMAGE_INTERVAL)
   ..presetAreaofEffect(AOE)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 150 + 25 * lvl)
+  ..presetManaCost(lvl -> 125 + 50 * lvl)
   ..presetCooldown(lvl -> 75)
   ..tooltipStopListen()
   

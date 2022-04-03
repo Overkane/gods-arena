@@ -8,13 +8,9 @@ constant buffTuple = compiletime(createDummyBuffObject("The Storm Hammer".color(
 
 public class StormHammerBuff extends NormalBuff
   constant ON_APPLY_SOUND = new SoundDefinition(Sounds.lightningShieldTarget1)
-  // constant ON_END_SOUND = new SoundDefinition(Sounds.paladinDivineShieldDeath1)
 
   construct(real dur)
     super(dur, buffTuple)
     
   override function onApply()
     ON_APPLY_SOUND.play()
-
-  override function onEnd()
-    // ON_END_SOUND.play()

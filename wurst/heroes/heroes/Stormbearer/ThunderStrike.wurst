@@ -2,6 +2,8 @@ package ThunderStrike
 import AbilityTooltipGenerator
 import GameConstants
 import DamageSystem
+import AbilityDefinitionExtension
+import TooltipFactory
 
 public constant THUNDER_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -9,23 +11,23 @@ RealLevelClosure CHANCE_TO_BASH = lvl -> 20. + 2 * lvl
 RealLevelClosure DAMAGE_BONUS = lvl -> 25. + 25. * (lvl-1)
 RealLevelClosure STUN_DURATION = lvl -> 0.3
 
+
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives a chance that an attack will do bonus damage and stun the target.")
   new AbilityDefinitionMountainKingBash(THUNDER_STRIKE_ID)
   ..registerTooltipGenerator(tooltip)
-  ..presetButtonPosNormal(2, 2)
-  ..presetButtonPosResearch(2, 0)
-  ..presetHotkey("E")
+  ..makeEAbility()
   
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Thunder Strike")
-  ..presetChancetoBash(CHANCE_TO_BASH)
+  ..addTooltipProperty("Chance to Bash", lvl -> CHANCE_TO_BASH.run(lvl).percRound())
   ..presetDamageBonus(DAMAGE_BONUS)
   ..addTooltipProperty("Stun Duration", STUN_DURATION)
   ..tooltipStopListen()
   
-  ..presetDurationHero(STUN_DURATION)
+  ..presetChancetoBash(CHANCE_TO_BASH)
   ..presetDurationNormal(STUN_DURATION)
+  ..presetDurationHero(lvl -> getHeroStunDuration(STUN_DURATION.run(lvl)))
   ..presetBuffs(lvl -> "ANmd")
