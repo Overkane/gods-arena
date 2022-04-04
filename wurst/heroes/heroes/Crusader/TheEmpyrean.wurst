@@ -4,6 +4,7 @@ import public TheEmpyreanBuff
 import Entity
 import GameConstants
 import TooltipFactory
+import AbilityDefinitionExtension
 
 public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -13,7 +14,7 @@ constant RealLevelClosure DURATION = lvl -> 30.
 
 public constant RealLevelClosure SACRED_GROUNDS_AOE_MULTIPLIER = lvl -> 1.5
 public constant RealLevelClosure DIVINE_SHIELD_MULTIPLIER = lvl -> 2.
-public constant RealLevelClosure HOLY_SMITE_PROC_CHANCE = lvl -> 80. + 10. * (lvl-1)
+public constant RealLevelClosure HOLY_SMITE_PROC_CHANCE = lvl -> 70. + 10. * (lvl-1)
 
 init 
   EventListener.onCast(THE_EMPYREAN_ID) (unit caster) ->
@@ -25,17 +26,13 @@ init
     new TheEmpyreanBuff(spellDuration, bonusDamage, attackSpeedSlow, lvl).apply(caster)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero enhance himself and all his abilities, but his attack speed becomes slower.")
+  let tooltip = new AbilityTooltipGenerator("Enhances all abilities and gives attack damage bonus, but reduces attack speed.")
   new ChannelAbilityPreset(THE_EMPYREAN_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
-  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
-  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  ..makeRAbility()
   ..presetIcon(Icons.bTNCharm)
-  ..presetButtonPosNormal(3, 2)
-  ..presetButtonPosResearch(3, 0)
 
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.NONE)
-  ..presetHotkey("R")
   ..setName("The Empyrean")
   ..addTooltipProperty("Additional Damage", DAMAGE)
   ..addTooltipProperty("Attack Speed Slow", ATTACK_SPEED_SLOW)
@@ -43,6 +40,6 @@ init
   ..addTooltipProperty("Divine Shield Damage Reduction Multiplayer", DIVINE_SHIELD_MULTIPLIER)
   ..addTooltipProperty("Holy Smite Proc Chance", lvl -> HOLY_SMITE_PROC_CHANCE.run(lvl).percRound())
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 125 + 25 * lvl)
-  ..presetCooldown(lvl -> 90)
+  ..presetManaCost(lvl -> 100 + 50 * lvl)
+  ..presetCooldown(lvl -> 75)
   ..tooltipStopListen()

@@ -8,13 +8,14 @@ import PlayerData
 import PrayBuff
 import HashMap
 import GameConstants
+import AbilityDefinitionExtension
 
 public constant PRAY_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure BONUS_DAMAGE = lvl -> 5. * lvl
-constant RealLevelClosure BONUS_AS = lvl -> 5. * lvl
-constant RealLevelClosure BONUS_ARMOR = lvl -> 2. * lvl
-constant RealLevelClosure BONUS_HP_REG = lvl -> 0.5 * lvl
+constant RealLevelClosure BONUS_DAMAGE = lvl -> 4. * lvl
+constant RealLevelClosure BONUS_AS = lvl -> 3. * lvl
+constant RealLevelClosure BONUS_ARMOR = lvl -> 1. * lvl
+constant RealLevelClosure BONUS_HP_REG = lvl -> 1. * lvl
 constant RealLevelClosure BONUS_STATS = lvl -> 1. * lvl
 public constant PRAY_AOE = 600.
 
@@ -84,16 +85,14 @@ function updateBuff(PrayBuffTypes prayBuffType)
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Hero prays to the forgotten Gods and gain a portion of their power, strengthen himself and his allies. Each pray makes the buff stronger.")
   new ChannelAbilityPreset(PRAY_ID, INNATE_SPELL_LEVELS, true, tooltip)
+  ..makeDAbility()
   ..presetIcon(Icons.bTNResurrection)
-  ..presetButtonPosNormal(1, 1)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("D")
 
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.NONE)
   ..setName("Pray")
   ..presetAreaofEffect(lvl -> PRAY_AOE)
-  ..presetCooldown(lvl -> 90.)
+  ..presetCooldown(lvl -> 80.)
   ..tooltipStopListen()
 
   ..presetManaCost(lvl -> 0)

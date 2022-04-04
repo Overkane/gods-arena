@@ -10,6 +10,7 @@ import DummyStatCaster
 import Orders
 import DamageSystem
 import TooltipFactory
+import AbilityDefinitionExtension
 
 public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
 public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
@@ -57,10 +58,8 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
   new PassiveAbilityPreset(HOLY_SMITE_ID, NORMAL_SPELL_LEVELS, tooltip)
+  ..makeEAbility()
   ..presetIcon(Icons.pASBTNFeedBack)
-  ..presetButtonPosNormal(2, 2)
-  ..presetButtonPosResearch(2, 0)
-  ..presetHotkey("E")
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
@@ -73,5 +72,5 @@ init
   ..tooltipStopListen()
 
   new StunAbilityPreset(HOLY_SMITE_STUN_ID, NORMAL_SPELL_LEVELS)
-  ..presetDurationHero(STUN_DURATION)
   ..presetDurationNormal(STUN_DURATION)
+  ..presetDurationHero(lvl -> getHeroStunDuration(STUN_DURATION.run(lvl)))

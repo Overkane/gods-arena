@@ -6,10 +6,10 @@ import DivineShieldBuff
 import TooltipFactory
 import DamageSystem
 import TheEmpyrean
+import AbilityDefinitionExtension
 
 public constant DIVINE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure HP_HEAL = lvl -> 20. * lvl
 constant RealLevelClosure DAMAGE_REDUCTION = lvl -> 0.05 + 0.05 * lvl
 constant RealLevelClosure DURATION = lvl -> 5. + (lvl / 2).floor()
 
@@ -40,10 +40,8 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Applies shield to target, which reduces a part of incoming damage.")
   new ChannelAbilityPreset(DIVINE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..makeWAbility()
   ..presetIcon(Icons.bTNDivineIntervention)
-  ..presetButtonPosNormal(1, 2)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("W")
   ..presetDurationHero(DURATION)
   ..presetDurationNormal(DURATION)
   ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self, TargetsAllowed.friend))
@@ -54,7 +52,7 @@ init
   ..addTooltipProperty("Damage Reduction", lvl -> (DAMAGE_REDUCTION.run(lvl) * 100).percRound())
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 35 + 15 * lvl)
-  ..presetCooldown(lvl -> 23. - lvl)
+  ..presetManaCost(lvl -> 45 + 25 * lvl)
+  ..presetCooldown(lvl -> 22. - 2 * lvl)
   ..tooltipStopListen()
   

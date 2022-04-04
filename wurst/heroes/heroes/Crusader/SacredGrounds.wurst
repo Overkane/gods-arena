@@ -10,18 +10,18 @@ import MapModels
 import ClosureTimers
 import SoundUtils
 import TheEmpyrean
+import AbilityDefinitionExtension
 
 public constant SACRED_GROUNDS_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure DAMAGE_PER_SEC = lvl -> 15. * lvl
-constant RealLevelClosure BONUS_STR_DAMAGE = lvl -> 0.5 * lvl
+constant RealLevelClosure BONUS_STR_DAMAGE = lvl -> 0.4 * lvl
 constant RealLevelClosure HEAL_PER_SEC = lvl -> 10. * lvl
-constant RealLevelClosure BONUS_INT_HEALING = lvl -> 0.5 * lvl
+constant RealLevelClosure BONUS_INT_HEALING = lvl -> 0.25 * lvl
 constant RealLevelClosure DURATION = lvl -> 6. // Corresponds to loop sound duration, so shouldn't be changed. 
 constant RealLevelClosure AOE = lvl -> 300.
 
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.resurrectTarget)
-constant LOOP_SOUND = new SoundDefinition("Doodads\\Dungeon\\Props\\Forcewall\\MagicWallLoop1.flac")
 
 init 
   EventListener.onPointCast(SACRED_GROUNDS_ID) (unit caster, vec2 target) ->
@@ -42,7 +42,6 @@ init
     let sacredGrounds = addEffect(MapModels.heavensGateChannel, target)..setScale(effectScale)
     
     ON_APPLY_SOUND.play()
-    LOOP_SOUND.play()
 
     doPeriodicallyCounted(1., (duration).toInt()) (CallbackCounted cb) ->
       forUnitsInRange(target, aoe) (unit u) ->
@@ -58,16 +57,13 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Creates sacred grounds in the target area. Enemies in the area are damaged every second and allies are healed.")
   new ChannelAbilityPreset(SACRED_GROUNDS_ID, NORMAL_SPELL_LEVELS, true, tooltip)
-  ..setLevelSkipRequirement(0)
+  ..makeQAbility()
   ..presetIcon(Icons.bTNInnerFire)
-  ..presetButtonPosNormal(0, 2)
-  ..presetButtonPosResearch(0, 0)
   ..presetOption(Option.TARGETIMAGE, true)
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..presetTargetTypes(Targettype.POINT)
-  ..presetHotkey("Q")
   ..setName("Sacred Grounds")
   ..addTooltipProperty("Damage per sec", DAMAGE_PER_SEC)
   ..addTooltipProperty("Bonus Str Damage", lvl -> (BONUS_STR_DAMAGE.run(lvl) * 100).percRound())
@@ -77,5 +73,5 @@ init
   ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
-  ..presetCooldown(lvl -> 24)
+  ..presetCooldown(lvl -> 24. - lvl)
   ..tooltipStopListen()
