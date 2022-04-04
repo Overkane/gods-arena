@@ -10,9 +10,10 @@ import CustomHeal
 import DamageEvent
 import CreepAggro
 import ClosureForGroups
+import AbilityDefinitionExtension
 
 constant AOE = 500.
-constant RealLevelClosure DAMAGE_DECREASE = lvl -> 0.25 + 0.1 * (lvl-1)
+constant RealLevelClosure DAMAGE_DECREASE = lvl -> 0.2 + 0.1 * (lvl-1)
 constant RealLevelClosure DURATION = lvl -> 10
 constant IntLevelClosure STR_BONUS = lvl -> (0.5 * (lvl - 1)).floor() + 1 // 1, 1, 2, 2, 3
 constant RealLevelClosure HP_RECOVERY = lvl -> 100.0 + 50 * (lvl-1)
@@ -42,17 +43,15 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
     Targettype.NONE,
-    "The Demon Lord lets loose a terrifying howl that causes nearby enemy units to shiver in fear. "
+    "Lets loose a terrifying howl that causes nearby enemy units to shiver in fear. "
     + "Feared units have reduced attack damage. "
     + "If the Demon Lord kills a feared unit, it permanently gains strength and recovers HP.\n"
     + "Also |cffb93939taunts|r enemies in AOE."
   )
   new AbilityDefinitionPitLordHowlofTerror(HOWL_OF_TERROR_ID)
   ..registerTooltipGenerator(tooltip)
+  ..makeWAbility()
   ..presetIcon(Icons.bTNHowlOfTerror)
-  ..presetButtonPosNormal(1, 2)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("W")
 
   ..tooltipStartListen()
   ..setLevels(NORMAL_SPELL_LEVELS)
@@ -62,7 +61,7 @@ init
   ..addTooltipProperty("HP Recovered", HP_RECOVERY)
   ..presetAreaofEffect(lvl -> AOE)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 60)
+  ..presetManaCost(lvl -> 65 + 20 * (lvl-1))
   ..presetCooldown(lvl -> 20)
   ..tooltipStopListen()
 

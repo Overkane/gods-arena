@@ -4,6 +4,7 @@ import GameConstants
 import ClosureEvents
 import DemonLordIds
 import PassiveAbilityPreset
+import AbilityDefinitionExtension
 
 constant IntLevelClosure STR_BONUS = lvl -> 8 * lvl
 
@@ -17,11 +18,8 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Passively increases base strength.")
   new PassiveAbilityPreset(DEMONIC_POWER_ID, NORMAL_SPELL_LEVELS, tooltip)
-  ..registerTooltipGenerator(tooltip)
+  ..makeEAbility()
   ..presetIcon(Icons.pASBTNCleavingAttack)
-  ..presetButtonPosNormal(2, 2)
-  ..presetButtonPosResearch(2, 0)
-  ..presetHotkey("E")
 
   ..tooltipStartListen()
   ..setName("Demonic Power")

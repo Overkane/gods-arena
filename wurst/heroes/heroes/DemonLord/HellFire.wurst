@@ -6,6 +6,7 @@ import HellFireBuff
 import TooltipFactory
 import ClosureEvents
 import DamageSystem
+import AbilityDefinitionExtension
 
 init
   EventListener.onCast(HELL_FIRE_ID) (unit caster) ->
@@ -46,39 +47,29 @@ init
       ..hideAbility(HELL_FIRE_ID, false)
 
 @compiletime function genAbility()
-  var tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation hero burns enemies nearby based on his max HP.\nCan be deactivated.\nThe ability damage is fatal for the caster.")
+  var tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation burns enemies nearby based on max HP.\nCan be deactivated.\nThe ability damage is fatal for the caster.")
   new ChannelAbilityPreset(HELL_FIRE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
-  ..registerTooltipGenerator(tooltip)
+  ..makeRAbility()
   ..presetIcon(Icons.bTNImmolationOn)
-  ..presetButtonPosNormal(3, 2)
-  ..presetButtonPosResearch(3, 0)
-  ..presetHotkey("R")
-  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
-  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setName("Hell Fire")
-  ..addTooltipProperty("HP % Drain", lvl -> HELL_FIRE_HP_DRAIN.run(lvl).percRound())
+  ..addTooltipProperty("HP % Drain", lvl -> HELL_FIRE_HP_DRAIN.run(lvl).percRound(1))
   ..addTooltipProperty("Damage per HP Drained", lvl -> HELL_FIRE_DAMAGE_PER_DRAINED_HP.run(lvl))
   ..presetAreaofEffect(lvl -> HELL_FIRE_AOE)
   ..presetManaCost(lvl -> 90)
   ..tooltipStopListen()
 
-  tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation hero burns enemies nearby based on his max HP.\nCan be deactivated.\nThe ability damage is fatal for the caster.")
+  tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation burns enemies nearby based on max HP.\nCan be deactivated.\nThe ability damage is fatal for the caster.")
   new ChannelAbilityPreset(HELL_FIRE_TURN_OFF_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
-  ..registerTooltipGenerator(tooltip)
+  ..makeRAbility()
   ..presetIcon(Icons.bTNImmolationOff)
-  ..presetButtonPosNormal(3, 2)
-  ..presetButtonPosResearch(3, 0)
-  ..presetHotkey("R")
-  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
-  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setName("Hell Fire")
-  ..addTooltipProperty("HP % Drain", lvl -> HELL_FIRE_HP_DRAIN.run(lvl).percRound())
+  ..addTooltipProperty("HP % Drain", lvl -> HELL_FIRE_HP_DRAIN.run(lvl).percRound(1))
   ..addTooltipProperty("Damage per HP Drained", lvl -> HELL_FIRE_DAMAGE_PER_DRAINED_HP.run(lvl))
   ..presetAreaofEffect(lvl -> HELL_FIRE_AOE)
   ..tooltipStopListen()

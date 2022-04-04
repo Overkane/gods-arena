@@ -9,12 +9,12 @@ import GameConstants
 import Reference
 import DamageSystem
 import BonusHandler
+import AbilityDefinitionExtension
 
-RealLevelClosure DURATION = lvl -> 3
-RealLevelClosure DAMAGE = lvl -> 25 + 125. * lvl
-RealLevelClosure COOLDOWN = lvl -> 14.
+RealLevelClosure DAMAGE = lvl -> 110. + 95 * (lvl-1)
 IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 3 * lvl
 RealLevelClosure BONUS_DURATION = lvl -> 5. + lvl
+RealLevelClosure COOLDOWN = lvl -> 14.
 
 constant RADIUS = 250.
 
@@ -48,10 +48,8 @@ init
     + "The Demon Lord temporarily gains strength based on the number of struck foes.")
   new AbilityDefinitionBerserk(FIRE_STORM_ID)
   ..registerTooltipGenerator(tooltip)
+  ..makeQAbility()
   ..setRequiredLevel(1)
-  ..presetButtonPosNormal(0, 2)
-  ..presetButtonPosResearch(0, 0)
-  ..presetHotkey("Q")
   ..presetDamageTakenIncrease(lvl -> 0.)
   ..presetMovementSpeedIncrease(lvl -> 0.)
   ..presetAttackSpeedIncrease(lvl -> 0)
@@ -68,10 +66,10 @@ init
   ..addTooltipProperty("Bonus strength duration", BONUS_DURATION)
   ..presetAreaofEffect(lvl -> 250)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 65)
+  ..presetManaCost(lvl -> 90 + 25 * (lvl-1))
   ..presetCooldown(COOLDOWN)
   ..tooltipStopListen()
 
-  ..presetDurationNormal(DURATION)
-  ..presetDurationHero(DURATION)
+  ..presetDurationNormal(lvl -> 1)
+  ..presetDurationHero(lvl -> 1)
 

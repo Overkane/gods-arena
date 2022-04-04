@@ -6,6 +6,7 @@ import ObliteratorBuff
 import PassiveAbilityPreset
 import GameConstants
 import TooltipFactory
+import AbilityDefinitionExtension
 
 constant RealLevelClosure BONUS_ATTACK_SPEED = lvl -> 50. + 25 * (lvl-1)
 constant RealLevelClosure CREEP_AGGRO = lvl -> 600.
@@ -34,18 +35,17 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
     Targettype.PASSIVE,
-    "Passively grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units, when the Demon "
-    + "Lord has low HP."
+    "Passively grants bonus attack speed, nearby creep aggro, and bonus damage against low HP units, on low hp."
   )
   new PassiveAbilityPreset(OBLITERATOR_ID, INNATE_SPELL_LEVELS, tooltip)
-  ..presetButtonPosNormal(1, 1)
-  ..presetButtonPosResearch(1, 0)
+  ..makeDAbility()
   ..setIconNormal(Icons.pASBTNFireRocks)
+  
   ..tooltipStartListen()
   ..addTooltipProperty("Bonus Attack Speed", BONUS_ATTACK_SPEED)
   ..addTooltipProperty("Creep Aggro", CREEP_AGGRO)
   ..addTooltipProperty("Creep Aggro Range", CREEP_AGGRO_RANGE)
-  ..addTooltipProperty("Health Threshold", BONUS_HEALTH_THRESHOLD)
+  ..addTooltipProperty("Health Threshold", lvl -> (BONUS_HEALTH_THRESHOLD.run(lvl) * 100).percRound())
   ..addTooltipProperty("Bonus Damage HP Threshold", lvl -> (SLAY_RATIO.run(lvl) * 100).percRound())
   ..addTooltipProperty("Bonus Damage Multiplier", SLAY_BONUS_DAMAGE_MULTIPLIER)
   ..setName("Obliterator")
