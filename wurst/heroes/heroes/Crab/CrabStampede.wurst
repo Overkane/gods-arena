@@ -3,21 +3,18 @@ import AbilityTooltipGenerator
 import GameConstants
 import Units
 import DamageSystem
+import AbilityDefinitionExtension
 
 public constant CRAB_STAMPEDE_ID = compiletime(ABIL_ID_GEN.next())
 
 RealLevelClosure DURATION = lvl -> 5. + lvl * 3
 
-@compiletime function genAbil()
-    let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Nearby crawfish heath the call of the Crab and crush everything in their path. Channeled.")
+@compiletime function gen()
+    let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Nearby crawfish heath the call of the Crab and crush everything in their path.")
     new AbilityDefinitionBeastMasterStampede(CRAB_STAMPEDE_ID)
-    ..presetIcon(Icons.bTNSpiderCrab)
     ..registerTooltipGenerator(tooltip)
-    ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
-    ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
-    ..presetButtonPosNormal(3, 2)
-    ..presetButtonPosResearch(3, 0)
-    ..presetHotkey("R")
+    ..makeRAbility()
+    ..presetIcon(Icons.bTNSpiderCrab)
 
     ..setEffectSound("")
     ..setEffectSoundLooping("SiphonManaLoop")
@@ -28,12 +25,13 @@ RealLevelClosure DURATION = lvl -> 5. + lvl * 3
     ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
     ..setLevels(ULTIMATE_SPELL_LEVELS)
     ..setName("Crab Stampede")
+    ..addTooltipProperty("Channeling", lvl -> "")
     ..presetDamageAmount(lvl -> 40. + 45. * lvl)
     ..presetBeastsPerSecond(lvl -> 2 + 2 * lvl)
     ..addTooltipProperty("Duration", DURATION)
+    ..presetCastRange(lvl -> 1000.)
     ..presetManaCost(lvl -> 90 + 40 * lvl)
     ..presetCooldown(lvl -> 85)
-    ..presetCastRange(lvl -> 1000.)
     ..tooltipStopListen()
   
     ..presetDurationNormal(DURATION)

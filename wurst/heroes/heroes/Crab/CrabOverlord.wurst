@@ -1,0 +1,36 @@
+package CrabOverlord
+import AbilityTooltipGenerator
+import ClosureEvents
+import GameConstants
+import AbilityDefinitionExtension
+import Crabling
+
+public constant CRAB_OVERLORD_ID = compiletime(ABIL_ID_GEN.next())
+
+public constant IntLevelClosure BONUS_STR_PER_CRABLING = lvl -> (lvl / 2).ceil()
+constant IntLevelClosure CRABLING_AMOUNT = lvl -> 1 + 2 * lvl
+
+
+init 
+  EventListener.onCast(CRAB_OVERLORD_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(CRAB_OVERLORD_ID)
+    let crablingAmount = CRABLING_AMOUNT.run(lvl)
+    
+    for i = 1 to crablingAmount 
+      new Crabling(caster, caster.getPos().toVec3(), caster.getPos().angleTo(caster.getPos()))
+
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Spawns |cffce951acrablings|r. Passively provides temporary strength per alive |cffce951acrabling|r.")
+  new ChannelAbilityPreset(CRAB_OVERLORD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..makeEAbility()
+  ..presetIcon(Icons.bTNLobstrokkRed)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..setName("Crab Overlord")
+  ..addTooltipProperty("Str per Crabling", BONUS_STR_PER_CRABLING)
+  ..addTooltipProperty("Crabling Amount", CRABLING_AMOUNT)
+  ..presetManaCost(lvl -> 25  + 35 * lvl)
+  ..presetCooldown(lvl -> 16.)
+  ..tooltipStopListen()

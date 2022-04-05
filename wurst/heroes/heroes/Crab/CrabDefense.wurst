@@ -2,18 +2,17 @@ package CrabDefense
 import AbilityTooltipGenerator
 import GameConstants
 import PassiveAbilityPreset
-import UnitIds
-import DamageEvent
 import Orders
-import BonusHandler
 import TooltipFactory
-import CustomStatSystem
+import AbilityDefinitionExtension
+import Crabling
+import ProtectiveShellBuff
+import Buff
 
 public constant CRAB_DEFENSE_ID = compiletime(ABIL_ID_GEN.next())
-public constant CRABLING_ID = compiletime(UNIT_ID_GEN.next())
 
-constant RealLevelClosure SPAWN_CHANCE = lvl -> 0.2 + 0.05 * lvl
-constant RealLevelClosure STRENGTH_DAMAGE = lvl -> 0.2 * lvl
+constant RealLevelClosure SPAWN_CHANCE = lvl -> 0.1 + 0.05 * lvl
+public constant RealLevelClosure STRENGTH_DAMAGE = lvl -> 0.05  + 0.15 * lvl
 
 init
   DamageEvent.addListener() -> 
@@ -22,42 +21,27 @@ init
 
     if target.hasAbility(CRAB_DEFENSE_ID) and source.isEnemyOf(target)
       let lvl = target.getAbilityLevel(CRAB_DEFENSE_ID)
-      let chance = SPAWN_CHANCE.run(lvl)
+      var chance = SPAWN_CHANCE.run(lvl)
       let rand = GetRandomReal(0, 1)
 
+      if target.hasBuff(ProtectiveShellBuff.typeId)
+        let protectiveShellBuff = target.getBuff(ProtectiveShellBuff.typeId) castTo ProtectiveShellBuff
+        chance += protectiveShellBuff.bonusCrablingSpawnChance
+
       if rand < chance
-        let strMultiplier = STRENGTH_DAMAGE.run(lvl)
-
-        createUnit(target.getOwner(), CRABLING_ID, target.getPos(), target.getPos().angleTo(target.getPos()))
-        ..setAnimation("birth")
+        new Crabling(target, target.getPos().toVec3(), target.getPos().angleTo(target.getPos()))
+        .actor
         ..issueTargetOrderById(OrderIds.attack, source)
-        ..setTimedLife(7.5)
-        ..addBonus(Bonus.DAMAGE, target.getStr(true) * strMultiplier * (1 + target.getStat(CustomUnitStats.SPELL_POWER)))
-        ..addAbility(LOCUST_ID)
-        ..setXY(target.getPos())
 
-@compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Has a chance to spawn a defensive |cffce951acrabling|r when attacked")
+@compiletime function gen()
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Has a chance to spawn a defensive |cffce951acrabling|r when attacked.")
   new PassiveAbilityPreset(CRAB_DEFENSE_ID, INNATE_SPELL_LEVELS, tooltip)
+  ..makeDAbility()
   ..presetIcon(Icons.pASBTNBerserk)
   ..registerTooltipGenerator(tooltip)
-  ..presetButtonPosNormal(1, 1)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("D")
 
   ..tooltipStartListen()
   ..setName("Crab Defense")
   ..addTooltipProperty("Chance to spawn", lvl -> (SPAWN_CHANCE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Crab Str Damage Multiplier", lvl -> (STRENGTH_DAMAGE.run(lvl) * 100).percRound())
   ..tooltipStopListen()
-
-  new UnitDefinition(CRABLING_ID, UnitIds.spidercrab)
-  ..setScalingValue(0.45)
-  ..setHitPointsMaximumBase(35)
-  ..setAttack1Range(25)
-  ..setAttack1CooldownTime(1)
-  ..setAttack1DamageBase(2)
-  ..setDeathTimeseconds(0.5)
-  ..setCollisionSize(0.)
-  ..setSpeedBase(400)
-

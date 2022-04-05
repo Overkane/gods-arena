@@ -1,0 +1,46 @@
+package ProtectiveShell
+import ClosureEvents
+import AbilityTooltipGenerator
+import GameConstants
+import AbilityDefinitionExtension
+import ProtectiveShellBuff
+import TooltipFactory
+
+public constant PROTECTIVE_SHELL_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure SPELL_REGEN = lvl -> 3. + 6. * lvl
+constant RealLevelClosure SPELL_ARMOR = lvl -> 7. + 3. * lvl
+constant RealLevelClosure BONUS_CHANCE_TO_SPAWN_CRABLING = lvl -> 0.05 * lvl
+constant RealLevelClosure AGGRO = lvl -> 300. + lvl * 200
+constant SPELL_AOE = 320.
+constant SPELL_DURATION = 6.
+constant FLASH_EFFECT_DELAY = 0.9
+
+init
+    EventListener.onCast(PROTECTIVE_SHELL_ID) caster ->
+        let lvl = caster.getAbilityLevel(PROTECTIVE_SHELL_ID)
+        let hpReg = SPELL_REGEN.run(lvl)
+        let armor = SPELL_ARMOR.run(lvl)
+        let aggro = AGGRO.run(lvl)
+        let bonusCrablingSpawnChance = BONUS_CHANCE_TO_SPAWN_CRABLING.run(lvl)
+
+        new ProtectiveShellBuff(SPELL_DURATION, hpReg, armor, aggro, bonusCrablingSpawnChance, SPELL_AOE).apply(caster)
+
+@compiletime
+function gen()
+    new ChannelAbilityPreset(PROTECTIVE_SHELL_ID, NORMAL_SPELL_LEVELS, true, 
+      new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. " 
+        + "Increases defense, life regen and chance to spawn |cffce951acrabling|r, but |cffb93939taunts|r nearby enemies."))
+    ..makeQAbility()
+    ..presetIcon(Icons.bTNShimmerWeed)
+
+    ..tooltipStartListen()
+    ..presetTargetTypes(Targettype.NONE)
+    ..setName("Protective Shell")
+    ..addTooltipProperty("Life Regen", SPELL_REGEN)
+    ..addTooltipProperty("Armor", SPELL_ARMOR)
+    ..addTooltipProperty("Bonus Chance to Spawn", lvl -> (BONUS_CHANCE_TO_SPAWN_CRABLING.run(lvl) * 100).percRound())
+    ..addTooltipProperty("Duration", lvl -> SPELL_DURATION.round())
+    ..presetAreaofEffect(lvl -> SPELL_AOE)
+    ..presetManaCost(lvl -> 50 + lvl * 15)
+    ..presetCooldown(lvl -> 16. - lvl)
+    ..tooltipStopListen()

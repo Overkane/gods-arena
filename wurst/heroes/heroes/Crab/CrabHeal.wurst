@@ -4,13 +4,14 @@ import Assets
 import ClosureForGroups
 import AbilityTooltipGenerator
 import GameConstants
-import CrabDefense
+import Crabling
 import Reference
 import CustomHeal
+import AbilityDefinitionExtension
 
 public constant CRAB_HEAL_ID = compiletime(ABIL_ID_GEN.next())
 
-constant IntLevelClosure SPELL_REGEN = lvl -> 15 + 15 * lvl
+constant IntLevelClosure SPELL_REGEN = lvl -> 20 + 20 * lvl
 
 init
     EventListener.onCast(CRAB_HEAL_ID) caster ->
@@ -29,19 +30,16 @@ init
 
 
 @compiletime
-function genAbility()
+function gen()
     new ChannelAbilityPreset(CRAB_HEAL_ID, NORMAL_SPELL_LEVELS, true, 
-        new AbilityTooltipGenerator("The crab consumes all of its alive |cffce951acrablings|r to gain health."))
-    ..presetButtonPosNormal(1, 2)
-    ..presetButtonPosResearch(1, 0)
+        new AbilityTooltipGenerator("Consumes all alive |cffce951acrablings|r to gain health."))
+    ..makeWAbility()
     ..presetIcon(Icons.bTNCoralBed)
 
     ..tooltipStartListen()
     ..presetTargetTypes(Targettype.NONE)
     ..setName("Crab Heal")
-    ..presetHotkey("W")
     ..addTooltipProperty("HP per crab", SPELL_REGEN)
-    ..presetManaCost(lvl -> 20 + lvl * 10)
-    ..presetCooldown(lvl -> 15. - lvl)
-
+    ..presetManaCost(lvl -> 30 + lvl * 20)
+    ..presetCooldown(lvl -> 14. - lvl)
     ..tooltipStopListen()

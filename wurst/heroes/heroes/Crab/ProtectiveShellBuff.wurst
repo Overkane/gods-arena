@@ -1,0 +1,48 @@
+package ProtectiveShellBuff
+import PresetBuffs
+import Assets
+import ClosureForGroups
+import BonusHandler
+import TooltipFactory
+import CreepAggro
+
+constant buffTuple1 = compiletime(createDummyBuffObject("Protective Shell".color(POSITIVE_COLOR), "Unit has increased armor and liferegen.",  Icons.bTNShimmerWeed))
+
+public class ProtectiveShellBuff extends NormalBuff
+  effect shellEffect
+  constant hpReg = 0.
+  constant armor = 0.
+  constant aggro = 0.
+  constant bonusCrablingSpawnChance = 0.
+  constant AOE = 0.
+
+  construct(real dur, real hpReg, real armor, real aggro, real bonusCrablingSpawnChance, real AOE)
+    super(dur, buffTuple1)
+
+    this.hpReg = hpReg
+    this.armor = armor
+    this.aggro = aggro
+    this.bonusCrablingSpawnChance = bonusCrablingSpawnChance
+    this.AOE = AOE
+
+  override function onApply()
+    shellEffect = target.addEffect(Doodads.ruins_Shells4, AttachmentPoints.origin)
+    ..setScale(5.)
+
+    target
+    ..setPropWindow(0 .fromDeg())
+    ..addBonus(Bonus.LIFEREGEN, hpReg)
+    ..addBonus(Bonus.ARMOR, armor)
+
+    forUnitsInRange(target.getPos(), AOE) (unit u) ->
+      if u.isEnemyOf(target.getOwner())
+        u.clearAggro()
+        target.addAggro(u, aggro)
+
+  override function onEnd()
+    shellEffect.destr()
+            
+    target
+    ..setPropWindow(target.getDefaultPropWindow())
+    ..addBonus(Bonus.LIFEREGEN, -hpReg)
+    ..addBonus(Bonus.ARMOR, -armor)

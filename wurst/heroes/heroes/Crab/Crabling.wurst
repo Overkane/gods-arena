@@ -1,0 +1,50 @@
+package Crabling
+import SummonEntity
+import BonusHandler
+import CustomStatSystem
+import UnitIds
+import UnitObjEditing
+import ObjectIdGenerator
+import ClosureEvents
+import initlater CrabDefense
+import initlater CrabOverlord
+
+public constant CRABLING_ID = compiletime(UNIT_ID_GEN.next())
+
+public class Crabling extends SummonEntity
+
+  construct(unit summoner, vec3 pos, angle ang)
+    super(summoner, CRABLING_ID, pos, ang)
+
+    let lvl = summoner.getAbilityLevel(CRAB_DEFENSE_ID)
+    let strMultiplier = STRENGTH_DAMAGE.run(lvl)
+
+    // Since we want to override default summon damage scaling from super class
+    actor.clearBonus(Bonus.DAMAGE)
+
+    actor
+    ..addBonus(Bonus.DAMAGE, summoner.getStr(true) * strMultiplier * (1 + summoner.getStat(CustomUnitStats.SPELL_POWER)))
+    ..addAbility(LOCUST_ID)
+    ..setXY(actor.getPos())
+    ..setTimedLife(7.5)
+
+    if summoner.hasAbility(CRAB_OVERLORD_ID)
+      let lvl2 = summoner.getAbilityLevel(CRAB_OVERLORD_ID)
+      let strPerCrabling = BONUS_STR_PER_CRABLING.run(lvl2).toReal()
+
+      summoner.addBonus(Bonus.STRENGTH, strPerCrabling)
+
+      EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
+        summoner.addBonus(Bonus.STRENGTH, -strPerCrabling)
+
+
+@compiletime function gen()
+  new UnitDefinition(CRABLING_ID, UnitIds.spidercrab)
+  ..setScalingValue(0.45)
+  ..setHitPointsMaximumBase(35)
+  ..setAttack1Range(25)
+  ..setAttack1CooldownTime(1)
+  ..setAttack1DamageBase(2)
+  ..setDeathTimeseconds(0.5)
+  ..setCollisionSize(0.)
+  ..setSpeedBase(400)
