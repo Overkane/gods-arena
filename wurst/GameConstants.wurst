@@ -8,7 +8,7 @@ constant SAVE_TEST_MODE = false
 public constant allowSave = isProdBuild and not bj_isSinglePlayer or SAVE_TEST_MODE
 
 public constant ENEMY_PLAYER = players[8]
-public constant HERO_PICK_TIME = 3000.0
+public constant HERO_PICK_TIME = 30.0
 public constant HERO_PICK_RECT = gg_rct_ArenaForestRespawnPoint
 
 // Spell related
