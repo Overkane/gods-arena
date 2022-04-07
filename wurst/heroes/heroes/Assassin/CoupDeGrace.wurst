@@ -7,10 +7,11 @@ import MapIcons
 import MapModels
 import ClosureEvents
 import TooltipFactory
+import AbilityDefinitionExtension
 
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure ATTACK_CRIT_CHANCE = lvl -> 0.1 + 0.025 * (lvl-1)
+constant RealLevelClosure ATTACK_CRIT_CHANCE = lvl -> 0.05 + 0.05 * (lvl-1)
 constant RealLevelClosure ATTACK_CRIT_POWER = lvl -> 1.25 + 0.5 * (lvl-1)
 constant RealLevelClosure BACKSTAB_MULT = lvl -> 2.
 
@@ -58,12 +59,8 @@ init
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "After long years Assassin honed her ability to find enemy weak points and deal deadly strikes."
     + " Increases Attack Crit Chance and Attack Crit Power. Attack Crit Chance is doubled, if target is attacked from behind.")
   new PassiveAbilityPreset(COUP_DE_GRACE_ID, ULTIMATE_SPELL_LEVELS, tooltip)
-  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
-  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..makeRAbility()
   ..presetIcon(MapIcons.pASBTNBackstab)
-  ..presetButtonPosNormal(3, 2)
-  ..presetButtonPosResearch(3, 0)
-  ..presetHotkey("R")
 
   ..tooltipStartListen()
   ..setName("Coup De Grace")

@@ -9,6 +9,7 @@ import Buff
 import TooltipFactory
 import GeneralFunctions
 import GameConstants
+import AbilityDefinitionExtension
 
 public constant CONTRACT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -67,10 +68,8 @@ init
   + "If she doesn't kill the target, but is in 225 range of it, then Assassin will get half of the bounty, otherwise nothing. "
   + "If there is no appropriate target nearby, the spell cooldown will be reset.")
   new ChannelAbilityPreset(CONTRACT_ID, INNATE_SPELL_LEVELS, true, tooltip)
+  ..makeDAbility()
   ..presetIcon(Icons.bTNSnazzyScrollPurple)
-  ..presetButtonPosNormal(1, 1)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("D")
 
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.NONE)

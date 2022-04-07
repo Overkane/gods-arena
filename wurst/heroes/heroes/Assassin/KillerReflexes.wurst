@@ -5,6 +5,7 @@ import ClosureEvents
 import CustomStatSystem
 import PassiveAbilityPreset
 import TooltipFactory
+import AbilityDefinitionExtension
 
 public constant KILLER_REFLEXES_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -34,13 +35,10 @@ init
       ..setMoveSpeed(u.getDefaultMovespeed() + bonusMS)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Hero gets boost to base agility, move speed and evasion.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gets boost to base agility, move speed and evasion.")
   new PassiveAbilityPreset(KILLER_REFLEXES_ID, NORMAL_SPELL_LEVELS, tooltip)
-  ..registerTooltipGenerator(tooltip)
+  ..makeEAbility()
   ..presetIcon(Icons.pASBTNEvasion)
-  ..presetButtonPosNormal(2, 2)
-  ..presetButtonPosResearch(2, 0)
-  ..presetHotkey("E")
   
   ..tooltipStartListen()
   ..setName("Killer Reflexes")

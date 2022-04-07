@@ -11,6 +11,7 @@ import GameConstants
 import MapModels
 import TooltipFactory
 import DamageSystem
+import AbilityDefinitionExtension
 
 public constant BLINK_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -35,7 +36,7 @@ init
       caster.setAnimation(UnitAnimations.HeroWarden.attack1.idx)
       caster.dealPhysicalDamage(target, damagePerStrike)
       flashEffect(Abilities.blinkCaster, caster.getPos())
-      flashEffect("Ephemeral Cut Midnight.mdx", target, AttachmentPoints.chest)
+      flashEffect(MapModels.ephemeralCutMidnight, target, AttachmentPoints.chest)
 
       doPeriodicallyCounted(0.3, numberOfStrikes) (CallbackCounted cb) ->
         let unitList = new LinkedList<unit>
@@ -63,12 +64,10 @@ init
         destroy unitList
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero blinks and strikes several enemies.")
+  let tooltip = new AbilityTooltipGenerator("Assasin blinks and strikes several enemies.")
   new ChannelAbilityPreset(BLINK_CUT_ID, NORMAL_SPELL_LEVELS, true, tooltip)
-  ..presetButtonPosNormal(0, 2)
-  ..presetButtonPosResearch(0, 0)
+  ..makeQAbility()
   ..presetIcon(Icons.bTNBlink)
-  ..presetHotkey("Q")
   ..presetTargetsAllowed(lvl -> TargetsAllowed.enemies)
 
   ..tooltipStartListen()
@@ -80,6 +79,6 @@ init
   ..addTooltipProperty("Bonus Agility Damage", lvl -> (BONUS_AGILITY_DAMAGE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Blink Distance", BLINK_DISTANCE)
   ..presetCastRange(BLINK_DISTANCE)
-  ..presetManaCost(lvl -> 75 + 10 * lvl)
+  ..presetManaCost(lvl -> 65 + 35 * (lvl-1))
   ..presetCooldown(lvl -> 17. - lvl)
   ..tooltipStopListen()
