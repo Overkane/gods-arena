@@ -2,38 +2,33 @@ package TimeSiphon
 import AbilityTooltipGenerator
 import GameConstants
 import DamageSystem
+import AbilityDefinitionExtension
 
 public constant SIPHON_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 0.05 * lvl
-constant RealLevelClosure SPELL_CAST_RANGE = lvl -> 700. + 100 * lvl
+constant RealLevelClosure SPELL_CAST_RANGE = lvl -> 700. + 85 * lvl
 constant SPELL_CD = 17.
-constant SPELL_COST = 30
-
-
-
+constant DURATION = 7.
 
 @compiletime
 function genAbil()
     new AbilityDefinitionDarkRangerDrain(SIPHON_ABIL_ID)
-    ..presetButtonPosNormal(2, 2)
-    ..presetButtonPosResearch(2, 0)
+    ..registerTooltipGenerator(new AbilityTooltipGenerator(Targettype.UNIT, "The Elementor siphons energy from the target to himself, replenishing mana and hitpoints."))
+    ..makeEAbility()
     ..presetIcon(Icons.bTNDrain)
-    ..registerTooltipGenerator(new AbilityTooltipGenerator("The Elementor siphons enegery from the target to himself, replenishing mana and hitpoints."))
-    
     
     ..tooltipStartListen()
     ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
     ..setLevels(NORMAL_SPELL_LEVELS)
     ..setName("Time Siphon")
-    ..presetHotkey("E")
-    ..presetManaPointsDrained(lvl -> 20. + 20 * lvl)
-    ..presetHitPointsDrained(lvl -> 10. + 10 * lvl)
-    ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies))
-    ..presetDurationNormal(lvl -> 7)
-    ..presetDurationHero(lvl -> 7)
+    ..presetManaPointsDrained(lvl -> 25. * lvl)
+    ..presetHitPointsDrained(lvl -> 30. * lvl)
+    ..addTooltipProperty("Duration", lvl -> DURATION)
     ..presetCastRange(SPELL_CAST_RANGE)
-    ..presetManaCost(lvl -> SPELL_COST + lvl * 10)
-    ..presetCooldown(lvl -> SPELL_CD)
+    ..presetManaCost(lvl -> 40 + 30 * lvl)
+    ..presetCooldown(lvl -> SPELL_CD - lvl)
     ..tooltipStopListen()
 
+    ..presetDurationNormal(lvl -> DURATION)
+    ..presetDurationHero(lvl -> getHeroStunDuration(DURATION))
+    ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies))

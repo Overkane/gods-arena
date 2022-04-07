@@ -12,13 +12,19 @@ import BuffIds
 import TooltipFactory
 import ClosureForGroups
 import DummyStatCaster
+import AbilityDefinitionExtension
 
 public constant ELEMENTAL_MISSILE_ID = compiletime(ABIL_ID_GEN.next())
 constant ELEMENTAL_DISCHARGE_ID = compiletime(BUFF_ID_GEN.next())
 constant FROSTNOVA_ID = compiletime(ABIL_ID_GEN.next())
 constant LIGHTNING_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure INT_AS_DAMAGE = lvl -> 0.8 * lvl
+constant RealLevelClosure INT_AS_DAMAGE = lvl -> 0.5 * lvl
+constant IntLevelClosure ELEMENTAL_REACTION_CHANCE = lvl -> 15 + 15 * lvl
+
+constant NUMBER_OF_SPELLS = 3
+
+tuple interval(int min, int max)
 
 init
   DamageEvent.addUnreducedListener(DamageEvents.START castTo int) -> 
@@ -28,7 +34,7 @@ init
     if tunit.hasAbility(ELEMENTAL_DISCHARGE_ID) and sunit.hasAbility(ELEMENTAL_MISSILE_ID)
       and DamageEvent.getType() == DamageType.ATTACK
 
-      let lvl = tunit.getAbilityLevel(ELEMENTAL_MISSILE_ID)
+      let lvl = sunit.getAbilityLevel(ELEMENTAL_MISSILE_ID)
       let intMultiplier = INT_AS_DAMAGE.run(lvl)
       sunit.addOnetimeStat(CustomUnitStats.BONUS_ATTACK_DAMAGE, sunit.getInt(true) * intMultiplier)
 
@@ -40,17 +46,24 @@ init
     if tunit.hasAbility(ELEMENTAL_DISCHARGE_ID) and sunit.hasAbility(ELEMENTAL_MISSILE_ID)
       and DamageEvent.getType() == DamageType.ATTACK
 
-      let spellNumber = GetRandomInt(1, 100)
+      let lvl = sunit.getAbilityLevel(ELEMENTAL_MISSILE_ID)
+      let spellOverallChance = ELEMENTAL_REACTION_CHANCE.run(lvl)
+      let chancePerSpell = (spellOverallChance / NUMBER_OF_SPELLS).toInt()
+      let fireInterval = interval(1, chancePerSpell)
+      let iceInterval = interval(fireInterval.max + 1, fireInterval.max + chancePerSpell)
+      let lightningInterval = interval(iceInterval.max + 1, iceInterval.max + chancePerSpell)
       
+      let spellNumber = GetRandomInt(1, 100)
+
       // Fire
-      if spellNumber.isBetween(1, 20)
+      if spellNumber.isBetween(fireInterval.min, fireInterval.max)
         flashEffect(Abilities.fireLordDeathExplode, tunit.getPos())
         forUnitsInRange(tunit.getPos(), 200) (unit u) ->
           if u.isAlive() and u.isEnemyOf(sunit.getOwner())
             sunit.dealMagicalDamage(u, sunit.getInt(true) * 3.)
       
       // Ice
-      else if spellNumber.isBetween(21, 40)
+      else if spellNumber.isBetween(iceInterval.min, iceInterval.max)
         flashEffect(Abilities.frostNovaTarget, tunit.getPos())
         new DummyStatCaster()
         ..origin(sunit.getPos())
@@ -62,7 +75,7 @@ init
             sunit.dealMagicalDamage(u, sunit.getInt(true) * 1.)
 
       // Lightning
-      else if spellNumber.isBetween(41, 60)
+      else if spellNumber.isBetween(lightningInterval.min, lightningInterval.max)
         flashEffect(Abilities.lightningBoltMissile, tunit.getPos())
         new DummyStatCaster()
         ..delay(1.)
@@ -76,20 +89,19 @@ init
     "The impact of elemental missiles may produce random elemental reactions.")
   new AbilityDefinitionDarkRangerBlackArrow(ELEMENTAL_MISSILE_ID)
   ..registerTooltipGenerator(tooltip)
-  ..presetButtonPosNormal(1, 1)
-  ..presetButtonPosTurnOff(1, 1)
+  ..makeDAbility()
   ..setIconNormal(MapIcons.aTCBeamShower)
   ..setIconTurnOff(MapIcons.aTCBeamShower)
   ..presetTargetsAllowed(lvl -> TargetsAllowed.enemies)
   ..setMissileArt(MapModels.missilePurple)
-  ..presetHotkey("D")
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..setLevels(INNATE_SPELL_LEVELS)
   ..setName("Elemental Missile")
   ..addTooltipProperty("Int as Damage", lvl -> (INT_AS_DAMAGE.run(lvl) * 100).percRound())
-  ..presetManaCost(lvl -> 90)
+  ..addTooltipProperty("Elemental Reaction Chance", lvl -> ELEMENTAL_REACTION_CHANCE.run(lvl).toString() + "%")
+  ..presetManaCost(lvl -> 15 + 15 * lvl)
   ..tooltipStopListen()
 
   ..presetBuffs(lvl -> ELEMENTAL_DISCHARGE_ID.toRawCode())
@@ -114,9 +126,9 @@ init
   ..presetSpecificTargetDamage(lvl -> 0)
   ..presetAreaofEffect(lvl -> 200)
   ..presetDurationNormal(lvl -> 1)
-  ..presetDurationHero(lvl -> 0.5)
+  ..presetDurationHero(lvl -> getHeroStunDuration(1))
   
 
   new StunAbilityPreset(LIGHTNING_STUN_ID, NORMAL_SPELL_LEVELS)
-  ..presetDurationHero(lvl -> 0.1)
   ..presetDurationNormal(lvl -> 0.5)
+  ..presetDurationHero(lvl -> getHeroStunDuration(0.5))

@@ -7,17 +7,17 @@ import InstantDummyCaster
 import Orders
 import GameConstants
 import DamageSystem
-import Boss
 import Entity
 import TooltipFactory
+import AbilityDefinitionExtension
 
 public constant TIME_CHAMBER_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 0.03 + 0.02 * lvl
+constant RealLevelClosure SPELL_DMG = lvl -> 0.01 + 0.03 * lvl
 constant SPELL_AOE = 525.
+constant SPELL_TIME_BETWEEN_PROCS = 0.9
 constant SPELL_PROC_AMOUNT = 6
-constant SPELL_CD = 65.
-constant SPELL_COST = 325
+constant SPELL_CD = 70.
 
 init
     EventListener.onCast(TIME_CHAMBER_ABIL_ID) caster ->
@@ -25,36 +25,38 @@ init
         let spellLvl = caster.getAbilityLevel(TIME_CHAMBER_ABIL_ID)
         let owner = caster.getOwner()
 
-        doPeriodicallyCounted(0.9, SPELL_PROC_AMOUNT) (CallbackCounted cb) ->
+        doPeriodicallyCounted(SPELL_TIME_BETWEEN_PROCS, SPELL_PROC_AMOUNT) (CallbackCounted cb) ->
             flashEffect(Abilities.massTeleportTo, spellTarget, 4)
 
             forUnitsInRange(spellTarget, SPELL_AOE) (target) ->
-                if target.isEnemyOf(owner) and not target.getEntity() instanceof Boss
+                if target.isEnemyOf(owner)
                     InstantDummyCaster.castTarget(owner, DUMMY_ABIL_ID, spellLvl, OrderIds.slow, target)
-                    caster.dealMagicalDamage(target, SPELL_DMG.run(spellLvl) * target.getMaxHP())
+                    let damage = SPELL_DMG.run(spellLvl) * target.getMaxHP()
 
+                    // Spell would be too OP for strong units like bosses, so we reduce damage a bit for it to be balanced.
+                    if target.isStrong()
+                        caster.dealMagicalDamage(target, damage / 2)
+                    else
+                        caster.dealMagicalDamage(target, damage)
 
 @compiletime
 function genAbil()
-    new ChannelAbilityPreset(TIME_CHAMBER_ABIL_ID, 3, true, new AbilityTooltipGenerator("Slows and damages all enemies in the target area by the means of time travel."))
-    ..presetButtonPosNormal(3, 2)
+    new ChannelAbilityPreset(TIME_CHAMBER_ABIL_ID, ULTIMATE_SPELL_LEVELS, true, 
+      new AbilityTooltipGenerator("Slows and damages all enemies in the target area by the means of time travel. Deals two times less damage to strong units like bosses."))
+    ..makeRAbility()
     ..presetIcon(Icons.bTNArcaneVault)
     ..presetOption(Option.TARGETIMAGE, true)
-    ..presetCastRange(lvl -> 700)
-    ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
-    ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
-    ..presetButtonPosNormal(3, 2)
-    ..presetButtonPosResearch(3, 0)
-    ..presetHotkey("R")
 
     ..tooltipStartListen()
     ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
     ..presetTargetTypes(Targettype.POINT)
     ..setName("Time Chamber")
-    ..presetHotkey("R")
-    ..addTooltipProperty("Damage", lvl -> SPELL_DMG.run(lvl).percRound(2))
-    ..presetManaCost(lvl -> SPELL_COST + lvl * 10)
+    ..addTooltipProperty("Max HP Damage per Interval", lvl -> (SPELL_DMG.run(lvl) * 100).percRound())
+    ..addTooltipProperty("Interval", lvl -> SPELL_TIME_BETWEEN_PROCS)
+    ..addTooltipProperty("Number of Intervals", lvl -> SPELL_PROC_AMOUNT)
     ..presetAreaofEffect(lvl -> SPELL_AOE)
+    ..presetCastRange(lvl -> 700)
+    ..presetManaCost(lvl -> 100 + 200 * lvl)
     ..presetCooldown(lvl -> SPELL_CD)
     ..tooltipStopListen()
 

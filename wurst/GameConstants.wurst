@@ -1,4 +1,5 @@
 package GameConstants
+import initlater Boss
 
 constant isProdBuild = compiletime(isProductionBuild())
 public constant allowCheats = not isProdBuild
@@ -7,7 +8,7 @@ constant SAVE_TEST_MODE = false
 public constant allowSave = isProdBuild and not bj_isSinglePlayer or SAVE_TEST_MODE
 
 public constant ENEMY_PLAYER = players[8]
-public constant HERO_PICK_TIME = 30.0
+public constant HERO_PICK_TIME = 3000.0
 public constant HERO_PICK_RECT = gg_rct_ArenaForestRespawnPoint
 
 // Spell related
@@ -21,6 +22,9 @@ public constant REFUND_VALUE = 0.8
 
 public function player.isHuman() returns boolean
     return this.getId() < 8
+
+public function unit.isStrong() returns boolean
+    return this.isBoss()
 
 public function getHeroStunDuration(real defaultStunDuration) returns real
     return defaultStunDuration / 3

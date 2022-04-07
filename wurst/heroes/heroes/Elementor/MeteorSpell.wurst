@@ -8,9 +8,10 @@ import Entity
 import DamageSystem
 import PhysicsProjectile
 import Heightmap
+import AbilityDefinitionExtension
 
 public constant METEOR_ABIL_ID = compiletime(ABIL_ID_GEN.next())
-constant RealLevelClosure SPELL_DMG = lvl -> 125. + 100. * lvl
+constant RealLevelClosure SPELL_DMG = lvl -> 30. + 125. * lvl
 constant RealLevelClosure SPELL_AOE = lvl -> 250. + 25 * lvl
 
 init
@@ -27,8 +28,9 @@ init
                 doAfter(0.9) ->
                     eff.destr()
                 if target.isEnemyOf(caster.getOwner()) and target.isAlive()
-                    let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / aoe
-                    target.getEntity().addVel(ZERO3.polarProject(800 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
+                    if not target.isStrong()
+                        let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / aoe
+                        target.getEntity().addVel(ZERO3.polarProject(800 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
                     caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
                     flashEffect(Abilities.incinerateBuff, target, "origin")
 
@@ -36,7 +38,7 @@ init
 @compiletime
 function genAbility()
     new ChannelAbilityPreset(METEOR_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A chunky meteor from the sky which crushes your enmies in a big area with over 9000° Celsius."))
-    ..presetButtonPosNormal(0, 2)
+    ..makeQAbility()
     ..presetIcon(Icons.bTNInfernal)
     ..presetOption(Option.TARGETIMAGE, true)
 
@@ -44,9 +46,8 @@ function genAbility()
     ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
     ..presetTargetTypes(Targettype.POINT)
     ..setName("Chaos Meteor")
-    ..presetHotkey("Q")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 160 + lvl * 50)
+    ..presetManaCost(lvl -> 155 + 55 * (lvl-1))
     ..presetAreaofEffect(SPELL_AOE)
-    ..presetCooldown(lvl -> 29. - lvl)
+    ..presetCooldown(lvl -> 28. - lvl)
     ..tooltipStopListen()
