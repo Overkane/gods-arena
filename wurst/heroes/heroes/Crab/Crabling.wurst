@@ -40,6 +40,7 @@ public class Crabling extends SummonEntity
 
 @compiletime function gen()
   new UnitDefinition(CRABLING_ID, UnitIds.spidercrab)
+  ..setShadowImageUnit("none")
   ..setScalingValue(0.45)
   ..setHitPointsMaximumBase(35)
   ..setAttack1Range(25)
