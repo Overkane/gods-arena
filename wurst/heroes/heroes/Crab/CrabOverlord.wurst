@@ -16,8 +16,11 @@ init
     let lvl = caster.getAbilityLevel(CRAB_OVERLORD_ID)
     let crablingAmount = CRABLING_AMOUNT.run(lvl)
     
-    for i = 1 to crablingAmount 
-      new Crabling(caster, caster.getPos().toVec3(), caster.getPos().angleTo(caster.getPos()))
+    let initialCrablingAngle = 360 / crablingAmount
+
+    for i = 1 to crablingAmount
+      let currentCrablingAngle = (initialCrablingAngle * i).asAngleDegrees()
+      new Crabling(caster, caster.getPos().polarOffset(currentCrablingAngle, 100).toVec3(), caster.getPos().angleTo(caster.getPos()))
 
 
 @compiletime function genAbility()
