@@ -1,84 +1,15 @@
 package ChatCommands
-import UnitIds
-import ClosureForGroups
 import Hero
-import Backpack
-import HonorShop
-import DamageEvent
 import GeneralFunctions
 import CustomStatSystem
 import ClosureEvents
 import PlayerData
 import GameConstants
-import Creep
-
-var dummyHp = 500
 
 public function initChatCommands()
   EventListener.add(EVENT_PLAYER_CHAT_FILTER) () ->
     let message = EventData.getChatMessage()
     let p = EventData.getTriggerPlayer()
-
-    // Cheat commands
-    if allowCheats
-      // Refresh command
-      if message == "-r"
-        pData.get(p).getHero().ifPresent() h ->
-          h.actor
-          ..setMana(h.actor.getMaxMana())
-          ..setHP(h.actor.getMaxHP())
-          ..resetCooldown()
-      
-      // Damage debug command
-      else if message == "-d"
-        DamageEvent.addListener() ->
-          if DamageEvent.getSource().isAllyOf(players[0])
-            print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
-            print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
-            print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
-      
-      else if message.startsWith("-gold ")
-        let goldAmount = message.ltrim("-gold ").toInt()
-        p.addGold(goldAmount)
-
-      else if message.startsWith("-hp ")
-        let honorPointsAmount = message.ltrim("-hp ").toInt()
-        p.addLumber(honorPointsAmount)
-
-      else if message.startsWith("-lvl ")
-        let heroLevel = message.ltrim("-lvl ").toInt()
-        pData.get(p).getHero().ifPresent(h -> h.actor.setLevel(heroLevel, false))
-      
-      // Summons friendly dummy
-      else if message.startsWith("-fd ")
-        let numberOfDummies = message.ltrim("-fd ").toInt()
-        for i = 0 to numberOfDummies - 1
-          let u = createUnit(p, UnitIds.footman, gg_rct_ArenaForestTopLeftSpawn.getCenter(), angle(0))
-          u..setMaxHP(dummyHp)
-          ..setHP(u.getMaxHP() / 2) // To test heal and stuff
-      
-      // Summons enemy dummy
-      else if message.startsWith("-ed ")
-        let numberOfDummies = message.ltrim("-ed ").toInt()
-        for i = 0 to numberOfDummies - 1
-          let u = new Creep(UnitIds.footman, gg_rct_ArenaForestTopLeftSpawn.getCenter().toVec3(), angle(0))
-          u.actor
-          ..setMaxHP(dummyHp)
-          ..setHP(u.actor.getMaxHP())
-      
-      // Sets dummy hp to test damage in different variations
-      else if message.startsWith("-sdh ")
-        dummyHp = message.ltrim("-sdh ").toInt()
-      
-      // Kills all units except heroes
-      else if message.startsWith("-ka")
-        forUnitsAll() (unit u) ->
-          if not heroUnitMap.has(u) and not backpackUnits.has(u) and not honorShopUnits.has(u)
-            u.kill()
-      
-      // Revive the hero
-      else if message.startsWith("-rev")
-        pData.get(p).getHero().ifPresent(h -> h.actor.revive(gg_rct_ArenaForestRespawnPoint.getCenter(), true))
 
     // Host commands
     if p == players[0]

@@ -7,6 +7,7 @@ import ClosureTimers
 import SaveLoadSystem
 import ChatCommands
 import GameSetupDialog
+import CheatPanel
 
 function initFrames()
   let loadingResult = BlzLoadTOCFile("MyFiles.toc")
@@ -31,5 +32,7 @@ init
     startEntityLoop()
     initSaveLoadSystem()
     initGameSetupDialog()
+    if allowCheats
+      createCheatPanel()
     doAfter(1) ->
       BlzChangeMinimapTerrainTex("originalMap.blp")

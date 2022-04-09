@@ -1,0 +1,159 @@
+package CheatPanel
+import TableLayout
+import ClosureForGroups
+import ClosureEvents
+import FramehandleNames
+import DamageSystem
+import UnitIds
+import Creep
+import HonorShop
+import Backpack
+import Hero
+
+public function createCheatPanel()
+  new CheatPanel()
+
+function framehandle.toggle(player p)
+  if this.isVisible(p)
+    this.hide(p)
+  else
+    this.show(p)
+    
+class CheatPanel
+  static constant owner = players[0]
+  static framehandle cheatPanel
+
+  var isInfiniteSpells = false
+  var isDamageDebugOn = false
+
+  construct()
+    /* Cheat main panel */
+    let level1Button = textButton("lvl 1")
+    level1Button..onClick() -> 
+      incHeroLvl(1)
+      level1Button.unfocus()
+    let level5Button = textButton("lvl 5")
+    level5Button..onClick() -> 
+      incHeroLvl(5)
+      level5Button.unfocus()
+    let levelMaxButton = textButton("lvl max")
+    levelMaxButton..onClick() -> 
+      incHeroLvl(100)
+      levelMaxButton.unfocus()
+
+    let goldButton = textButton("gold")
+    goldButton..onClick() -> 
+      owner.addGold(1000)
+      goldButton.unfocus()
+    let honorPointsButton = textButton("honor")
+    honorPointsButton..onClick() ->
+      owner.addLumber(10)
+      honorPointsButton.unfocus() 
+
+    let refreshButton = textButton("refresh")
+    refreshButton..onClick() -> 
+      forUnitsSelected(owner) (unit u) ->
+        u
+        ..setMana(u.getMaxMana())
+        ..setHP(u.getMaxHP())
+        ..resetCooldown()
+      refreshButton.unfocus()
+    
+    EventListener.add(EVENT_PLAYER_UNIT_SPELL_FINISH) -> 
+      if isInfiniteSpells and EventData.getTriggerPlayer() == owner
+        let u = EventData.getTriggerUnit()
+        let spell = EventData.getSpellAbilityId()
+        u
+        ..resetAbilityCooldown(spell)
+        ..setMana(u.getMaxMana())
+    let isAllRandomTitle = createFrame(FramehandleTypeNames.text, "", GAME_UI, "", 0)
+    ..setText("Inf Spells:")
+    let isInfiniteSpellsFlag = createFrame("QuestCheckBox2", GAME_UI, 0, 0)
+    ..onCheckboxCheck() -> 
+      isInfiniteSpells = true
+    isInfiniteSpellsFlag.onCheckboxUncheck() -> 
+      isInfiniteSpells = false
+    
+    DamageEvent.addListener() ->
+      if isDamageDebugOn and DamageEvent.getSource().isAllyOf(owner)
+        print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
+        print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
+        print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
+    let isDamageDebugOnTitle = createFrame(FramehandleTypeNames.text, "", GAME_UI, "", 0)
+    ..setText("Damage Debug:")
+    let isDamageDebugOnFlag = createFrame("QuestCheckBox2", GAME_UI, 0, 0)
+    ..onCheckboxCheck() -> 
+      isDamageDebugOn = true
+    isDamageDebugOnFlag.onCheckboxUncheck() -> 
+      isDamageDebugOn = false
+
+    let summonAllyDummyButton = textButton("ally dummy")
+    summonAllyDummyButton..onClick() -> 
+      for i = 0 to 5
+        let u = createUnit(owner, UnitIds.footman, gg_rct_ArenaForestTopLeftSpawn.getCenter(), angle(0))
+        u
+        ..setMaxHP(5000)
+        ..setHP(u.getMaxHP() / 2) // To test heal and stuff
+      summonAllyDummyButton.unfocus()
+    let summonEnemyDummyButton = textButton("enemy dummy")
+    summonEnemyDummyButton..onClick() -> 
+      for i = 0 to 5
+        let u = new Creep(UnitIds.footman, gg_rct_ArenaForestTopLeftSpawn.getCenter().toVec3(), angle(0))
+        u.actor
+        ..setMaxHP(5000)
+        ..setHP(u.actor.getMaxHP())
+      summonEnemyDummyButton.unfocus()
+    // TODO dummy count
+    // TODO dummy hp
+
+    let clearButton = textButton("clear")
+    clearButton..onClick() -> 
+      forUnitsAll() (unit u) ->
+        if not heroUnitMap.has(u) and not backpackUnits.has(u) and not honorShopUnits.has(u)
+          u.kill()
+      clearButton.unfocus()
+    
+    cheatPanel = new TableLayout(0.35, 0.16)
+    ..row()
+    ..add(level1Button)
+    ..add(level5Button)
+    ..add(levelMaxButton)
+
+    ..row()
+    ..add(goldButton)
+    ..add(honorPointsButton)
+
+    ..row()
+    ..add(refreshButton)
+    ..add(isAllRandomTitle)
+    ..add(isInfiniteSpellsFlag)
+    ..add(isDamageDebugOnTitle)
+    ..add(isDamageDebugOnFlag)
+
+    ..row()
+    ..add(summonAllyDummyButton)
+    ..add(summonEnemyDummyButton)
+    ..add(clearButton)
+
+    .createFrame()
+    
+    cheatPanel
+    ..clearAllPoints()
+    ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.1, 0.5))
+
+    /* Cheat panel hotkey */
+    let trig = CreateTrigger()
+    ..addAction() ->
+      if cheatPanel.isVisible()
+        cheatPanel.hide()
+      else
+        cheatPanel.show()
+    BlzTriggerRegisterPlayerKeyEvent(trig, owner, OSKEY_ESCAPE, 0, false)
+
+  function incHeroLvl(int increment)
+    forUnitsSelected(owner) (unit u) ->
+      if u.isType(UNIT_TYPE_HERO)
+        u.setLevel(u.getLevel() + increment, false)
+
+  function textButton(string title) returns framehandle
+    return btn(title)..setSize(0.08, 0.03)
