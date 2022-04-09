@@ -5,7 +5,11 @@ import public ObjectIds
 import public ObjectIdGenerator
 import public Icons
 
-public class PassiveAbilityPreset extends AbilityDefinitionCriticalStrikecreep
+/* 
+  Provides a setup for basic passive ability, which do nothing by default and can't be clicked.
+  Also supports cooldown visibility, which can be achieved by using unit startAbilityCooldown() method. 
+*/
+public class PassiveAbilityPreset extends AbilityDefinitionExhume
 	construct(int newId, int lvls, TooltipGenerator tgen)
 		super(newId)
 		registerTooltipGenerator(tgen)
@@ -24,5 +28,4 @@ public class PassiveAbilityPreset extends AbilityDefinitionCriticalStrikecreep
 		setLevels(lvls)
 		tooltipStopListen(false)
 		setName("Passive ability")
-		presetChancetoCriticalStrike(lvls -> 0.)
-		presetDamageMultiplier(lvls -> 0.)
+		setRequirements("")
