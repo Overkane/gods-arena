@@ -8,11 +8,15 @@ import GameConstants
 import PassiveAbilityPreset
 import DummyStatCaster
 import TooltipFactory
+import AbilityDefinitionExtension
 
 public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
 constant ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure CHANCE = lvl -> 0.1 + 0.1 * lvl
+constant RealLevelClosure ENTANGLE_DAMAGE = lvl -> 25. * lvl
+constant RealLevelClosure ENTANGLE_DURATION = lvl -> 0.5 + 0.5 * lvl
+
 
 init
     DamageEvent.addListener() -> 
@@ -25,32 +29,34 @@ init
             createCriticalStrikeTextTag(attacker, damage.toInt())
 
             if isTagged
-                new DummyStatCaster()
-                ..caster(attacker)
-                ..castTarget(ENTANGLE_ID, lvl, OrderIds.entanglingroots, DamageEvent.getTarget())
+                attacker.triggerEntangleEffect(DamageEvent.getTarget(), lvl)
 
-                DamageEvent.getTarget().removeBuffById(TagBuff.typeId)
+public function unit.triggerEntangleEffect(unit target, int lvl)
+    new DummyStatCaster()
+    ..caster(this)
+    ..castTarget(ENTANGLE_ID, lvl, OrderIds.entanglingroots, target)
 
+    target.removeBuffById(TagBuff.typeId)
 
 
 @compiletime function genAbility()
     let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Has a chance to deal extra damage.\nIf the target is |cffd803bctagged|r, it will always crit and also become entangled.")
     new PassiveAbilityPreset(CRIT_ARROW_ID, NORMAL_SPELL_LEVELS, tooltip)
-    ..presetButtonPosNormal(2, 2)
-    ..presetButtonPosResearch(2, 0)
+    ..makeEAbility()
     ..presetIcon(Icons.pASBTNCriticalStrike)
-    ..presetHotkey("E")
 
     ..tooltipStartListen()
     ..addTooltipProperty("Extra Damage", lvl -> "50 + 1.6 * Agility")
     ..addTooltipProperty("Chance",  lvl -> (CHANCE.run(lvl) * 100).percRound())
+    ..addTooltipProperty("Entangle Damage per sec",  lvl -> ENTANGLE_DAMAGE.run(lvl).toString(0))
+    ..addTooltipProperty("Entangle Duration",  lvl -> ENTANGLE_DURATION.run(lvl).toString(1))
     ..setName("Critical Arrow")
     ..tooltipStopListen()
 
     new AbilityDefinitionEntanglingRootscreep(ENTANGLE_ID)
-    ..setDummyAbility()
     ..setLevels(NORMAL_SPELL_LEVELS)
-    ..presetDamageperSecond(lvl -> 10 + 45. * lvl)
-    ..presetDurationHero(lvl -> 5.)
-    ..presetDurationNormal(lvl -> 5.)
+    ..setDummyAbility()
+    ..presetDamageperSecond(ENTANGLE_DAMAGE)
+    ..presetDurationNormal(ENTANGLE_DURATION)
+    ..presetDurationHero(lvl -> getHeroStunDuration(ENTANGLE_DURATION.run(lvl)))
         

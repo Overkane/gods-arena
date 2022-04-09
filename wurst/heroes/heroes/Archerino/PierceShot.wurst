@@ -4,26 +4,27 @@ import Projectile
 import AbilityTooltipGenerator
 import Tagwalk
 import Orders
-import BonusHandler
 import GameConstants
 import Buff
 import DamageSystem
 import Heightmap
+import AbilityDefinitionExtension
+import SummonEntity
 
 public constant PIERCESHOT_ID = compiletime(ABIL_ID_GEN.next())
 
-constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
+constant SUMMON1 = compiletime(UNIT_ID_GEN.next())
+constant SUMMON2 = compiletime(UNIT_ID_GEN.next())
+constant SUMMON3 = compiletime(UNIT_ID_GEN.next())
+constant SUMMON4 = compiletime(UNIT_ID_GEN.next())
+constant SUMMON5 = compiletime(UNIT_ID_GEN.next())
 
-constant RealLevelClosure SPELL_DAMAGE = lvl -> 75. + 85 * lvl
+constant SUMMON_LIST = new LinkedList<int>..add(SUMMON1, SUMMON2, SUMMON3, SUMMON4, SUMMON5)
+constant IntLevelClosure SUMMON_TYPE = lvl -> SUMMON_LIST.get(lvl-1)
+constant IntLevelClosure SUMMON_BASE_DAMAGE = lvl -> 30 * lvl
+constant IntLevelClosure SUMMON_BASE_HP = lvl -> 145 * lvl
 
-class TreantEntity extends UnitEntity
-
-    construct(unit owner, unit target, int lvl)
-        super(createUnit(owner.getOwner(), TREANT_ID, target.getPos(), angle(0))
-        ..setTimedLife(15.)
-        ..issueTargetOrderById(OrderIds.attack, target)
-        ..addBonus(Bonus.DAMAGE, lvl * 30. * (1 + owner.getStat(CustomUnitStats.SPELL_POWER)))
-        ..addBonus(Bonus.LIFE, 95. * lvl + (lvl - 1) * 50 * (1 + owner.getStat(CustomUnitStats.SPELL_POWER))))
+constant RealLevelClosure SPELL_DAMAGE = lvl -> 55. + 85 * lvl
 
 
 init
@@ -31,40 +32,78 @@ init
         let projectile = new Projectile(caster.getPos().toVec3(), 86, caster.getOwner(), caster.getPos().angleTo(target), Abilities.ballistaMissile)
         let lvl = caster.getAbilityLevel(PIERCESHOT_ID)
         projectile
-            ..setRanged(1200)
-            ..setAcc(0.997)
-            ..setTarget(target.withHeightMap(), 50.)
-
+        ..setRanged(1200)
+        ..setAcc(0.997)
+        ..setTarget(target.withHeightMap(), 50.)
+        
         projectile.onHit() hitTarget ->
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
-                let dmg = SPELL_DAMAGE.run(lvl) 
-                hitTarget.getEntity().addVel(ZERO3.polarProject((300. + dmg) * ANIMATION_PERIOD, projectile.getXYAngle(), 45 .fromDeg()))
+                let dmg = SPELL_DAMAGE.run(lvl)
+                if not hitTarget.isStrong() 
+                    hitTarget.getEntity().addVel(ZERO3.polarProject((300. + dmg) * ANIMATION_PERIOD, projectile.getXYAngle(), 45 .fromDeg()))
                 caster.dealPhysicalDamage(hitTarget, SPELL_DAMAGE.run(lvl))
 
                 if hitTarget.hasAbility(tagBuffObj.buffId)
-                    new TreantEntity(caster, hitTarget, lvl)
+                    let summonTypeId = SUMMON_TYPE.run(lvl)
+
+                    new TreantEntity(caster, summonTypeId, hitTarget)
                     hitTarget.removeBuffById(TagBuff.typeId)
+
+
+class TreantEntity extends SummonEntity
+
+    construct(unit summoner, int typId, unit target)
+        super(summoner, typId, target.getPos().toVec3(), angle(0))
+        
+        actor
+        ..issueTargetOrderById(OrderIds.attack, target)
+        ..setTimedLife(15.)
 
 
 @compiletime function genAbility()
     let tooltip = new AbilityTooltipGenerator("Shoots an arrow towards the target position, damaging enemies in its path. If hit enemies are currently |cffd803bctagged|r, an ent will be spawned.")
     new ChannelAbilityPreset(PIERCESHOT_ID, NORMAL_SPELL_LEVELS, true, tooltip)
-    ..presetButtonPosNormal(0, 2)
-    ..presetButtonPosResearch(0, 0)
+    ..makeQAbility()
     ..presetIcon(Icons.bTNImpalingBolt)
 
     ..tooltipStartListen()
     ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
     ..presetTargetTypes(Targettype.POINT)
-    ..presetHotkey("Q")
     ..setName("Piercing Shot")
     ..addTooltipProperty("Damage", SPELL_DAMAGE)
-    ..presetManaCost(lvl -> 70 + 10 * lvl)
+    ..presetManaCost(lvl -> 70 + 55 * (lvl-1))
     ..presetCastRange(lvl -> 1000)
     ..presetCooldown(lvl -> 16. - lvl)
     ..tooltipStopListen()
 
-    new UnitDefinition(TREANT_ID, UnitIds.forceofnature)
-    ..setHitPointsMaximumBase(50)
-    ..setAttack1DamageBase(15)
+
+    new UnitDefinition(SUMMON1, UnitIds.forceofnature)
+    ..setAttack1DamageBase(SUMMON_BASE_DAMAGE.run(1))
+    ..setAttack1DamageNumberofDice(1)
+    ..setAttack1DamageSidesperDie(1)
+    ..setHitPointsMaximumBase(SUMMON_BASE_HP.run(1))
+
+    new UnitDefinition(SUMMON2, UnitIds.forceofnature)
+    ..setAttack1DamageBase(SUMMON_BASE_DAMAGE.run(2))
+    ..setAttack1DamageNumberofDice(1)
+    ..setAttack1DamageSidesperDie(1)
+    ..setHitPointsMaximumBase(SUMMON_BASE_HP.run(2))
+
+    new UnitDefinition(SUMMON3, UnitIds.forceofnature)
+    ..setAttack1DamageBase(SUMMON_BASE_DAMAGE.run(3))
+    ..setAttack1DamageNumberofDice(1)
+    ..setAttack1DamageSidesperDie(1)
+    ..setHitPointsMaximumBase(SUMMON_BASE_HP.run(3))
+
+    new UnitDefinition(SUMMON4, UnitIds.forceofnature)
+    ..setAttack1DamageBase(SUMMON_BASE_DAMAGE.run(4))
+    ..setAttack1DamageNumberofDice(1)
+    ..setAttack1DamageSidesperDie(1)
+    ..setHitPointsMaximumBase(SUMMON_BASE_HP.run(4))
+
+    new UnitDefinition(SUMMON5, UnitIds.forceofnature)
+    ..setAttack1DamageBase(SUMMON_BASE_DAMAGE.run(5))
+    ..setAttack1DamageNumberofDice(1)
+    ..setAttack1DamageSidesperDie(1)
+    ..setHitPointsMaximumBase(SUMMON_BASE_HP.run(5))

@@ -8,16 +8,20 @@ import Buff
 import Tagwalk
 import DamageSystem
 import Heightmap
+import AbilityDefinitionExtension
+import CriticalArrow
 
 public constant ARROW_VOLLEY_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure DAMAGE = lvl -> 110. + 165 * lvl
+constant AOE = 1400.
+
 
 init
     EventListener.onPointCast(ARROW_VOLLEY_ID) (caster, target) ->
         let lvl = caster.getAbilityLevel(ARROW_VOLLEY_ID)
-        forUnitsOfPlayer(ENEMY_PLAYER) u ->
-            if u.hasBuff(TagBuff.typeId)
+        forUnitsInRange(caster.getPos(), AOE) (unit u) ->
+            if u.isEnemyOf(caster) and u.isAlive()
                 let projectile = new Projectile(caster.getPos().withHeightMap(64), 16., caster.getOwner(), caster.getPos().angleTo(target), Abilities.arrowMissile1)
                 projectile
                 ..setTarget(u.getPos().withTerrainZ(), 30.)
@@ -26,22 +30,26 @@ init
                     caster.dealPhysicalDamage(u, DAMAGE.run(lvl))
                     flashEffect(Abilities.ballistaImpact, u.getPos())
 
+                    let isTagged = u.hasBuff(TagBuff.typeId)
+                    if caster.hasAbility(CRIT_ARROW_ID) and isTagged
+                        let critArrowLvl = caster.getAbilityLevel(CRIT_ARROW_ID)
+                        caster.triggerEntangleEffect(u, critArrowLvl)
+
+
 @compiletime function genAbility()
-    let tooltip = new AbilityTooltipGenerator("Shoots an arrow at every enemy that is |cffd803bctagged|r.")
+    let tooltip = new AbilityTooltipGenerator("Shoots an arrow at every enemy in the area of effect. If enemy is |cffd803bctagged|r it also triggers " 
+      + "Critical Arrow".color(COLOR_GOLD) + " on it.")
     new ChannelAbilityPreset(ARROW_VOLLEY_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
-    ..presetButtonPosNormal(3, 2)
-    ..presetButtonPosResearch(3, 0)
+    ..makeRAbility()
     ..presetIcon(Icons.bTNImprovedBows)
-    ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
-    ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
 
     ..tooltipStartListen()
     ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
     ..presetTargetTypes(Targettype.NONE)
-    ..presetHotkey("R")
     ..setName("Arrow Volley")
     ..addTooltipProperty("Damage per Target", DAMAGE)
-    ..presetManaCost(lvl -> 100 + 25 * lvl)
+    ..presetAreaofEffect(lvl -> AOE)
+    ..presetManaCost(lvl -> 100 + 50 * lvl)
     ..presetCooldown(lvl -> 50)
     ..tooltipStopListen()
         

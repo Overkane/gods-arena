@@ -1,0 +1,63 @@
+package ExplosiveShot
+import AbilityTooltipGenerator
+import GameConstants
+import PassiveAbilityPreset
+import TooltipFactory
+import AbilityDefinitionExtension
+import ClosureEvents
+import UnitIndexer
+import ClosureForGroups
+import DamageSystem
+import Tagwalk
+import Abilities
+
+public constant EXPLOSIVE_SHOT_ID = compiletime(ABIL_ID_GEN.next())
+
+constant ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure EXPLOSION_DAMAGE = lvl -> 0.25 * lvl
+constant RealLevelClosure EXPLOSION_AOE = lvl -> 150. + 25 * lvl
+
+bool array noCdOnAttackMap
+
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
+    let u = EventData.getAttackerUnit()
+    if u.hasAbility(EXPLOSIVE_SHOT_ID)
+      noCdOnAttackMap[u.getIndex()] = u.getAbilityCooldownRemaining(EXPLOSIVE_SHOT_ID) == 0
+
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+    
+    // Spell must be triggered only if there was no cooldown on spell, when attack started.
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(EXPLOSIVE_SHOT_ID) and noCdOnAttackMap[sunit.getIndex()]
+      and tunit.isEnemyOf(sunit) and tunit.isAlive()
+
+      let lvl = sunit.getAbilityLevel(EXPLOSIVE_SHOT_ID)
+      let explosionDamage = DamageEvent.getAmount() * EXPLOSION_DAMAGE.run(lvl)
+      let spellAOE = EXPLOSION_AOE.run(lvl)
+
+      forUnitsInRange(tunit.getPos(), spellAOE) (unit u) ->
+        if u.isEnemyOf(sunit) and u.isAlive()
+          sunit.dealPhysicalDamage(u, explosionDamage)
+          new TagBuff(15.).apply(u)
+
+      flashEffect(Abilities.mortarMissile, tunit.getPos())
+
+      sunit.startAbilityCooldown(EXPLOSIVE_SHOT_ID)
+
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Next successful attack will cause an explosion, dealing percent of the attack damage to the enemies in the area and |cffd803bctagging|r them.")
+  new PassiveAbilityPreset(EXPLOSIVE_SHOT_ID, INNATE_SPELL_LEVELS, tooltip)
+  ..makeDAbility()
+  ..presetIcon(Icons.pASBTNMarksmanShip)
+
+  ..tooltipStartListen()
+  ..setName("Critical Arrow")
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
+  ..addTooltipProperty("Explosion Damage", lvl -> (EXPLOSION_DAMAGE.run(lvl) * 100).percRound())
+  ..presetAreaofEffect(EXPLOSION_AOE)
+  ..presetCooldown(lvl -> 17. - 2 * lvl)
+  ..tooltipStopListen()

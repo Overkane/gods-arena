@@ -6,10 +6,11 @@ import AttachmentPoints
 import ClosureEvents
 import GameConstants
 import TooltipFactory
+import AbilityDefinitionExtension
 
 public constant TAGWALK_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure WALK_DURATION = lvl -> 5. + 1. * lvl
+constant RealLevelClosure WALK_DURATION = lvl -> 4. + 1. * lvl
 
 public constant tagBuffObj = compiletime(createDummyBuffObject("Tagged", "This unit has been tagged.", Icons.bTNTheBlackArrow, Abilities.parasiteTarget, AttachmentPoints.overhead))
 constant stabBuffObj = compiletime(createDummyBuffObject("Tag Walk".color(POSITIVE_COLOR), "Increases speed and reduces damage taken. Enemies touched during the effect are |cffd803bctagged|r and will receive more damage.", Icons.bTNTheBlackArrow))
@@ -39,7 +40,7 @@ class TagwalkBuff extends NormalBuff
         
 
     override function defenseModifier()
-        DamageEvent.setAmount(DamageEvent.getAmount() * 0.25)
+        DamageEvent.setAmount(DamageEvent.getAmount() * 0.50)
 
     override function onEnd()
         super.onEnd()
@@ -60,19 +61,17 @@ init
     let tooltip = new AbilityTooltipGenerator("Reduces incoming damage and boosts speed. Walking through enemies will make them |cffd803bctagged|r, enhancing other spells.")
     new AbilityDefinitionBladeMasterWindWalk(TAGWALK_ID)
     ..registerTooltipGenerator(tooltip)
+    ..makeWAbility()
     ..presetIcon(Icons.bTNAmbush)
-    ..presetButtonPosNormal(1, 2)
-    ..presetButtonPosResearch(1, 0)
     
     ..tooltipStartListen()
     ..setLevels(NORMAL_SPELL_LEVELS)
-    ..presetHotkey("W")
     ..setName("Tag Walk")
     ..addTooltipProperty("Walk Duration", WALK_DURATION)
-    ..addTooltipProperty("Damage Reduction", lvl -> "75%")
+    ..addTooltipProperty("Damage Reduction", lvl -> "50%")
     
-    ..presetManaCost(lvl -> 40 + 10 * lvl)
-    ..presetCooldown(lvl -> 20. - 2. * lvl)
+    ..presetManaCost(lvl -> 35 + 20 * (lvl-1))
+    ..presetCooldown(lvl -> 20. - 1. * lvl)
     ..tooltipStopListen()
     
     ..presetDurationHero(WALK_DURATION)
