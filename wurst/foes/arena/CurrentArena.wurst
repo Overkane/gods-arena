@@ -1,3 +1,3 @@
 package CurrentArena
 
-public rect currentArenaRect = null
+public rect currentArenaRect = GetEntireMapRect()
