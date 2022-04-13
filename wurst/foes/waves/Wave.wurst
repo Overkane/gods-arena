@@ -219,8 +219,8 @@ public class Wave
         nextStep()
 
   function finish()
-    onFinishListener.onFinish(this)
     printTimed("|cff1f9913>> Wave cleared!", 10.)
+    onFinishListener.onFinish(this)
     WAVE_FINISHED.play()
 
     pData.forEach() (player p, PlayerData playerData) ->

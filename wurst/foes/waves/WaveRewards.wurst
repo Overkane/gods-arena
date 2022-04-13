@@ -5,16 +5,22 @@ import PlayerData
 import HashMap
 import Wave
 import Boss
-import GeneralFunctions
+import SoundUtils
+
+/* 
+  Exp — is given for each creep, so heroes could level up during the wave.
+  Gold — is given on the wave finish, so players couldn't use earned gold during the wave to buy items.
+*/
 
 var expPerUnit = 0
-var goldPerUnit = 0
 
 var expPull = 0
 var goldPull = 0
 
 public var expCompensationOnPlayerLeave = 0
 public var goldCompensationOnPlayerLeave = 0
+
+constant RECIEVE_GOLD = new SoundDefinition(Sounds.receiveGold)
 
 var bossWave = false
 
@@ -28,8 +34,8 @@ init
     
     if bossWaveCondition and u.getOwner() == ENEMY_PLAYER
 
-      // TODO condition to fix messages with 0 exp and gold rewards, cuz
-      // Foes summons give exp and gold from pull.
+      // TODO condition to fix messages with 0 exp cuz
+      // Foes summons give exp from pull.
       if expPull != 0
         // That condition means that if exp for 2 units is bigger then overall pull,
         // which means that there is not enough exp for 2 units in pull,
@@ -44,18 +50,6 @@ init
             if playerData.getHero().have
               playerData.getHero().hero.addXp(expPerUnit, true)
           expPull -= expPerUnit
-          
-      if goldPull != 0  
-        if goldPerUnit * 2 > goldPull
-          pData.forEach() (player p, PlayerData playerData) ->
-            p.addGold(goldPull)
-          createBountyTextTag(u, goldPull)
-          goldPull -= goldPull
-        else
-          pData.forEach() (player p, PlayerData playerData) ->
-            p.addGold(goldPerUnit)
-          createBountyTextTag(u, goldPerUnit)
-          goldPull -= goldPerUnit
       
       if u.isBoss()
         bossList.remove(u)
@@ -71,7 +65,6 @@ init
     goldPull = waveGold + (waveGold * (8-pData.size())/7).round()
 
     expPerUnit = (expPull / creepAmount).toInt()
-    goldPerUnit = (goldPull / creepAmount).toInt()
 
     // 1/7 of bonus gold and exp is held by player.
     // For exapmle 6 players get 2/7 bonus gold and exp based on original value.
@@ -81,3 +74,12 @@ init
     // like if there was not that player from the beggining.
     goldCompensationOnPlayerLeave += (waveExp / 7).round()
     expCompensationOnPlayerLeave += (waveGold / 7).round()
+
+  onWaveFinish() (Wave wave) ->
+    // Setting a small delay for message to appear after "Wave cleared!" message.
+    doAfter(2.5) -> 
+      pData.forEach() (player p, PlayerData playerData) ->
+        p
+        ..addGold(goldPull)
+        ..print("You have got " + goldPull.toString().color(COLOR_GOLD) + " gold for completing the wave.", 7.5)
+      RECIEVE_GOLD.play()
