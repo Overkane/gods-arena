@@ -24,6 +24,7 @@ public class Boss extends UnitEntity
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
       onBossDefeat.execute()
+      bossList.remove(actor)
 
   override function update()
     physicsUpdate(this)

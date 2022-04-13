@@ -51,8 +51,6 @@ init
               playerData.getHero().hero.addXp(expPerUnit, true)
           expPull -= expPerUnit
       
-      if u.isBoss()
-        bossList.remove(u)
   
   onWaveStart() (Wave wave) ->
     let creepAmount = wave.creepAmount
