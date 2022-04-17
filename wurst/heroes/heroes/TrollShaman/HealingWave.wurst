@@ -62,7 +62,7 @@ init
   new ChannelAbilityPreset(HEALING_WAVE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeQAbility()
   ..presetIcon(Icons.bTNHealingWave)
-  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self))
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.friend, TargetsAllowed.self))
   
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.UNIT)
