@@ -10,8 +10,8 @@ constant MANA_SHIELD_ABSORB = 2
 constant MANA_SHIELD_DURATION = 15
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
-  "Mana Shield", 
-  "activates a shield that absorbs " + MANA_SHIELD_ABSORB.color(COLOR_GOLD_STR) + " damage per point of mana. "
+  "Magic Shield", 
+  "applies on self a shield that absorbs  damage per point of mana. "
     + getDurationString(MANA_SHIELD_DURATION))
 
 public constant MANTLE_OF_PROTECTION_ITEM = compiletime(new RecipeItem()

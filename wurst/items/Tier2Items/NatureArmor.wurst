@@ -28,7 +28,7 @@ public constant NATURE_ARMOR_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.LIFE, 1000)
 ..addBonus(Bonus.LIFEREGEN, 15)
 ..setAbilities(commaList(NOURISH_ID, BONUS_SPEED_ID))
-..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR) + "\n\n" + ABIL_TOOLTIP)
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR_STRING) + "\n\n" + ABIL_TOOLTIP)
 )..register()
 
 public constant NATURE_ARMOR_RECIPE = new ItemRecipe()

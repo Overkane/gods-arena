@@ -14,7 +14,7 @@ public constant BOOTS_OF_SPEED_ITEM = compiletime(new RecipeItem()
 ..setInterfaceIcon(Icons.bTNBootsOfSpeed)
 ..setGoldCost(100)
 ..setAbilities(commaList(BONUS_SPEED_ID))
-..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR))
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR_STRING))
 )..register()
 
 @compiletime function gen()

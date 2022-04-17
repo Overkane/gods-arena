@@ -29,7 +29,7 @@ public constant MANA_BOOTS_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.MANA, 150)
 ..setAbilities(commaList(MANA_ID, BONUS_SPEED_ID))
 ..setCooldownGroup(MANA_COOLDOWN_GROUP_ID.toRawCode())
-..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR) + "\n\n" + ABIL_TOOLTIP)
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR_STRING) + "\n\n" + ABIL_TOOLTIP)
 )..register()
 
 public constant MANA_BOOTS_RECIPE = new ItemRecipe()

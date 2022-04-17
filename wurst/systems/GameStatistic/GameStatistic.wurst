@@ -70,13 +70,13 @@ public function createCustomUI(player p)
   ..add(basicStatFrames.get(Bonus.ATTACKSPEED))
 
   ..row()
-  ..add(baseIconFrame(Icons.bTNScourgeBuild, "Spell Power", "Your {0} abilities will deal bonus damage, based on the original value multiplied by this value.".format(MAGICAL_DAMAGE_STRING)))..padTop(0.002)
+  ..add(baseIconFrame(Icons.bTNScourgeBuild, "Spell Power", "Your {0} abilities will deal bonus damage, based on the original value multiplied by this value. Affects {1} spells.".format(MAGICAL_DAMAGE_STRING, HEALING_STRING)))..padTop(0.002)
   ..add(customStatFrames.get(CustomUnitStats.SPELL_POWER))..padTop(0.002)
   
-  ..add(baseIconFrame(Icons.bTNWispSplode, "Spell Crit Power", "How much additional damage you will deal with {0} crit.".format(MAGICAL_DAMAGE_STRING)))..padTop(0.002)
+  ..add(baseIconFrame(Icons.bTNWispSplode, "Spell Crit Power", "How much additional damage you will deal with {0} crit. Affects {1} spells.".format(MAGICAL_DAMAGE_STRING, HEALING_STRING)))..padTop(0.002)
   ..add(customStatFrames.get(CustomUnitStats.SPELL_CRIT_POWER))..padTop(0.002)
   
-  ..add(baseIconFrame(Icons.bTNPriestMaster, "Spell Crit Chance", "Chance to deal critical damage with {0} abilities.".format(MAGICAL_DAMAGE_STRING)))..padTop(0.002)
+  ..add(baseIconFrame(Icons.bTNPriestMaster, "Spell Crit Chance", "Chance to deal critical damage with {0} abilities. Affects {1} spells.".format(MAGICAL_DAMAGE_STRING, HEALING_STRING)))..padTop(0.002)
   ..add(customStatFrames.get(CustomUnitStats.SPELL_CRIT_CHANCE))..padTop(0.002)
   
   ..add(baseIconFrame(Icons.bTNWellSpring, "Spell Lifesteal", "Which portion of {0} damage you will restore as health.".format(MAGICAL_DAMAGE_STRING)))..padTop(0.002)
@@ -158,7 +158,6 @@ function baseIconFrame(string iconPath, string title, string description) return
   ..setSize(0.015, 0.015)
 
   let tooltip = createFrame("BoxedText", iconFrame, 0, 0)
-  // ..setPoint(FRAMEPOINT_LEFT, iconFrame, FRAMEPOINT_RIGHT)
 
   let tooltipTitle = getFrame("BoxedTextTitle", 0)
   ..setText(title.color(COLOR_GOLD_STR))

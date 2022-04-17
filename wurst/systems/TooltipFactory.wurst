@@ -6,19 +6,27 @@ constant ACTIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
 constant PASSIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
 constant ABILITY_NAME_COLOR = color(106, 194, 221).toColorString()
 
-public constant PHYSICAL_COLOR = colorA(223, 59, 33, 255).toColorString()
-public constant MAGICAL_COLOR = colorA(91, 147, 209, 255).toColorString()
-public constant PURE_COLOR = colorA(194, 156, 74, 255).toColorString()
-public constant UTILITY_COLOR = colorA(35, 170, 58, 255).toColorString()
+public constant PHYSICAL_COLOR = colorA(223, 59, 33, 255)
+public constant MAGICAL_COLOR = colorA(91, 147, 209, 255)
+public constant PURE_COLOR = colorA(194, 156, 74, 255)
+public constant UTILITY_COLOR = colorA(35, 170, 58, 255)
+public constant HEALING_COLOR = colorA(138, 235, 99, 255)
+
+public constant PHYSICAL_COLOR_STRING = PHYSICAL_COLOR.toColorString()
+public constant MAGICAL_COLOR_STRING = MAGICAL_COLOR.toColorString()
+public constant PURE_COLOR_STRING = PURE_COLOR.toColorString()
+public constant UTILITY_COLOR_STRING = UTILITY_COLOR.toColorString()
+public constant HEALING_COLOR_STRING = HEALING_COLOR.toColorString()
 
 public constant POSITIVE_COLOR = color(0, 255, 0).toColorString()
 public constant NEGATIVE_COLOR = color(205, 55, 55).toColorString()
 
 public constant IMPORTANT_COLOR = NEGATIVE_COLOR
 
-public constant PHYSICAL_DAMAGE_STRING = "Physical".color(PHYSICAL_COLOR)
-public constant MAGICAL_DAMAGE_STRING = "Magical".color(MAGICAL_COLOR)
-public constant PURE_DAMAGE_STRING = "Pure".color(PURE_COLOR)
+public constant PHYSICAL_DAMAGE_STRING = "Physical".color(PHYSICAL_COLOR_STRING)
+public constant MAGICAL_DAMAGE_STRING = "Magical".color(MAGICAL_COLOR_STRING)
+public constant PURE_DAMAGE_STRING = "Pure".color(PURE_COLOR_STRING)
+public constant HEALING_STRING = "Healing".color(HEALING_COLOR)
 
 enum CustomStatType
   PHYSICAL
@@ -145,12 +153,12 @@ public function CustomUnitStats.getMeasure() returns string
 public function RecipeItem.addCustomStat(CustomUnitStats customStat, real amount)
   var result = ""
 
-  var tooltipColor = PHYSICAL_COLOR
+  var tooltipColor = PHYSICAL_COLOR_STRING
 
   if customStat.getStatType() == CustomStatType.MAGICAL
-    tooltipColor = MAGICAL_COLOR
+    tooltipColor = MAGICAL_COLOR_STRING
   else if customStat.getStatType() == CustomStatType.UTILITY
-    tooltipColor = UTILITY_COLOR
+    tooltipColor = UTILITY_COLOR_STRING
 
   if amount >= 0
     result += COLOR_GOLD_STR + "+"

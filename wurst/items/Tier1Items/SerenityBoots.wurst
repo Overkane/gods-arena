@@ -36,7 +36,7 @@ public constant SERENITY_BOOTS_ITEM = compiletime(new RecipeItem()
 ..onPickup((unit actor) -> createBuffTimer(actor))
 ..onDrop((unit actor) -> destroyBuffTimer(actor))
 ..setAbilities(commaList(SERENITY_ID, BONUS_SPEED_ID))
-..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR) + "\n\n" + ABIL_TOOLTIP)
+..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR_STRING) + "\n\n" + ABIL_TOOLTIP)
 )..register()
 
 public constant SERENITY_BOOTS_RECIPE = new ItemRecipe()
