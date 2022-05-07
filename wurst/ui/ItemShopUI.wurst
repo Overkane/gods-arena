@@ -129,6 +129,12 @@ public function initItemShop()
       CANT_SOLD_ITEM.playForPlayer(caster.getOwner())
       print("Can sell items only from inventory.")
 
+  EventListener.add(EVENT_PLAYER_UNIT_SELECTED) -> 
+    let u = EventData.getTriggerUnit()
+    if u.inventorySize() != 0
+      shop.setPlayerTarget(EventData.getTriggerPlayer(), u)
+    
+
 @compiletime function genAbility()
   new AbilityDefinitionMountainKingThunderBolt(SELL_ID)
   ..setDummyAbility()
