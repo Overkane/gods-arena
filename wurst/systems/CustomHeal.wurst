@@ -13,21 +13,19 @@ public function unit.healTarget(unit target, real amount)
     this.healTarget(target, amount, true)
 
 public function unit.healTarget(unit target, real amount, boolean showEffect)
-    // TODO when can it happen?
-    if this == null
-        return
-
     var realAmount = amount
 
-    if this.hasStat(CustomUnitStats.SPELL_POWER)
-        let spellpower = this.getStat(CustomUnitStats.SPELL_POWER)
-        realAmount = realAmount * (1 + spellpower)
+    // Healing enhanced by stats only if there is known heal caster
+    if this != null
+        if this.hasStat(CustomUnitStats.SPELL_POWER)
+            let spellpower = this.getStat(CustomUnitStats.SPELL_POWER)
+            realAmount = realAmount * (1 + spellpower)
 
-    if this.hasStat(CustomUnitStats.SPELL_CRIT_CHANCE) and this.hasStat(CustomUnitStats.SPELL_CRIT_POWER)
-        let spellCritChance = this.getStat(CustomUnitStats.SPELL_CRIT_CHANCE)
-      
-        if spellCritChance > GetRandomReal(0, 1)
-            realAmount = realAmount * (1 + this.getStat(CustomUnitStats.SPELL_CRIT_POWER))
+        if this.hasStat(CustomUnitStats.SPELL_CRIT_CHANCE) and this.hasStat(CustomUnitStats.SPELL_CRIT_POWER)
+            let spellCritChance = this.getStat(CustomUnitStats.SPELL_CRIT_CHANCE)
+          
+            if spellCritChance > GetRandomReal(0, 1)
+                realAmount = realAmount * (1 + this.getStat(CustomUnitStats.SPELL_CRIT_POWER))
 
     let missingHp = target.getMaxHP() - target.getHP()
     realAmount = missingHp > realAmount ? realAmount : missingHp
