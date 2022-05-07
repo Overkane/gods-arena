@@ -4,6 +4,7 @@ import AbilityObjEditing
 public class StunAbilityPreset extends AbilityDefinitionMountainKingThunderBolt
   construct(int newAbilityId, int lvls)
     super(newAbilityId)
+    setLevels(lvls)
     this.setDummyAbility()
     setArtEffect("")
     setArtCaster("")
@@ -11,6 +12,5 @@ public class StunAbilityPreset extends AbilityDefinitionMountainKingThunderBolt
     setMissileArt("")
     setAnimationNames("spell")
     setMissileSpeed(99999)
-    setLevels(lvls)
     presetDamage(lvl -> 0.)
     

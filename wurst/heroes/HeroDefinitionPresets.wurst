@@ -2,7 +2,6 @@ package HeroDefinitionPresets
 import public HeroPreset
 import StatUp
 import ObjectIds
-import HashMap
 
 // Hero type id and its innate ability id. Using hashtable cuz can't transfer HashMap between compiletime and runtime.
 public constant heroInnateSkills = compiletime(InitHashtable())

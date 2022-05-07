@@ -18,8 +18,6 @@ RealLevelClosure DURATION = lvl -> 10.
   ..registerTooltipGenerator(tooltip)
   ..makeRAbility()
   ..presetIcon(Icons.bTNPurge)
-  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
-  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
   
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)

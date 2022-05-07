@@ -55,8 +55,8 @@ init
   ..tooltipStopListen()
 
   new AbilityDefinitionFarseerChainLightning(STORM_HAMMER_CHAIN_LIGHTNING_ID)
-  ..setDummyAbility()
   ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setDummyAbility()
   ..presetDamageperTarget(CHAIN_LIGHTNING_DAMAGE)
   ..presetNumberofTargetsHit(CHAIN_LIGHTNING_NUMBER_OF_TARGETS)
   ..presetDamageReductionperTarget(lvl -> 0)

@@ -116,14 +116,14 @@ init
   ..setNormalAbilities("")
 
   new AbilityDefinitionShadowHunterSerpentWard(SUMMON_WATER_TENTACLE_ID)
-  ..setDummyAbility()
   ..setLevels(1)
+  ..setDummyAbility()
   ..setSummonedUnitType(1, WATER_TENTACLE_ID.toRawCode())
   ..setDurationNormal(1, 60)
 
   new AbilityDefinitionBeastMasterStampede(WAVES_ID)
-  ..setDummyAbility()
   ..setLevels(1)
+  ..setDummyAbility()
   ..setBeastsPerSecond(1, 20)
   ..setBeastCollisionRadius(1, 64)
   ..setDamageAmount(1, 250)

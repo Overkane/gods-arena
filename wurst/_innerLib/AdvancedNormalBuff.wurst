@@ -2,7 +2,7 @@ package AdvancedNormalBuff
 import public Buff
 
 /** When applied to a unit that already has the buff, the existing Buff's duration gets set to
-this buff's duration and also triggers again onApply() function*/
+this buff's duration and also triggers again onApply() function */
 public abstract class AdvancedNormalBuff extends Buff
 
   construct(real dur, buffTuple buffData)

@@ -119,8 +119,8 @@ init
 
 
   new AbilityDefinitionLichFrostNova(FROSTNOVA_ID)
-  ..setDummyAbility()
   ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setDummyAbility()
   ..setArtTarget("")
   ..presetAreaofEffectDamage(lvl -> 0)
   ..presetSpecificTargetDamage(lvl -> 0)

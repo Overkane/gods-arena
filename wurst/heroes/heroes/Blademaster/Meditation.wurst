@@ -93,8 +93,8 @@ init
   ..presetDurationHero(MEDITATION_DURATION)
 
   new AbilityDefinitionInnerFireCreep(MEDITATION_DAMAGE_ID)
-  ..setDummyAbility()
   ..setLevels(NORMAL_SPELL_LEVELS)
+  ..setDummyAbility()
   ..presetDamageIncrease(lvl -> DAMAGE_BUFF.run(lvl)/100)
   ..presetDefenseIncrease(lvl -> 0)
   ..presetDurationNormal(DAMAGE_DURATION)

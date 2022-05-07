@@ -48,8 +48,6 @@ init
   new ChannelAbilityPreset(RESTORATION_RITUAL_ID, ULTIMATE_SPELL_LEVELS, false, tooltip)
   ..makeRAbility()
   ..presetIcon(Icons.bTNBigBadVoodooSpell)
-  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
-  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
   ..setArtCaster(Abilities.voodooAura)
   ..presetOption(Option.VISIBLE, true)
   ..presetDisableOtherAbilities(lvl -> false)
