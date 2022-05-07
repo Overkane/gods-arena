@@ -83,7 +83,6 @@ class SerpentWard extends SummonEntity
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(1)
   ..setAttack1Range(ATTACK_RANGE.run(3))
-  ..setAttack1AttackType(AttackType.Chaos)
   ..setAttack1CooldownTime(ATTACK_COOLDOWN.run(3))
 
   new UnitDefinition(SUMMON4, UnitIds.serpentward3)
@@ -91,7 +90,6 @@ class SerpentWard extends SummonEntity
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(1)
   ..setAttack1Range(ATTACK_RANGE.run(4))
-  ..setAttack1AttackType(AttackType.Chaos)
   ..setAttack1CooldownTime(ATTACK_COOLDOWN.run(4))
 
   new UnitDefinition(SUMMON5, UnitIds.serpentward4)
