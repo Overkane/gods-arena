@@ -179,7 +179,7 @@ public class HonorShop extends UnitEntity
 
 @compiletime function gen()
   new HeroPreset(HONOR_SHOP_ID, UnitIds.circleofpower, "Honor Shop")
-  ..setProperNames("Honor Shop")
+  ..addProperName("Honor Shop")
   ..setIconGameInterface(Icons.bTNMedalionOfCourage)
   ..hideHeroDeathMsg(true)
   ..hideHeroMinimapDisplay(true)
