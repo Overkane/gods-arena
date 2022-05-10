@@ -55,7 +55,7 @@ init
   ..presetIcon(Icons.pASBTNMarksmanShip)
 
   ..tooltipStartListen()
-  ..setName("Critical Arrow")
+  ..setName("Explosive Shot")
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)
   ..addTooltipProperty("Explosion Damage", lvl -> (EXPLOSION_DAMAGE.run(lvl) * 100).percRound())
   ..presetAreaofEffect(EXPLOSION_AOE)
