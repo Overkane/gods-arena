@@ -2,7 +2,7 @@ package Death
 import ClosureEvents
 import ClosureTimers
 import Reference
-
+import SaveLoadSystem
 import PlayerData
 import GameConstants
 
@@ -20,6 +20,7 @@ init
       if aliveCount.into() == 0
         print(">> All Heroes died. You lost!".color(COLOR_GOLD_STR))
         print(">> Game will end momentarily.".color(COLOR_GOLD_STR))
+        savePlayerData()
         ended = true
         doAfter(30.) ->
           EndGame(true)

@@ -30,14 +30,12 @@ init
   ..setIcon(Icons.bTNMedalionOfCourage)
   ..setTitle("Honor Points")
   ..setDescription(
-    "Honor Points is a resource which you can keep between games.\n" +
+    "Honor Points is a resource which you keep between games.\n" +
     "You can spend it for various upgrades on F3.\n" +
     "You get 1 honor point for each 500 arena points you earn.\n" +
-    "Arena points can be obtained with various ways:\n" +
-    "- +5 for a kill;\n" +
-    "- +100 for finishing a wave;\n" +
-    "- -50 for a death.\n" +
-    "You can save honor points only if saved amount is more than amount in your save file.\n"
+    "Arena points can be obtained with various ways like kills or finishing waves.\n" +
+    "You can save honor points only if earned amount is more than in your save file.\n" +
+    "Honor points automatically loaded on game start and saved on any result game end."
   )
 
   new Quest(false)
@@ -58,7 +56,6 @@ init
   ..setTitle("Commands")
   ..setDescription(
     "-kick [player number] - kicks player with given number (available only for red player)\n" + 
-    "-save - transforms arena points to honor points and saves it\n" + 
     "-stats - shows hero custom stats\n" + 
     "-z [number] - sets camera distance\n"
   )

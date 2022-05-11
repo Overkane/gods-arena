@@ -30,7 +30,7 @@ init
     initItemShop()
     initChatCommands()
     startEntityLoop()
-    initSaveLoadSystem()
+    loadPlayerData()
     initGameSetupDialog()
     if allowCheats
       createCheatPanel()

@@ -8,6 +8,7 @@ import Abilities
 import AttachmentPoints
 import ClosureForGroups
 import CurrentArena
+import SaveLoadSystem
 
 constant LAST_WAVE_COMPLETED = new SoundDefinition(Sounds.credits)
 
@@ -62,4 +63,5 @@ public class Arena
       else
         LAST_WAVE_COMPLETED.play()
         printTimed("|cffceac15>> Congratulations! You finished the last arena!", 10.)
+        savePlayerData()
     end
