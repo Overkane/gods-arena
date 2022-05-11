@@ -61,9 +61,9 @@ init
   ..addTooltipProperty("HP% Restore per sec", lvl -> PERC_HP.run(lvl).percRound())
   ..addTooltipProperty("MP% Restore per sec", lvl -> PERC_MP.run(lvl).percRound())
   ..addTooltipProperty("Duration", DURATION)
+  ..presetAreaofEffect(AOE)
   ..presetManaCost(lvl -> 150 + 50 * lvl)
   ..presetCooldown(lvl -> 100)
-  ..presetAreaofEffect(AOE)
   ..tooltipStopListen()
   
   ..presetDurationNormal(DURATION)

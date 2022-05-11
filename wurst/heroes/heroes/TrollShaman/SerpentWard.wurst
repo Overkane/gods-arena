@@ -18,7 +18,7 @@ constant SUMMON5 = compiletime(UNIT_ID_GEN.next())
 constant SUMMON_LIST = new LinkedList<int>..add(SUMMON1, SUMMON2, SUMMON3, SUMMON4, SUMMON5)
 constant IntLevelClosure SUMMON_TYPE = lvl -> SUMMON_LIST.get(lvl-1)
 
-constant IntLevelClosure BASE_DAMAGE = lvl -> 12 * lvl
+constant IntLevelClosure BASE_DAMAGE = lvl -> 30 * lvl
 constant RealLevelClosure ATTACK_COOLDOWN = lvl -> 1.7
 constant IntLevelClosure ATTACK_RANGE = lvl -> 400
 constant IntLevelClosure DURATION = lvl -> 20
@@ -57,11 +57,10 @@ class SerpentWard extends SummonEntity
   ..addTooltipProperty("Attack Cooldown", lvl -> ATTACK_COOLDOWN.run(lvl).toString(1))
   ..addTooltipProperty("Attack Range", ATTACK_RANGE)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..presetCastRange(lvl -> 400)
-  ..tooltipStopListen()
-
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..presetCooldown(lvl -> 7)
+  ..tooltipStopListen()
   
   
   new UnitDefinition(SUMMON1, UnitIds.serpentward1)
