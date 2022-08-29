@@ -1,0 +1,101 @@
+package SeaAuraBuff
+import PresetBuffs
+import Assets
+import ClosureForGroups
+import BonusHandler
+import CustomStatSystem
+import HashMap
+import TooltipFactory
+import initlater SeaAura
+
+public constant buffTuple = compiletime(createDummyBuffObject("Sea Aura".color(POSITIVE_COLOR), "Increases mana regeneration and magic resistance",  Icons.bTNBrilliance))
+
+constant buffMap = new HashMap<trigger, SeaAuraMainBuff>
+
+function trigger.getBuff() returns SeaAuraMainBuff
+  return buffMap.get(this)
+
+function trigger.setBuff(SeaAuraMainBuff buffInstance) 
+  buffMap.put(this, buffInstance)
+
+public class SeaAuraMainBuff extends NormalBuff
+  static constant RANGE_BUFFER = 32
+
+  effect buffEffect
+  constant affected = CreateGroup()
+  constant inRangeTrig = CreateTrigger()..setBuff(this)
+
+  private real bonusManaReg
+  private real bonusMagicRes
+  private real casterMult
+
+  construct(real bonusManaReg, real bonusMagicRes, real casterMult)
+    super(99999, buffTuple)
+
+    this.bonusManaReg = bonusManaReg
+    this.bonusMagicRes = bonusMagicRes
+    this.casterMult = casterMult
+
+  function onInRange(unit u)
+    if u.isAlive() and u.isAllyOf(target) and not affected.has(u) and u != target
+      affected.add(u)
+      new SeaAuraMinorBuff(99999, bonusManaReg, bonusMagicRes)..apply(u)
+
+  override function onApply()
+    buffEffect = target.addEffect(Abilities.brilliance, AttachmentPoints.origin)
+    inRangeTrig..registerUnitInRange(target, SEA_AURA_AOE, null)
+    ..addAction(() -> GetTriggeringTrigger().getBuff().onInRange(GetTriggerUnit()))
+
+    forUnitsInRange(target.getPos(), SEA_AURA_AOE) (unit u) ->
+      onInRange(u)
+
+    target
+    ..addBonus(Bonus.MANAREGEN, bonusManaReg * casterMult)
+    ..addStat(CustomUnitStats.MAGIC_RESISTANCE, bonusMagicRes)
+  
+  override function onEnd()
+    buffEffect.destr()
+    buffMap.remove(inRangeTrig)
+    inRangeTrig.destr()
+
+    for u in affected
+      u.removeBuffById(SeaAuraMinorBuff.typeId)
+    
+    affected.destr()
+
+    target
+    ..addBonus(Bonus.MANAREGEN, -bonusManaReg * casterMult)
+    ..addStat(CustomUnitStats.MAGIC_RESISTANCE, -bonusMagicRes)
+
+  override function update()
+    super.update()
+
+    for u in affected
+      // Adding additional range for buff AOE, so its squared value will be higher than squared distance.
+      if u.getPos().distanceToSq(target.getPos()) > (SEA_AURA_AOE + RANGE_BUFFER).squared()
+        u.removeBuffById(SeaAuraMinorBuff.typeId)
+        affected.remove(u)
+
+
+public class SeaAuraMinorBuff extends NormalBuff
+  private real bonusManaReg
+  private real bonusMagicRes
+
+  construct(real dur, real bonusManaReg, real bonusMagicRes)
+    super(dur, buffTuple)
+
+    this.bonusManaReg = bonusManaReg
+    this.bonusMagicRes = bonusMagicRes
+    
+  override function onApply()
+    updateBuff(true)
+
+  override function onEnd()
+    updateBuff(false)
+
+  function updateBuff(bool onApply)
+    let multiplier = onApply ? 1 : -1
+
+    target
+    ..addBonus(Bonus.MANAREGEN, bonusManaReg * multiplier)
+    ..addStat(CustomUnitStats.MAGIC_RESISTANCE, bonusMagicRes * multiplier)

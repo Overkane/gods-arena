@@ -3,26 +3,25 @@ import AbilityTooltipGenerator
 import UnitIds
 import GameConstants
 import Entity
-import CustomStatSystem
+import AbilityDefinitionExtension
+import SummonEntity
 
 public constant WATER_ELEMENTAL_ID = compiletime(ABIL_ID_GEN.next())
 
-constant WATER_ELEMENTAL_1 = compiletime(UNIT_ID_GEN.next())
-constant WATER_ELEMENTAL_2 = compiletime(UNIT_ID_GEN.next())
-constant WATER_ELEMENTAL_3 = compiletime(UNIT_ID_GEN.next())
-constant WATER_ELEMENTAL_4 = compiletime(UNIT_ID_GEN.next())
-constant WATER_ELEMENTAL_5 = compiletime(UNIT_ID_GEN.next())
+constant ELEMENTAL_1 = compiletime(UNIT_ID_GEN.next())
+constant ELEMENTAL_2 = compiletime(UNIT_ID_GEN.next())
+constant ELEMENTAL_3 = compiletime(UNIT_ID_GEN.next())
 
-public constant WATER_ELEM_LIST = new LinkedList<int>..add(WATER_ELEMENTAL_1, WATER_ELEMENTAL_2, WATER_ELEMENTAL_3, WATER_ELEMENTAL_4, WATER_ELEMENTAL_5)
+public constant ELEM_LIST = new LinkedList<int>..add(ELEMENTAL_1, ELEMENTAL_2, ELEMENTAL_3)
 
-constant SUMMON_COUNT = [1, 1, 2, 2, 3, 3]
-constant IntLevelClosure MAX_SUMMON_COUNT = lvl -> SUMMON_COUNT[lvl]
-constant IntLevelClosure WATER_ELEM_TYPE = lvl -> WATER_ELEM_LIST.get(lvl-1)
-    
+constant IntLevelClosure MAX_SUMMON_COUNT = lvl -> 1 + lvl
+constant IntLevelClosure ELEM_TYPE = lvl -> ELEM_LIST.get(lvl-1)
+
+
 init
   EventListener.onCast(WATER_ELEMENTAL_ID) (unit caster) ->
     let lvl = caster.getAbilityLevel(WATER_ELEMENTAL_ID)
-    let summonTypeId = WATER_ELEM_TYPE.run(lvl)
+    let summonTypeId = ELEM_TYPE.run(lvl)
     let maxSummonCount = MAX_SUMMON_COUNT.run(lvl)
 
     if WaterElemental.SUMMON_GROUP.size() >= maxSummonCount
@@ -30,90 +29,56 @@ init
       
     new WaterElemental(caster, summonTypeId, caster.getPos3Zero(), angle(GetRandomDirectionDeg()))
 
-class WaterElemental extends UnitEntity
+
+class WaterElemental extends SummonEntity
   static constant SUMMON_GROUP = new LinkedList<unit>
 
   static function destroyExcessElemental()
     SUMMON_GROUP.dequeue().kill()
 
   construct(unit summoner, int typId, vec3 pos, angle ang)
-    super(createUnit(summoner.getOwner(), typId, pos.toVec2(), ang))
-    actor
-    ..setAnimation("birth")
-    ..queueAnimation("stand")
+    super(summoner, typId, pos, ang)
     SUMMON_GROUP.add(actor)
-
-    let casterSP = 1 + EventData.getSummoningUnit().getStat(CustomUnitStats.SPELL_POWER)
-    let newBaseDamage = (actor.getBaseDamage(0) * casterSP).round()
-    let newMaxHP = (actor.getMaxHP() * casterSP).round()
-    let newArmor = actor.getArmor() * casterSP
-
-    actor
-    ..setBaseDamage(newBaseDamage, 0)
-    ..setMaxHP(newMaxHP)
-    ..setArmor(newArmor)
-    ..addHP(actor.getMaxHP()) // Need to heal unit, since it won't have full max hp after set it.
 
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
       SUMMON_GROUP.remove(actor)
-      terminate()
+
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Summons a water elemental to attack hero enemies. Max amount of elementals depends on ability level. If max amount is reached, then on spell cast the oldest one will be killed. Water elementals base damage, armor and max hp scale with hero spell power.")
-  new ChannelAbilityPreset(WATER_ELEMENTAL_ID, NORMAL_SPELL_LEVELS, true, tooltip)
-  ..presetButtonPosNormal(1, 2)
-  ..presetButtonPosResearch(1, 0)
+  let tooltip = new AbilityTooltipGenerator("Summons a Water Elemental. Max amount depends on ability level. If max amount is reached, then on spell cast the oldest one will be killed. Water Elementals scale with Spell Power.")
+  new ChannelAbilityPreset(WATER_ELEMENTAL_ID, INNATE_SPELL_LEVELS, true, tooltip)
+  ..makeDAbility()
   ..presetIcon(Icons.bTNSummonWaterElemental)
-  ..presetHotkey("W")
   
   ..tooltipStartListen()
   ..setName("Water Elemental")
   ..addTooltipProperty("Max Summon Count", MAX_SUMMON_COUNT)
-  ..presetManaCost(lvl -> 110 + 15 * lvl)
+  ..presetManaCost(lvl -> 50 + 50 * lvl)
   ..tooltipStopListen()
 
   ..presetCooldown(lvl -> 2)
   
-  new UnitDefinition(WATER_ELEMENTAL_1, UnitIds.waterelemental1)
-  ..setAttack1DamageBase(35)
-  ..setAttack1Range(600)
+  
+  new UnitDefinition(ELEMENTAL_1, UnitIds.waterelemental1)
+  ..setAttack1DamageBase(20)
+  ..setAttack1Range(550)
   ..setDefenseBase(2)
-  ..setHitPointsMaximumBase(350)
+  ..setHitPointsMaximumBase(300)
   ..setScalingValue(0.85)
 
-  new UnitDefinition(WATER_ELEMENTAL_2, UnitIds.waterelemental2)
-  ..setAttack1DamageBase(55)
-  ..setAttack1Range(625)
-  ..setDefenseBase(3)
-  ..setHitPointsMaximumBase(450)
+  new UnitDefinition(ELEMENTAL_2, UnitIds.waterelemental2)
+  ..setAttack1DamageBase(40)
+  ..setAttack1Range(600)
+  ..setDefenseBase(4)
+  ..setHitPointsMaximumBase(600)
   ..setScalingValue(0.925)
 
-  new UnitDefinition(WATER_ELEMENTAL_3, UnitIds.waterelemental3)
-  ..setAttack1DamageBase(65)
+  new UnitDefinition(ELEMENTAL_3, UnitIds.waterelemental3)
+  ..setAttack1DamageBase(60)
   ..setAttack1Range(650)
-  ..setHitPointsMaximumBase(750)
-  ..setDefenseBase(4)
-  ..setScalingValue(1.0)
-
-  new UnitDefinition(WATER_ELEMENTAL_4, UnitIds.seaelemental)
-  ..setAttack1DamageBase(75)
-  ..setAttack1Range(675)
-  ..setAttack1CooldownTime(1.25)
-  ..setHitPointsMaximumBase(925)
-  ..setArmorType(ArmorType.Large)
+  ..setAttack1AttackType(AttackType.Chaos)
+  ..setHitPointsMaximumBase(900)
   ..setDefenseBase(6)
+  ..setArmorType(ArmorType.Hero)
   ..setScalingValue(1.0)
-  ..setAttack1AttackType(AttackType.Chaos)
-  ..setNormalAbilities("")
-  
-  new UnitDefinition(WATER_ELEMENTAL_5, UnitIds.seaelemental)
-  ..setAttack1DamageBase(105)
-  ..setAttack1Range(700)
-  ..setAttack1CooldownTime(1.05)
-  ..setHitPointsMaximumBase(1150)
-  ..setArmorType(ArmorType.Large)
-  ..setDefenseBase(8)
-  ..setScalingValue(1.2)
-  ..setAttack1AttackType(AttackType.Chaos)
-  ..setNormalAbilities("")

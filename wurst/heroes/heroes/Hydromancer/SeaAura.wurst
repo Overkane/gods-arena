@@ -1,21 +1,50 @@
 package SeaAura
 import AbilityTooltipGenerator
 import GameConstants
+import ClosureEvents
+import SeaAuraBuff
+import PassiveAbilityPreset
+import AbilityDefinitionExtension
+import ClosureTimers
+import Buff
+import TooltipFactory
 
 public constant SEA_AURA_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure MANA_REGENERATION = lvl -> 1. * lvl
+constant RealLevelClosure MANA_REGENERATION = lvl -> 0.5 * lvl
+constant RealLevelClosure MAGIC_RESISTANCE = lvl -> 0.04 * lvl
+constant CASTER_MULT = 2.
 
-@compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Passively provides additional mana regeneration to nearby friendly units.")
-  new AbilityDefinitionArchMageBrillianceAura(SEA_AURA_ID)
-  ..registerTooltipGenerator(tooltip)
-  ..presetButtonPosNormal(1, 1)
-  ..presetButtonPosResearch(1, 0)
-  ..presetHotkey("D")
+public constant SEA_AURA_AOE = 800.
+
+
+init 
+  EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
+    let u = EventData.getTriggerUnit()
+
+    if EventData.getLearnedSkill() == SEA_AURA_ID
+      let lvl = u.getAbilityLevel(SEA_AURA_ID)
+      let bonudManaReg = MANA_REGENERATION.run(lvl)
+      let bonusMagicRes = MAGIC_RESISTANCE.run(lvl)
+
+      if u.hasBuff(SeaAuraMainBuff.typeId)
+        u.removeBuffById(SeaAuraMainBuff.typeId)
+      
+      // After applying buff main buff is destroyed we are waiting for minor buff to expire to be sure onEnd()
+      // it have used old buff values.
+      doAfter(BUFF_ANIM_PERIOD) ->
+        new SeaAuraMainBuff(bonudManaReg, bonusMagicRes, CASTER_MULT).apply(u)
+
+    
+@compiletime function gen()
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Increases Mana Regeneration and Magic Resistance. Mana Regeneration effect is twice as effective for the ability owner.")
+  new PassiveAbilityPreset(SEA_AURA_ID, NORMAL_SPELL_LEVELS, tooltip)
+  ..makeEAbility()
+  ..presetIcon(Icons.pASBTNBrilliance)
 
   ..tooltipStartListen()
-  ..setLevels(INNATE_SPELL_LEVELS)
   ..setName("Sea Aura")
-  ..presetManaRegenerationIncrease(MANA_REGENERATION)
+  ..addTooltipProperty("Bonus Mana Regeneration", MANA_REGENERATION)
+  ..addTooltipProperty("Bonus Magic Resistance", lvl -> (MAGIC_RESISTANCE.run(lvl) * 100).percRound())
+  ..presetAreaofEffect(lvl -> SEA_AURA_AOE)
   ..tooltipStopListen()

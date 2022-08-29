@@ -3,6 +3,7 @@ import AbilityTooltipGenerator
 import GameConstants
 import ClosureEvents
 import BubbleShieldBuff
+import AbilityDefinitionExtension
 
 public constant BUBBLE_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -22,10 +23,8 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Applies a bubble shield to the target, which heals it and blocks some amount of damage. The effect ends when the shield is destroyed or the duration exceeded. If applied on water elemental, then doubles its base damage.")
   new ChannelAbilityPreset(BUBBLE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..makeWAbility()
   ..presetIcon(Icons.bTNNeutralManaShield)
-  ..presetButtonPosNormal(2, 2)
-  ..presetButtonPosResearch(2, 0)
-  ..presetHotkey("E")
   ..presetDurationHero(DURATION)
   ..presetDurationNormal(DURATION)
   ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self, TargetsAllowed.friend))
@@ -37,7 +36,7 @@ init
   ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
-  ..presetManaCost(lvl -> 40 + 35 * lvl)
+  ..presetManaCost(lvl -> 75 + 45 * (lvl-1))
   ..presetCooldown(lvl -> 12. - lvl)
   ..tooltipStopListen()
   

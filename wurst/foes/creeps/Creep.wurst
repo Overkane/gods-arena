@@ -2,6 +2,7 @@ package Creep
 import GameConstants
 import PhysicsEntity
 import CurrentArena
+import GeneralFunctions
 
 interface AllCreepsDead
   abstract function execute()
@@ -55,11 +56,10 @@ public class Creep extends UnitEntity
 
   override function setXY(vec3 tpos)
     pos = tpos
-    if tpos.x > currentArenaRect.getMaxX() or tpos.x < currentArenaRect.getMinX()
-      vel = vec3(-vel.x, vel.y, vel.z)
+
+    if pos.toVec2().isTerrainWalkable(true)
+      actor.setXYZReal(pos)
+    else
+      vel = vel.rotate(vec3(0., 0., 1.), PI) * 0.6
       pos += vel
-    else if tpos.y > currentArenaRect.getMaxY() or tpos.y < currentArenaRect.getMinY()
-      vel = vec3(vel.x, -vel.y, vel.z)
-      pos += vel
-      
-    actor.setXYZReal(pos)
+      actor.setXYZReal(pos)

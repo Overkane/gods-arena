@@ -22,7 +22,7 @@ public class BubbleShieldBuff extends ShieldBuff
     this.caster = caster
 
   override function onApply()
-    if WATER_ELEM_LIST.has(target.getTypeId())
+    if ELEM_LIST.has(target.getTypeId())
       bonusDamage = target.getBaseDamage(0).toReal()
       target.addBonus(Bonus.DAMAGE, bonusDamage)
     ON_APPLY_SOUND.play()

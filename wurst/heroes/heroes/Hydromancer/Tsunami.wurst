@@ -1,0 +1,49 @@
+package Tsunami
+import Assets
+import ProjectileRepeator
+import AbilityTooltipGenerator
+import GameConstants
+import DamageSystem
+import AbilityDefinitionExtension
+
+public constant TSUNAMI_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure DAMAGE = lvl -> 150. + 150. * (lvl-1)
+
+// Hit event triggers every ANIMATION_PERIOD * (damageInterval + 1)
+constant damageInterval = 5
+
+init
+  EventListener.onPointCast(TSUNAMI_ID) (caster, target) ->
+    let projectile = new ProjectileRepeator(caster.getPos().toVec3(), 225, caster.getOwner(), caster.getPos().angleTo(target), Abilities.crushingWaveMissile, damageInterval)
+    let lvl = caster.getAbilityLevel(TSUNAMI_ID)
+    projectile
+    ..setRanged(900)
+    ..setTarget(target.toVec3(), 20)
+
+    projectile.onHit() hitTarget ->
+      if hitTarget.isEnemyOf(caster.getOwner()) and hitTarget.isAlive() 
+        flashEffect(Abilities.crushingWaveDamage, hitTarget.getPos())
+        hitTarget.getEntity().addVel(ZERO3.polarProject(600. * ANIMATION_PERIOD, projectile.getXYAngle(), 90 .fromDeg()))
+
+        let dmg = DAMAGE.run(lvl) 
+        caster.dealMagicalDamage(hitTarget, dmg)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Sends a gigantic wave which deals damage to each enemy in the line and knockbacks them.")
+  new ChannelAbilityPreset(TSUNAMI_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
+  ..makeRAbility()
+  ..presetIcon(Icons.bTNCrushingWave)
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+  
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.POINT)
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
+  ..setName("Tsunami")
+  ..addTooltipProperty("Damage per tick", DAMAGE)
+  ..addTooltipProperty("Tick Interval", lvl -> (ANIMATION_PERIOD * damageInterval).toString(2))
+  ..presetCastRange(lvl -> 800)
+  ..presetManaCost(lvl -> 145 + 75 * lvl)
+  ..presetCooldown(lvl -> 60)
+  ..tooltipStopListen()

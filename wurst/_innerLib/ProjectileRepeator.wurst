@@ -1,0 +1,116 @@
+package ProjectileRepeator
+import public Fx2Entity
+import ClosureForGroups
+
+public interface OnHitListener
+  function run(unit target)
+
+public interface OnEndListener
+  function run()
+
+/* 
+  Works like Projectile class, but can hit same target more than one time.
+ */
+public class ProjectileRepeator extends Fx2Entity
+  
+  // Variables to slow update function, since we may not want to hit target every ANIMATION_PERIOD.
+  // Each increment of updateSlowFactor means one more ANIMATION_PERIOD is needed for update function to trigger hit.
+  // For example if updateSlowFactor = 3, that means onHit event can happen only each 4 * ANIMATION_PERIOD seconds.
+  var updateSlowVariable = 0
+  var updateSlowFactor = 0
+
+  // Angles
+  private angle xyAngle
+  private vec3 startpos
+
+  private var timed = false
+  private var ranged = false
+
+  // Moving Speed
+  private var speed = 0.
+  private var acc = 1.0
+  protected var dist = 0.
+  private var maxDist = 0.
+  protected var time = 0.
+  private var maxTime = 0.
+
+  private Entity target = null
+  private OnHitListener onHit = null
+  private OnEndListener onEnd = null
+
+  construct(vec3 pos, real radius, player owner, angle xyAngle, string fxpath, int updateSlowFactor)
+    super(owner, pos, radius, xyAngle, fxpath)
+    startpos = pos
+    setXYAngle(xyAngle)
+    sleeps = false
+    gravity = 0.
+    this.updateSlowFactor = updateSlowFactor
+
+  function onHit(OnHitListener listener)
+    this.onHit = listener
+
+  function onEnd(OnEndListener listener)
+    this.onEnd = listener
+
+  function setTargetted(Entity target)
+    this.target = target
+
+  function setRanged(real maxDistance)
+    this.maxDist = maxDistance*maxDistance
+    ranged = true
+
+  function setTimed(real lifespan)
+    this.maxTime = lifespan
+    timed = true
+
+  function setSpeed(real speed)
+    this.speed = speed
+    setVel(vec3(xyAngle.cos()*speed, xyAngle.sin()*speed, 0.))
+
+  function setAcc(real factor)
+    this.acc = factor
+
+  function getSpeed() returns real
+    return speed
+
+  function setXYAngle(angle xyA)
+    this.xyAngle = xyA
+    fx.eff.setYaw(xyA)
+
+  function getXYAngle() returns angle
+    return xyAngle
+
+  function setZAngle(angle zA)
+    fx.eff.setPitch(zA)
+
+  override function update()
+    vel *= acc
+    super.update()
+    if not done
+      updateSlowVariable++
+      if onHit != null and updateSlowVariable > updateSlowFactor
+        updateSlowVariable = 0
+        forUnitsInRange(pos.toVec2(), radius) target ->
+          if not done
+            onHit.run(target)
+      if timed
+        time += ANIMATION_PERIOD
+        if time >= maxTime
+          terminate()
+      if ranged
+        if startpos.distanceToSq(pos) > maxDist
+          terminate()
+      if target != null
+        if pos.toVec2().distanceToSq(target.getPos().toVec2()) < radius2
+          terminate()
+
+  override function terminate()
+    if onEnd != null
+      onEnd.run()
+    super.terminate()
+
+  ondestroy
+    if onEnd != null
+      destroy onEnd
+    if onHit != null
+      destroy onHit

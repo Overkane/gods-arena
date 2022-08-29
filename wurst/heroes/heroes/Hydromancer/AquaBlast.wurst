@@ -1,30 +1,29 @@
-package WaterBlast
+package AquaBlast
 import AbilityTooltipGenerator
 import GameConstants
 import ClosureEvents
 import ClosureForGroups
 import SoundUtils
-import WaterBlastBuff
+import AquaBlastBuff
 import MapModels
 import WaterElemental
-import TooltipFactory
 import CustomHeal
 import DamageSystem
+import AbilityDefinitionExtension
 
-public constant WATER_BLAST_ID = compiletime(ABIL_ID_GEN.next())
+public constant AQUA_BLAST_ID = compiletime(ABIL_ID_GEN.next())
 
 constant SOUND = new SoundDefinition(Sounds.crushingWaveTarget1)
 
-constant RealLevelClosure DAMAGE = lvl -> 85. + 85. * (lvl-1)
-constant RealLevelClosure BONUS_INT_DAMAGE = lvl -> 0.5 * lvl
+constant RealLevelClosure DAMAGE = lvl -> 100. + 115. * (lvl-1)
 constant RealLevelClosure SLOW = lvl -> 30. + 5. * (lvl-1)
 constant RealLevelClosure SLOW_DURATION = lvl -> 2.5 + 0.5 * lvl
-constant RealLevelClosure AOE = lvl -> 300.
+constant RealLevelClosure AOE = lvl -> 275.
 
 init 
-  EventListener.onPointCast(WATER_BLAST_ID) (unit caster, vec2 target) ->
-    let lvl = caster.getAbilityLevel(WATER_BLAST_ID)
-    let spellDamage = DAMAGE.run(lvl) + BONUS_INT_DAMAGE.run(lvl) * caster.getInt(true)
+  EventListener.onPointCast(AQUA_BLAST_ID) (unit caster, vec2 target) ->
+    let lvl = caster.getAbilityLevel(AQUA_BLAST_ID)
+    let spellDamage = DAMAGE.run(lvl)
     let spellAOE = AOE.run(lvl)
     let buffSlow = SLOW.run(lvl)
     let buffDuration = SLOW_DURATION.run(lvl)
@@ -32,19 +31,17 @@ init
     SOUND.play(1, 40)
     forUnitsInRange(target, spellAOE) (unit u) ->
       if u.isAlive() and not u.isAllyOf(caster.getOwner())
-        new WaterBlastBuff(buffDuration, buffSlow).apply(u)
+        new AquaBlastBuff(buffDuration, buffSlow).apply(u)
         caster.dealMagicalDamage(u, spellDamage)
-      else if u.isAlive() and WATER_ELEM_LIST.has(u.getTypeId()) and u.isAllyOf(caster.getOwner())
-        new WaterBlastBuff(buffDuration, -buffSlow).apply(u)
+      else if u.isAlive() and ELEM_LIST.has(u.getTypeId()) and u.isAllyOf(caster.getOwner())
+        new AquaBlastBuff(buffDuration, -buffSlow).apply(u)
         caster.healTarget(u, spellDamage)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius and slows them. Heals and speed up ally water elementals instead.")
-  new ChannelAbilityPreset(WATER_BLAST_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius and slows them. Heals and speeds up sea elementals instead.")
+  new ChannelAbilityPreset(AQUA_BLAST_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..makeQAbility()
   ..presetIcon(Icons.bTNOrbOfFrost)
-  ..presetButtonPosNormal(0, 2)
-  ..presetButtonPosResearch(0, 0)
-  ..presetHotkey("Q")
   ..setArtEffect(MapModels.waterBlast)
   ..setEffectSound(Sounds.crushingWaveTarget1)
   ..presetOption(Option.TARGETIMAGE, true)
@@ -52,9 +49,8 @@ init
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
   ..presetTargetTypes(Targettype.POINT)
-  ..setName("Water Blast")
+  ..setName("Aqua Blast")
   ..addTooltipProperty("Damage", DAMAGE)
-  ..addTooltipProperty("Bonus Intelligence Damage", lvl -> (BONUS_INT_DAMAGE.run(lvl)*100).percRound())
   ..addTooltipProperty("Slow", lvl -> SLOW.run(lvl).toString())
   ..addTooltipProperty("Duration", SLOW_DURATION)
   ..presetAreaofEffect(AOE)

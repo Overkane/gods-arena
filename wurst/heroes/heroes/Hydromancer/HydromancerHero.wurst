@@ -2,10 +2,10 @@ package HydromancerHero
 import UnitIds
 import HeroDefinitionPresets
 import ObjectIdGenerator
-import WaterBlast
+import AquaBlast
 import WaterElemental
 import BubbleShield
-import CrushingWave
+import Tsunami
 import SeaAura
 import Abilities
 
@@ -14,17 +14,18 @@ public constant HYDROMANCER_ID = compiletime(HERO_ID_GEN.next())
 @compiletime function genHero()
   new IntHeroPreset(HYDROMANCER_ID, UnitIds.jaina, "Hydromancer")
   ..addProperName("Ran")
-  ..addHeroAbility(WATER_BLAST_ID)
-  ..addHeroAbility(WATER_ELEMENTAL_ID)
+  ..addHeroAbility(AQUA_BLAST_ID)
+  ..addHeroAbility(SEA_AURA_ID)
   ..addHeroAbility(BUBBLE_SHIELD_ID)
-  ..addHeroAbility(CRUSHING_WAVE_ID)
-  ..addInnateHeroAbility(SEA_AURA_ID)
+  ..addHeroAbility(TSUNAMI_ID)
+  ..addInnateHeroAbility(WATER_ELEMENTAL_ID)
   ..setStartingStrength(16)
   ..setStrengthPerLevel(1.6)
   ..setStartingAgility(15)
   ..setAgilityPerLevel(1.4)
   ..setStartingIntelligence(24)
   ..setIntelligencePerLevel(2.8)
+  ..setAttack1CooldownTime(2.13)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(4)
   ..setAttack1Range(550)
