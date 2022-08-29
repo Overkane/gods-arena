@@ -17,6 +17,7 @@ import DemonLordIds
   ..setAgilityPerLevel(1.3)
   ..setStartingIntelligence(15)
   ..setIntelligencePerLevel(1.8)
+  ..setAttack1CooldownTime(2.05)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(8)
   ..setTintingColorBlue(125)
