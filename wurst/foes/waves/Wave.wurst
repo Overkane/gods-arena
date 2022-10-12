@@ -117,6 +117,26 @@ public class WaveBuilder
       currentStep = null
 
     creepStep = new CreepStep(result, origUnitId)
+    creepStep.creepDef
+    ..setArmorType(ArmorType.Small)
+    ..setAttack1AttackType(AttackType.Siege)
+    currentStep = creepStep
+
+  function creep(int origUnitId, bool isElite)
+    if currentStep != null
+      steps.add(currentStep)
+      currentStep = null
+
+    creepStep = new CreepStep(result, origUnitId)
+    
+    if isElite
+      creepStep.creepDef
+      ..setArmorType(ArmorType.Large)
+      ..setAttack1AttackType(AttackType.Pierce)
+    else
+      creepStep.creepDef
+      ..setArmorType(ArmorType.Small)
+      ..setAttack1AttackType(AttackType.Siege)
     currentStep = creepStep
 
   function boss()
@@ -149,9 +169,6 @@ public class WaveBuilder
 
   function armor(int armor)
     creepStep.creepDef.setDefenseBase(armor)
-
-  function armorType(ArmorType armorType)
-    creepStep.creepDef.setArmorType(armorType)
 
   function model(string path)
     creepStep.creepDef.setModelFile(path)

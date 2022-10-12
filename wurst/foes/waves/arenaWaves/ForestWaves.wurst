@@ -64,7 +64,7 @@ function forestWolfs() returns Wave
 
   ..wait(5)
 
-  ..creep(UnitIds.direwolf)
+  ..creep(UnitIds.direwolf, true)
   ..hp(1950)
   ..mana(200)
   ..damage(24)

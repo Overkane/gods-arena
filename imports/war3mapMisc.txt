@@ -18,3 +18,7 @@ IntRegenBonus=0.05
 DefenseArmor=0.05
 MaxUnitSpeed=522.0
 MinUnitSpeed=75.0
+DamageBonusSiege=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusPierce=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusChaos=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusHero=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00

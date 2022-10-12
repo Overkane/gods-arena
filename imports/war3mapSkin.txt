@@ -2,11 +2,37 @@
 LumberIcon=ReplaceableTextures\PassiveButtons\PASmedalionofcourage.blp
 AllianceLumberDisabled=ReplaceableTextures\CommandButtonsDisabled\DISPASmedalionofcourage.blp
 ToolTipLumberIcon=ReplaceableTextures\PassiveButtons\PASmedalionofcourage.blp
+InfoPanelIconDamageSiege=ReplaceableTextures\CommandButtons\BTNUnholyStrength.blp
+InfoPanelIconDamageSiegeNeutral=ReplaceableTextures\CommandButtons\BTNUnholyStrength.blp
+InfoPanelIconDamagePierceNeutral=ReplaceableTextures\CommandButtons\BTNImprovedUnholyStrength.blp
+InfoPanelIconDamagePierce=ReplaceableTextures\CommandButtons\BTNImprovedUnholyStrength.blp
+InfoPanelIconArmorSmall=ReplaceableTextures\CommandButtons\BTNImprovedUnholyArmor.blp
+InfoPanelIconArmorSmallNeutral=ReplaceableTextures\CommandButtons\BTNImprovedUnholyArmor.blp
+InfoPanelIconArmorLarge=ReplaceableTextures\CommandButtons\BTNAdvancedUnholyArmor.blp
+InfoPanelIconArmorLargeNeutral=ReplaceableTextures\CommandButtons\BTNAdvancedUnholyArmor.blp
+InfoPanelIconArmorDivine=ReplaceableTextures\CommandButtons\BTNInvulnerable.blp
+InfoPanelIconArmorDivineNeutral=ReplaceableTextures\CommandButtons\BTNInvulnerable.blp
 
 [FrameDef]
 COLON_LUMBER=Honor Points:
 LUMBER=Honor Points
 RESOURCE_UBERTIP_LUMBER=Can be obtained in various ways.
+DAMAGE_SIEGE=Type: |cffc0c0c0Creep|r
+DAMAGE_PIERCE=Type: |cffDC143EElite|r
+DAMAGE_CHAOS=Type: |cffFFD700God|r
+DAMAGE_HERO=Type: |cff8080ffHero|r
+DAMAGETIP_SIEGE=Deals normal damage to all armor types.
+DAMAGETIP_PIERCE=Deals normal damage to all armor types.
+DAMAGETIP_CHAOS=Deals normal damage to all armor types.
+DAMAGETIP_HERO=Deals normal damage to all armor types.
+ARMOR_SMALL=Type: |cffc0c0c0Creep|r
+ARMOR_LARGE=Type: |cffDC143EElite|r
+ARMOR_DIVINE=Type: |cffFFD700God|r
+ARMOR_HERO=Type: |cff8080ffHero|r
+ARMORTIP_SMALL=Takes normal damage from all damage types. 
+ARMORTIP_LARGE=Takes normal damage from all damage types.
+ARMORTIP_DIVINE=Takes normal damage from all damage types.
+ARMORTIP_HERO=Takes normal damage from all damage types.
 
 [Errors]
 Nolumber=Not enough honor points.
