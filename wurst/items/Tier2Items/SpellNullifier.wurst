@@ -11,10 +11,13 @@ import SpellNullifierBuff
 
 constant ANTI_MAGIC_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 constant ANTI_MAGIC_SHIELD_DURATION = 6.
+constant MANA_COST = 90
+constant COOLDOWN = 50
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Anti-Magic Shield", 
-  "activates a magic immunity shield for " + ANTI_MAGIC_SHIELD_DURATION.round().color(COLOR_GOLD_STR) + " seconds.")
+  "activates a magic immunity shield for " + ANTI_MAGIC_SHIELD_DURATION.round().color(COLOR_GOLD_STR) + " seconds.",
+  COOLDOWN, MANA_COST)
 
 public constant SPELL_NULLIFIER_ITEM = compiletime(new RecipeItem()
 ..setName("Spell Nullifier")
@@ -40,5 +43,5 @@ init
 
 @compiletime function genItemAbils()
   new ChannelAbilityPreset(ANTI_MAGIC_SHIELD_ID, 1, true)
-  ..setManaCost(1, 90)
-  ..setCooldown(1, 50)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

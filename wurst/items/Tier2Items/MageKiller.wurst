@@ -15,7 +15,6 @@ constant FEEDBACK_ID = compiletime(ABIL_ID_GEN.next())
 constant FEEDBACK_MP_BURN = 25
 constant FEEDBACK_RATIO = 2
 
-
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Feedback", 
   "burn " + FEEDBACK_MP_BURN.color(COLOR_GOLD_STR) + " mana from attacked enemies. Deals " + FEEDBACK_RATIO.color(COLOR_GOLD_STR) + " damage per burned mana.")

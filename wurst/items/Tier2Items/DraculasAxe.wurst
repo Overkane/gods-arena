@@ -12,11 +12,14 @@ import CustomStatSystem
 constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant BONUS_LIFESTEAL = 40.
 constant DURATION = 8.
+constant MANA_COST = 120
+constant COOLDOWN = 40
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Bloodthirst", 
   "Increases physical lifesteal by " + BONUS_LIFESTEAL.round().colorPerc(COLOR_GOLD_STR) + ". " 
-    + getDurationString(DURATION.round()))
+    + getDurationString(DURATION.round()),
+    COOLDOWN, MANA_COST)
 
 public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 ..setName("Dracula's Axe")
@@ -42,5 +45,5 @@ init
 
 @compiletime function genItemAbils()
   new ChannelAbilityPreset(LIFESTEAL_ID, 1, true)
-  ..setManaCost(1, 120)
-  ..setCooldown(1, 40)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

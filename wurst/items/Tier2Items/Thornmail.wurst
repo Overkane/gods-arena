@@ -18,12 +18,15 @@ constant RETALIATE_VALUE = 8
 constant PROVOCATE_ID = compiletime(ABIL_ID_GEN.next())
 constant PROVOCATE_AGGRO_PER_LVL = 100.
 constant PROVOCATE_AOE = 500.
+constant MANA_COST = 75
+constant COOLDOWN = 30
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Provocate", 
   "clears the aggro amount for allied heroes of enemies within " + PROVOCATE_AOE.round().color(COLOR_GOLD_STR) 
     + " range. Increases aggro amount for the item holder by " 
-    + ("[Hero Level] * " + PROVOCATE_AGGRO_PER_LVL.toString(0)).color(COLOR_GOLD_STR) + ".")
+    + ("[Hero Level] * " + PROVOCATE_AGGRO_PER_LVL.toString(0)).color(COLOR_GOLD_STR) + ".",
+    COOLDOWN, MANA_COST)
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Retaliate", 
@@ -67,5 +70,5 @@ init
 
   new ChannelAbilityPreset(PROVOCATE_ID, 1, true)
   ..setArtCaster(Abilities.tauntCaster)
-  ..setManaCost(1, 75)
-  ..setCooldown(1, 30)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

@@ -17,10 +17,12 @@ constant MS_BONUS = 30
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_MP = 250
 constant PERC_MP = 15
+constant COOLDOWN = 50
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Restoration", 
-  "Restores "+ FLAT_MP.color(COLOR_GOLD_STR) +" or "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mana, depending on which value is bigger.")
+  "Restores "+ FLAT_MP.color(COLOR_GOLD_STR) +" or "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mana, depending on which value is bigger.",
+  COOLDOWN)
 
 public constant MANA_BOOTS_ITEM = compiletime(new RecipeItem()
 ..setName("Mana Boots")
@@ -52,4 +54,4 @@ init
 
   new AbilityDefinitionItemManaRestoreLesser(MANA_ID)
   ..presetManaPointsGained(lvl -> 0)
-  ..presetCooldown(lvl -> 50)
+  ..presetCooldown(lvl -> COOLDOWN.toReal())

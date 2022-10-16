@@ -11,10 +11,12 @@ import CustomHeal
 constant RESTORATION_ID = compiletime(ABIL_ID_GEN.next())
 constant PERC_HP = 50
 constant PERC_MP = 50
+constant COOLDOWN = 100
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Restoration", 
-  "Restores "+ PERC_HP.colorPerc(COLOR_GOLD_STR) +" hp and "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mp.")
+  "Restores "+ PERC_HP.colorPerc(COLOR_GOLD_STR) +" hp and "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mp.",
+  COOLDOWN)
 
 public constant HELM_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 ..setName("Helm of the God")
@@ -42,4 +44,4 @@ init
   new AbilityDefinitionItemRestore(RESTORATION_ID)
   ..presetHitPointsRestored(lvl -> 0)
   ..presetManaPointsRestored(lvl -> 0)
-  ..presetCooldown(lvl -> 100)
+  ..presetCooldown(lvl -> COOLDOWN.toReal())

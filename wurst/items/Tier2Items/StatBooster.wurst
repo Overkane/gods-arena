@@ -11,11 +11,14 @@ import WoodenStaff
 constant STAT_BOOST_ID = compiletime(ABIL_ID_GEN.next())
 constant STAT_BOOST_PERC_INCREASE = 50.
 constant STAT_BOOST_DURATION = 10.
+constant MANA_COST = 100
+constant COOLDOWN = 45
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Stat Boost", 
   "Increases highest base stat by " + STAT_BOOST_PERC_INCREASE.round().colorPerc(COLOR_GOLD_STR) + ". " 
-    + getDurationString(STAT_BOOST_DURATION.round()))
+    + getDurationString(STAT_BOOST_DURATION.round()),
+    COOLDOWN, MANA_COST)
 
 public constant STAT_BOOSTER_ITEM = compiletime(new RecipeItem()
 ..setName("Stat Booster")
@@ -41,5 +44,5 @@ init
 
 @compiletime function genItemAbils()
   new ChannelAbilityPreset(STAT_BOOST_ID, 1, true)
-  ..setManaCost(1, 100)
-  ..setCooldown(1, 45)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

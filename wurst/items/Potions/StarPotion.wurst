@@ -9,11 +9,13 @@ import StarPotionBuff
 constant MAGIC_AMPLIFICATION_ID = compiletime(ABIL_ID_GEN.next())
 constant BONUS_SPELL_POWER = 30.
 constant DURATION = 45.
+constant COOLDOWN = 120
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Magic Amplification", 
   "Increases {0} by {1}. ".format("Spell Power".color(COLOR_GOLD_STR), BONUS_SPELL_POWER.round().colorPerc(COLOR_GOLD_STR))
-    + getDurationString(DURATION.round()))
+    + getDurationString(DURATION.round()),
+    COOLDOWN)
 
 public constant STAR_POTION_ITEM = compiletime(new RecipeItem('vamp')
   ..setName("Star Potion")
@@ -34,5 +36,5 @@ init
 
 @compiletime function gen()
   new ChannelAbilityPreset(MAGIC_AMPLIFICATION_ID, 1, true)
-  ..setCooldown(1, 120)
+  ..setCooldown(1, COOLDOWN.toReal())
 

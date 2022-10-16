@@ -14,11 +14,14 @@ constant MS_BONUS = 55
 
 constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
 constant PHASE_STEP_DURATION = 5
+constant MANA_COST = 25
+constant COOLDOWN = 18
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Phase Step", 
   "allows owner to walk through other units. "
-    + getDurationString(PHASE_STEP_DURATION))
+    + getDurationString(PHASE_STEP_DURATION),
+    COOLDOWN, MANA_COST)
 
 public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..setName("Cloak of Shadows")
@@ -48,5 +51,5 @@ public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
   ..setBackstabDamage(1, false)
   ..setDurationHero(1, PHASE_STEP_DURATION.toReal())
   ..setDurationNormal(1, PHASE_STEP_DURATION.toReal())
-  ..setManaCost(1, 25)
-  ..setCooldown(1, 18)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

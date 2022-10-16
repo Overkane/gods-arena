@@ -8,11 +8,13 @@ import DivinePotionBuff
 constant DIVINITY_ID = compiletime(ABIL_ID_GEN.next())
 constant STAT_INCREASE_PERC = 30.
 constant DURATION = 30.
+constant COOLDOWN = 60
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Divinity", 
   "Increases all attributes by " + STAT_INCREASE_PERC.colorPerc(COLOR_GOLD_STR) + " based on base attribute value. " 
-    + getDurationString(DURATION.round()))
+    + getDurationString(DURATION.round()),
+    COOLDOWN)
 
 public constant DIVINE_POTION_ITEM = compiletime(new RecipeItem('vamp')
   ..setName("Divine Potion")
@@ -34,4 +36,4 @@ init
 
 @compiletime function gen()
   new ChannelAbilityPreset(DIVINITY_ID, 1, true)
-  ..setCooldown(1, 60)
+  ..setCooldown(1, COOLDOWN.toReal())

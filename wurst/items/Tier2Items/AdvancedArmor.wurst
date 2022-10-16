@@ -13,6 +13,7 @@ public constant ADVANCED_ARMOR_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.ARMOR, 4)
 ..generateTooltip("")
 )..register()
+
 public constant ADVANCED_ARMOR_RECIPE = new ItemRecipe()
 ..setRequiredItems(RING_OF_REGENERATION_ITEM, SIMPLE_ARMOR_ITEM, HEART_AMULET_ITEM)
 ..setResultItem(ADVANCED_ARMOR_ITEM)

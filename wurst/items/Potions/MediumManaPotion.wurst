@@ -12,10 +12,12 @@ import MapIcons
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_MP = 500
 constant PERC_MP = 30
+constant COOLDOWN = 18
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Restoration", 
-  "Restores "+ FLAT_MP.color(COLOR_GOLD_STR) +" or "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mp, depending on which value is bigger.")
+  "Restores "+ FLAT_MP.color(COLOR_GOLD_STR) +" or "+ PERC_MP.colorPerc(COLOR_GOLD_STR) +" mp, depending on which value is bigger.",
+  COOLDOWN)
 
 public constant M_MANA_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Medium Mana Potion")
@@ -42,5 +44,5 @@ init
 @compiletime function genItemAbils()
   new AbilityDefinitionItemManaRestoreLesser(MANA_ID)
   ..presetManaPointsGained(lvl -> 0)
-  ..presetCooldown(lvl -> 15)
+  ..presetCooldown(lvl -> COOLDOWN.toReal())
 

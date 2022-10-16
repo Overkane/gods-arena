@@ -14,11 +14,14 @@ constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 200
 constant FIREBOLT_STUN = 1.
 constant SPELL_POWER = 10.
+constant MANA_COST = 75
+constant COOLDOWN = 16
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Fire Bolt", 
   "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
-  + " damage and stuns target for " + FIREBOLT_STUN..round().color(COLOR_GOLD_STR) + " seconds.")
+  + " damage and stuns target for " + FIREBOLT_STUN..round().color(COLOR_GOLD_STR) + " seconds.",
+  COOLDOWN, MANA_COST)
 
 public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Apprentice Staff")
@@ -42,5 +45,5 @@ public constant APPRENTICE_STAFF_RECIPE = new ItemRecipe()
   ..setDamage(1, FIREBOLT_DAMAGE.toReal())
   ..setDurationNormal(1, FIREBOLT_STUN)
   ..setDurationHero(1, FIREBOLT_STUN/2)
-  ..setManaCost(1, 75)
-  ..setCooldown(1, 16)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

@@ -8,11 +8,14 @@ import TooltipFactory
 constant MANA_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 constant MANA_SHIELD_ABSORB = 2
 constant MANA_SHIELD_DURATION = 15
+constant MANA_COST = 25
+constant COOLDOWN = 30
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Magic Shield", 
   "applies on self a shield that absorbs  damage per point of mana. "
-    + getDurationString(MANA_SHIELD_DURATION))
+    + getDurationString(MANA_SHIELD_DURATION),
+    COOLDOWN, MANA_COST)
 
 public constant MANTLE_OF_PROTECTION_ITEM = compiletime(new RecipeItem()
 ..setName("Mantle of Protection")
@@ -37,5 +40,5 @@ public constant MANTLE_OF_PROTECTION_RECIPE = new ItemRecipe()
   ..setDamageAbsorbed(1, 1)
   ..setManaperHitPoint(1, MANA_SHIELD_ABSORB.toReal())
   ..setDurationHero(1, MANA_SHIELD_DURATION.toReal())
-  ..setManaCost(1, 25)
-  ..setCooldown(1, 30)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

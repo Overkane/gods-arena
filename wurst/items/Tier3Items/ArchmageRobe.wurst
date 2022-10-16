@@ -12,13 +12,16 @@ import CustomStatSystem
 constant MANA_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 constant MANA_SHIELD_ABSORB = 2
 constant MANA_SHIELD_DURATION = 20
+constant MANA_COST = 25
+constant COOLDOWN = 30
 
 constant SPELL_LIFESTEAL_VALUE = 20.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Shield", 
   "activates a shield that absorbs " + MANA_SHIELD_ABSORB.color(COLOR_GOLD_STR) + " damage per point of mana. "
-    + getDurationString(MANA_SHIELD_DURATION))
+    + getDurationString(MANA_SHIELD_DURATION),
+    COOLDOWN, MANA_COST)
 
 
 public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
@@ -46,5 +49,5 @@ public constant ARCHMAGE_ROBE_RECIPE = new ItemRecipe()
   ..setDamageAbsorbed(1, 1)
   ..setManaperHitPoint(1, MANA_SHIELD_ABSORB.toReal())
   ..setDurationHero(1, MANA_SHIELD_DURATION.toReal())
-  ..setManaCost(1, 25)
-  ..setCooldown(1, 30)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

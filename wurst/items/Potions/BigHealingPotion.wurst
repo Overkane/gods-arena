@@ -13,10 +13,12 @@ import CustomHeal
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_HEAL = 1600
 constant PERC_HEAL = 60
+constant COOLDOWN = 20
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Heal", 
-  "Heals "+ FLAT_HEAL.color(COLOR_GOLD_STR) +" or "+ PERC_HEAL.colorPerc(COLOR_GOLD_STR) +" hp, depending on which value is bigger.")
+  "Heals "+ FLAT_HEAL.color(COLOR_GOLD_STR) +" or "+ PERC_HEAL.colorPerc(COLOR_GOLD_STR) +" hp, depending on which value is bigger.",
+  COOLDOWN)
 
 public constant B_HEALING_POT_ITEM = compiletime(new RecipeItem()
   ..setName("Big Healing Potion")
@@ -43,5 +45,5 @@ init
 @compiletime function genItemAbils()
   new AbilityDefinitionItemHealLesser(HEAL_ID)
   ..presetHitPointsGained(lvl -> 0)
-  ..presetCooldown(lvl -> 25)
+  ..presetCooldown(lvl -> COOLDOWN.toReal())
 

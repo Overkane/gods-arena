@@ -9,10 +9,13 @@ import ElementalStone
 import TooltipFactory
 
 constant SPHERE_OF_THE_ELEMENTS_ID = compiletime(ABIL_ID_GEN.next())
+constant MANA_COST = 200
+constant COOLDOWN = 100
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Refresh", 
-  "refreshes all abilities of the owner.")
+  "refreshes all abilities of the owner.",
+  COOLDOWN, MANA_COST)
 
 public constant SPHERE_OF_THE_ELEMENTS_ITEM = compiletime(new RecipeItem()
   ..setName("Sphere of the Elements")
@@ -39,5 +42,5 @@ init
 
 @compiletime function genItemAbils()
   new ChannelAbilityPreset(SPHERE_OF_THE_ELEMENTS_ID, 1, true)
-  ..setManaCost(1, 200)
-  ..setCooldown(1, 100)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

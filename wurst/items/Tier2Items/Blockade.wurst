@@ -14,6 +14,8 @@ import MapIcons
 constant BLOCKADE_ID = compiletime(ABIL_ID_GEN.next())
 constant BLOCKADE_ARMOR = 30.
 constant BLOCKADE_DURATION = 8.
+constant MANA_COST = 80
+constant COOLDOWN = 45
 
 constant BLOCK_ID = compiletime(ABIL_ID_GEN.next())
 constant BLOCK_CHANCE = 30
@@ -22,7 +24,8 @@ constant BLOCK_MULTIPLIER = 2
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Blockade", 
   "increases armor by " + BLOCKADE_ARMOR.round().color(COLOR_GOLD_STR) + ". "
-    + getDurationString(BLOCKADE_DURATION.round()))
+    + getDurationString(BLOCKADE_DURATION.round()),
+    COOLDOWN, MANA_COST)
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
   "Block", 
@@ -66,7 +69,7 @@ init
 
 @compiletime function gen()
   new ChannelAbilityPreset(BLOCKADE_ID, 1, true)
-  ..setManaCost(1, 80)
-  ..setCooldown(1, 45)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())
 
   new PassiveAbilityPreset(BLOCK_ID, 1)

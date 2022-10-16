@@ -15,11 +15,14 @@ constant MS_BONUS = 30
 constant NOURISH_ID = compiletime(ABIL_ID_GEN.next())
 constant NOURISH_LIFEREGEN = 80.
 constant ROOT_DURATION = 6.
+constant MANA_COST = 50
+constant COOLDOWN = 40
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Nourish", 
   "on activation roots the caster to the ground and increases their hp regeneration by " + NOURISH_LIFEREGEN.round().color(COLOR_GOLD_STR) + ". "
-    + getDurationString(ROOT_DURATION.round()))
+    + getDurationString(ROOT_DURATION.round()),
+    COOLDOWN, MANA_COST)
 
 public constant NATURE_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Nature Armor")
@@ -42,8 +45,8 @@ init
 
 @compiletime function gen()
   new ChannelAbilityPreset(NOURISH_ID, 1, true)
-  ..setManaCost(1, 50)
-  ..setCooldown(1, 40)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())
 
   new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
   ..setMovementSpeedBonus(1, MS_BONUS)
