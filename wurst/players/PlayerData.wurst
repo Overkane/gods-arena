@@ -4,7 +4,6 @@ import Hero
 import Players
 import initlater Backpack
 import initlater HonorShop
-import initlater GameStatistic
 import HashMap
 import Entity
 import initlater WaveRewards
@@ -147,7 +146,7 @@ public function initPlayers()
         destroy honorShop.getEntity()
         break
 
-    p.clearPlayerCustomStatUI()
+    // p.clearPlayerCustomStatUI() TODO produces crash on player leave, cuz can't destroy frame on player leave or something like that
 
     printTimed(p.getNameColored() + " has left the game", 15.)
     printTimed("All players get " + expCompensationOnPlayerLeave.toString().color(COLOR_GOLD_STR) + " experience and "
