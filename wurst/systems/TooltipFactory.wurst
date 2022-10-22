@@ -5,6 +5,7 @@ import RecipeItem
 constant ACTIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
 constant PASSIVE_TOOLTIP_COLOR = COLOR_GOLD_STR
 constant ABILITY_NAME_COLOR = color(106, 194, 221).toColorString()
+constant ABILITY_COOLDOWN_COLOR = color(59, 151, 211).toColorString()
 
 public constant PHYSICAL_COLOR = colorA(223, 59, 33, 255)
 public constant MAGICAL_COLOR = colorA(91, 147, 209, 255)
@@ -187,5 +188,39 @@ public function itemAbilityTooltip(AbilityType abilityType, string abilityName, 
   itemAbilityTooltip += " - " + abilityName.color(ABILITY_NAME_COLOR) + " - "
 
   itemAbilityTooltip += abilityDescription
+
+  return itemAbilityTooltip
+
+public function itemAbilityTooltip(AbilityType abilityType, string abilityName, string abilityDescription, int cooldown) returns string
+  var itemAbilityTooltip = ""
+  
+  if abilityType == AbilityType.ACTIVE
+    itemAbilityTooltip += "Active".color(ACTIVE_TOOLTIP_COLOR)
+  else
+    itemAbilityTooltip += "Passive".color(PASSIVE_TOOLTIP_COLOR)
+  
+  itemAbilityTooltip += " - " + abilityName.color(ABILITY_NAME_COLOR) + " - "
+
+  itemAbilityTooltip += abilityDescription
+
+  itemAbilityTooltip += "\nCooldown: ".color(ABILITY_COOLDOWN_COLOR) + cooldown.toString() + "."
+
+  return itemAbilityTooltip
+
+public function itemAbilityTooltip(AbilityType abilityType, string abilityName, string abilityDescription, int cooldown, int manacost) returns string
+  var itemAbilityTooltip = ""
+  
+  if abilityType == AbilityType.ACTIVE
+    itemAbilityTooltip += "Active".color(ACTIVE_TOOLTIP_COLOR)
+  else
+    itemAbilityTooltip += "Passive".color(PASSIVE_TOOLTIP_COLOR)
+  
+  itemAbilityTooltip += " - " + abilityName.color(ABILITY_NAME_COLOR) + " - "
+
+  itemAbilityTooltip += abilityDescription
+
+  itemAbilityTooltip += "\nMana Cost: ".color(ABILITY_COOLDOWN_COLOR) + manacost.toString() + ". "
+  
+  itemAbilityTooltip += "Cooldown: ".color(ABILITY_COOLDOWN_COLOR) + cooldown.toString() + "."
 
   return itemAbilityTooltip
