@@ -66,6 +66,8 @@ class WaterElemental extends SummonEntity
   ..setDefenseBase(2)
   ..setHitPointsMaximumBase(300)
   ..setScalingValue(0.85)
+  ..setAttack1AttackType(AttackType.Hero)
+  ..setArmorType(ArmorType.Hero)
 
   new UnitDefinition(ELEMENTAL_2, UnitIds.waterelemental2)
   ..setAttack1DamageBase(40)
@@ -73,6 +75,8 @@ class WaterElemental extends SummonEntity
   ..setDefenseBase(4)
   ..setHitPointsMaximumBase(600)
   ..setScalingValue(0.925)
+  ..setAttack1AttackType(AttackType.Hero)
+  ..setArmorType(ArmorType.Hero)
 
   new UnitDefinition(ELEMENTAL_3, UnitIds.waterelemental3)
   ..setAttack1DamageBase(60)
@@ -82,3 +86,6 @@ class WaterElemental extends SummonEntity
   ..setDefenseBase(6)
   ..setArmorType(ArmorType.Hero)
   ..setScalingValue(1.0)
+  ..setAttack1AttackType(AttackType.Hero)
+  ..setArmorType(ArmorType.Hero)
+  

@@ -49,3 +49,5 @@ public class Crabling extends SummonEntity
   ..setDeathTimeseconds(0.5)
   ..setCollisionSize(0.)
   ..setSpeedBase(400)
+  ..setAttack1AttackType(AttackType.Hero)
+  ..setArmorType(ArmorType.Hero)
