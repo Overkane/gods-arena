@@ -2,6 +2,10 @@ package GeneralFunctions
 import FText
 import TerrainUtils
 import Heightmap
+import GameConstants
+
+public function setHandicap(int playerCount)
+  SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (playerCount / 8.))
 
 public function player.defeat(string message)
   CustomDefeatBJ(this, message)

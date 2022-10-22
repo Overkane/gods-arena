@@ -8,6 +8,7 @@ import SaveLoadSystem
 import ChatCommands
 import GameSetupDialog
 import CheatPanel
+import GeneralFunctions
 
 function initFrames()
   let loadingResult = BlzLoadTOCFile("MyFiles.toc")
@@ -17,16 +18,13 @@ function initFrames()
 function initEnemyVision()
   createVision(ENEMY_PLAYER, playableMapRect, true).start()
 
-function initEnemyHandicap()
-  SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (pData.size() / 8.))
-
 init
   nullTimer() ->
     SetMapFlag(MAP_LOCK_RESOURCE_TRADING, true)
     initFrames()
     initPlayers()
     initEnemyVision()
-    initEnemyHandicap()
+    setHandicap(pData.size())
     initItemShop()
     initChatCommands()
     startEntityLoop()
