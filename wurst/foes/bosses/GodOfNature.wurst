@@ -111,10 +111,11 @@ init
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
   ..setAttack1DamageBase(100)
-  ..setAttack1AttackType(AttackType.Chaos)
   ..setDefenseBase(15)
   ..setHitPointsMaximumBase(42500)
   ..setScalingValue(2.6)
+  ..setArmorType(ArmorType.Divine)
+  ..setAttack1AttackType(AttackType.Chaos)
 
   new UnitDefinition(WISP_ID, UnitIds.wisp)
   ..setHitPointsMaximumBase(600)
@@ -122,6 +123,8 @@ init
   ..setSpeedBase(110)
   ..setMovementType(MovementType.Fly)
   ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
+  ..setArmorType(ArmorType.Small)
+  ..setAttack1AttackType(AttackType.Siege)
 
   new UnitDefinition(TREANT_ID, UnitIds.forceofnature)
   ..setAcquisitionRange(99999)
@@ -129,6 +132,8 @@ init
   ..setDefenseBase(0)
   ..setSpeedBase(350)
   ..setHitPointsMaximumBase(500)
+  ..setArmorType(ArmorType.Small)
+  ..setAttack1AttackType(AttackType.Siege)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()

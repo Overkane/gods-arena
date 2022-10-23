@@ -1,0 +1,515 @@
+package PondWaves
+import UnitIds
+import Wave
+import DamageSystem
+import UnitIndexer
+import PassiveAbilityPreset
+
+public constant ARENA2_WAVE_1 = compiletime(murguls())
+public constant ARENA2_WAVE_2 = compiletime(hydras())
+public constant ARENA2_WAVE_3 = compiletime(seaTurtles())
+public constant ARENA2_WAVE_4 = compiletime(seaGiants())
+public constant ARENA2_WAVE_5 = compiletime(lobstrokks())
+public constant ARENA2_WAVE_6 = compiletime(jungleStalkers())
+public constant ARENA2_WAVE_7 = compiletime(seaRevenants())
+public constant ARENA2_BOSS_WAVE = compiletime(godOfWater())
+
+constant MURGUL_SLOW = compiletime(ABIL_ID_GEN.next())
+constant MURGUL_HEALING_WAVE = compiletime(ABIL_ID_GEN.next())
+constant MURGUL_HEX = compiletime(ABIL_ID_GEN.next())
+constant MURGUL_CURSE = compiletime(ABIL_ID_GEN.next())
+constant MURGUL_COMMAND_AURA = compiletime(ABIL_ID_GEN.next())
+
+constant HYDRA_POISON_ATTACK = compiletime(ABIL_ID_GEN.next())
+constant HYDRA_STOMP = compiletime(ABIL_ID_GEN.next())
+constant HYDRA_FAERIE_FIRE = compiletime(ABIL_ID_GEN.next())
+
+constant SEA_TURTLE_MAGIC_DAMAGE_RETURN = compiletime(ABIL_ID_GEN.next())
+constant SEA_TURTLE_PHYSICAL_DAMAGE_RETURN = compiletime(ABIL_ID_GEN.next())
+constant SEA_TURTLE_BOTH_DAMAGE_RETURN = compiletime(ABIL_ID_GEN.next())
+int array unitsBothDamageReturnThreshholds
+
+constant SEA_GIANT_STOMP = compiletime(ABIL_ID_GEN.next())
+constant SEA_GIANT_PULVERIZE = compiletime(ABIL_ID_GEN.next())
+
+constant LOBSTROKK_HEALING_WAVE = compiletime(ABIL_ID_GEN.next())
+constant LOBSTROKK_CLEAVE = compiletime(ABIL_ID_GEN.next())
+constant LOBSTROKK_NATURE_WRATH = compiletime(ABIL_ID_GEN.next())
+constant LOBSTROKK_ENDURANCE_AURA = compiletime(ABIL_ID_GEN.next())
+constant LOBSTROKK_DEVOTION_AURA = compiletime(ABIL_ID_GEN.next())
+
+constant JUNGLE_STALKER_STOMP = compiletime(ABIL_ID_GEN.next())
+constant JUNGLE_STALKER_PULVERIZE = compiletime(ABIL_ID_GEN.next())
+
+constant SEA_REVENANT_CRUSHING_WAVE_WEAK = compiletime(ABIL_ID_GEN.next())
+constant SEA_REVENANT_CRUSHING_WAVE_STRONG = compiletime(ABIL_ID_GEN.next())
+constant SEA_REVENANT_MANA_SHIELD = compiletime(ABIL_ID_GEN.next())
+constant SEA_REVENANT_PULVERIZE = compiletime(ABIL_ID_GEN.next())
+
+
+function murguls() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.murgulcliffrunner)
+  ..hp(2700)
+  ..damage(48)
+  ..amount(15)
+  ..abilities("")
+
+  ..creep(UnitIds.murgulbloodgill)
+  ..hp(2100)
+  ..mana(600)
+  ..damage(40)
+  ..amount(5)
+  ..abilities(commaList(MURGUL_HEALING_WAVE))
+
+  ..creep(UnitIds.murgulsnarecaster)
+  ..hp(2150)
+  ..mana(400)
+  ..damage(45)
+  ..amount(5)
+  ..abilities(commaList(MURGUL_SLOW))
+
+  ..wait(20)
+
+  ..creep(UnitIds.murgultidewarrior)
+  ..hp(3000)
+  ..damage(52)
+  ..amount(14)
+  ..scale(1.5)
+  ..abilities("")
+
+  ..creep(UnitIds.murgulbloodgill)
+  ..hp(2100)
+  ..mana(600)
+  ..damage(40)
+  ..amount(2)
+  ..abilities(commaList(MURGUL_HEALING_WAVE))
+
+  ..elite(UnitIds.murgulshadowcaster)
+  ..hp(9500)
+  ..mana(1400)
+  ..damage(85)
+  ..amount(1)
+  ..scale(2)
+  ..abilities(commaList(MURGUL_HEALING_WAVE, MURGUL_CURSE, MURGUL_HEALING_WAVE, MURGUL_SLOW))
+
+  ..elite(UnitIds.murgulreaver)
+  ..hp(12000)
+  ..damage(120)
+  ..amount(1)
+  ..scale(2)
+  ..abilities(commaList(MURGUL_COMMAND_AURA))
+
+  .build()
+
+function hydras() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.hydrahatchling)
+  ..hp(3000)
+  ..damage(65)
+  ..amount(15)
+  ..abilities(commaList(HYDRA_POISON_ATTACK))
+
+  ..creep(UnitIds.hydra)
+  ..hp(4000)
+  ..damage(75)
+  ..amount(6)
+  ..abilities(commaList(HYDRA_POISON_ATTACK))
+
+  ..wait(20)
+
+  ..creep(UnitIds.elderhydra)
+  ..hp(6000)
+  ..mana(400)
+  ..damage(89)
+  ..amount(4)
+  ..abilities(commaList(HYDRA_POISON_ATTACK, HYDRA_FAERIE_FIRE))
+
+  ..elite(UnitIds.ancienthydra)
+  ..hp(14500)
+  ..mana(600)
+  ..damage(135)
+  ..amount(1)
+  ..abilities(commaList(HYDRA_POISON_ATTACK, HYDRA_STOMP))
+
+  .build()
+
+function seaTurtles() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.seaturtlehatchling)
+  ..hp(3500)
+  ..damage(60)
+  ..amount(20)
+  ..abilities("")
+
+  ..creep(UnitIds.seaturtle)
+  ..hp(4000)
+  ..damage(75)
+  ..amount(8)
+  ..abilities("")
+
+  ..elite(UnitIds.gargantuanseaturtle)
+  ..hp(8000)
+  ..damage(100)
+  ..amount(1)
+  ..rgb(255, 0, 0)
+  ..abilities(commaList(SEA_TURTLE_PHYSICAL_DAMAGE_RETURN))
+
+  ..elite(UnitIds.gargantuanseaturtle)
+  ..hp(8000)
+  ..damage(100)
+  ..amount(1)
+  ..rgb(0, 0, 255)
+  ..abilities(commaList(SEA_TURTLE_MAGIC_DAMAGE_RETURN))
+
+  ..wait(35)
+
+  ..creep(UnitIds.giantseaturtle)
+  ..hp(9000)
+  ..damage(120)
+  ..amount(4)
+  ..abilities("")
+
+  ..elite(UnitIds.dragonturtle)
+  ..hp(16000)
+  ..damage(150)
+  ..amount(1)
+  ..rgb(255, 0, 0)
+  ..abilities(commaList(SEA_TURTLE_BOTH_DAMAGE_RETURN, SEA_TURTLE_PHYSICAL_DAMAGE_RETURN))
+
+  .build()
+
+function seaGiants() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.seagiant)
+  ..hp(9000)
+  ..damage(100)
+  ..amount(12)
+  ..abilities(commaList(SEA_GIANT_PULVERIZE))
+
+  ..creep(UnitIds.seagianthunter)
+  ..hp(14000)
+  ..damage(150)
+  ..amount(4)
+  ..abilities(commaList(SEA_GIANT_PULVERIZE))
+
+  ..elite(UnitIds.seagiantbehemoth)
+  ..hp(20000)
+  ..mana(1000)
+  ..damage(200)
+  ..amount(1)
+  ..abilities(commaList(SEA_GIANT_PULVERIZE, SEA_GIANT_STOMP))
+
+  .build()
+
+function lobstrokks() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.lobstrokkprawn)
+  ..hp(8000)
+  ..damage(90)
+  ..amount(15)
+  ..abilities("")
+
+  ..creep(UnitIds.lobstrokktidecaller)
+  ..hp(7500)
+  ..mana(600)
+  ..damage(80)
+  ..amount(6)
+  ..abilities(commaList(LOBSTROKK_HEALING_WAVE))
+  
+  ..creep(UnitIds.lobstrokkpooldweller)
+  ..hp(12000)
+  ..damage(120)
+  ..amount(4)
+  ..abilities("")
+
+  ..wait(20)
+
+  ..elite(UnitIds.lobstrokkdeepseer)
+  ..hp(14000)
+  ..mana(1000)
+  ..damage(200)
+  ..amount(1)
+  ..abilities(commaList(LOBSTROKK_HEALING_WAVE, LOBSTROKK_NATURE_WRATH))
+
+  ..elite(UnitIds.lobstrokksnapper)
+  ..hp(16000)
+  ..damage(260)
+  ..attackrate(0.8)
+  ..amount(1)
+  ..abilities(commaList(LOBSTROKK_CLEAVE))
+  
+  ..elite(UnitIds.lobstrokktidallord)
+  ..hp(20000)
+  ..damage(220)
+  ..amount(1)
+  ..abilities(commaList(LOBSTROKK_DEVOTION_AURA, LOBSTROKK_ENDURANCE_AURA))
+  
+  .build()
+
+function jungleStalkers() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+  
+  ..creep(UnitIds.junglestalker)
+  ..hp(14000)
+  ..damage(180)
+  ..amount(10)
+  ..abilities("")
+  
+  ..creep(UnitIds.elderjunglestalker)
+  ..hp(18000)
+  ..damage(250)
+  ..attackrate(0.85)
+  ..amount(2)
+  ..abilities(commaList(JUNGLE_STALKER_PULVERIZE))
+  
+  ..elite(UnitIds.enrangedjunglestalker)
+  ..hp(25000)
+  ..mana(1200)
+  ..damage(300)
+  ..attackrate(0.85)
+  ..amount(1)
+  ..abilities(commaList(JUNGLE_STALKER_PULVERIZE, JUNGLE_STALKER_STOMP))
+
+  .build()
+
+function seaRevenants() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+
+  ..creep(UnitIds.revenantofthetides)
+  ..hp(12000)
+  ..damage(180)
+  ..amount(18)
+  ..abilities("")
+  
+  ..creep(UnitIds.revenantoftheseas)
+  ..hp(15000)
+  ..mana(4000)
+  ..damage(230)
+  ..amount(6)
+  ..abilities(commaList(SEA_REVENANT_MANA_SHIELD, SEA_REVENANT_CRUSHING_WAVE_WEAK))
+
+  ..wait(20)
+
+  ..creep(UnitIds.revenantofthedepths)
+  ..hp(18000)
+  ..mana(6000)
+  ..damage(300)
+  ..amount(2)
+  ..abilities(commaList(SEA_REVENANT_MANA_SHIELD, SEA_REVENANT_CRUSHING_WAVE_WEAK))
+
+  ..wait(20)
+
+  ..elite(UnitIds.deeplordrevenant)
+  ..hp(20000)
+  ..mana(10000)
+  ..damage(400)
+  ..attackrate(0.95)
+  ..amount(1)
+  ..abilities(commaList(SEA_REVENANT_MANA_SHIELD, SEA_REVENANT_CRUSHING_WAVE_STRONG, SEA_REVENANT_PULVERIZE))
+
+  .build()
+
+function godOfWater() returns Wave
+  return new WaveBuilder()
+  ..expBounty(waveExpList.dequeue())
+  ..goldBounty(waveGoldList.dequeue())
+  ..boss()
+  .build()
+
+
+@compiletime function gen()
+  new AbilityDefinitionSlow(MURGUL_SLOW)
+  ..setAttackSpeedFactor(1, 0.2)
+  ..setMovementSpeedFactor(1, 0.4)
+  ..setManaCost(1, 80)
+  ..setCooldown(1, 15)
+  ..setDurationNormal(1, 8)
+  ..setDurationHero(1, 8)
+
+  new AbilityDefinitionHealingWaveCreep(MURGUL_HEALING_WAVE)
+  ..setDamageReductionperTarget(1, 0.25)
+  ..setDamageperTarget(1, 800)
+  ..setNumberofTargetsHit(1, 7)
+  ..setManaCost(1, 100)
+  ..setCooldown(1, 20)
+
+  new AbilityDefinitionCursecreep(MURGUL_CURSE)
+  ..setChancetoMiss(1, 0.4)
+  ..setManaCost(1, 75)
+  ..setCooldown(1, 12)
+  ..setDurationNormal(1, 8)
+  ..setDurationHero(1, 8)
+
+  new AbilityDefinitionHexCreep(MURGUL_HEX)
+  ..setManaCost(1, 125)
+  ..setCooldown(1, 20)
+  ..setDurationNormal(1, 2.5)
+  ..setDurationHero(1, 2.5)
+
+  new AbilityDefinitionAuraCommandCreep(MURGUL_COMMAND_AURA)
+  ..setAttackDamageIncrease(1, 0.4)
+
+
+  new AbilityDefinitionSlowPoison(HYDRA_POISON_ATTACK)
+  ..setAttackSpeedFactor(1, 0)
+  ..setMovementSpeedFactor(1, 0.25)
+  ..setDamagePerSecond(1, 10)
+  ..setDurationNormal(1, 3)
+  ..setDurationHero(1, 3)
+
+  new AbilityDefinitionFaerieFirecreep(HYDRA_FAERIE_FIRE)
+  ..setDefenseReduction(1, 8)
+  ..setManaCost(1, 75)
+  ..setCooldown(1, 15)
+  ..setDurationNormal(1, 8)
+  ..setDurationHero(1, 8)
+
+  new AbilityDefinitionWarStomphydra(HYDRA_STOMP)
+  ..setDamage(1, 300)
+  ..setManaCost(1, 100)
+  ..setCooldown(1, 14)
+  ..setDurationNormal(1, 3)
+  ..setDurationHero(1, 3)
+
+
+  new PassiveAbilityPreset(SEA_TURTLE_PHYSICAL_DAMAGE_RETURN, 1)
+  new PassiveAbilityPreset(SEA_TURTLE_MAGIC_DAMAGE_RETURN, 1)
+  new PassiveAbilityPreset(SEA_TURTLE_BOTH_DAMAGE_RETURN, 1)
+
+
+  new AbilityDefinitionPulverizecreep(SEA_GIANT_PULVERIZE)
+  ..setChancetoStomp(1, 30)
+  ..setDamageDealt(1, 100)
+  ..setFullDamageRadius(1, 150)
+  ..setHalfDamageRadius(1, 300)
+
+  new AbilityDefinitionWarStompseagiant(SEA_GIANT_STOMP)
+  ..setDamage(1, 350)
+  ..setManaCost(1, 125)
+  ..setCooldown(1, 12)
+  ..setDurationNormal(1, 3)
+  ..setDurationHero(1, 3)
+
+
+  new AbilityDefinitionHealingWaveCreep(LOBSTROKK_HEALING_WAVE)
+  ..setDamageReductionperTarget(1, 0.25)
+  ..setDamageperTarget(1, 2500)
+  ..setNumberofTargetsHit(1, 5)
+  ..setManaCost(1, 100)
+  ..setCooldown(1, 20)
+
+  new AbilityDefinitionEntanglingSeaweed(LOBSTROKK_NATURE_WRATH)
+  ..setDamageperSecond(1, 125)
+  ..setManaCost(1, 150)
+  ..setCooldown(1, 15)
+  ..setDurationNormal(1, 4)
+  ..setDurationHero(1, 4)
+
+  new AbilityDefinitionPitLordCleavingAttack(LOBSTROKK_CLEAVE)
+  ..setDistributedDamageFactor(1, 0.4)
+  ..setCheckDependencies(false)
+  ..setHeroAbility(false)
+
+  new AbilityDefinitionAuraDevotionCreep(LOBSTROKK_DEVOTION_AURA)
+  ..setArmorBonus(1, 20)
+
+  new AbilityDefinitionAuraEnduranceCreep(LOBSTROKK_ENDURANCE_AURA)
+  ..setAttackSpeedIncrease(1, 0.20)
+  ..setMovementSpeedIncrease(1, 0.20)
+
+
+  new AbilityDefinitionPulverizecreep(JUNGLE_STALKER_PULVERIZE)
+  ..setChancetoStomp(1, 30)
+  ..setDamageDealt(1, 150)
+  ..setFullDamageRadius(1, 150)
+  ..setHalfDamageRadius(1, 300)
+
+  new AbilityDefinitionWarStompseagiant(JUNGLE_STALKER_STOMP)
+  ..setDamage(1, 500)
+  ..setManaCost(1, 150)
+  ..setCooldown(1, 14)
+  ..setDurationNormal(1, 3)
+  ..setDurationHero(1, 3)
+
+
+  new AbilityDefinitionCrushingWave(SEA_REVENANT_CRUSHING_WAVE_WEAK)
+  ..setDamage(1, 200)
+  ..setMaxDamage(1, 1000)
+  ..setManaCost(1, 100)
+  ..setCooldown(1, 12)
+
+  new AbilityDefinitionCrushingWave(SEA_REVENANT_CRUSHING_WAVE_STRONG)
+  ..setDamage(1, 200)
+  ..setMaxDamage(1, 1000)
+  ..setManaCost(1, 100)
+  ..setCooldown(1, 12)
+
+  new AbilityDefinitionManaShieldCreep(SEA_REVENANT_MANA_SHIELD)
+  ..setDamageAbsorbed(1, 2)
+  ..setManaperHitPoint(1, 1)
+  ..setManaCost(1, 50)
+  ..setCooldown(1, 15)
+
+  new AbilityDefinitionPulverizecreep(SEA_REVENANT_PULVERIZE)
+  ..setChancetoStomp(1, 30)
+  ..setDamageDealt(1, 200)
+  ..setFullDamageRadius(1, 150)
+  ..setHalfDamageRadius(1, 300)
+
+
+init
+  DamageEvent.addListener() -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+    
+    if isPhysicalDamage() and tunit.hasAbility(SEA_TURTLE_PHYSICAL_DAMAGE_RETURN)
+      and not tunit.isIllusion() and sunit.isEnemyOf(tunit)
+
+      tunit.dealPhysicalDamage(sunit, DamageEvent.getAmount() * 0.5)
+    
+    else if isMagicalDamage() and tunit.hasAbility(SEA_TURTLE_MAGIC_DAMAGE_RETURN)
+      and not tunit.isIllusion() and sunit.isEnemyOf(tunit)
+
+      tunit.dealMagicalDamage(sunit, DamageEvent.getAmount() * 0.5)
+    
+    // Each 10 attacks sea turtle swaps type of damage return ability.
+    if tunit.hasAbility(SEA_TURTLE_BOTH_DAMAGE_RETURN)
+      let id = tunit.getIndex()
+
+      if unitsBothDamageReturnThreshholds[id] == 10
+        if tunit.hasAbility(SEA_TURTLE_PHYSICAL_DAMAGE_RETURN)
+          tunit
+          ..removeAbility(SEA_TURTLE_PHYSICAL_DAMAGE_RETURN)
+          ..addAbility(SEA_TURTLE_MAGIC_DAMAGE_RETURN)
+          ..setVertexColor(color(0, 0, 255))
+        else if tunit.hasAbility(SEA_TURTLE_MAGIC_DAMAGE_RETURN)
+          tunit
+          ..removeAbility(SEA_TURTLE_MAGIC_DAMAGE_RETURN)
+          ..addAbility(SEA_TURTLE_PHYSICAL_DAMAGE_RETURN)
+          ..setVertexColor(color(255, 0, 0))
+        unitsBothDamageReturnThreshholds[id] = 0
+      else 
+        unitsBothDamageReturnThreshholds[id] = unitsBothDamageReturnThreshholds[id] + 1
+
+  onUnitDeindex() ->
+    unitsBothDamageReturnThreshholds[getIndexingUnit().getIndex()] = 0

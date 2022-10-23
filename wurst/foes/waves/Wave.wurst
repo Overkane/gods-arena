@@ -122,21 +122,15 @@ public class WaveBuilder
     ..setAttack1AttackType(AttackType.Siege)
     currentStep = creepStep
 
-  function creep(int origUnitId, bool isElite)
+  function elite(int origUnitId)
     if currentStep != null
       steps.add(currentStep)
       currentStep = null
 
     creepStep = new CreepStep(result, origUnitId)
-    
-    if isElite
-      creepStep.creepDef
-      ..setArmorType(ArmorType.Large)
-      ..setAttack1AttackType(AttackType.Pierce)
-    else
-      creepStep.creepDef
-      ..setArmorType(ArmorType.Small)
-      ..setAttack1AttackType(AttackType.Siege)
+    creepStep.creepDef
+    ..setArmorType(ArmorType.Large)
+    ..setAttack1AttackType(AttackType.Pierce)
     currentStep = creepStep
 
   function boss()

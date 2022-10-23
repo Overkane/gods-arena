@@ -2,9 +2,7 @@ package Arenas
 import Arena
 import ClosureTimers
 import ForestWaves
-import Arena2Waves
-import Arena3Waves
-import Arena4Waves
+import PondWaves
 
 public function startArenas()
   Arena.first.start(false)
@@ -30,34 +28,34 @@ init
     ..setWaves(ARENA2_WAVE_1, ARENA2_WAVE_2, ARENA2_WAVE_3, ARENA2_WAVE_4, ARENA2_WAVE_5, 
       ARENA2_WAVE_6, ARENA2_WAVE_7, ARENA2_BOSS_WAVE)
 
-    new Arena("The Barrens", gg_rct_ArenaBarrens, gg_rct_ArenaBarrensRespawnPoint)
-    ..setSpawnPoint(() -> begin
-      let rand = GetRandomInt(0, 1)
-      var spawnLoc = ZERO2
-      switch rand
-        case 0
-          spawnLoc = gg_rct_ArenaBarrensTopSpawn.randomPoint()
-        case 1
-          spawnLoc = gg_rct_ArenaBarrensBotSpawn.randomPoint()
-      return spawnLoc
-    end)
-    ..setWaves(ARENA3_WAVE_1, ARENA3_WAVE_2, ARENA3_WAVE_3, ARENA3_WAVE_4, ARENA3_WAVE_5, 
-      ARENA3_WAVE_6, ARENA3_WAVE_7, ARENA3_BOSS_WAVE)
+    // new Arena("The Barrens", gg_rct_ArenaBarrens, gg_rct_ArenaBarrensRespawnPoint)
+    // ..setSpawnPoint(() -> begin
+    //   let rand = GetRandomInt(0, 1)
+    //   var spawnLoc = ZERO2
+    //   switch rand
+    //     case 0
+    //       spawnLoc = gg_rct_ArenaBarrensTopSpawn.randomPoint()
+    //     case 1
+    //       spawnLoc = gg_rct_ArenaBarrensBotSpawn.randomPoint()
+    //   return spawnLoc
+    // end)
+    // ..setWaves(ARENA3_WAVE_1, ARENA3_WAVE_2, ARENA3_WAVE_3, ARENA3_WAVE_4, ARENA3_WAVE_5, 
+    //   ARENA3_WAVE_6, ARENA3_WAVE_7, ARENA3_BOSS_WAVE)
     
-    new Arena("The Volcano", gg_rct_ArenaVolcano, gg_rct_ArenaVolcanoRespawnPoint)
-    ..setSpawnPoint(() -> begin
-      let rand = GetRandomInt(0, 3)
-      var spawnLoc = ZERO2
-      switch rand
-        case 0
-          spawnLoc = gg_rct_ArenaVolcanoTopSpawn.randomPoint()
-        case 1
-          spawnLoc = gg_rct_ArenaVolcanoBotSpawn.randomPoint()
-        case 2
-          spawnLoc = gg_rct_ArenaVolcanoLeftSpawn.randomPoint()
-        case 3
-          spawnLoc = gg_rct_ArenaVolcanoRightSpawn.randomPoint()
-      return spawnLoc
-    end)
-    ..setWaves(ARENA4_WAVE_1, ARENA4_WAVE_2, ARENA4_WAVE_3, ARENA4_WAVE_4, ARENA4_WAVE_5, 
-      ARENA4_WAVE_6, ARENA4_WAVE_7, ARENA4_BOSS_WAVE)
+    // new Arena("The Volcano", gg_rct_ArenaVolcano, gg_rct_ArenaVolcanoRespawnPoint)
+    // ..setSpawnPoint(() -> begin
+    //   let rand = GetRandomInt(0, 3)
+    //   var spawnLoc = ZERO2
+    //   switch rand
+    //     case 0
+    //       spawnLoc = gg_rct_ArenaVolcanoTopSpawn.randomPoint()
+    //     case 1
+    //       spawnLoc = gg_rct_ArenaVolcanoBotSpawn.randomPoint()
+    //     case 2
+    //       spawnLoc = gg_rct_ArenaVolcanoLeftSpawn.randomPoint()
+    //     case 3
+    //       spawnLoc = gg_rct_ArenaVolcanoRightSpawn.randomPoint()
+    //   return spawnLoc
+    // end)
+    // ..setWaves(ARENA4_WAVE_1, ARENA4_WAVE_2, ARENA4_WAVE_3, ARENA4_WAVE_4, ARENA4_WAVE_5, 
+    //   ARENA4_WAVE_6, ARENA4_WAVE_7, ARENA4_BOSS_WAVE)
