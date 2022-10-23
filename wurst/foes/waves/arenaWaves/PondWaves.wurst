@@ -5,14 +5,15 @@ import DamageSystem
 import UnitIndexer
 import PassiveAbilityPreset
 
-public constant ARENA2_WAVE_1 = compiletime(murguls())
-public constant ARENA2_WAVE_2 = compiletime(hydras())
-public constant ARENA2_WAVE_3 = compiletime(seaTurtles())
-public constant ARENA2_WAVE_4 = compiletime(seaGiants())
-public constant ARENA2_WAVE_5 = compiletime(lobstrokks())
-public constant ARENA2_WAVE_6 = compiletime(jungleStalkers())
-public constant ARENA2_WAVE_7 = compiletime(seaRevenants())
-public constant ARENA2_BOSS_WAVE = compiletime(godOfWater())
+public constant pondWaves = new LinkedList<Wave>
+..add(compiletime(murguls()))
+..add(compiletime(hydras()))
+..add(compiletime(seaTurtles()))
+..add(compiletime(seaGiants()))
+..add(compiletime(lobstrokks()))
+..add(compiletime(jungleStalkers()))
+..add(compiletime(seaRevenants()))
+..add(compiletime(godOfWater()))
 
 constant MURGUL_SLOW = compiletime(ABIL_ID_GEN.next())
 constant MURGUL_HEALING_WAVE = compiletime(ABIL_ID_GEN.next())

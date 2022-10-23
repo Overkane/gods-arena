@@ -20,13 +20,11 @@ init
           spawnLoc = gg_rct_ArenaForestTopRightSpawn.randomPoint()
       return spawnLoc
     end)
-    ..setWaves(ARENA1_WAVE_1, ARENA1_WAVE_2, ARENA1_WAVE_3, ARENA1_WAVE_4, ARENA1_WAVE_5, 
-      ARENA1_WAVE_6, ARENA1_WAVE_7, ARENA1_BOSS_WAVE)
+    ..setWaves(forestWaves)
 
     new Arena("The Pond", gg_rct_ArenaPond, gg_rct_ArenaPondRespawnPoint)
     ..setSpawnPoint(() -> gg_rct_ArenaPond.getCenter().polarOffset(GetRandomReal(0, 360).fromDeg(), 1800))
-    ..setWaves(ARENA2_WAVE_1, ARENA2_WAVE_2, ARENA2_WAVE_3, ARENA2_WAVE_4, ARENA2_WAVE_5, 
-      ARENA2_WAVE_6, ARENA2_WAVE_7, ARENA2_BOSS_WAVE)
+    ..setWaves(pondWaves)
 
     // new Arena("The Barrens", gg_rct_ArenaBarrens, gg_rct_ArenaBarrensRespawnPoint)
     // ..setSpawnPoint(() -> begin

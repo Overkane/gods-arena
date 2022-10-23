@@ -5,14 +5,15 @@ import ObjectIds
 import AbilityObjEditing
 import ObjectIdGenerator
 
-public constant ARENA1_WAVE_1 = compiletime(forestWolfs())
-public constant ARENA1_WAVE_2 = compiletime(forestTrolls())
-public constant ARENA1_WAVE_3 = compiletime(furbolgs())
-public constant ARENA1_WAVE_4 = compiletime(gnolls())
-public constant ARENA1_WAVE_5 = compiletime(spiders())
-public constant ARENA1_WAVE_6 = compiletime(owlbears())
-public constant ARENA1_WAVE_7 = compiletime(sasquatches())
-public constant ARENA1_BOSS_WAVE = compiletime(godOfNature())
+public constant forestWaves = new LinkedList<Wave>
+..add(compiletime(forestWolfs()))
+..add(compiletime(forestTrolls()))
+..add(compiletime(furbolgs()))
+..add(compiletime(gnolls()))
+..add(compiletime(spiders()))
+..add(compiletime(owlbears()))
+..add(compiletime(sasquatches()))
+..add(compiletime(godOfNature()))
 
 constant FOREST_WOLF_CRIT = compiletime(ABIL_ID_GEN.next())
 constant FOREST_WOLF_ROAR = compiletime(ABIL_ID_GEN.next())
@@ -46,7 +47,6 @@ function forestWolfs() returns Wave
   ..hp(375)
   ..damage(8)
   ..amount(10)
-  ..abilities(FOREST_WOLF_CRIT.toRawCode())
 
   ..wait(10)
 
@@ -54,7 +54,6 @@ function forestWolfs() returns Wave
   ..hp(375)
   ..damage(8)
   ..amount(8)
-  ..abilities(FOREST_WOLF_CRIT.toRawCode())
 
   ..creep(UnitIds.giantwolf)
   ..hp(800)
@@ -64,7 +63,7 @@ function forestWolfs() returns Wave
 
   ..wait(5)
 
-  ..creep(UnitIds.direwolf, true)
+  ..elite(UnitIds.direwolf)
   ..hp(1950)
   ..mana(200)
   ..damage(24)
@@ -86,7 +85,7 @@ function forestTrolls() returns Wave
   ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.foresttroll)
-  ..hp(550)
+  ..hp(500)
   ..damage(6)
   ..amount(8)
 
@@ -99,11 +98,11 @@ function forestTrolls() returns Wave
   ..creep(UnitIds.foresttrollhighpriest)
   ..hp(600)
   ..mana(300)
-  ..damage(6)
+  ..damage(8)
   ..amount(2)
   ..abilities(FOREST_TROLL_HEAL.toRawCode())
 
-  ..wait(12)
+  ..wait(14)
 
   ..creep(UnitIds.foresttrollberserker)
   ..hp(700)
@@ -114,12 +113,12 @@ function forestTrolls() returns Wave
   ..creep(UnitIds.foresttrollhighpriest)
   ..hp(600)
   ..mana(300)
-  ..damage(6)
+  ..damage(8)
   ..amount(2)
   ..abilities(FOREST_TROLL_HEAL.toRawCode())
 
-  ..creep(UnitIds.foresttrollking)
-  ..hp(2400)
+  ..elite(UnitIds.foresttrollking)
+  ..hp(2500)
   ..damage(35)
   ..amount(1)
   ..scale(1.4)
@@ -134,44 +133,44 @@ function furbolgs() returns Wave
   ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.furbolg)
-  ..hp(750)
-  ..damage(18)
+  ..hp(650)
+  ..damage(12)
   ..amount(6)
 
   ..creep(UnitIds.furbolgtracker)
   ..hp(800)
-  ..damage(24)
+  ..damage(18)
   ..amount(4)
   ..abilities("")
 
   ..creep(UnitIds.furbolgshaman)
   ..hp(700)
   ..mana(300)
-  ..damage(17)
+  ..damage(14)
   ..amount(5)
   ..abilities(FURBOLG_REJUVINATION.toRawCode())
 
   ..wait(15)
 
   ..creep(UnitIds.furbolgchampion)
-  ..hp(850)
-  ..damage(28)
+  ..hp(950)
+  ..damage(24)
   ..amount(2)
   ..abilities("")
 
   ..creep(UnitIds.furbolgeldershaman)
   ..hp(850)
   ..mana(500)
-  ..damage(24)
+  ..damage(18)
   ..amount(3)
   ..abilities(FURBOLG_REJUVINATION.toRawCode())
 
   ..wait(10)
 
-  ..creep(UnitIds.furbolgancient)
+  ..elite(UnitIds.furbolgancient)
   ..hp(4500)
   ..mana(300)
-  ..damage(62)
+  ..damage(52)
   ..amount(1)
   ..abilities(FURBOLG_CLAP.toRawCode())
   ..scale(1.5)
@@ -185,22 +184,24 @@ function gnolls() returns Wave
 
   ..creep(UnitIds.gnoll1)
   ..hp(825)
-  ..damage(25)
-  ..amount(18)
+  ..damage(16)
+  ..amount(15)
   ..scale(1)
+
+  ..creep(UnitIds.gnollpoacher)
+  ..hp(625)
+  ..damage(12)
+  ..amount(6)
+
+  ..wait(5)
 
   ..creep(UnitIds.gnoll3)
   ..hp(925)
   ..mana(300)
-  ..damage(32)
-  ..amount(4)
+  ..damage(22)
+  ..amount(2)
   ..scale(1.25)
   ..abilities(GNOLL_CHAIN_LIGHTNING.toRawCode())
-
-  ..creep(UnitIds.gnollpoacher)
-  ..hp(625)
-  ..damage(18)
-  ..amount(9)
 
   ..wait(15)
 
@@ -216,9 +217,19 @@ function gnolls() returns Wave
   ..amount(4)
   ..abilities("")
 
-  ..creep(UnitIds.gnollking)
+  ..creep(UnitIds.gnoll3)
+  ..hp(925)
+  ..mana(300)
+  ..damage(22)
+  ..amount(1)
+  ..scale(1.25)
+  ..abilities(GNOLL_CHAIN_LIGHTNING.toRawCode())
+
+  ..wait(10)
+
+  ..elite(UnitIds.gnollking)
   ..hp(6750)
-  ..damage(80)
+  ..damage(60)
   ..amount(1)
   ..scale(1.5)
   ..abilities(GNOLL_GREATER_BASH.toRawCode())
@@ -259,7 +270,7 @@ function spiders() returns Wave
   ..amount(4)
   ..abilities("")
 
-  ..creep(UnitIds.broodmother)
+  ..elite(UnitIds.broodmother)
   ..hp(6250)
   ..damage(95)
   ..attackrate(0.75)
@@ -292,7 +303,7 @@ function owlbears() returns Wave
   ..damage(32)
   ..amount(8)
 
-  ..creep(UnitIds.berserkowlbear)
+  ..elite(UnitIds.berserkowlbear)
   ..hp(3550)
   ..damage(65)
   ..attackrate(1)
@@ -334,7 +345,7 @@ function sasquatches() returns Wave
   ..amount(3)
   ..abilities(commaList(SASQUATCH_REJUVINATION, SASQUATCH_ROOTS))
 
-  ..creep(UnitIds.ancientsasquatch)
+  ..elite(UnitIds.ancientsasquatch)
   ..hp(10500)
   ..mana(1000)
   ..damage(110)
@@ -476,7 +487,7 @@ function godOfNature() returns Wave
   ..setDurationHero(1, 1)
 
   new AbilityDefinitionChainLightningcreep(GNOLL_CHAIN_LIGHTNING)
-  ..setDamageperTarget(1, 200)
+  ..setDamageperTarget(1, 125)
   ..setDamageReductionperTarget(1, 0)
   ..setNumberofTargetsHit(1, 5)
   ..setManaCost(1, 100)

@@ -31,7 +31,7 @@ public class Arena
   function setSpawnPoint(Vec2Function f)
     this.spawnPoint = f
 
-  function setWaves(vararg Wave waves)
+  function setWaves(LinkedList<Wave> waves)
     for wave in waves
       wave.spawnPoint = this.spawnPoint
       wave.revivePoint = () -> heroSpawn.getCenter()
