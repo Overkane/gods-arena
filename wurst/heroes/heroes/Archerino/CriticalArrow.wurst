@@ -14,7 +14,7 @@ public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 
 constant ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure CHANCE = lvl -> 0.1 + 0.1 * lvl
-constant RealLevelClosure ENTANGLE_DAMAGE = lvl -> 25. * lvl
+constant RealLevelClosure ENTANGLE_DAMAGE = lvl -> 20. * lvl
 constant RealLevelClosure ENTANGLE_DURATION = lvl -> 0.5 + 0.5 * lvl
 
 
