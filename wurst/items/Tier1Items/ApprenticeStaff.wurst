@@ -2,13 +2,14 @@ package ApprenticeStaff
 import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
-import ObjectIds
 import SpiritMask
 import Sapphire
 import WoodenStaff
 import TooltipFactory
 import MapIcons
 import CustomStatSystem
+import ObjectIds
+import CooldownGroups
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 200
@@ -31,7 +32,7 @@ public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.MANAREGEN, 0.75)
 ..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
 ..setAbilities(commaList(FIREBOLT_ID))
-..setCooldownGroup(FIREBOLT_ID.toRawCode())
+..setCooldownGroup(FIREBOLT_COOLDOWN_GROUP_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

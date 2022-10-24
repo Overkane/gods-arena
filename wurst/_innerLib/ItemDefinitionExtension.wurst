@@ -1,0 +1,10 @@
+package ItemDefinitionExtension
+import ItemObjEditing
+import ObjectIds
+
+public function ItemDefinition.setAbilityWithCooldownGroup(int abilId)
+  let abilString = abilId.toRawCode()
+
+  this
+  ..setAbilities(abilString)
+  ..setCooldownGroup(abilString)

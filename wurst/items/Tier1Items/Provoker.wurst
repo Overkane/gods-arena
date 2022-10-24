@@ -30,7 +30,7 @@ public constant PROVOKER_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.LIFE, 500)
 ..addBonus(Bonus.ARMOR, 6)
 ..setAbilities(commaList(PROVOCATE_ID))
-..setCooldownGroup(PROVOCATE_GROUP_ID.toRawCode())
+..setCooldownGroup(PROVOCATE_COOLDOWN_GROUP_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

@@ -31,7 +31,7 @@ public constant PHASE_BOOTS_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.DAMAGE, 6)
 ..addBonus(Bonus.ATTACKSPEED, 6)
 ..setAbilities(commaList(PHASE_STEP_ID, BONUS_SPEED_ID))
-..setCooldownGroup(MANA_COOLDOWN_GROUP_ID.toRawCode())
+..setCooldownGroup(PHASE_STEP_ID.toRawCode())
 ..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR_STRING) + "\n\n" + ABIL_TOOLTIP)
 )..register()
 

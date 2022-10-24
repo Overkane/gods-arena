@@ -5,6 +5,7 @@ import ClosureEvents
 import MapIcons
 import ChannelAbilityPreset
 import StarPotionBuff
+import ItemDefinitionExtension
 
 constant MAGIC_AMPLIFICATION_ID = compiletime(ABIL_ID_GEN.next())
 constant BONUS_SPELL_POWER = 30.
@@ -26,7 +27,7 @@ public constant STAR_POTION_ITEM = compiletime(new RecipeItem('vamp')
   ..setPerishable(true)
   ..setNumberofCharges(1)
   ..setMaxStack(1)
-  ..setAbilities(MAGIC_AMPLIFICATION_ID.toRawCode())
+  ..setAbilityWithCooldownGroup(MAGIC_AMPLIFICATION_ID)
   ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

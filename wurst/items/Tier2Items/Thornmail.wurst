@@ -42,7 +42,7 @@ public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.ARMOR, 12)
 ..addCustomStat(CustomUnitStats.THREAT_GENERATION, 25)
 ..setAbilities(commaList(RETALIATE_ID, PROVOCATE_ID))
-..setCooldownGroup(PROVOCATE_GROUP_ID.toRawCode())
+..setCooldownGroup(PROVOCATE_COOLDOWN_GROUP_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 

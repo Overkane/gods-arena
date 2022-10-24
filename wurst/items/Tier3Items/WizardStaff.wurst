@@ -7,6 +7,7 @@ import AdeptStaff
 import TooltipFactory
 import CustomStatSystem
 import MapIcons
+import CooldownGroups
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 500
@@ -28,9 +29,9 @@ public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
 ..setActivelyUsed(true)
 ..addBonus(Bonus.INTELLIGENCE, 30)
 ..addBonus(Bonus.MANAREGEN, 3)
-..setAbilities(commaList(FIREBOLT_ID))
-..setCooldownGroup(FIREBOLT_ID.toRawCode())
 ..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
+..setAbilities(commaList(FIREBOLT_ID))
+..setCooldownGroup(FIREBOLT_COOLDOWN_GROUP_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

@@ -8,6 +8,7 @@ import ObjectIds
 import ApprenticeStaff
 import ShamanClaws
 import TooltipFactory
+import ItemDefinitionExtension
 
 constant HEALING_WARD_ID = compiletime(ABIL_ID_GEN.next())
 constant HEALING_WARD_UNIT_ID = compiletime(UNIT_ID_GEN.next())
@@ -31,8 +32,7 @@ public constant SHAMAN_STAFF_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.ATTACKSPEED, 10)
 ..addBonus(Bonus.INTELLIGENCE, 15)
 ..addBonus(Bonus.MANAREGEN, 1.5)
-..setAbilities(commaList(HEALING_WARD_ID))
-..setCooldownGroup(HEALING_WARD_ID.toRawCode())
+..setAbilityWithCooldownGroup(HEALING_WARD_ID)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

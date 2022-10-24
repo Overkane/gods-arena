@@ -8,6 +8,7 @@ import DamageSystem
 import ClosureEvents
 import ChannelAbilityPreset
 import SpellNullifierBuff
+import ItemDefinitionExtension
 
 constant ANTI_MAGIC_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 constant ANTI_MAGIC_SHIELD_DURATION = 6.
@@ -28,7 +29,7 @@ public constant SPELL_NULLIFIER_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.AGILITY, 15)
 ..addBonus(Bonus.INTELLIGENCE, 15)
 ..addCustomStat(CustomUnitStats.MAGIC_RESISTANCE, 20)
-..setAbilities(commaList(ANTI_MAGIC_SHIELD_ID))
+..setAbilityWithCooldownGroup(ANTI_MAGIC_SHIELD_ID)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

@@ -4,6 +4,7 @@ import TooltipFactory
 import ClosureEvents
 import ChannelAbilityPreset
 import DivinePotionBuff
+import ItemDefinitionExtension
 
 constant DIVINITY_ID = compiletime(ABIL_ID_GEN.next())
 constant STAT_INCREASE_PERC = 30.
@@ -26,7 +27,7 @@ public constant DIVINE_POTION_ITEM = compiletime(new RecipeItem('vamp')
   ..setPerishable(true)
   ..setNumberofCharges(1)
   ..setMaxStack(1)
-  ..setAbilities(DIVINITY_ID.toRawCode())
+  ..setAbilityWithCooldownGroup(DIVINITY_ID)
   ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

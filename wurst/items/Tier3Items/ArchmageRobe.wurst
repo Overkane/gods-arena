@@ -3,6 +3,7 @@ import RecipeItem
 import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
+import CooldownGroups
 import TooltipFactory
 import MapIcons
 import MantleOfProtection
@@ -34,8 +35,9 @@ public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.MANA, 350)
 ..addBonus(Bonus.MANAREGEN, 2)
 ..addBonus(Bonus.INTELLIGENCE, 15)
-..setAbilities(commaList(MANA_SHIELD_ID))
 ..addCustomStat(CustomUnitStats.SPELL_LIFESTEAL, SPELL_LIFESTEAL_VALUE)
+..setAbilities(commaList(MANA_SHIELD_ID))
+..setCooldownGroup(MANA_SHIELD_COOLDOWN_GROUP_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

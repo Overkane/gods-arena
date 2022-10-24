@@ -40,6 +40,7 @@ public constant BLOCKADE_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.ARMOR, 12)
 ..addBonus(Bonus.LIFEREGEN, 3)
 ..setAbilities(commaList(BLOCKADE_ID, BLOCK_ID))
+..setCooldownGroup(BLOCKADE_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 

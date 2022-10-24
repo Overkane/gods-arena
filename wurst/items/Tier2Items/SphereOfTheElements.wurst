@@ -7,6 +7,7 @@ import ClosureEvents
 import SoundUtils
 import ElementalStone
 import TooltipFactory
+import ItemDefinitionExtension
 
 constant SPHERE_OF_THE_ELEMENTS_ID = compiletime(ABIL_ID_GEN.next())
 constant MANA_COST = 200
@@ -24,8 +25,7 @@ public constant SPHERE_OF_THE_ELEMENTS_ITEM = compiletime(new RecipeItem()
   ..addBonus(Bonus.STRENGTH, 30)
   ..addBonus(Bonus.AGILITY, 30)
   ..addBonus(Bonus.INTELLIGENCE, 30)
-  ..setAbilities(SPHERE_OF_THE_ELEMENTS_ID.toRawCode())
-  ..setCooldownGroup(SPHERE_OF_THE_ELEMENTS_ID.toRawCode())
+  ..setAbilityWithCooldownGroup(SPHERE_OF_THE_ELEMENTS_ID)
   ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

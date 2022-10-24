@@ -5,6 +5,7 @@ import TooltipFactory
 import CustomHeal
 import ChannelAbilityPreset
 import Abilities
+import ItemDefinitionExtension
 
 constant RESTORATION_ID = compiletime(ABIL_ID_GEN.next())
 constant PERC_HP = 50
@@ -29,7 +30,7 @@ public constant HELM_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.STRENGTH, 20)
 ..addBonus(Bonus.AGILITY, 20)
 ..addBonus(Bonus.INTELLIGENCE, 20)
-..setAbilities(commaList(RESTORATION_ID))
+..setAbilityWithCooldownGroup(RESTORATION_ID)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

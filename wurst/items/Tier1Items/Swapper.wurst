@@ -10,6 +10,7 @@ import HeartAmulet
 import RingOfRecovery
 import PendantOfEnergy
 import RingOfManaRegeneraion
+import ItemDefinitionExtension
 
 constant SWAPPER_ID = compiletime(ABIL_ID_GEN.next())
 constant COOLDOWN = 60
@@ -27,8 +28,7 @@ public constant SWAPPER_ITEM = compiletime(new RecipeItem()
   ..addBonus(Bonus.MANA, 350)
   ..addBonus(Bonus.LIFEREGEN, 6)
   ..addBonus(Bonus.MANAREGEN, 3)
-  ..setAbilities(SWAPPER_ID.toRawCode())
-  ..setCooldownGroup(SWAPPER_ID.toRawCode())
+  ..setAbilityWithCooldownGroup(SWAPPER_ID)
   ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

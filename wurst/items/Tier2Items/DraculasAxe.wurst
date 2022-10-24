@@ -8,6 +8,7 @@ import MaskOfDeath
 import MapIcons
 import ChannelAbilityPreset
 import CustomStatSystem
+import ItemDefinitionExtension
 
 constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant BONUS_LIFESTEAL = 40.
@@ -30,7 +31,7 @@ public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.STRENGTH, 25)
 ..addCustomStat(CustomUnitStats.ATTACK_POWER, 15)
 ..addCustomStat(CustomUnitStats.LIFESTEAL, 21)
-..setAbilities(commaList(LIFESTEAL_ID))
+..setAbilityWithCooldownGroup(LIFESTEAL_ID)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
