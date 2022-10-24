@@ -39,16 +39,16 @@ init
   nullTimer() -> 
     prayDialog = new DialogBox("Choose God to Pray")
     
-    prayDialog.addButton("God of Fire (+5 Damage * ability level)") -> 
+    prayDialog.addButton("God of Fire (+4 Damage * ability level)") -> 
       updateBuff(PrayBuffTypes.DAMAGE)
     
-    prayDialog.addButton("God of Wind (+5 Attack Speed * ability level)") ->
+    prayDialog.addButton("God of Wind (+3 Attack Speed * ability level)") ->
       updateBuff(PrayBuffTypes.ATTACK_SPEED)
       
-    prayDialog.addButton("God of Earth (+2 Armor * ability level)") ->
+    prayDialog.addButton("God of Earth (+1 Armor * ability level)") ->
       updateBuff(PrayBuffTypes.ARMOR)
 
-    prayDialog.addButton("God of Nature (+0.5 hp reg * ability level)") -> 
+    prayDialog.addButton("God of Nature (+1 hp reg * ability level)") -> 
       updateBuff(PrayBuffTypes.HP_REG)
 
     prayDialog.addButton("God of Water (+1 All Stats * ability level)") -> 
