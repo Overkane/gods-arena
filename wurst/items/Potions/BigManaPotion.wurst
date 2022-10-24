@@ -1,13 +1,12 @@
 package BigManaPotion
 import ItemObjEditing
-import ObjectIdGenerator
-import AbilityObjEditing
 import RecipeItem
-import ObjectIds
 import ClosureEvents
 import CooldownGroups
 import TooltipFactory
 import MapIcons
+import ChannelAbilityPreset
+import Abilities
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_MP = 1000
@@ -42,7 +41,7 @@ init
       caster.addMana(percMP)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionItemManaRestoreLesser(MANA_ID)
-  ..presetManaPointsGained(lvl -> 0)
+  new ChannelAbilityPreset(MANA_ID, 1, true)
+  ..setArtCaster(Abilities.aImaTarget)
   ..presetCooldown(lvl -> COOLDOWN.toReal())
 

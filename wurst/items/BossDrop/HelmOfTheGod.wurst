@@ -1,12 +1,10 @@
 package HelmOfTheGod
-import Icons
 import RecipeItem
-import AbilityObjEditing
 import ClosureEvents
-import ObjectIdGenerator
-import ObjectIds
 import TooltipFactory
 import CustomHeal
+import ChannelAbilityPreset
+import Abilities
 
 constant RESTORATION_ID = compiletime(ABIL_ID_GEN.next())
 constant PERC_HP = 50
@@ -41,7 +39,6 @@ init
     caster.addMana(caster.getMaxMana() * PERC_MP/100)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionItemRestore(RESTORATION_ID)
-  ..presetHitPointsRestored(lvl -> 0)
-  ..presetManaPointsRestored(lvl -> 0)
+  new ChannelAbilityPreset(RESTORATION_ID, 1, true)
+  ..setArtCaster(Abilities.aIreTarget)
   ..presetCooldown(lvl -> COOLDOWN.toReal())

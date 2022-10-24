@@ -1,14 +1,13 @@
 package MediumHealingPotion
 import ItemObjEditing
-import ObjectIdGenerator
-import AbilityObjEditing
 import RecipeItem
-import ObjectIds
 import ClosureEvents
 import TooltipFactory
 import MapIcons
 import CustomHeal
 import CooldownGroups
+import ChannelAbilityPreset
+import Abilities
 
 constant HEAL_ID = compiletime(ABIL_ID_GEN.next())
 constant FLAT_HEAL = 800
@@ -43,7 +42,7 @@ init
       neutralHeal(caster, percHeal)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionItemHealLesser(HEAL_ID)
-  ..presetHitPointsGained(lvl -> 0)
+  new ChannelAbilityPreset(HEAL_ID, 1, true)
+  ..setArtCaster(Abilities.aIheTarget)
   ..presetCooldown(lvl -> COOLDOWN.toReal())
 
