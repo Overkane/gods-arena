@@ -15,8 +15,11 @@ public constant BLINK_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure AGI_BONUS = lvl -> 0.1 + 0.1 * lvl
 constant RealLevelClosure AGI_BUFF_DURATION = lvl -> 4. + 0.5 * lvl
 constant RealLevelClosure BLINK_STRKE_DEBUFF_DURATION = lvl -> 3
+constant BLINK_STRIKE_MAX_STACKS_AMOUNT = 3
 
 init
+  BlinkStrikeBuff.setMaxBuffAmount(BLINK_STRIKE_MAX_STACKS_AMOUNT)
+
   EventListener.onTargetCast(BLINK_STRIKE_ID) (unit caster, unit target) ->
     nullTimer() -> 
       let lvl = caster.getAbilityLevel(BLINK_STRIKE_ID)
@@ -47,7 +50,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Assasin blinks behind the target unit and get a temporary agility buff which is based on base agility.\n"
-  +"If the target unit is killed within " + ("Time to kill").color(COLOR_GOLD_STR) + " time, the ability cooldown is reset. Agility buff stacks.")
+    +"If the target unit is killed within " + ("Time to kill").color(COLOR_GOLD_STR) + " time, the ability cooldown is reset. Agility buff stacks, but number of stacks is limited.")
   new ChannelAbilityPreset(BLINK_STRIKE_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeWAbility()
   ..presetIcon(Icons.bTNShadowMeld)
@@ -59,6 +62,7 @@ init
   ..addTooltipProperty("Agility Bonus", lvl -> (AGI_BONUS.run(lvl) * 100).percRound())
   ..addTooltipProperty("Agilitiy Buff Duration", AGI_BUFF_DURATION)
   ..addTooltipProperty("Time to kill", BLINK_STRKE_DEBUFF_DURATION)
+  ..addTooltipProperty("Max Stacks Amount", lvl -> BLINK_STRIKE_MAX_STACKS_AMOUNT)
   ..presetCastRange(lvl -> 800)
   ..presetManaCost(lvl -> 45 + 25 * (lvl-1))
   ..presetCooldown(lvl -> 22)

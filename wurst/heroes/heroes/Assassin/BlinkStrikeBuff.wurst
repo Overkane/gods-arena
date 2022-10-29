@@ -1,12 +1,12 @@
 package BlinkStrikeBuff
-import PresetBuffs
 import Assets
 import TooltipFactory
 import BonusHandler
+import LimitedStackingBuff
 
 constant buffTupleBuff = compiletime(createDummyBuffObject("Blink Strike".color(POSITIVE_COLOR), "Unit's agility is increased.",  Icons.bTNShadowMeld))
 
-public class BlinkStrikeBuff extends StackingBuff
+public class BlinkStrikeBuff extends LimitedStackingBuff
   var bonusAgi = 0.
   var addedAgi = 0.
 
