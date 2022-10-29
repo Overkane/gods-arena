@@ -9,6 +9,8 @@ import Icons
 import TooltipFactory
 import ErrorHandling
 import SoundUtils
+import Players
+import GameConstants
 
 constant toggleButtonSound = new SoundDefinition(Sounds.bigButtonClick)
 
@@ -188,7 +190,10 @@ function baseTextFrame() returns framehandle
   return textFrame
 
 function updateBasicStateFrames()
-  for p in pBasicStatFrames
+  let humanPlayers = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER)
+  
+  // Since player's stats frames aren't removed on player leave, need to consider playing players, not existing frames.
+  for p in humanPlayers
     pData.get(p).getHero().ifPresent() (h) ->
       let basicStatFrame = pBasicStatFrames.get(p)
       let heroUnit = h.actor
