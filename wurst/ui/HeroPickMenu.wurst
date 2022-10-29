@@ -83,7 +83,7 @@ function createHero(int heroId, player owner, bool isRandom)
   shop.showToUnit(h.actor)
 
   print("{0} {1} {2}".format(
-    owner.getNameColored(),
+    owner.getNameColored(true),
     isRandom ? "randomed" : "picked",
     h.actor.getName().color(COLOR_GOLD)), 8)
 
