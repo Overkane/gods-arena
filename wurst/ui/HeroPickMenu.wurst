@@ -17,6 +17,7 @@ import LinkedList
 import ObjectIdGenerator
 import Reference
 import GameStatistic
+import TooltipFactory
 
 public HeroPickUI heroPickUI
 
@@ -49,10 +50,10 @@ public function createRandomHeroes()
     createRandomHero(p)
 
 function createRandomHero(player owner)
-  createHero(heroPool.pop(), owner)
+  createHero(heroPool.pop(), owner, true)
   owner.addGold(BONUS_GOLD_FOR_RANDOM)
 
-function createHero(int heroId, player owner)
+function createHero(int heroId, player owner, bool isRandom)
   // Removing hero from hero pool so it can't be get by random after.
   heroPool.remove(heroId)
 
@@ -80,6 +81,11 @@ function createHero(int heroId, player owner)
 
   toggleShopButton.show(owner, h.actor)
   shop.showToUnit(h.actor)
+
+  print("{0} {1} {2}".format(
+    owner.getNameColored(),
+    isRandom ? "randomed" : "picked",
+    h.actor.getName().color(COLOR_GOLD)), 8)
 
 function addHeroIcons()
   heroPickUI
@@ -166,14 +172,14 @@ class HeroPickUI
             pickedIconRef.val = HeroIcon.heroIconIdMap.get(h.actor.getTypeId())
           pickedIcon = pickedIconRef.into()
         else
-          createHero(pickedIcon.heroId, p)
+          createHero(pickedIcon.heroId, p, false)
 
         pickedIcon.disable()
         playerSelection.forEach() (player key, HeroIcon value) ->
           if value == pickedIcon
             playerSelection.remove(key)
       else
-        p.print("Choose hero first!")
+        p.print("Choose hero first!".color(IMPORTANT_COLOR), 8)
         didntSelectHeroSound.playForPlayer(p)
 
   function addHeroIcon(HeroIcon heroIcon)
