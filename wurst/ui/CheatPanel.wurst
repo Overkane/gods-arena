@@ -9,6 +9,7 @@ import Creep
 import HonorShop
 import Backpack
 import Hero
+import PlayerData
 
 public function createCheatPanel()
   new CheatPanel()
@@ -25,6 +26,7 @@ class CheatPanel
 
   var isInfiniteSpells = false
   var isDamageDebugOn = false
+  var isOrderStringDebugOn = false
 
   construct()
     /* Cheat main panel */
@@ -45,10 +47,10 @@ class CheatPanel
     goldButton..onClick() -> 
       owner.addGold(1000)
       goldButton.unfocus()
-    let honorPointsButton = textButton("honor")
-    honorPointsButton..onClick() ->
-      owner.addLumber(10)
-      honorPointsButton.unfocus() 
+    let arenaPointsButton = textButton("AP")
+    arenaPointsButton..onClick() ->
+      owner.getData().addArenaPoints(300)
+      arenaPointsButton.unfocus() 
 
     let refreshButton = textButton("refresh")
     refreshButton..onClick() -> 
@@ -86,6 +88,26 @@ class CheatPanel
       isDamageDebugOn = true
     isDamageDebugOnFlag.onCheckboxUncheck() -> 
       isDamageDebugOn = false
+    
+    EventListener.add(EVENT_PLAYER_UNIT_ISSUED_ORDER) ->
+      if isOrderStringDebugOn
+        print(EventData.getOrderedUnit().getName() + " has been ordered " + OrderId2String(EventData.getIssuedOrderId()))
+    EventListener.add(EVENT_PLAYER_UNIT_ISSUED_POINT_ORDER) ->
+      if isOrderStringDebugOn
+        print(EventData.getOrderedUnit().getName() + " has been ordered " + OrderId2String(EventData.getIssuedOrderId()))
+    EventListener.add(EVENT_PLAYER_UNIT_ISSUED_TARGET_ORDER) ->
+      if isOrderStringDebugOn
+        print(EventData.getOrderedUnit().getName() + " has been ordered " + OrderId2String(EventData.getIssuedOrderId()))
+    EventListener.add(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER) ->
+      if isOrderStringDebugOn
+        print(EventData.getOrderedUnit().getName() + " has been ordered " + OrderId2String(EventData.getIssuedOrderId()))
+    let isOrderStringDebugOnTitle = createFrame(FramehandleTypeNames.text, "", GAME_UI, "", 0)
+    ..setText("Order String:")
+    let isOrderStringDebugOnFlag = createFrame("QuestCheckBox2", GAME_UI, 0, 0)
+    ..onCheckboxCheck() -> 
+      isOrderStringDebugOn = true
+    isOrderStringDebugOnFlag.onCheckboxUncheck() -> 
+      isOrderStringDebugOn = false
 
     let summonAllyDummyButton = textButton("ally dummy")
     summonAllyDummyButton..onClick() -> 
@@ -121,7 +143,7 @@ class CheatPanel
 
     ..row()
     ..add(goldButton)
-    ..add(honorPointsButton)
+    ..add(arenaPointsButton)
 
     ..row()
     ..add(refreshButton)
@@ -129,6 +151,8 @@ class CheatPanel
     ..add(isInfiniteSpellsFlag)
     ..add(isDamageDebugOnTitle)
     ..add(isDamageDebugOnFlag)
+    ..add(isOrderStringDebugOnTitle)
+    ..add(isOrderStringDebugOnFlag)
 
     ..row()
     ..add(summonAllyDummyButton)
