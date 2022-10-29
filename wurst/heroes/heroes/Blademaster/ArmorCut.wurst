@@ -9,10 +9,10 @@ import AbilityDefinitionExtension
 
 public constant ARMOR_CUT_ID = compiletime(ABIL_ID_GEN.next())
 
-public constant RealLevelClosure ARMOR_CUT_CHANCE = lvl -> 10. + 5. * lvl
 public constant RealLevelClosure ARMOR_CUT_ARMOR_REDUCE = lvl -> 1. + lvl
 public constant RealLevelClosure ARMOR_CUT_DURATION = lvl -> 20.
-public constant ARMOR_CUT_MAX_STACKS_AMOUNT = 8
+constant RealLevelClosure ARMOR_CUT_CHANCE = lvl -> 10. + 5. * lvl
+constant ARMOR_CUT_MAX_STACKS_AMOUNT = 8
 
 
 init

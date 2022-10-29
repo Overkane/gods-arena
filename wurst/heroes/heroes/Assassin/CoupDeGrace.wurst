@@ -64,7 +64,7 @@ init
 
   ..tooltipStartListen()
   ..setName("Coup De Grace")
-  ..addTooltipProperty("Attack Crit Chance", lvl -> (ATTACK_CRIT_CHANCE.run(lvl) * 100).percRound(1))
+  ..addTooltipProperty("Attack Crit Chance", lvl -> (ATTACK_CRIT_CHANCE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Attack Crit Power", lvl -> (ATTACK_CRIT_POWER.run(lvl) * 100).percRound())
   ..addTooltipProperty("Backstab Chance Multiplayer", BACKSTAB_MULT)
   ..tooltipStopListen()

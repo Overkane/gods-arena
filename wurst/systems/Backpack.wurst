@@ -41,7 +41,7 @@ public class Backpack extends UnitEntity
   ..hideHeroMinimapDisplay(true)
   ..setHideMinimapDisplay(true)
   ..addNormalAbility(AbilityIds.invulnerable)
-  ..setArmorType(ArmorType.Divine)
+  ..setArmorType(ArmorType.Hero)
   ..setModelFile("")
   ..setScalingValue(0.)
   ..setSelectionScale(0)
