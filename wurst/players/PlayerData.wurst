@@ -144,12 +144,12 @@ public function initPlayers()
     destroy p.getData()
     for backpack in backpackUnits
       if backpack.getOwner() == p
-        destroy backpack.getEntity()
+        backpack.getEntity().terminate()
         break
 
     for honorShop in honorShopUnits
       if honorShop.getOwner() == p
-        destroy honorShop.getEntity()
+        honorShop.getEntity().terminate()
         break
 
     // p.clearPlayerCustomStatUI() TODO produces crash on player leave, cuz can't destroy frame on player leave or something like that
