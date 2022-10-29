@@ -13,14 +13,22 @@ public function loadPlayerData()
   pData.forEach() (player p, PlayerData playerData) ->
     p.loadData(FILE_NAME.format(p.getName())) (status, data) ->
       if status == LoadStatus.SUCCESS
-        let honorPoints = sl_decrypt(data.getUnsafeString())
-  
-        p..print("You successfully loaded " + honorPoints + " honor points.", 5)
-        ..addLumber(honorPoints.toInt())
+        let honorPointsString = sl_decrypt(data.getUnsafeString())
+        let honorPointsInt = honorPointsString.toInt()
 
-        loadedPlayerHonorPoints.put(p, honorPoints.toInt())
+        if honorPointsInt != 0
+          p..print("You successfully loaded {0} honor {1}.".format(
+            honorPointsString, 
+            honorPointsInt == 1 ? "point" : "points"
+          ), 5)
+          ..addLumber(honorPointsInt)
+
+        loadedPlayerHonorPoints.put(p, honorPointsInt)
       else
-        p.print("Save file is not found.", 5)
+        let fileName = FILE_NAME.format(p.getName())
+
+        p..print("Save file is not found. New one is created.", 5)
+        ..saveData(fileName, sl_encrypt("0"))
 
         loadedPlayerHonorPoints.put(p, 0)
 
@@ -37,11 +45,18 @@ public function savePlayerData()
       let loadedHonorPoints = loadedPlayerHonorPoints.get(p)
       
       if loadedHonorPoints >= earnedHonorPoints
-        p.print("Your save file has more honor points than you want to save. Saving is aborted.", 5)
+        p.print("You earned {0} honor {1}. Save file has {2} honor points. Saving is aborted.".format(
+          earnedHonorPoints.toString(),
+          earnedHonorPoints == 1 ? "point" : "points",
+          loadedHonorPoints.toString()
+        ), 5)
       else
         let fileName = FILE_NAME.format(p.getName())
 
-        p..print("You successfully saved " + earnedHonorPoints.toString() + " honor points.", 5)
+        p..print("You successfully saved {0} honor {1}.".format(
+            earnedHonorPoints.toString(), 
+            earnedHonorPoints == 1 ? "point" : "points"
+        ), 5)
         ..saveData(fileName, sl_encrypt(earnedHonorPoints.toString()))
 
     else 
