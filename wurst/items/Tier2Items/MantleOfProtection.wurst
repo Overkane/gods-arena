@@ -1,20 +1,22 @@
 package MantleOfProtection
 import RecipeItem
-import PassiveAbilityPreset
 import RobeOfTheMage
 import SimpleArmor
 import TooltipFactory
 import CooldownGroups
+import ChannelAbilityPreset
+import ClosureEvents
+import ManaShieldBuff
 
 constant MANA_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
-constant MANA_SHIELD_ABSORB = 2
+constant MANA_SHIELD_ABSORB_PER_MANA = 1
 constant MANA_SHIELD_DURATION = 15
-constant MANA_COST = 25
+constant MANA_COST = 250
 constant COOLDOWN = 30
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
-  "Magic Shield", 
-  "applies on self a shield that absorbs  damage per point of mana. "
+  "Mana Shield", 
+  "applies a mana shield on caster, which durability is equal to caster's current mana before mana cost substraction * {0}. ".format(MANA_SHIELD_ABSORB_PER_MANA.toString())
     + getDurationString(MANA_SHIELD_DURATION),
     COOLDOWN, MANA_COST)
 
@@ -37,10 +39,11 @@ public constant MANTLE_OF_PROTECTION_RECIPE = new ItemRecipe()
 ..setRequiredItems(ROBE_OF_THE_MAGE_ITEM, SIMPLE_ARMOR_ITEM)
 ..setResultItem(MANTLE_OF_PROTECTION_ITEM)
 
+init
+  EventListener.onCast(MANA_SHIELD_ID) (unit caster) ->
+    new ManaShieldBuff(MANA_SHIELD_DURATION.toReal(), caster.getMana() * MANA_SHIELD_ABSORB_PER_MANA).apply(caster)
+
 @compiletime function genItemAbils()
-  new AbilityDefinitionManaShieldCreep(MANA_SHIELD_ID)
-  ..setDamageAbsorbed(1, 1)
-  ..setManaperHitPoint(1, MANA_SHIELD_ABSORB.toReal())
-  ..setDurationHero(1, MANA_SHIELD_DURATION.toReal())
+  new ChannelAbilityPreset(MANA_SHIELD_ID, 1, true)
   ..setManaCost(1, MANA_COST)
   ..setCooldown(1, COOLDOWN.toReal())

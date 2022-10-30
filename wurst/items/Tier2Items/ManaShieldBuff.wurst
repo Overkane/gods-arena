@@ -1,0 +1,16 @@
+package ManaShieldBuff
+import public PresetBuffs
+import Assets
+import SoundUtils
+import TooltipFactory
+
+constant buffTuple = compiletime(createDummyBuffObject("Mana Shield".color(POSITIVE_COLOR), "Increases unit's hp regeneration and can block small amount of damage",  Icons.bTNNeutralManaShield, Abilities.manaShieldCaster))
+
+public class ManaShieldBuff extends ShieldBuff
+  private constant ON_APPLY_SOUND = new SoundDefinition(Sounds.manaShieldCaster1)
+  
+  construct(real dur, real shieldDurabiblity)
+    super(dur, buffTuple, shieldDurabiblity)
+
+  override function onApply()
+    ON_APPLY_SOUND.play()

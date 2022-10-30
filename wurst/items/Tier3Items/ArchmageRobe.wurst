@@ -1,29 +1,28 @@
 package ArchmageRobe
 import RecipeItem
-import AbilityObjEditing
-import ObjectIdGenerator
-import ObjectIds
 import CooldownGroups
 import TooltipFactory
 import MapIcons
 import MantleOfProtection
 import RingOfSpellLifesteal
 import CustomStatSystem
+import ManaShieldBuff
+import ClosureEvents
+import ChannelAbilityPreset
 
 constant MANA_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
-constant MANA_SHIELD_ABSORB = 2
-constant MANA_SHIELD_DURATION = 20
-constant MANA_COST = 25
+constant MANA_SHIELD_ABSORB_PER_MANA = 1
+constant MANA_SHIELD_DURATION = 15
+constant MANA_COST = 250
 constant COOLDOWN = 30
 
 constant SPELL_LIFESTEAL_VALUE = 20.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Shield", 
-  "activates a shield that absorbs " + MANA_SHIELD_ABSORB.color(COLOR_GOLD_STR) + " damage per point of mana. "
+  "applies a mana shield on target, which durability is equal to caster's current mana before mana cost substraction * {0}. ".format(MANA_SHIELD_ABSORB_PER_MANA.toString())
     + getDurationString(MANA_SHIELD_DURATION),
     COOLDOWN, MANA_COST)
-
 
 public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
 ..setName("Archmage Robe")
@@ -46,10 +45,12 @@ public constant ARCHMAGE_ROBE_RECIPE = new ItemRecipe()
 ..setRequiredItems(MANTLE_OF_PROTECTION_ITEM, RING_OF_SPELL_LIFESTEAL_ITEM)
 ..setResultItem(ARCHMAGE_ROBE_ITEM)
 
+init
+  EventListener.onTargetCast(MANA_SHIELD_ID) (unit caster, unit target) ->
+    new ManaShieldBuff(MANA_SHIELD_DURATION.toReal(), caster.getMana() * MANA_SHIELD_ABSORB_PER_MANA).apply(target)
+
 @compiletime function genItemAbils()
-  new AbilityDefinitionManaShieldCreep(MANA_SHIELD_ID)
-  ..setDamageAbsorbed(1, 1)
-  ..setManaperHitPoint(1, MANA_SHIELD_ABSORB.toReal())
-  ..setDurationHero(1, MANA_SHIELD_DURATION.toReal())
+  new ChannelAbilityPreset(MANA_SHIELD_ID, 1, true)
+  ..presetTargetTypes(Targettype.UNIT)
   ..setManaCost(1, MANA_COST)
   ..setCooldown(1, COOLDOWN.toReal())
