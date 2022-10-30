@@ -4,6 +4,7 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import AdeptStaff
+import MagesSword
 import TooltipFactory
 import CustomStatSystem
 import MapIcons
@@ -27,17 +28,20 @@ public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
 ..setName("Wizard Staff")
 ..setInterfaceIcon(MapIcons.btnMage3)
 ..setActivelyUsed(true)
+..addBonus(Bonus.DAMAGE, 30)
 ..addBonus(Bonus.INTELLIGENCE, 30)
 ..addBonus(Bonus.MANAREGEN, 3)
 ..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
+..addCustomStat(CustomUnitStats.SPELL_CRIT_CHANCE, 15)
+..addCustomStat(CustomUnitStats.SPELL_CRIT_POWER, 60)
 ..setAbilities(commaList(FIREBOLT_ID))
 ..setCooldownGroup(FIREBOLT_COOLDOWN_GROUP_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant WIZARD_STAFF_RECIPE = new ItemRecipe()
-..gold(705)
-..setRequiredItems(ADEPT_STAFF_ITEM)
+..gold(665)
+..setRequiredItems(ADEPT_STAFF_ITEM, MAGES_SWORD_ITEM)
 ..setResultItem(WIZARD_STAFF_ITEM)
 
 @compiletime function genItemAbils()
