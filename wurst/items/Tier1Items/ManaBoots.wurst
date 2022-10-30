@@ -15,7 +15,7 @@ constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
 constant MS_BONUS = 30
 
 constant MANA_ID = compiletime(ABIL_ID_GEN.next())
-constant FLAT_MP = 250
+constant FLAT_MP = 200
 constant PERC_MP = 15
 constant COOLDOWN = 50
 
