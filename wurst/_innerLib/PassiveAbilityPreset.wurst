@@ -29,3 +29,4 @@ public class PassiveAbilityPreset extends AbilityDefinitionExhume
 		tooltipStopListen(false)
 		setName("Passive ability")
 		setRequirements("")
+		presetDurationNormal(lvl -> 0.01)
