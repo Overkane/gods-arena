@@ -124,14 +124,6 @@ public function createCustomUI(player p)
   ..add(toggleButton)
   ..applyTo(baseFrameForButton)
 
-public function updateCustomStatFrame(player p, CustomUnitStats stat, real value)
-  pData.get(p).getHero().ifPresent() (h) ->
-    let customStatFrame = pCustomStatFrames.get(p)
-    let frame = customStatFrame.get(stat)
-    let statValue = (value * 100).round().toString() + stat.getMeasure() 
-
-    frame.setText(statValue)
-
 public function player.clearPlayerCustomStatUI()
   if pBasicStatFrames.has(this)
     let basicFrames = pBasicStatFrames.get(this)
@@ -189,34 +181,44 @@ function baseTextFrame() returns framehandle
 
   return textFrame
 
+public function updateCustomStatFrame(player p, CustomUnitStats stat, real value)
+  pData.get(p).getHero().ifPresent() (h) ->
+    if pCustomStatFrames.has(p)
+      let customStatFrame = pCustomStatFrames.get(p)
+      let frame = customStatFrame.get(stat)
+      let statValue = (value * 100).round().toString() + stat.getMeasure() 
+
+      frame.setText(statValue)
+
 function updateBasicStateFrames()
   let humanPlayers = ALL_PLAYERS.filter((player p) -> p != ENEMY_PLAYER)
   
   // Since player's stats frames aren't removed on player leave, need to consider playing players, not existing frames.
   for p in humanPlayers
     pData.get(p).getHero().ifPresent() (h) ->
-      let basicStatFrame = pBasicStatFrames.get(p)
-      let heroUnit = h.actor
+      if pBasicStatFrames.has(p)
+        let basicStatFrame = pBasicStatFrames.get(p)
+        let heroUnit = h.actor
 
-      for basicStat in basicStatFrame
-        var statValue = ""
-        framehandle frame = null
+        for basicStat in basicStatFrame
+          var statValue = ""
+          framehandle frame = null
 
-        switch basicStat
-          case Bonus.LIFEREGEN
-            statValue = (heroUnit.getStr(true) * 0.05 + heroUnit.getBonus(Bonus.LIFEREGEN)).toString(1)
-            frame = basicStatFrame.get(basicStat)
-          case Bonus.MANAREGEN
-            // Mana reg bonus somehow return 5 for 0.5 regen, cuz of that divide by 10.
-            statValue = (heroUnit.getInt(true) * 0.05 + (heroUnit.getBonus(Bonus.MANAREGEN)) / 10).toString(1)
-            frame = basicStatFrame.get(basicStat)
-          case Bonus.ATTACKSPEED
-            statValue = (heroUnit.getAgi(true) * 0.01 * 100 + heroUnit.getBonus(Bonus.ATTACKSPEED)).round().toString() + "%"
-            frame = basicStatFrame.get(basicStat)
-          default
-            error("Trying to get unexpected basic stat: " + basicStat.toString() + ".")
-        
-        frame.setText(statValue)
+          switch basicStat
+            case Bonus.LIFEREGEN
+              statValue = (heroUnit.getStr(true) * 0.05 + heroUnit.getBonus(Bonus.LIFEREGEN)).toString(1)
+              frame = basicStatFrame.get(basicStat)
+            case Bonus.MANAREGEN
+              // Mana reg bonus somehow return 5 for 0.5 regen, cuz of that divide by 10.
+              statValue = (heroUnit.getInt(true) * 0.05 + (heroUnit.getBonus(Bonus.MANAREGEN)) / 10).toString(1)
+              frame = basicStatFrame.get(basicStat)
+            case Bonus.ATTACKSPEED
+              statValue = (heroUnit.getAgi(true) * 0.01 * 100 + heroUnit.getBonus(Bonus.ATTACKSPEED)).round().toString() + "%"
+              frame = basicStatFrame.get(basicStat)
+            default
+              error("Trying to get unexpected basic stat: " + basicStat.toString() + ".")
+          
+          frame.setText(statValue)
 
 init
   doPeriodically(1) (CallbackPeriodic cb) ->
