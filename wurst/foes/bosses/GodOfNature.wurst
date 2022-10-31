@@ -13,6 +13,7 @@ import Projectile
 import HornOfTheGod
 import Hero
 import DummyDamage
+import Creep
 
 constant ROOTS_ID = compiletime(ABIL_ID_GEN.next())
 constant WISP_HEAL_ID = compiletime(ABIL_ID_GEN.next())
@@ -67,7 +68,7 @@ public class GodOfNature extends Boss
 
   function summonTreants()
     for i = 0 to 5
-      let u = createUnit(ENEMY_PLAYER, TREANT_ID, gg_rct_ArenaForest.randomPoint(), angle(GetRandomReal(0, 359)))
+      let u = new Creep(TREANT_ID, gg_rct_ArenaForest.randomPoint().toVec3(), angle(GetRandomReal(0, 359))).actor
       flashEffect(Abilities.howlTarget, u.getPos())
       doPeriodicallyCounted(2.5, 10) cb ->
         u..addBonus(Bonus.LIFE, 50)
@@ -77,7 +78,7 @@ public class GodOfNature extends Boss
 
   function summonWisps()
     for i = 0 to GetRandomInt(2, 3)
-      let u = createUnit(ENEMY_PLAYER, WISP_ID, WISP_SPAWN_POINTS[i], angle(0))
+      let u = new Creep(WISP_ID, WISP_SPAWN_POINTS[i].toVec3(), angle(0)).actor
       u.issueTargetOrder(WISP_HEAL_DEF.getOrderString(), actor)
 
   function entangleRoots()

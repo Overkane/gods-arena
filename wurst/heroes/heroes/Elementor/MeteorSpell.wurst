@@ -28,7 +28,7 @@ init
                 doAfter(0.9) ->
                     eff.destr()
                 if target.isEnemyOf(caster.getOwner()) and target.isAlive()
-                    if not target.isStrong()
+                    if not target.isStrong() and target.getEntity() != null // TODO God of Water summons aren't entities
                         let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / aoe
                         target.getEntity().addVel(ZERO3.polarProject(800 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
                     caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
