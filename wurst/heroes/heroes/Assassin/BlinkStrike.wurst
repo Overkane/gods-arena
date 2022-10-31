@@ -64,6 +64,6 @@ init
   ..addTooltipProperty("Time to kill", BLINK_STRKE_DEBUFF_DURATION)
   ..addTooltipProperty("Max Stacks Amount", lvl -> BLINK_STRIKE_MAX_STACKS_AMOUNT)
   ..presetCastRange(lvl -> 800)
-  ..presetManaCost(lvl -> 45 + 25 * (lvl-1))
-  ..presetCooldown(lvl -> 22)
+  ..presetManaCost(lvl -> 45 + 15 * (lvl-1))
+  ..presetCooldown(lvl -> 15)
   ..tooltipStopListen()
