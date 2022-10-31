@@ -19,6 +19,7 @@ public class BlinkStrikeBuff extends LimitedStackingBuff
     target.addBonus(Bonus.AGILITY, addedAgi)
 
   override function onEnd()
+    super.onEnd()
     target.addBonus(Bonus.AGILITY, -addedAgi)
 
 
