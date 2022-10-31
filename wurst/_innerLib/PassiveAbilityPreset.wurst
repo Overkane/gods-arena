@@ -7,9 +7,35 @@ import public Icons
 
 /* 
   Provides a setup for basic passive ability, which do nothing by default and can't be clicked.
-  Also supports cooldown visibility, which can be achieved by using unit startAbilityCooldown() method. 
 */
-public class PassiveAbilityPreset extends AbilityDefinitionExhume
+public class PassiveAbilityPreset extends AbilityDefinitionCriticalStrikecreep
+	construct(int newId, int lvls, TooltipGenerator tgen)
+		super(newId)
+		registerTooltipGenerator(tgen)
+		setup(lvls)
+
+	construct(int newId, int lvls)
+		super(newId)
+		setTooltipNormal(1, "")
+		setTooltipNormalExtended(1, "")
+		setup(lvls)
+
+	function setup(int lvls)
+		this.lvls = lvls
+		setRequiredLevel(1)
+		tooltipStartListen()
+		setLevels(lvls)
+		tooltipStopListen(false)
+		setName("Passive ability")
+		presetChancetoCriticalStrike(lvls -> 0.)
+		presetDamageMultiplier(lvls -> 0.)
+
+/* 
+  Provides a setup for basic passive ability, which do nothing by default and can't be clicked.
+  Also supports cooldown visibility, which can be achieved by using unit startAbilityCooldown() method.
+	But works slower than PassiveAbilityPreset since Exhume should have inner checks for corpses, but not sure.
+*/
+public class PassiveAbilityPresetWithCD extends AbilityDefinitionExhume
 	construct(int newId, int lvls, TooltipGenerator tgen)
 		super(newId)
 		registerTooltipGenerator(tgen)

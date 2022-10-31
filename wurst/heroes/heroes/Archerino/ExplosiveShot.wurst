@@ -50,7 +50,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Next successful attack will cause an explosion, dealing percent of the attack damage to the enemies in the area and |cffd803bctagging|r them.")
-  new PassiveAbilityPreset(EXPLOSIVE_SHOT_ID, INNATE_SPELL_LEVELS, tooltip)
+  new PassiveAbilityPresetWithCD(EXPLOSIVE_SHOT_ID, INNATE_SPELL_LEVELS, tooltip)
   ..makeDAbility()
   ..presetIcon(Icons.pASBTNMarksmanShip)
 
