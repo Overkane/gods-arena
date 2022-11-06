@@ -9,7 +9,7 @@ import AbilityDefinitionExtension
 public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure DAMAGE = lvl -> 50. + 50. * (lvl-1)
-constant RealLevelClosure ATTACK_SPEED_SLOW = lvl -> 90
+constant RealLevelClosure ATTACK_SPEED_SLOW = lvl -> 60
 constant RealLevelClosure DURATION = lvl -> 30.
 
 public constant RealLevelClosure SACRED_GROUNDS_AOE_MULTIPLIER = lvl -> 1.5
