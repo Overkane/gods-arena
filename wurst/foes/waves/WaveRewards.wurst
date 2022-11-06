@@ -70,8 +70,8 @@ init
     // So if we want to compensate gold and exp on player leave,
     // we need to store compensation sums for both and compensate it on leave,
     // like if there was not that player from the beggining.
-    goldCompensationOnPlayerLeave += (waveExp / 7).round()
-    expCompensationOnPlayerLeave += (waveGold / 7).round()
+    goldCompensationOnPlayerLeave += (waveGold / 7).round()
+    expCompensationOnPlayerLeave += (waveExp / 7).round()
 
   onWaveFinish() (Wave wave) ->
     // Setting a small delay for message to appear after "Wave cleared!" message.
