@@ -7,7 +7,7 @@ import Boss
 
 public constant waveController = new WaveController()
 
-constant SPAWN_TIME = 30.
+constant SPAWN_TIME = 27.
 
 class WaveController
   constant waves = new LinkedList<Wave>
