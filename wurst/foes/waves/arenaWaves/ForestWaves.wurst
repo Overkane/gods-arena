@@ -45,6 +45,7 @@ function forestWolfs() returns Wave
 
   ..creep(UnitIds.timberwolf)
   ..hp(375)
+  ..armor(0)
   ..damage(8)
   ..amount(10)
 
@@ -52,11 +53,13 @@ function forestWolfs() returns Wave
 
   ..creep(UnitIds.timberwolf)
   ..hp(375)
+  ..armor(0)
   ..damage(8)
   ..amount(8)
 
   ..creep(UnitIds.giantwolf)
   ..hp(800)
+  ..armor(1)
   ..damage(14)
   ..amount(2)
   ..abilities(FOREST_WOLF_CRIT.toRawCode())
@@ -65,6 +68,7 @@ function forestWolfs() returns Wave
 
   ..elite(UnitIds.direwolf)
   ..hp(1950)
+  ..armor(3)
   ..mana(200)
   ..damage(24)
   ..amount(1)
@@ -73,6 +77,7 @@ function forestWolfs() returns Wave
 
   ..creep(UnitIds.timberwolf)
   ..hp(375)
+  ..armor(0)
   ..damage(8)
   ..amount(8)
   ..abilities(FOREST_WOLF_CRIT.toRawCode())
@@ -86,17 +91,20 @@ function forestTrolls() returns Wave
 
   ..creep(UnitIds.foresttroll)
   ..hp(500)
+  ..armor(0)
   ..damage(6)
   ..amount(8)
 
   ..creep(UnitIds.foresttrolltrapper)
   ..hp(650)
+  ..armor(1)
   ..damage(12)
   ..amount(4)
   ..abilities(FOREST_TROLL_NET.toRawCode())
 
   ..creep(UnitIds.foresttrollhighpriest)
   ..hp(600)
+  ..armor(0)
   ..mana(300)
   ..damage(8)
   ..amount(2)
@@ -106,12 +114,14 @@ function forestTrolls() returns Wave
 
   ..creep(UnitIds.foresttrollberserker)
   ..hp(700)
+  ..armor(1)
   ..damage(16)
   ..amount(2)
   ..abilities(FOREST_TROLL_BERSERKER.toRawCode())
 
   ..creep(UnitIds.foresttrollhighpriest)
   ..hp(600)
+  ..armor(0)
   ..mana(300)
   ..damage(8)
   ..amount(2)
@@ -119,6 +129,7 @@ function forestTrolls() returns Wave
 
   ..elite(UnitIds.foresttrollking)
   ..hp(2500)
+  ..armor(2)
   ..damage(35)
   ..amount(1)
   ..scale(1.4)
@@ -133,11 +144,13 @@ function furbolgs() returns Wave
   ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.furbolg)
+  ..armor(1)
   ..hp(650)
   ..damage(12)
   ..amount(6)
 
   ..creep(UnitIds.furbolgtracker)
+  ..armor(2)
   ..hp(800)
   ..damage(18)
   ..amount(4)
@@ -145,6 +158,7 @@ function furbolgs() returns Wave
 
   ..creep(UnitIds.furbolgshaman)
   ..hp(700)
+  ..armor(1)
   ..mana(300)
   ..damage(14)
   ..amount(5)
@@ -154,12 +168,14 @@ function furbolgs() returns Wave
 
   ..creep(UnitIds.furbolgchampion)
   ..hp(950)
+  ..armor(3)
   ..damage(24)
   ..amount(2)
   ..abilities("")
 
   ..creep(UnitIds.furbolgeldershaman)
   ..hp(850)
+  ..armor(1)
   ..mana(500)
   ..damage(18)
   ..amount(3)
@@ -169,6 +185,7 @@ function furbolgs() returns Wave
 
   ..elite(UnitIds.furbolgancient)
   ..hp(4500)
+  ..armor(4)
   ..mana(300)
   ..damage(52)
   ..amount(1)
@@ -184,12 +201,14 @@ function gnolls() returns Wave
 
   ..creep(UnitIds.gnoll1)
   ..hp(825)
+  ..armor(1)
   ..damage(16)
   ..amount(15)
   ..scale(1)
 
   ..creep(UnitIds.gnollpoacher)
   ..hp(625)
+  ..armor(0)
   ..damage(12)
   ..amount(6)
 
@@ -197,6 +216,7 @@ function gnolls() returns Wave
 
   ..creep(UnitIds.gnoll3)
   ..hp(925)
+  ..armor(1)
   ..mana(300)
   ..damage(22)
   ..amount(2)
@@ -207,18 +227,21 @@ function gnolls() returns Wave
 
   ..creep(UnitIds.gnollbrute)
   ..hp(1000)
+  ..armor(2)
   ..damage(24)
   ..amount(5)
   ..abilities(GNOLL_BASH.toRawCode())
 
   ..creep(UnitIds.gnollassassin)
   ..hp(850)
+  ..armor(1)
   ..damage(22)
   ..amount(4)
   ..abilities("")
 
   ..creep(UnitIds.gnoll3)
   ..hp(925)
+  ..armor(1)
   ..mana(300)
   ..damage(22)
   ..amount(1)
@@ -229,6 +252,7 @@ function gnolls() returns Wave
 
   ..elite(UnitIds.gnollking)
   ..hp(6750)
+  ..armor(4)
   ..damage(60)
   ..amount(1)
   ..scale(1.5)
@@ -243,16 +267,19 @@ function spiders() returns Wave
 
   ..creep(UnitIds.spider)
   ..hp(900)
+  ..armor(0)
   ..damage(28)
   ..amount(14)
 
   ..creep(UnitIds.forestspider)
   ..hp(750)
+  ..armor(1)
   ..damage(24)
   ..amount(12)
 
   ..creep(UnitIds.spiderblack)
   ..hp(800)
+  ..armor(1)
   ..damage(21)
   ..amount(12)
 
@@ -260,18 +287,21 @@ function spiders() returns Wave
 
   ..creep(UnitIds.spittingspider)
   ..hp(1100)
+  ..armor(1)
   ..damage(28)
   ..amount(3)
   ..abilities("")
 
   ..creep(UnitIds.giantspider)
   ..hp(1550)
+  ..armor(2)
   ..damage(25)
   ..amount(4)
   ..abilities("")
 
   ..elite(UnitIds.broodmother)
   ..hp(6250)
+  ..armor(5)
   ..damage(95)
   ..attackrate(0.75)
   ..amount(1)
@@ -286,12 +316,14 @@ function owlbears() returns Wave
   ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.owlbear)
+  ..armor(2)
   ..hp(1950)
   ..damage(32)
   ..amount(6)
 
   ..creep(UnitIds.enragedowlbear)
   ..hp(2450)
+  ..armor(3)
   ..damage(35)
   ..amount(2)
   ..abilities(OWLBEAR_EVASION.toRawCode())
@@ -300,11 +332,13 @@ function owlbears() returns Wave
 
   ..creep(UnitIds.owlbear)
   ..hp(1950)
+  ..armor(2)
   ..damage(32)
   ..amount(8)
 
   ..elite(UnitIds.berserkowlbear)
   ..hp(3550)
+  ..armor(6)
   ..damage(65)
   ..attackrate(1)
   ..amount(1)
@@ -320,17 +354,20 @@ function sasquatches() returns Wave
 
   ..creep(UnitIds.sasquatch)
   ..hp(2500)
+  ..armor(2)
   ..damage(40)
   ..amount(11)
 
   ..creep(UnitIds.eldersasquatch)
   ..hp(3250)
+  ..armor(3)
   ..damage(45)
   ..amount(2)
   ..abilities(SASQUATCH_BASH.toRawCode())
 
   ..creep(UnitIds.sasquatchoracle)
   ..hp(3000)
+  ..armor(2)
   ..mana(500)
   ..damage(35)
   ..amount(1)
@@ -340,6 +377,7 @@ function sasquatches() returns Wave
 
   ..creep(UnitIds.sasquatchoracle)
   ..hp(2250)
+  ..armor(2)
   ..mana(500)
   ..damage(35)
   ..amount(3)
@@ -347,6 +385,7 @@ function sasquatches() returns Wave
 
   ..elite(UnitIds.ancientsasquatch)
   ..hp(10500)
+  ..armor(6)
   ..mana(1000)
   ..damage(110)
   ..attackrate(0.75)

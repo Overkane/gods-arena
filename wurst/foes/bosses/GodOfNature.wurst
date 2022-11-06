@@ -112,7 +112,7 @@ init
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
   ..setAttack1DamageBase(100)
-  ..setDefenseBase(15)
+  ..setDefenseBase(7)
   ..setHitPointsMaximumBase(42500)
   ..setScalingValue(2.6)
   ..setArmorType(ArmorType.Divine)
