@@ -1,44 +1,27 @@
 package Boss
 import PhysicsEntity
-import GameConstants
 import CurrentArena
+import Creep
 
 interface BossIsDead
   abstract function execute()
-
-public BossIsDead onBossDefeat
 
 public constant bossList = new LinkedList<unit>
 
 public function unit.isBoss() returns bool
   return bossList.has(this)
 
-public class Boss extends UnitEntity
-  use PhysicsModule
+public class Boss extends Creep
   
   construct(int typId, vec3 pos, angle ang)
-    super(createUnit(ENEMY_PLAYER, typId, pos.toVec2(), ang))
-    actor.setAnimation("birth")
-
+    super(typId, pos, ang)
     bossList.add(actor)
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
-      onBossDefeat.execute()
       bossList.remove(actor)
-
-  override function update()
-    physicsUpdate(this)
-    super.update()
 
   override function addVel(vec3 vel)
     super.addVel(vel * 0.2)
-
-  override function onEscapeGround()
-    actor.setPropWindow(0 .fromDeg())
-
-  override function onGroundHit()
-    scaleVel(0.75)
-    actor.setPropWindow(actor.getDefaultPropWindow())
 
   override function setXY(vec3 tpos)
     pos = tpos

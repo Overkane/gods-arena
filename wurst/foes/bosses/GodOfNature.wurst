@@ -12,129 +12,299 @@ import InstantDummyCaster
 import Projectile
 import HornOfTheGod
 import Hero
-import DummyDamage
 import Creep
+import Heightmap
+import DamageSystem
+import CustomHeal
+import MapModels
+import ProjectileRepeater
 
 constant ROOTS_ID = compiletime(ABIL_ID_GEN.next())
-constant WISP_HEAL_ID = compiletime(ABIL_ID_GEN.next())
-constant WISP_HEAL_DEF = compiletime(new ChannelAbilityPreset(WISP_HEAL_ID, 1, true)
-  ..setDummyAbility()
-  ..presetTargetTypes(Targettype.UNIT)
-  ..setCastRange(1, 50)
-)
 
 constant GOD_OF_NATURE_ID = compiletime(UNIT_ID_GEN.next())
-constant WISP_ID = compiletime(UNIT_ID_GEN.next())
 constant TREANT_ID = compiletime(UNIT_ID_GEN.next())
-vec2 array WISP_SPAWN_POINTS = [gg_rct_ArenaForest.getRightTop(), gg_rct_ArenaForest.getLeftTop(), gg_rct_ArenaForest.getLeftBot(), gg_rct_ArenaForest.getRightBot()]
-vec2 array ROOTS_PROJECTILES_SPAWN_POINTS = [gg_rct_ArenaForest.getRightTop(), gg_rct_ArenaForest.getLeftTop(), gg_rct_ArenaForest.getLeftBot(), gg_rct_ArenaForest.getRightBot()]
 
 constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.doom)
 
+constant POISON_SOUND = new SoundDefinition(Sounds.corrosiveBreathMissileTarget1)
+
 public class GodOfNature extends Boss
-  let castQueue = new LinkedList<int>
+  private constant castQueue = new LinkedList<int>
+
+  private var isPhase1 = false
+  private var wasOnPhase1 = false
+  private var isPhase2 = false
+  private var wasOnPhase2 = false
 
   construct(vec3 pos, angle ang)
     super(GOD_OF_NATURE_ID, pos, ang)
+
     actor.addItemById(HORN_OF_THE_GOD_ITEM.getNewId())
+    
     BOSS_MUSIC_THEME.play()
     new SoundDefinition(Sounds.o05Cenarius29).play()
-    doPeriodically(6) cb ->
-      if actor.isAlive()
-        castBossSpell()
-      else
-        destroy cb
+    
+    spellCycle()
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
       forUnitsAll() (unit u) ->
-        if u.getTypeId() == WISP_ID or u.getTypeId() == TREANT_ID
+        if u.getTypeId() == TREANT_ID
           u.kill()
       BOSS_MUSIC_THEME.play(0, 0)
 
-  function castBossSpell()
-    if castQueue.isEmpty()
-      for i = 0 to 2
-        castQueue.add(i)
-      castQueue.shuffle()
-    actor.setAnimation("cast")
-    let rand = castQueue.pop()
-    switch rand
-      case 0
-        summonTreants()
-      case 1
-        entangleRoots()
-      case 2
-        summonWisps()
+    DamageEvent.addListener() ->
+      let tunit = DamageEvent.getTarget()
+
+      if tunit == actor 
+        if tunit.getHPRatio() <= 0.6 and not wasOnPhase1
+          isPhase1 = true
+          wasOnPhase1 = true
+        else if tunit.getHPRatio() <= 0.3 and not wasOnPhase2
+          isPhase2 = true
+          wasOnPhase2 = true
+
+  function spellCycle()
+    let spellCd = wasOnPhase2 ? 5. : 6.
+    doAfter(spellCd) ->
+      if actor.isAlive()
+        if isPhase1
+          isPhase1 = false
+          ultimateSpell()
+        else if isPhase2
+          isPhase2 = false
+          ultimateSpell()
+        else
+          if castQueue.isEmpty()
+            for i = 0 to 2
+              castQueue.add(i)
+            castQueue.shuffle()
+          actor.setAnimation("cast")
+          let rand = castQueue.pop()
+          switch rand
+            case 0
+              summonTreants()
+            case 1
+              poisonClouds(false)
+            case 2
+              entangleRoots(false)
+          spellCycle()
 
   function summonTreants()
-    for i = 0 to 5
+    let maxNumberOfTreants = heroUnitList.size() + (wasOnPhase2 ? 2 : -1)
+    let numberOfTreants = max(2, maxNumberOfTreants)
+    
+    for i = 1 to numberOfTreants
       let u = new Creep(TREANT_ID, gg_rct_ArenaForest.randomPoint().toVec3(), angle(GetRandomReal(0, 359))).actor
       flashEffect(Abilities.howlTarget, u.getPos())
       doPeriodicallyCounted(2.5, 10) cb ->
-        u..addBonus(Bonus.LIFE, 50)
+        u..addBonus(Bonus.LIFE, u.getMaxHP() * 0.1)
         ..addBonus(Bonus.DAMAGE, 15)
-        ..setMoveSpeed(u.getMoveSpeed() - 34.5)
-        ..setScale(2 - 0.1 * cb.getCount())
+        ..setMoveSpeed(u.getMoveSpeed() - 15)
+        ..setScale(2 - 0.14 * cb.getCount())
 
-  function summonWisps()
-    for i = 0 to GetRandomInt(2, 3)
-      let u = new Creep(WISP_ID, WISP_SPAWN_POINTS[i].toVec3(), angle(0)).actor
-      u.issueTargetOrder(WISP_HEAL_DEF.getOrderString(), actor)
+  function poisonClouds(bool isSecondCall)
+    let aliveHeroUnits = heroUnitList.filter((unit u) -> u.isAlive())..shuffle()
+    let numberOfProjectiles = (aliveHeroUnits.size() / 2).round()
 
-  function entangleRoots()
-    for i = 0 to 3
-      let target = heroUnitList..shuffle().getFirst()
-      let projectile = new Projectile(ROOTS_PROJECTILES_SPAWN_POINTS[i].toVec3(), 60, ENEMY_PLAYER, ROOTS_PROJECTILES_SPAWN_POINTS[i].toVec3().angleTo2d(target.getPos()), Abilities.chimaeraAcidMissile)
+    for i = 1 to numberOfProjectiles
+      let affectedUnit = aliveHeroUnits.dequeue()
+      let affectedUnitEffect = addEffect(MapModels.spellMarkerRed, affectedUnit, AttachmentPoints.origin)
 
-      projectile
-      ..setRanged(5000)
-      ..setTarget(target.getPos3Zero(), 18.)
-      .onHit() hitTarget ->
-        if hitTarget.getOwner().isEnemyOf(ENEMY_PLAYER) and hitTarget.isAlive()
-          InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, hitTarget)
-          new DummyDamage()
-          ..attacker(ENEMY_PLAYER)
-          ..target(target)
-          ..amount(250)
-          ..attackType(ATTACK_TYPE_CHAOS)
-          ..apply(true)
-          projectile.terminate()
+      doAfter(1) -> 
+        affectedUnitEffect.destr()
+        let affectedUnitPos = affectedUnit.getPos()
+        let groundEffect = addEffect(MapModels.spellMarkerRed, affectedUnitPos)
 
-init
-  EventListener.onTargetCast(WISP_HEAL_ID) (unit caster, unit target) ->
-    target.setHP(target.getHP() + target.getMaxHP() * 0.15)
-    target.addBonus(Bonus.DAMAGE, 15)
-    flashEffect(Abilities.healTarget, target.getPos())
-    caster.kill()
+        doAfter(0.5) -> 
+          let poisonProjectile = new Projectile(affectedUnitPos.withHeightMap(800), 64, 
+            ENEMY_PLAYER, (0).asAngleDegrees(), Abilities.chimaeraAcidMissile)
+
+          poisonProjectile.getFx().setOrientation(eulerToQuat(0., 270., 0.))
+
+          poisonProjectile
+          ..setPointTarget(affectedUnitPos.withHeightMap(), 20.)
+          ..onEnd() ->
+            groundEffect.destr()
+            
+            new ProjectileRepeater(affectedUnitPos.withHeightMap(), 168, ENEMY_PLAYER, angle(0), Units.plagueCloud, 20) // Deals damage each 0.6 second
+            ..setTimed(15)
+            ..onHit() (unit target) ->
+              if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+                actor.dealMagicalDamage(target, 50)
+                POISON_SOUND.playForPlayer(target.getOwner())
+
+          if wasOnPhase2 and not isSecondCall
+            doAfter(1) -> 
+              poisonClouds(true)
+
+    destroy aliveHeroUnits
+
+  function entangleRoots(bool isSecondCast)
+    actor
+    ..setAnimation("spell")
+    ..pause()
+
+    let variation = GetRandomInt(1, 2)
+    castRoots(variation)
+
+    doAfter(2) -> 
+      if wasOnPhase2 and not isSecondCast
+        let reverseVariaton = variation == 1 ? 2 : 1
+        castRoots(reverseVariaton)
+        doAfter(2) -> 
+          actor.unpause()
+      else
+        actor.unpause()
+
+  function castRoots(int variation)
+    let baseCircleAOE = 100
+    let radiusAOE = 200 * variation
+    
+    doPeriodicallyCounted(0.2, 3) (CallbackCounted cb) ->
+      let currentRadiusAOE = radiusAOE + 300 * (3 - cb.getCount())
+      let circleNumber = (PI / Asin(baseCircleAOE / currentRadiusAOE)).round()
+      let circleAngles = 360 / circleNumber
+    
+      for i = 1 to circleNumber
+        let currentAngle = circleAngles * i
+        let circlePos = actor.getPos().polarOffset(currentAngle.asAngleDegrees(), currentRadiusAOE.toReal())
+        let groundEffect = addEffect(MapModels.spellMarkerRed, circlePos)
+
+        doAfter(2) -> 
+          groundEffect.destr()
+          flashEffect(Abilities.entanglingRootsTarget, circlePos)
+          forUnitsInRange(circlePos, 100) (unit u) ->
+            if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive()
+              InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
+              doPeriodicallyTimed(1, 3) (CallbackCounted cb) ->
+                actor.dealMagicalDamage(u, 100)
+
+  function ultimateSpell()
+    let tpEffect = actor
+    ..pause()
+    .addEffect(Abilities.massTeleportCaster, AttachmentPoints.origin)
+
+    doAfter(2) ->
+      tpEffect.destr() 
+      let tranqEf = actor
+      ..setInvulnerable(true)
+      ..setPos(gg_rct_ArenaForest.getCenter())
+      ..setFacing((270).asAngleDegrees())
+      .addEffect(Abilities.tranquility, AttachmentPoints.origin)
+
+      let wispAmount = wasOnPhase1 ? 24 : 12
+      let baseAngles = (360 / (wispAmount / 2)).toInt()
+      let healWispNumber = GetRandomInt(1, wispAmount)
+      
+      let wispSpawnAngleList = new LinkedList<int>
+      
+      for i = 1 to wispAmount
+        let spawnAngle = baseAngles * i
+        wispSpawnAngleList.add(spawnAngle)
+
+      doPeriodicallyCounted(5, 3) (CallbackCounted cb) ->
+        let internalWispSpawnAngleList = wispSpawnAngleList.copy()..shuffle()
+        
+        int wispNumber = 0
+
+        doPeriodicallyCounted(0.1, wispAmount) (CallbackCounted cb) ->
+          wispNumber++
+ 
+          let currentangle = internalWispSpawnAngleList.dequeue()
+          let currentWispSpawnAngle = (currentangle + GetRandomReal(-currentangle/5, currentangle/5)).asAngleDegrees()
+          let distance = 500. + GetRandomReal(100, gg_rct_ArenaForest.height() / 2 - 100)
+          let projectilePos = actor.getPos().polarOffset(currentWispSpawnAngle, distance)
+          let fallingWispProjectile = new Projectile(projectilePos.withHeightMap(800), 64, 
+            ENEMY_PLAYER, (0).asAngleDegrees(), Units.wisp1)
+
+          let markerModel = wispNumber == healWispNumber ? MapModels.spellMarkerGreen : MapModels.spellMarkerRed
+          let groundEffect = addEffect(markerModel, projectilePos.withHeightMap())..setScale(2)
+
+          if wispNumber == healWispNumber
+            fallingWispProjectile.getFx().setTint(colorA(0, 255, 0, 255))
+          else
+            fallingWispProjectile.getFx().setTint(colorA(240, 63, 63, 255))
+
+          fallingWispProjectile
+          ..setPointTarget(projectilePos.withHeightMap(), 16. + GetRandomInt(1, 4))
+          ..onEnd() ->
+            groundEffect.destr()
+            let isHealingWisp = wispNumber == healWispNumber
+
+            flashEffect(Abilities.warStompCaster, projectilePos)
+            forUnitsInRange(projectilePos, 200) (unit u) ->
+              if u.isEnemyOf(ENEMY_PLAYER)
+                actor.dealMagicalDamage(u, 250)
+
+            let movingWispProjectile = new Projectile(projectilePos.withHeightMap(), 64, 
+              ENEMY_PLAYER, (0).asAngleDegrees(), Units.wisp1)
+
+            movingWispProjectile
+            ..setTarget(actor.getPos().withHeightMap(), 4. + GetRandomReal(1, 4))
+            ..setRanged(distance)
+            ..onHit() (unit target) ->
+              if isHealingWisp
+                if heroUnitList.has(target) and target.isAlive()
+                  flashEffect(Abilities.holyBoltSpecialArt, target, AttachmentPoints.origin)
+                  neutralHeal(target, target.getMaxHP() * 0.3)
+
+                  movingWispProjectile.terminate()
+                else if target == actor and target.isAlive()
+                  flashEffect(Abilities.holyBoltSpecialArt, target, AttachmentPoints.origin)
+                  neutralHeal(target, target.getMaxHP() * 0.15)
+                  target.addBonus(Bonus.DAMAGE, 30)
+
+                  movingWispProjectile.terminate()
+              else
+                if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+                  flashEffect(Abilities.fireLordDeathExplode, target, AttachmentPoints.origin)
+                  actor.dealMagicalDamage(target, 150)
+
+                  movingWispProjectile.terminate()
+
+            if isHealingWisp
+              movingWispProjectile.getFx()
+              ..setTint(colorA(0, 255, 0, 255))
+            else
+              movingWispProjectile.getFx().setTint(colorA(240, 63, 63, 255))
+
+          if cb.isLast()
+            destroy internalWispSpawnAngleList
+
+        if cb.isLast()
+          doAfter(10) -> 
+            actor
+            ..setInvulnerable(false)
+            ..unpause()
+
+            spellCycle()
+            
+            tranqEf.destr()
+
+          destroy wispSpawnAngleList
+
 
 @compiletime function genAbility()
   new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegrove)
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
   ..setAttack1DamageBase(100)
+  ..setAttack1CooldownTime(1.2)
   ..setDefenseBase(7)
   ..setHitPointsMaximumBase(42500)
   ..setScalingValue(2.6)
   ..setArmorType(ArmorType.Divine)
   ..setAttack1AttackType(AttackType.Chaos)
 
-  new UnitDefinition(WISP_ID, UnitIds.wisp)
-  ..setHitPointsMaximumBase(600)
-  ..setArmorType(ArmorType.Unarmored)
-  ..setSpeedBase(110)
-  ..setMovementType(MovementType.Fly)
-  ..setNormalAbilities(WISP_HEAL_ID.toRawCode())
-  ..setArmorType(ArmorType.Small)
-  ..setAttack1AttackType(AttackType.Siege)
-
   new UnitDefinition(TREANT_ID, UnitIds.forceofnature)
   ..setAcquisitionRange(99999)
   ..setAttack1DamageBase(20)
   ..setDefenseBase(0)
   ..setSpeedBase(350)
-  ..setHitPointsMaximumBase(500)
+  ..setHitPointsMaximumBase(450)
   ..setArmorType(ArmorType.Small)
   ..setAttack1AttackType(AttackType.Siege)
+  ..setScalingValue(0.6)
 
   new AbilityDefinitionKeeperoftheGroveEntanglingRoots(ROOTS_ID)
   ..setDummyAbility()

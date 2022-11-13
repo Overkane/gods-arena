@@ -46,4 +46,3 @@ class WaveController
 init 
   nullTimer() ->
     onAllCreepsDead = () -> waveController.checkIfCurrentWaveDone()
-    onBossDefeat = () -> waveController.checkIfCurrentWaveDone()
