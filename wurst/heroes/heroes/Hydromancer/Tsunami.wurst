@@ -1,6 +1,6 @@
 package Tsunami
 import Assets
-import ProjectileRepeator
+import ProjectileRepeater
 import AbilityTooltipGenerator
 import GameConstants
 import DamageSystem
@@ -15,7 +15,7 @@ constant damageInterval = 5
 
 init
   EventListener.onPointCast(TSUNAMI_ID) (caster, target) ->
-    let projectile = new ProjectileRepeator(caster.getPos().toVec3(), 225, caster.getOwner(), caster.getPos().angleTo(target), Abilities.crushingWaveMissile, damageInterval)
+    let projectile = new ProjectileRepeater(caster.getPos().toVec3(), 225, caster.getOwner(), caster.getPos().angleTo(target), Abilities.crushingWaveMissile, damageInterval)
     let lvl = caster.getAbilityLevel(TSUNAMI_ID)
     projectile
     ..setRanged(900)

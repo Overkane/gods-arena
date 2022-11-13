@@ -1,4 +1,4 @@
-package ProjectileRepeator
+package ProjectileRepeater
 import public Fx2Entity
 import ClosureForGroups
 
@@ -11,7 +11,7 @@ public interface OnEndListener
 /* 
   Works like Projectile class, but can hit same target more than one time.
  */
-public class ProjectileRepeator extends Fx2Entity
+public class ProjectileRepeater extends Fx2Entity
   
   // Variables to slow update function, since we may not want to hit target every ANIMATION_PERIOD.
   // Each increment of updateSlowFactor means one more ANIMATION_PERIOD is needed for update function to trigger hit.
