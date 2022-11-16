@@ -33,5 +33,5 @@ public class BubbleShieldBuff extends ShieldBuff
 
   override function update()
     super.update()
-    caster.healTarget(target, healAmount)
+    caster.healTarget(target, healAmount, false)
     
