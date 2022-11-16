@@ -8,19 +8,23 @@ init
     DamageEvent.addListener(99) ->
         if DamageEvent.getAmount() > 0
             let target = DamageEvent.getTarget()
+            
+            var textColor = colorA(0, 0, 0, 0)
 
-            if target.getOwner() == ENEMY_PLAYER
-                if isPhysicalDamage()
-                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(233, 116, 122, 255), 7)
-                else if isMagicalDamage()
-                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(109, 57, 207, 255), 7)
-                else if isPureDamage()
-                    coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(194, 156, 74, 255), 7)
-                // else 
-                    // print("Unknown damage type:", 3)
-                    // print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName(), 3)
-                    // print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".", 3)
-                    // print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString(), 3)
-            else
-                coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), colorA(146, 29, 29, 255), 6)
-        
+            if isPhysicalDamage()
+                textColor = colorA(233, 116, 122, 255)
+            else if isMagicalDamage()
+                textColor = colorA(109, 57, 207, 255)
+            else if isPureDamage()
+                textColor = colorA(194, 156, 74, 255)
+            // TODO need to check if there are still unknown damage type
+            // else
+            // print("Unknown damage type:", 3)
+            // print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName(), 3)
+            // print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".", 3)
+            // print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString(), 3)
+            
+            if target.getOwner() != ENEMY_PLAYER
+                textColor = textColor.mix(colorA(255, 255, 255, 255), 0.4)
+
+            coolTextTag(DamageEvent.getSource(), target, DamageEvent.getAmount().toInt(), textColor, 7)
