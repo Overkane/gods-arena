@@ -13,9 +13,9 @@ constant ARMOR_AURA_BUFF_ID = compiletime(BUFF_ID_GEN.next())
 constant ARMOR = 8
 constant ARMOR_AOE = 900
 
-constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Protection Aura", 
-  "Provides " + ARMOR.color(COLOR_GOLD_STR) + " in " + ARMOR_AOE.color(COLOR_GOLD_STR) + " AoE.")
+  "Provides " + ARMOR.color(COLOR_GOLD_STR) + "armor in " + ARMOR_AOE.color(COLOR_GOLD_STR) + " AoE.")
 
 public constant HORN_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 ..setName("Horn of the God")
@@ -30,7 +30,7 @@ public constant HORN_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.AGILITY, 15)
 ..addBonus(Bonus.INTELLIGENCE, 15)
 ..setAbilities(commaList(ARMOR_AURA_ID))
-..generateTooltip("Passive - 8 armor aura.")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 @compiletime function genItemAbils()
@@ -42,5 +42,5 @@ public constant HORN_OF_THE_GOD_ITEM = compiletime(new RecipeItem()
 
   new BuffDefinition(ARMOR_AURA_BUFF_ID, BuffIds.devotionAura)
   ..setIcon(Icons.bTNHornOfFog)
-  ..setTooltipNormal(1, "Horn of the God")
-  ..setTooltipNormalExtended(1, "Unit's armor increased by 8.")
+  ..setTooltipNormal(1, "Protection Aura")
+  ..setTooltipNormalExtended(1, "Armor is increased")
