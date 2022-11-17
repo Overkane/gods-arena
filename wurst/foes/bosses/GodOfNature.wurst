@@ -90,16 +90,20 @@ public class GodOfNature extends Boss
           spellCycle()
 
   function summonTreants()
-    let maxNumberOfTreants = heroUnitList.size() + (wasOnPhase2 ? 2 : -1)
-    let numberOfTreants = max(2, maxNumberOfTreants)
+    let aliveHeroUnits = heroUnitList.filter((unit u) -> u.isAlive())
+    let numberOfTreantsBasedOnNumberOfHeroes = (aliveHeroUnits.size() / 2).round()
+    let numberOfTreants = max(2, numberOfTreantsBasedOnNumberOfHeroes)
+    destroy aliveHeroUnits
+    
+    let powerUpInterval = wasOnPhase2 ? 2. : 3.
     
     for i = 1 to numberOfTreants
       let u = new Creep(TREANT_ID, gg_rct_ArenaForest.randomPoint().toVec3(), angle(GetRandomReal(0, 359))).actor
       flashEffect(Abilities.howlTarget, u.getPos())
-      doPeriodicallyCounted(2.5, 10) cb ->
+      doPeriodicallyCounted(powerUpInterval, 8) cb ->
         u..addBonus(Bonus.LIFE, u.getMaxHP() * 0.1)
-        ..addBonus(Bonus.DAMAGE, 15)
-        ..setMoveSpeed(u.getMoveSpeed() - 15)
+        ..addBonus(Bonus.DAMAGE, 10)
+        ..setMoveSpeed(u.getMoveSpeed() - 18)
         ..setScale(2 - 0.14 * cb.getCount())
 
   function poisonClouds(bool isSecondCall)
@@ -194,94 +198,99 @@ public class GodOfNature extends Boss
 
       let wispAmount = wasOnPhase1 ? 24 : 12
       let baseAngles = (360 / (wispAmount / 2)).toInt()
-      let healWispNumber = GetRandomInt(1, wispAmount)
-      
       let wispSpawnAngleList = new LinkedList<int>
       
       for i = 1 to wispAmount
         let spawnAngle = baseAngles * i
         wispSpawnAngleList.add(spawnAngle)
 
-      doPeriodicallyCounted(5, 3) (CallbackCounted cb) ->
-        let internalWispSpawnAngleList = wispSpawnAngleList.copy()..shuffle()
-        
-        int wispNumber = 0
+      doAfter(3.) -> 
+        castWispSpell(wispAmount, wispSpawnAngleList)
 
-        doPeriodicallyCounted(0.1, wispAmount) (CallbackCounted cb) ->
-          wispNumber++
- 
-          let currentangle = internalWispSpawnAngleList.dequeue()
-          let currentWispSpawnAngle = (currentangle + GetRandomReal(-currentangle/5, currentangle/5)).asAngleDegrees()
-          let distance = 500. + GetRandomReal(100, gg_rct_ArenaForest.height() / 2 - 100)
-          let projectilePos = actor.getPos().polarOffset(currentWispSpawnAngle, distance)
-          let fallingWispProjectile = new Projectile(projectilePos.withHeightMap(800), 64, 
-            ENEMY_PLAYER, (0).asAngleDegrees(), Units.wisp1)
-
-          let markerModel = wispNumber == healWispNumber ? MapModels.spellMarkerGreen : MapModels.spellMarkerRed
-          let groundEffect = addEffect(markerModel, projectilePos.withHeightMap())..setScale(2)
-
-          if wispNumber == healWispNumber
-            fallingWispProjectile.getFx().setTint(colorA(0, 255, 0, 255))
-          else
-            fallingWispProjectile.getFx().setTint(colorA(240, 63, 63, 255))
-
-          fallingWispProjectile
-          ..setPointTarget(projectilePos.withHeightMap(), 16. + GetRandomInt(1, 4))
-          ..onEnd() ->
-            groundEffect.destr()
-            let isHealingWisp = wispNumber == healWispNumber
-
-            flashEffect(Abilities.warStompCaster, projectilePos)
-            forUnitsInRange(projectilePos, 200) (unit u) ->
-              if u.isEnemyOf(ENEMY_PLAYER)
-                actor.dealMagicalDamage(u, 250)
-
-            let movingWispProjectile = new Projectile(projectilePos.withHeightMap(), 64, 
-              ENEMY_PLAYER, (0).asAngleDegrees(), Units.wisp1)
-
-            movingWispProjectile
-            ..setTarget(actor.getPos().withHeightMap(), 4. + GetRandomReal(1, 4))
-            ..setRanged(distance)
-            ..onHit() (unit target) ->
-              if isHealingWisp
-                if heroUnitList.has(target) and target.isAlive()
-                  flashEffect(Abilities.holyBoltSpecialArt, target, AttachmentPoints.origin)
-                  neutralHeal(target, target.getMaxHP() * 0.3)
-
-                  movingWispProjectile.terminate()
-                else if target == actor and target.isAlive()
-                  flashEffect(Abilities.holyBoltSpecialArt, target, AttachmentPoints.origin)
-                  neutralHeal(target, target.getMaxHP() * 0.15)
-                  target.addBonus(Bonus.DAMAGE, 30)
-
-                  movingWispProjectile.terminate()
-              else
-                if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
-                  flashEffect(Abilities.fireLordDeathExplode, target, AttachmentPoints.origin)
-                  actor.dealMagicalDamage(target, 150)
-
-                  movingWispProjectile.terminate()
-
-            if isHealingWisp
-              movingWispProjectile.getFx()
-              ..setTint(colorA(0, 255, 0, 255))
-            else
-              movingWispProjectile.getFx().setTint(colorA(240, 63, 63, 255))
+        doPeriodicallyCounted(7, 2) (CallbackCounted cb) ->
+          castWispSpell(wispAmount, wispSpawnAngleList)
 
           if cb.isLast()
-            destroy internalWispSpawnAngleList
+            // TODO unpause when last wisp projectile is terminated
+            doAfter(12) -> 
+              actor
+              ..setInvulnerable(false)
+              ..unpause()
 
-        if cb.isLast()
-          doAfter(10) -> 
-            actor
-            ..setInvulnerable(false)
-            ..unpause()
+              spellCycle()
+              
+              tranqEf.destr()
 
-            spellCycle()
-            
-            tranqEf.destr()
+            destroy wispSpawnAngleList
 
-          destroy wispSpawnAngleList
+  function castWispSpell(int wispAmount, LinkedList<int> wispSpawnAngleList)
+    let internalWispSpawnAngleList = wispSpawnAngleList.copy()..shuffle()
+    let healWispNumber = GetRandomInt(1, wispAmount)
+    int wispNumber = 0
+    
+    doPeriodicallyCounted(0.1, wispAmount) (CallbackCounted cb) ->
+      wispNumber++
+
+      let currentangle = internalWispSpawnAngleList.dequeue()
+      let currentWispSpawnAngle = (currentangle + GetRandomReal(-currentangle/5, currentangle/5)).asAngleDegrees()
+      let distance = 500. + GetRandomReal(100, gg_rct_ArenaForest.height() / 2 - 100)
+      let projectilePos = actor.getPos().polarOffset(currentWispSpawnAngle, distance)
+      let fallingWispProjectile = new Projectile(projectilePos.withHeightMap(800), 64, 
+        ENEMY_PLAYER, (0).asAngleDegrees(), Units.wisp1)
+
+      let markerModel = wispNumber == healWispNumber ? MapModels.spellMarkerGreen : MapModels.spellMarkerRed
+      let groundEffect = addEffect(markerModel, projectilePos.withHeightMap())..setScale(2)
+
+      if wispNumber == healWispNumber
+        fallingWispProjectile.getFx().setTint(colorA(0, 255, 0, 255))
+      else
+        fallingWispProjectile.getFx().setTint(colorA(240, 63, 63, 255))
+
+      fallingWispProjectile
+      ..setPointTarget(projectilePos.withHeightMap(), 17. + GetRandomInt(1, 4))
+      ..onEnd() ->
+        groundEffect.destr()
+        let isHealingWisp = wispNumber == healWispNumber
+
+        flashEffect(Abilities.warStompCaster, projectilePos)
+        forUnitsInRange(projectilePos, 200) (unit u) ->
+          if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive()
+            actor.dealMagicalDamage(u, 250)
+
+        let movingWispProjectile = new Projectile(projectilePos.withHeightMap(), 64, 
+          ENEMY_PLAYER, (0).asAngleDegrees(), Units.wisp1)
+
+        movingWispProjectile
+        ..setTarget(actor.getPos().withHeightMap(), 4. + GetRandomReal(1, 4))
+        ..setRanged(distance)
+        ..onHit() (unit target) ->
+          if isHealingWisp
+            if heroUnitList.has(target) and target.isAlive()
+              flashEffect(Abilities.holyBoltSpecialArt, target, AttachmentPoints.origin)
+              neutralHeal(target, target.getMaxHP() * 0.3)
+
+              movingWispProjectile.terminate()
+            else if target == actor and target.isAlive()
+              flashEffect(Abilities.holyBoltSpecialArt, target, AttachmentPoints.origin)
+              neutralHeal(target, target.getMaxHP() * 0.15)
+              target.addBonus(Bonus.DAMAGE, 30)
+
+              movingWispProjectile.terminate()
+          else
+            if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+              flashEffect(Abilities.fireLordDeathExplode, target, AttachmentPoints.origin)
+              actor.dealMagicalDamage(target, 150)
+
+              movingWispProjectile.terminate()
+
+        if isHealingWisp
+          movingWispProjectile.getFx()
+          ..setTint(colorA(0, 255, 0, 255))
+        else
+          movingWispProjectile.getFx().setTint(colorA(240, 63, 63, 255))
+
+      if cb.isLast()
+        destroy internalWispSpawnAngleList
 
 
 @compiletime function genAbility()
