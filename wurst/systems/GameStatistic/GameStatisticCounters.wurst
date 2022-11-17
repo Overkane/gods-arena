@@ -37,8 +37,3 @@ init
           pData.get(sunit.getOwner()).addPhysDamage(DamageEvent.getAmount().round())
         else if damageType == DamageType.SPELL or damageType == DamageType.CODE 
           pData.get(sunit.getOwner()).addSpellDamage(DamageEvent.getAmount().round())
-
-  onWaveFinish() (Wave wave) ->
-    for p in pData
-      pData.get(p)
-      ..addArenaPoints(100)

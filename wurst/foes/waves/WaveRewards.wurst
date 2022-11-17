@@ -77,6 +77,8 @@ init
     // Setting a small delay for message to appear after "Wave cleared!" message.
     doAfter(2.5) -> 
       pData.forEach() (player p, PlayerData playerData) ->
+        playerData.addArenaPoints(100)
+        
         p
         ..addGold(goldPull)
         ..print("You have got " + goldPull.toString().color(COLOR_GOLD) + " gold for completing the wave.", 7.5)
