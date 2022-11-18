@@ -102,7 +102,7 @@ public class WaveBuilder
   WaveStep currentStep = null
   CreepStep creepStep = null
   int creepAmount = 0
-  var bossWave = false
+  var isBossWave = false
 
   function wait(real duration)
     if currentStep != null
@@ -135,7 +135,7 @@ public class WaveBuilder
 
   function boss()
     currentStep = new BossStep(result)
-    bossWave = true
+    isBossWave = true
     creepAmount = 1
 
   function abilities(string abilities)
@@ -190,7 +190,7 @@ public class WaveBuilder
       currentStep = null
     result.steps = steps
     result.creepAmount = creepAmount
-    result.bossWave = bossWave
+    result.isBossWave = isBossWave
     return result
 
 constant NEXT_WAVE = new SoundDefinition(Sounds.questNew)
@@ -206,7 +206,7 @@ public class Wave
 
   var creepAmount = 0
 
-  var bossWave = false
+  var isBossWave = false
 
   var isDone = false
 

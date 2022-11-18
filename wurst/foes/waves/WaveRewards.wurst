@@ -57,7 +57,7 @@ init
     let waveExp = wave.expBounty
     let waveGold = wave.goldBounty
 
-    bossWave = wave.bossWave
+    bossWave = wave.isBossWave
     
     expPull = waveExp + (waveExp * (8-pData.size())/7).round()
     goldPull = waveGold + (waveGold * (8-pData.size())/7).round()
@@ -77,7 +77,10 @@ init
     // Setting a small delay for message to appear after "Wave cleared!" message.
     doAfter(2.5) -> 
       pData.forEach() (player p, PlayerData playerData) ->
-        playerData.addArenaPoints(100)
+        if wave.isBossWave
+          playerData.addArenaPoints(500)
+        else
+          playerData.addArenaPoints(100)
         
         p
         ..addGold(goldPull)
