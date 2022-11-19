@@ -8,10 +8,12 @@ import Crabling
 import Reference
 import CustomHeal
 import AbilityDefinitionExtension
+import SoundUtils
 
 public constant CRAB_HEAL_ID = compiletime(ABIL_ID_GEN.next())
 
 constant IntLevelClosure SPELL_REGEN = lvl -> 20 + 20 * lvl
+constant HEAL_SOUND = new SoundDefinition(Sounds.crushingWaveCaster1)
 
 init
     EventListener.onCast(CRAB_HEAL_ID) caster ->
@@ -27,6 +29,7 @@ init
 
         let heal = count.into() * SPELL_REGEN.run(lvl)
         caster.healTarget(caster, heal.toReal())
+        HEAL_SOUND.playForPlayer(caster.getOwner())
 
 
 @compiletime

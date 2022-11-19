@@ -5,6 +5,7 @@ import GameConstants
 import AbilityDefinitionExtension
 import ProtectiveShellBuff
 import TooltipFactory
+import SoundUtils
 
 public constant PROTECTIVE_SHELL_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_REGEN = lvl -> 3. + 6. * lvl
@@ -14,6 +15,7 @@ constant RealLevelClosure AGGRO = lvl -> 300. + lvl * 200
 constant SPELL_AOE = 320.
 constant SPELL_DURATION = 6.
 constant FLASH_EFFECT_DELAY = 0.9
+constant ABIL_SOUND = new SoundDefinition(Sounds.defendCaster1)
 
 init
     EventListener.onCast(PROTECTIVE_SHELL_ID) caster ->
@@ -24,6 +26,7 @@ init
         let bonusCrablingSpawnChance = BONUS_CHANCE_TO_SPAWN_CRABLING.run(lvl)
 
         new ProtectiveShellBuff(SPELL_DURATION, hpReg, armor, aggro, bonusCrablingSpawnChance, SPELL_AOE).apply(caster)
+        ABIL_SOUND.playForPlayer(caster.getOwner())
 
 @compiletime
 function gen()
