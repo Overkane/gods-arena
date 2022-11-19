@@ -126,7 +126,7 @@ public class PlayerData
 
       arenaPointsForConvertation = arenaPointsForConvertation - honorPoints * ARENA_POINTS_THRESHOLD
 
-      HONOR_POINT_ACQUIRED.play()
+      HONOR_POINT_ACQUIRED.playForPlayer(p)
       
   function getArenaPoints() returns int
     return arenaPoints
