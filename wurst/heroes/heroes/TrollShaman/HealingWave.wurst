@@ -8,6 +8,7 @@ import CustomHeal
 import ClosureForGroups
 import Reference
 import AbilityDefinitionExtension
+import SoundUtils
 
 public constant HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -16,6 +17,7 @@ unit tempUnit = null
 constant RealLevelClosure HEAL_POWER = lvl -> 100. + 100. * (lvl-1)
 constant RealLevelClosure HEAL_REDUCTION = lvl -> 0.2
 constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 4 + lvl
+constant HEAL_SOUND = new SoundDefinition(Sounds.healingWave)
 
 function fu() returns unit
   return GetFilterUnit()
@@ -37,6 +39,7 @@ function bounceHeal(unit caster, unit lastTarget, real heal, real reduction, gro
   if foundRef.val != null
     let nextTarget = foundRef.into()
     caster.healTarget(nextTarget, healAmount)
+    HEAL_SOUND.playOnPoint(nextTarget.getPos3Real())
     let secondary = addLightning(LIGHTNING_HEALING_WAWE_PRIMARY, false, lastTarget.getPos(), nextTarget.getPos())
     doAfter(1) ->
       secondary.destr()
@@ -50,6 +53,7 @@ init
     let primary = addLightning(LIGHTNING_HEALING_WAWE_PRIMARY, false, caster.getPos(), target.getPos())
     let healAmount = HEAL_POWER.run(lvl)
     caster.healTarget(target, healAmount)
+    HEAL_SOUND.playOnPoint(target.getPos3Real())
     doAfter(1) ->
       primary.destr()
 
