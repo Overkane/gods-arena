@@ -13,3 +13,4 @@ public class MapModels
   static constant spellMarkerGreen = "Models/Spell Marker Green.mdx" // Vinz
   static constant waterTentacle = "Models/Water Tentacle.mdx" // Champara Bros
   static constant waterElemental = "Models/WaterElemental.mdx" // icewolf055
+  static constant ruins_shells4x5 = "Models/ruins_shells4x5.mdx" // Overkane

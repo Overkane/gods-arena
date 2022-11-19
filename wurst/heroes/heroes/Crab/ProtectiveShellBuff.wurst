@@ -5,6 +5,7 @@ import ClosureForGroups
 import BonusHandler
 import TooltipFactory
 import CreepAggro
+import MapModels
 
 constant buffTuple1 = compiletime(createDummyBuffObject("Protective Shell".color(POSITIVE_COLOR), "Unit has increased armor and liferegen.",  Icons.bTNShimmerWeed))
 
@@ -26,8 +27,7 @@ public class ProtectiveShellBuff extends NormalBuff
     this.AOE = AOE
 
   override function onApply()
-    shellEffect = target.addEffect(Doodads.ruins_Shells4, AttachmentPoints.origin)
-    ..setScale(5.)
+    shellEffect = target.addEffect(MapModels.ruins_shells4x5, AttachmentPoints.origin)
 
     target
     ..setPropWindow(0 .fromDeg())
