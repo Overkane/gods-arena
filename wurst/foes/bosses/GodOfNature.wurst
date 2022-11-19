@@ -64,7 +64,7 @@ public class GodOfNature extends Boss
           wasOnPhase2 = true
 
   function spellCycle()
-    let spellCd = wasOnPhase2 ? 5. : 6.
+    let spellCd = wasOnPhase2 ? 6. : 8.
     doAfter(spellCd) ->
       if actor.isAlive()
         if isPhase1
@@ -99,7 +99,7 @@ public class GodOfNature extends Boss
     
     for i = 1 to numberOfTreants
       let u = new Creep(TREANT_ID, gg_rct_ArenaForest.randomPoint().toVec3(), angle(GetRandomReal(0, 359))).actor
-      flashEffect(Abilities.howlTarget, u.getPos())
+      flashEffect(Objects.entBirthTarget, u.getPos())
       doPeriodicallyCounted(powerUpInterval, 8) cb ->
         u..addBonus(Bonus.LIFE, u.getMaxHP() * 0.1)
         ..addBonus(Bonus.DAMAGE, 10)
@@ -108,18 +108,18 @@ public class GodOfNature extends Boss
 
   function poisonClouds(bool isSecondCall)
     let aliveHeroUnits = heroUnitList.filter((unit u) -> u.isAlive())..shuffle()
-    let numberOfProjectiles = (aliveHeroUnits.size() / 2).round()
+    let numberOfProjectiles = max(1., aliveHeroUnits.size() / 3).round()
 
     for i = 1 to numberOfProjectiles
       let affectedUnit = aliveHeroUnits.dequeue()
       let affectedUnitEffect = addEffect(MapModels.spellMarkerRed, affectedUnit, AttachmentPoints.origin)
 
-      doAfter(1) -> 
+      doAfter(2) -> 
         affectedUnitEffect.destr()
         let affectedUnitPos = affectedUnit.getPos()
         let groundEffect = addEffect(MapModels.spellMarkerRed, affectedUnitPos)
 
-        doAfter(0.5) -> 
+        doAfter(1.5) -> 
           let poisonProjectile = new Projectile(affectedUnitPos.withHeightMap(800), 64, 
             ENEMY_PLAYER, (0).asAngleDegrees(), Abilities.chimaeraAcidMissile)
 
@@ -196,7 +196,7 @@ public class GodOfNature extends Boss
       ..setFacing((270).asAngleDegrees())
       .addEffect(Abilities.tranquility, AttachmentPoints.origin)
 
-      let wispAmount = wasOnPhase1 ? 24 : 12
+      let wispAmount = wasOnPhase1 ? 20 : 10
       let baseAngles = (360 / (wispAmount / 2)).toInt()
       let wispSpawnAngleList = new LinkedList<int>
       
@@ -233,20 +233,19 @@ public class GodOfNature extends Boss
 
       let currentangle = internalWispSpawnAngleList.dequeue()
       let currentWispSpawnAngle = (currentangle + GetRandomReal(-currentangle/5, currentangle/5)).asAngleDegrees()
-      let distance = 500. + GetRandomReal(100, gg_rct_ArenaForest.height() / 2 - 100)
+      let distance = 600. + GetRandomReal(100, gg_rct_ArenaForest.height() / 2 - 200)
       let projectilePos = actor.getPos().polarOffset(currentWispSpawnAngle, distance)
-      let fallingWispProjectile = new Projectile(projectilePos.withHeightMap(800), 64, 
-        ENEMY_PLAYER, (0).asAngleDegrees(), Units.wisp1)
+      let projectileModel = wispNumber == healWispNumber ? Objects.runicobject : Units.wisp1
+      let fallingProjectile = new Projectile(projectilePos.withHeightMap(800), 64, 
+        ENEMY_PLAYER, (0).asAngleDegrees(), projectileModel)
 
       let markerModel = wispNumber == healWispNumber ? MapModels.spellMarkerGreen : MapModels.spellMarkerRed
       let groundEffect = addEffect(markerModel, projectilePos.withHeightMap())..setScale(2)
 
       if wispNumber == healWispNumber
-        fallingWispProjectile.getFx().setTint(colorA(0, 255, 0, 255))
-      else
-        fallingWispProjectile.getFx().setTint(colorA(240, 63, 63, 255))
+        fallingProjectile.getFx().setTint(colorA(0, 255, 0, 255))
 
-      fallingWispProjectile
+      fallingProjectile
       ..setPointTarget(projectilePos.withHeightMap(), 17. + GetRandomInt(1, 4))
       ..onEnd() ->
         groundEffect.destr()
@@ -257,11 +256,11 @@ public class GodOfNature extends Boss
           if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive()
             actor.dealMagicalDamage(u, 250)
 
-        let movingWispProjectile = new Projectile(projectilePos.withHeightMap(), 64, 
-          ENEMY_PLAYER, (0).asAngleDegrees(), Units.wisp1)
+        let movingProjectile = new Projectile(projectilePos.withHeightMap(), 64, 
+          ENEMY_PLAYER, (0).asAngleDegrees(), projectileModel)
 
-        movingWispProjectile
-        ..setTarget(actor.getPos().withHeightMap(), 4. + GetRandomReal(1, 4))
+        movingProjectile
+        ..setTarget(actor.getPos().withHeightMap(), 3. + GetRandomReal(1, 4))
         ..setRanged(distance)
         ..onHit() (unit target) ->
           if isHealingWisp
@@ -269,25 +268,23 @@ public class GodOfNature extends Boss
               flashEffect(Abilities.holyBoltSpecialArt, target, AttachmentPoints.origin)
               neutralHeal(target, target.getMaxHP() * 0.3)
 
-              movingWispProjectile.terminate()
+              movingProjectile.terminate()
             else if target == actor and target.isAlive()
               flashEffect(Abilities.holyBoltSpecialArt, target, AttachmentPoints.origin)
-              neutralHeal(target, target.getMaxHP() * 0.15)
+              neutralHeal(target, target.getMaxHP() * 0.1)
               target.addBonus(Bonus.DAMAGE, 30)
 
-              movingWispProjectile.terminate()
+              movingProjectile.terminate()
           else
             if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
               flashEffect(Abilities.fireLordDeathExplode, target, AttachmentPoints.origin)
               actor.dealMagicalDamage(target, 150)
 
-              movingWispProjectile.terminate()
+              movingProjectile.terminate()
 
         if isHealingWisp
-          movingWispProjectile.getFx()
+          movingProjectile.getFx()
           ..setTint(colorA(0, 255, 0, 255))
-        else
-          movingWispProjectile.getFx().setTint(colorA(240, 63, 63, 255))
 
       if cb.isLast()
         destroy internalWispSpawnAngleList
@@ -310,7 +307,7 @@ public class GodOfNature extends Boss
   ..setAttack1DamageBase(20)
   ..setDefenseBase(0)
   ..setSpeedBase(350)
-  ..setHitPointsMaximumBase(450)
+  ..setHitPointsMaximumBase(200)
   ..setArmorType(ArmorType.Small)
   ..setAttack1AttackType(AttackType.Siege)
   ..setScalingValue(0.6)
