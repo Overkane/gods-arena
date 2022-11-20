@@ -134,8 +134,23 @@ class CheatPanel
         if not heroUnitMap.has(u) and not backpackUnits.has(u) and not honorShopUnits.has(u)
           u.kill()
       clearButton.unfocus()
+
+    let killHeroButton = textButton("kill hero")
+    killHeroButton..onClick() -> 
+      forUnitsSelected(owner) (unit u) ->
+        if u.isType(UNIT_TYPE_HERO)
+          u.kill()
+      killHeroButton.unfocus()
+
+    let reviveHeroButton = textButton("revive hero")
+    reviveHeroButton..onClick() -> 
+      for hero in heroUnitList
+        if not hero.isAlive()
+          hero.revive(gg_rct_ArenaForestRespawnPoint.getCenter(), true)
+      reviveHeroButton.unfocus()
     
-    cheatPanel = new TableLayout(0.35, 0.16)
+
+    cheatPanel = new TableLayout(0.38, 0.2)
     ..row()
     ..add(level1Button)
     ..add(level5Button)
@@ -158,6 +173,10 @@ class CheatPanel
     ..add(summonAllyDummyButton)
     ..add(summonEnemyDummyButton)
     ..add(clearButton)
+
+    ..row()
+    ..add(killHeroButton)
+    ..add(reviveHeroButton)
 
     .createFrame()
     
