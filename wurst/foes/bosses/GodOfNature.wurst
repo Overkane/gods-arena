@@ -56,10 +56,10 @@ public class GodOfNature extends Boss
       let tunit = DamageEvent.getTarget()
 
       if tunit == actor 
-        if tunit.getHPRatio() <= 0.6 and not wasOnPhase1
+        if tunit.getHPRatio() <= 0.7 and not wasOnPhase1
           isPhase1 = true
           wasOnPhase1 = true
-        else if tunit.getHPRatio() <= 0.3 and not wasOnPhase2
+        else if tunit.getHPRatio() <= 0.4 and not wasOnPhase2
           isPhase2 = true
           wasOnPhase2 = true
 
@@ -134,7 +134,7 @@ public class GodOfNature extends Boss
             ..setTimed(15)
             ..onHit() (unit target) ->
               if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
-                actor.dealMagicalDamage(target, 50)
+                actor.dealMagicalDamage(target, 75)
                 POISON_SOUND.playForPlayer(target.getOwner())
 
           if wasOnPhase2 and not isSecondCall
@@ -151,11 +151,11 @@ public class GodOfNature extends Boss
     let variation = GetRandomInt(1, 2)
     castRoots(variation)
 
-    doAfter(2) -> 
+    doAfter(1.5) -> 
       if wasOnPhase2 and not isSecondCast
         let reverseVariaton = variation == 1 ? 2 : 1
         castRoots(reverseVariaton)
-        doAfter(2) -> 
+        doAfter(1.5) -> 
           actor.unpause()
       else
         actor.unpause()
@@ -174,14 +174,14 @@ public class GodOfNature extends Boss
         let circlePos = actor.getPos().polarOffset(currentAngle.asAngleDegrees(), currentRadiusAOE.toReal())
         let groundEffect = addEffect(MapModels.spellMarkerRed, circlePos)
 
-        doAfter(2) -> 
+        doAfter(1.5) -> 
           groundEffect.destr()
           flashEffect(Abilities.entanglingRootsTarget, circlePos)
           forUnitsInRange(circlePos, 100) (unit u) ->
             if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive()
               InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
               doPeriodicallyTimed(1, 3) (CallbackCounted cb) ->
-                actor.dealMagicalDamage(u, 100)
+                actor.dealMagicalDamage(u, 125)
 
   function ultimateSpell()
     let tpEffect = actor
@@ -196,7 +196,7 @@ public class GodOfNature extends Boss
       ..setFacing((270).asAngleDegrees())
       .addEffect(Abilities.tranquility, AttachmentPoints.origin)
 
-      let wispAmount = wasOnPhase1 ? 20 : 10
+      let wispAmount = wasOnPhase1 ? 24 : 14
       let baseAngles = (360 / (wispAmount / 2)).toInt()
       let wispSpawnAngleList = new LinkedList<int>
       
@@ -233,7 +233,7 @@ public class GodOfNature extends Boss
 
       let currentangle = internalWispSpawnAngleList.dequeue()
       let currentWispSpawnAngle = (currentangle + GetRandomReal(-currentangle/5, currentangle/5)).asAngleDegrees()
-      let distance = 600. + GetRandomReal(100, gg_rct_ArenaForest.height() / 2 - 200)
+      let distance = 600. + GetRandomReal(100, gg_rct_ArenaForest.height() / 2 - 300)
       let projectilePos = actor.getPos().polarOffset(currentWispSpawnAngle, distance)
       let projectileModel = wispNumber == healWispNumber ? Objects.runicobject : Units.wisp1
       let fallingProjectile = new Projectile(projectilePos.withHeightMap(800), 64, 
@@ -260,7 +260,7 @@ public class GodOfNature extends Boss
           ENEMY_PLAYER, (0).asAngleDegrees(), projectileModel)
 
         movingProjectile
-        ..setTarget(actor.getPos().withHeightMap(), 3. + GetRandomReal(1, 4))
+        ..setTarget(actor.getPos().withHeightMap(), 4. + GetRandomReal(2, 4))
         ..setRanged(distance)
         ..onHit() (unit target) ->
           if isHealingWisp
@@ -278,7 +278,7 @@ public class GodOfNature extends Boss
           else
             if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
               flashEffect(Abilities.fireLordDeathExplode, target, AttachmentPoints.origin)
-              actor.dealMagicalDamage(target, 150)
+              actor.dealMagicalDamage(target, 300)
 
               movingProjectile.terminate()
 
@@ -294,7 +294,7 @@ public class GodOfNature extends Boss
   new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegrove)
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
-  ..setAttack1DamageBase(100)
+  ..setAttack1DamageBase(125)
   ..setAttack1CooldownTime(1.2)
   ..setDefenseBase(7)
   ..setHitPointsMaximumBase(42500)
