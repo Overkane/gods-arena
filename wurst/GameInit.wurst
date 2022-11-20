@@ -3,6 +3,7 @@ import GameConstants
 import EntityManagement
 import PlayerData
 import ItemShopUI
+import GameStatsUI
 import ClosureTimers
 import SaveLoadSystem
 import ChatCommands
@@ -26,6 +27,7 @@ init
     initEnemyVision()
     setHandicap(pData.size())
     initItemShop()
+    createGameStatsUI()
     initChatCommands()
     startEntityLoop()
     loadPlayerData()

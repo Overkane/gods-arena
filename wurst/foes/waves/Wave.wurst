@@ -10,6 +10,7 @@ import Abilities
 import Funcs
 import GodOfNature
 import GodOfWater
+import GameStatsUI
 
 public constant waveExpList = new LinkedList<int>
 ..add(200)..add(250)..add(300)..add(350)..add(400)..add(450)..add(500)..add(550)
@@ -214,10 +215,9 @@ public class Wave
     onStartListener.onStart(this)
     // Clears game statistic for wave
     for p in pData
-      pData.get(p)
-      ..clearPhysDamage()
-      ..clearSpellDamage()
-      ..clearDamageTaken()
+      clearGameStat(GameStats.PHYS_DAMAGE_ROUND, p)
+      clearGameStat(GameStats.MAGIC_DAMAGE_ROUND, p)
+      clearGameStat(GameStats.DAMAGE_TAKEN_ROUND, p)
     printTimed("|cffceac15>> The wave begins!", 10.)
     NEXT_WAVE.play()
     nextStep()

@@ -1,0 +1,97 @@
+package GameStatsUI
+import TableLayout
+import PlayerData
+import HashMap
+
+public enum GameStats
+  PLAYER_NAME
+  KILLS
+  DEATHS
+  PHYS_DAMAGE_ROUND
+  PHYS_DAMAGE_OVERALL
+  MAGIC_DAMAGE_ROUND
+  MAGIC_DAMAGE_OVERALL
+  DAMAGE_TAKEN_ROUND
+  DAMAGE_TAKEN_OVERALL
+  ARENA_POINTS
+
+constant baseframe = createFrame("FRAME", "", GAME_UI, "", 0)
+constant backdrop = createFrame("HeroPickMenuBackdrop", baseframe, 0, 0)
+
+constant pGameStatsFrames = new IterableMap<player, IterableMap<GameStats, framehandle>>
+
+public function createGameStatsUI()
+
+  baseframe
+  ..setAbsPoint(FRAMEPOINT_CENTER, vec2(0.4, 0.4))
+  ..hide()
+
+  backdrop.setAllPoints(baseframe)
+
+  let tableLayout = new TableLayout(0.6, 0.2)
+  ..row()..center()
+  ..add(h1("Game Stats"))
+
+  ..row()..center()
+  ..add(p("Player")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("Kills")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("Deaths")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("Phys. R.")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("Magic R.")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("Taken R.")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("Phys. O.")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("Magic O.")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("Taken O.")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+  ..add(p("AP")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
+
+  let trig = CreateTrigger()
+  ..addAction() ->
+    let clicker = GetTriggerPlayer()
+    baseframe.setVisible(baseframe.isVisible(clicker) ? false : true)
+
+  pData.forEach() (player p, PlayerData pData) ->
+    BlzTriggerRegisterPlayerKeyEvent(trig, p, OSKEY_F4, 0, false)
+
+    let gameStatsFrames = new IterableMap<GameStats, framehandle>
+    ..put(GameStats.PLAYER_NAME, baseTextFrame()..setText(p.getNameColored(true)))
+    ..put(GameStats.KILLS, baseTextFrame())
+    ..put(GameStats.DEATHS, baseTextFrame())
+    ..put(GameStats.PHYS_DAMAGE_ROUND, baseTextFrame())
+    ..put(GameStats.MAGIC_DAMAGE_ROUND, baseTextFrame())
+    ..put(GameStats.DAMAGE_TAKEN_ROUND, baseTextFrame())
+    ..put(GameStats.PHYS_DAMAGE_OVERALL, baseTextFrame())
+    ..put(GameStats.MAGIC_DAMAGE_OVERALL, baseTextFrame())
+    ..put(GameStats.DAMAGE_TAKEN_OVERALL, baseTextFrame())
+    ..put(GameStats.ARENA_POINTS, baseTextFrame())
+    pGameStatsFrames.put(p, gameStatsFrames)
+
+    tableLayout
+    ..row()..center()
+    ..add(gameStatsFrames.get(GameStats.PLAYER_NAME))
+    ..add(gameStatsFrames.get(GameStats.KILLS))
+    ..add(gameStatsFrames.get(GameStats.DEATHS))
+    ..add(gameStatsFrames.get(GameStats.PHYS_DAMAGE_ROUND))
+    ..add(gameStatsFrames.get(GameStats.MAGIC_DAMAGE_ROUND))
+    ..add(gameStatsFrames.get(GameStats.DAMAGE_TAKEN_ROUND))
+    ..add(gameStatsFrames.get(GameStats.PHYS_DAMAGE_OVERALL))
+    ..add(gameStatsFrames.get(GameStats.MAGIC_DAMAGE_OVERALL))
+    ..add(gameStatsFrames.get(GameStats.DAMAGE_TAKEN_OVERALL))
+    ..add(gameStatsFrames.get(GameStats.ARENA_POINTS))
+
+  ..applyTo(baseframe)
+
+public function increaseGameStat(GameStats gameStat, player p, int value)
+  let frame = pGameStatsFrames.get(p).get(gameStat)
+  let currentValue = frame.getText().toInt()
+  let newValue = currentValue + value
+  frame.setText(newValue.toString())
+
+public function clearGameStat(GameStats gameStat, player p)
+  pGameStatsFrames.get(p).get(gameStat).setText("0")
+
+function baseTextFrame() returns framehandle
+  let textFrame = p("0")
+  ..setSize(0.052, 0.015)
+  ..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
+
+  return textFrame

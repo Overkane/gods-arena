@@ -3,7 +3,6 @@ import public Wave
 import TimerUtils
 import Creep
 import Funcs
-import Boss
 
 public constant waveController = new WaveController()
 

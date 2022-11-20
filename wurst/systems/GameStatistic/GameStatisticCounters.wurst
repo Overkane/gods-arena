@@ -3,7 +3,7 @@ import ClosureEvents
 import DamageSystem
 import GameConstants
 import PlayerData
-import Wave
+import GameStatsUI
 
 init
   EventListener.add(EVENT_PLAYER_UNIT_DEATH) -> 
@@ -14,26 +14,30 @@ init
 
     if dunitOwner== ENEMY_PLAYER and pData.has(kunitOwner)
       pData.get(kunitOwner)
-      ..addKill()
       ..addArenaPoints(5)
+
+      increaseGameStat(GameStats.KILLS, kunitOwner, 1)
 
     else if pData.has(dunitOwner) 
       pData.get(dunitOwner).getHero().ifPresent() (h) ->
         if dunit == h.actor
           pData.get(dunitOwner)
-          ..addDeath()
           ..addArenaPoints(-50)
+
+          increaseGameStat(GameStats.DEATHS, dunitOwner, 1)
     
-  DamageEvent.addListener() -> 
-    let damageType = DamageEvent.getType()
+  DamageEvent.addListener(99) -> 
     let tunit = DamageEvent.getTarget()
     let sunit = DamageEvent.getSource()
     
     if DamageEvent.getAmount() > 0
       if sunit.getOwner() == ENEMY_PLAYER and pData.has(tunit.getOwner())
-        pData.get(tunit.getOwner()).addDamageTaken(DamageEvent.getAmount().round())
+        increaseGameStat(GameStats.DAMAGE_TAKEN_ROUND, tunit.getOwner(), DamageEvent.getAmount().round())
+        increaseGameStat(GameStats.DAMAGE_TAKEN_OVERALL, tunit.getOwner(), DamageEvent.getAmount().round())
       else if pData.has(sunit.getOwner())
-        if damageType == DamageType.ATTACK
-          pData.get(sunit.getOwner()).addPhysDamage(DamageEvent.getAmount().round())
-        else if damageType == DamageType.SPELL or damageType == DamageType.CODE 
-          pData.get(sunit.getOwner()).addSpellDamage(DamageEvent.getAmount().round())
+        if isPhysicalDamage()
+          increaseGameStat(GameStats.PHYS_DAMAGE_ROUND, sunit.getOwner(), DamageEvent.getAmount().round())
+          increaseGameStat(GameStats.PHYS_DAMAGE_OVERALL, sunit.getOwner(), DamageEvent.getAmount().round())
+        else if isMagicalDamage() 
+          increaseGameStat(GameStats.MAGIC_DAMAGE_ROUND, sunit.getOwner(), DamageEvent.getAmount().round())
+          increaseGameStat(GameStats.MAGIC_DAMAGE_OVERALL, sunit.getOwner(), DamageEvent.getAmount().round())
