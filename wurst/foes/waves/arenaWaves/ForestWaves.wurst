@@ -462,7 +462,7 @@ function godOfNature() returns Wave
 
 @compiletime function gen()
   new AbilityDefinitionPitLordCleavingAttack(ELITE_FOREST_MELEE_SPLASH)
-  ..setDistributedDamageFactor(1, 0.3)
+  ..setDistributedDamageFactor(1, 0.5)
   ..setCheckDependencies(false)
   ..setHeroAbility(false)
 
@@ -532,11 +532,11 @@ function godOfNature() returns Wave
   ..setDurationHero(1, 1)
 
   new AbilityDefinitionChainLightningcreep(GNOLL_CHAIN_LIGHTNING)
-  ..setDamageperTarget(1, 95)
+  ..setDamageperTarget(1, 90)
   ..setDamageReductionperTarget(1, 0.1)
   ..setNumberofTargetsHit(1, 5)
   ..setManaCost(1, 100)
-  ..setCooldown(1, 14)
+  ..setCooldown(1, 16)
 
 
   new AbilityDefinitionSlowPoison(SPIDER_POISON_SLOW)
@@ -547,10 +547,10 @@ function godOfNature() returns Wave
   ..setDurationHero(1, 3)
 
   new AbilityDefinitionAuraPlagueAbomination(SPIDER_POISON_CLOUD)
-  ..setDamageperSecond(1, 10)
+  ..setDamageperSecond(1, 8)
+  ..setDurationofPlagueWard(1, 5)
+  ..setAuraDuration(1, 10)
   ..setRequirements("")
-  ..setDurationNormal(1, 5)
-  ..setDurationHero(1, 5)
 
 
   new AbilityDefinitionEvasioncreep(OWLBEAR_EVASION)
