@@ -1,4 +1,4 @@
-package GameStatistic
+package CustomStatsUI
 import CustomStatSystem
 import TableLayout
 import PlayerData
@@ -17,7 +17,7 @@ constant toggleButtonSound = new SoundDefinition(Sounds.bigButtonClick)
 constant pBasicStatFrames = new IterableMap<player, IterableMap<Bonus, framehandle>>
 constant pCustomStatFrames = new IterableMap<player, IterableMap<CustomUnitStats, framehandle>>
 
-public function createCustomUI(player p)
+public function createCustomStatsUI(player p)
 
   let basicStatFrames = new IterableMap<Bonus, framehandle>
   ..put(Bonus.LIFEREGEN, baseTextFrame())
@@ -123,6 +123,7 @@ public function createCustomUI(player p)
   ..row()
   ..add(toggleButton)
   ..applyTo(baseFrameForButton)
+
 
 public function player.clearPlayerCustomStatUI()
   if pBasicStatFrames.has(this)

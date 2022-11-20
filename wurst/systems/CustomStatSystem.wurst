@@ -2,7 +2,7 @@ package CustomStatSystem
 import HashMap
 import LinkedList
 import UnitIndexer
-import initlater GameStatistic
+import initlater CustomStatsUI
 
 // Constant unit stats
 HashMap<CustomUnitStats, LinkedList<real>> array customUnitStats
