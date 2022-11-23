@@ -4,7 +4,7 @@ import HeroDefinitionPresets
 import ObjectIdGenerator
 import HealingWave
 import StasisTotem
-import Bloodlust
+import ShamanCurse
 import SerpentWard
 import RestorationRitual
 
@@ -17,7 +17,7 @@ public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
   ..addHeroAbility(STASIS_TOTEM_ID)
   ..addHeroAbility(SERPENT_WARD_ID)
   ..addHeroAbility(RESTORATION_RITUAL_ID)
-  ..addInnateHeroAbility(BLOODLUST_ID)
+  ..addInnateHeroAbility(SHAMAN_CURSE_ID)
   ..setStartingStrength(16)
   ..setStrengthPerLevel(1.7)
   ..setStartingAgility(18)

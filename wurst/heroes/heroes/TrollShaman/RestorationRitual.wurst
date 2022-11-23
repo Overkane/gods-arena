@@ -12,8 +12,8 @@ import AbilityDefinitionExtension
 
 public constant RESTORATION_RITUAL_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure PERC_HP = lvl -> 3. * lvl
-constant RealLevelClosure PERC_MP = lvl -> 2. * lvl
+constant RealLevelClosure PERC_HP = lvl -> 5. * lvl
+constant RealLevelClosure PERC_MP = lvl -> 2.5 * lvl
 constant RealLevelClosure DURATION = lvl -> 10.
 constant RealLevelClosure AOE = lvl -> 650
 
@@ -44,7 +44,7 @@ init
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Performs a ritual to restore his allies hp and mp.")
+  let tooltip = new AbilityTooltipGenerator("Performs a ritual to restore allies hp and mp over time.")
   new ChannelAbilityPreset(RESTORATION_RITUAL_ID, ULTIMATE_SPELL_LEVELS, false, tooltip)
   ..makeRAbility()
   ..presetIcon(Icons.bTNBigBadVoodooSpell)

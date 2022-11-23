@@ -1,0 +1,20 @@
+package ShamanCurseBuff
+import LimitedStackingBuff
+import Assets
+import BonusHandler
+
+constant buffTuple = compiletime(createDummyBuffObject("Shaman Curse", "Unit's armor is decreased.",  Icons.pASBTNExhumeCorpses))
+
+public class ShamanCurseBuff extends LimitedStackingBuff
+  private var armorReduction = 0.
+
+  construct(real dur, real armorReduction)
+    super(dur, buffTuple)
+    this.armorReduction = armorReduction
+
+  override function onApply()
+    target.addBonus(Bonus.ARMOR, -armorReduction)
+
+  override function onEnd()
+    super.onEnd()
+    target.addBonus(Bonus.ARMOR, armorReduction)

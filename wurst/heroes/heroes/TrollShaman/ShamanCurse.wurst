@@ -1,0 +1,58 @@
+package ShamanCurse
+import ShamanCurseBuff
+import AbilityTooltipGenerator
+import GameConstants
+import TooltipFactory
+import PassiveAbilityPreset
+import AbilityDefinitionExtension
+import ClosureEvents
+import ClosureForGroups
+import HealingWave
+import StasisTotem
+import SerpentWard
+import RestorationRitual
+
+public constant SHAMAN_CURSE_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure ARMOR_REDUCTION = lvl -> 1. * lvl
+constant ARMOR_REDUCTION_DURATION = 25
+constant MAX_STACK_AMOUNT = 7
+constant AOE = 800.
+
+init
+  ShamanCurseBuff.setMaxBuffAmount(MAX_STACK_AMOUNT)
+
+  EventListener.add(EVENT_PLAYER_UNIT_SPELL_FINISH) -> 
+    let spellId = EventData.getSpellAbilityId()
+
+    if spellId == HEALING_WAVE_ID
+      or spellId == STASIS_TOTEM_ID
+      or spellId == SERPENT_WARD_ID
+      or spellId == RESTORATION_RITUAL_ID
+
+      let caster = EventData.getTriggerUnit()
+      
+      if caster.hasAbility(SHAMAN_CURSE_ID)
+        let lvl = caster.getAbilityLevel(SHAMAN_CURSE_ID)
+        let armorReduction = ARMOR_REDUCTION.run(lvl)
+
+        forUnitsInRange(caster.getPos(), AOE) (unit u) ->
+          if u.isEnemyOf(caster) and u.isAlive()
+            new ShamanCurseBuff(ARMOR_REDUCTION_DURATION.toReal(), armorReduction).apply(u)
+
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Each casted {0} temporarily reduces armor of enemies nearby. {1}"
+    .format("hero ability".color(IMPORTANT_COLOR), 
+      "Stacks.".color(IMPORTANT_COLOR)))
+  new PassiveAbilityPreset(SHAMAN_CURSE_ID, INNATE_SPELL_LEVELS, tooltip)
+  ..makeDAbility()
+  ..presetIcon(Icons.pASBTNExhumeCorpses)
+  
+  ..tooltipStartListen()
+  ..setName("Shaman Curse")
+  ..addTooltipProperty("Armor Reduction", lvl -> ARMOR_REDUCTION.run(lvl).round())
+  ..addTooltipProperty("Duration", lvl -> ARMOR_REDUCTION_DURATION)
+  ..addTooltipProperty("Max Stacks", lvl -> MAX_STACK_AMOUNT)
+  ..presetCastRange(lvl -> AOE)
+  ..tooltipStopListen()

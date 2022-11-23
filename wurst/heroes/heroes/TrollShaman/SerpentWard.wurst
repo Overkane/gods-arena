@@ -45,7 +45,7 @@ class SerpentWard extends SummonEntity
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Summons a serpent ward to attack hero enemies.")
+  let tooltip = new AbilityTooltipGenerator("Summons a serpent ward which can attack enemies.")
   new ChannelAbilityPreset(SERPENT_WARD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeEAbility()
   ..presetIcon(Icons.bTNSerpentWard)
