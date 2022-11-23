@@ -17,6 +17,6 @@ public class MeditationBuff extends NormalBuff
     
   override function update()
     super.update()
-    target.healTarget(target, target.getMaxHP() * hpPercReg)
+    target.healTarget(target, target.getMaxHP() * hpPercReg, false)
     target.addMana(target.getMaxMana() * mpPercReg)
     

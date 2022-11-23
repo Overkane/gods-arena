@@ -19,8 +19,8 @@ public constant MEDITATION_ID = compiletime(ABIL_ID_GEN.next())
 public constant MEDITATION_DAMAGE_ID = compiletime(ABIL_ID_GEN.next())
 public constant MEDITATION_DAMAGE_BUFF_ID = compiletime(BUFF_ID_GEN.next())
 
-constant RealLevelClosure PERC_HP = lvl -> 3. * lvl
-constant RealLevelClosure PERC_MP = lvl -> 1. + 1 * lvl
+constant RealLevelClosure PERC_HP = lvl -> 3. + 3 * lvl
+constant RealLevelClosure PERC_MP = lvl -> 2. + 2 * lvl
 constant RealLevelClosure MEDITATION_DURATION = lvl -> 5.5
 constant RealLevelClosure DAMAGE_BUFF = lvl -> 20. * lvl
 constant RealLevelClosure DAMAGE_DURATION = lvl -> 30.
