@@ -52,7 +52,7 @@ init
           expPull -= expPerUnit
       
   
-  onWaveStart() (Wave wave) ->
+  OnWaveStart.add() (Wave wave) ->
     let creepAmount = wave.creepAmount
     let waveExp = wave.expBounty
     let waveGold = wave.goldBounty
@@ -73,7 +73,7 @@ init
     goldCompensationOnPlayerLeave += (waveGold / 7).round()
     expCompensationOnPlayerLeave += (waveExp / 7).round()
 
-  onWaveFinish() (Wave wave) ->
+  OnWaveFinish.add() (Wave wave) ->
     // Setting a small delay for message to appear after "Wave cleared!" message.
     doAfter(2.5) -> 
       pData.forEach() (player p, PlayerData playerData) ->

@@ -29,23 +29,29 @@ constant AFTER_WAVE_RESTORATION_SOUND = new SoundDefinition(Sounds.restorationPo
 interface NextStepListener
   abstract function execute()
 
-interface OnWaveStart
-  function onStart(Wave wave)
+public abstract class OnWaveStart
+  static constant listenerList = new LinkedList<OnWaveStart>
 
-OnWaveStart onStartListener
+  abstract function fire(Wave wave)
 
-/** Set listener for when a wave starts */
-public function onWaveStart(OnWaveStart onStart)
-  onStartListener = onStart
+  static function add(OnWaveStart listener)
+    listenerList.add(listener)
 
-interface OnWaveFinish
-  function onFinish(Wave wave)
+  static function execute(Wave wave)
+    for listener in listenerList
+      listener.fire(wave)
+  
+public abstract class OnWaveFinish
+  static constant listenerList = new LinkedList<OnWaveFinish>
 
-OnWaveFinish onFinishListener
+  abstract function fire(Wave wave)
 
-/** Set listener for when a wave Finishs */
-public function onWaveFinish(OnWaveFinish onFinish)
-  onFinishListener = onFinish
+  static function add(OnWaveFinish listener)
+    listenerList.add(listener)
+
+  static function execute(Wave wave)
+    for listener in listenerList
+      listener.fire(wave)
 
 abstract class WaveStep
   Wave wave
@@ -202,6 +208,8 @@ public class Wave
   Vec2Function spawnPoint
   Vec2Function revivePoint
 
+  static var waveNumber = 0
+
   var goldBounty = 0
   var expBounty = 0
 
@@ -212,14 +220,14 @@ public class Wave
   var isDone = false
 
   function spawn()
-    onStartListener.onStart(this)
+    OnWaveStart.execute(this)
+    printTimed("|cffceac15>> The wave begins!", 10.)
+    NEXT_WAVE.play()
     // Clears game statistic for wave
     for p in pData
       clearGameStat(GameStats.PHYS_DAMAGE_ROUND, p)
       clearGameStat(GameStats.MAGIC_DAMAGE_ROUND, p)
       clearGameStat(GameStats.DAMAGE_TAKEN_ROUND, p)
-    printTimed("|cffceac15>> The wave begins!", 10.)
-    NEXT_WAVE.play()
     nextStep()
 
   function nextStep()
@@ -230,8 +238,10 @@ public class Wave
         nextStep()
 
   function finish()
+    waveNumber++ // Should be called before wave finish listener, cuz some spells like Pray depend on it.
+
+    OnWaveFinish.execute(this)
     printTimed("|cff1f9913>> Wave cleared!", 10.)
-    onFinishListener.onFinish(this)
     WAVE_FINISHED.play()
 
     pData.forEach() (player p, PlayerData playerData) ->
