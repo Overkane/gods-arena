@@ -1,12 +1,13 @@
 package WaveController
 import public Wave
+import GameConstants
 import TimerUtils
 import Creep
 import Funcs
 
 public constant waveController = new WaveController()
 
-constant SPAWN_TIME = 27.
+constant SPAWN_TIME = isProdBuild ? 27. : 5.
 
 class WaveController
   constant waves = new LinkedList<Wave>
