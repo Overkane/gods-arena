@@ -66,6 +66,12 @@ init
       prayCaster = caster
     prayDialog.display(caster.getOwner(), true)
 
+  EventListener.add(EVENT_PLAYER_HERO_REVIVE_FINISH) ->
+    let u = EventData.getTriggerUnit()
+
+    if u.hasAbility(PRAY_ID)
+      new PrayMainBuff().apply(u)
+
   OnWaveFinish.add() (Wave wave) ->
     if Wave.waveNumber % 2 == 0
       prayCaster.disableAbility(PRAY_ID, false, false)
