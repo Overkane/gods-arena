@@ -37,6 +37,18 @@ constant heroPool = new LinkedList<int>
 ..add(ELEMENTOR_ID)
 ..shuffle()
 
+public abstract class OnHeroPick
+  static constant listenerList = new LinkedList<OnHeroPick>
+
+  abstract function fire(unit hero)
+
+  static function add(OnHeroPick listener)
+    listenerList.add(listener)
+
+  static function execute(unit hero)
+    for listener in listenerList
+      listener.fire(hero)
+
 constant RANDOM_ID = compiletime(HERO_ID_GEN.next())
 
 public function initHeroPickMenu()
@@ -81,6 +93,8 @@ function createHero(int heroId, player owner, bool isRandom)
 
   toggleShopButton.show(owner, h.actor)
   shop.showToUnit(h.actor)
+
+  OnHeroPick.execute(h.actor)
 
   print("{0} {1} {2}".format(
     owner.getNameColored(true),

@@ -15,11 +15,15 @@ import AbilityDefinitionExtension
 constant AOE = 500.
 constant RealLevelClosure DAMAGE_DECREASE = lvl -> 0.2 + 0.1 * (lvl-1)
 constant RealLevelClosure DURATION = lvl -> 10
-constant IntLevelClosure STR_BONUS = lvl -> (0.5 * (lvl - 1)).floor() + 1 // 1, 1, 2, 2, 3
-constant RealLevelClosure HP_RECOVERY = lvl -> 100.0 + 50 * (lvl-1)
+constant RealLevelClosure HP_RECOVERY = lvl -> 0.01 + 0.01 * lvl
+
+unit howlUser
 
 init
   EventListener.onCast(HOWL_OF_TERROR_ID) (unit caster) ->
+    if howlUser == null
+      howlUser = caster
+
     if caster.hasAbility(HOWL_OF_TERROR_ID)
       let lvl = caster.getAbilityLevel(HOWL_OF_TERROR_ID)
 
@@ -29,24 +33,23 @@ init
           caster.addAggro(u, 300. * lvl)
 
   DamageEvent.addListener() ->
-    let sunit = DamageEvent.getSource()
     let tunit = DamageEvent.getTarget()
 
     if tunit.getHP() <= DamageEvent.getAmount() // Seems there is no buffs on died units so need to check death preemptively
-      and sunit.getTypeId() == DEMON_LORD_ID and tunit.hasAbility(BuffIds.howlofTerror)
+      and tunit.hasAbility(BuffIds.howlofTerror)
 
-      let level = sunit.getAbilityLevel(HOWL_OF_TERROR_ID)
-      sunit.addStr(STR_BONUS.run(level))
-      sunit.healTarget(sunit, HP_RECOVERY.run(level))
-      flashEffect(Abilities.deathCoilMissile, sunit.getPos())
+      let lvl = howlUser.getAbilityLevel(HOWL_OF_TERROR_ID)
+      let hpToRestore = HP_RECOVERY.run(lvl) * howlUser.getMaxHP()
+      howlUser.healTarget(howlUser, hpToRestore)
+      flashEffect(Abilities.deathCoilMissile, howlUser.getPos())
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
     Targettype.NONE,
     "Lets loose a terrifying howl that causes nearby enemy units to shiver in fear. "
     + "Feared units have reduced attack damage. "
-    + "If the Demon Lord kills a feared unit, it permanently gains strength and recovers HP.\n"
-    + "Also |cffb93939taunts|r enemies in AOE."
+    + "If a feared unit is killed, the Demon Lord recovers part of his HP.\n"
+    + "Also {0} enemies in AOE.".format("taunts".color(TAUNT_COLOR))
   )
   new AbilityDefinitionPitLordHowlofTerror(HOWL_OF_TERROR_ID)
   ..registerTooltipGenerator(tooltip)
@@ -57,8 +60,7 @@ init
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Howl of Terror")
   ..addTooltipProperty("Damage Decrease", lvl -> (DAMAGE_DECREASE.run(lvl) * 100).percRound())
-  ..addTooltipProperty("Bonus Strength", STR_BONUS)
-  ..addTooltipProperty("HP Recovered", HP_RECOVERY)
+  ..addTooltipProperty("HP Recovered", lvl -> (HP_RECOVERY.run(lvl) * 100).percRound())
   ..presetAreaofEffect(lvl -> AOE)
   ..addTooltipProperty("Duration", DURATION)
   ..presetManaCost(lvl -> 65 + 20 * (lvl-1))

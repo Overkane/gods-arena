@@ -29,6 +29,8 @@ public constant MAGICAL_DAMAGE_STRING = "Magical".color(MAGICAL_COLOR_STRING)
 public constant PURE_DAMAGE_STRING = "Pure".color(PURE_COLOR_STRING)
 public constant HEALING_STRING = "Healing".color(HEALING_COLOR)
 
+public constant TAUNT_COLOR = colorA(185,	57,	57, 255)
+
 enum CustomStatType
   PHYSICAL
   MAGICAL

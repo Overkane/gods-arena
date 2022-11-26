@@ -1,0 +1,92 @@
+package DemonicPowerBuff
+import PresetBuffs
+import ClosureForGroups
+import BonusHandler
+import HashMap
+import TooltipFactory
+import AbilityTooltipGenerator
+import Boss
+import UnitIndexer
+
+public constant buffTuple = compiletime(createDummyBuffObject("Demonic Power".color(POSITIVE_COLOR), "Strength is increased",  Icons.pASBTNCleavingAttack))
+
+public constant RealLevelClosure DEMONIC_POWER_STR_BONUS = lvl -> 1. * lvl
+public constant DEMONIC_POWER_STR_BOSS_MULT = 8
+public constant DEMONIC_POWER_AOE = 400.
+
+constant demonicPowerMap = new HashMap<trigger, DemonicPowerMainBuff>
+// Link buff to a unit, so we destroy exact same buff unit gave, cuz it matters, if unit was a boss, then need to remove more strength.
+DemonicPowerSubBuff array affectedUnitBuffs
+
+function trigger.getDemonicPowerBuff() returns DemonicPowerMainBuff
+  return demonicPowerMap.get(this)
+
+function trigger.setDemonicPowerBuff(DemonicPowerMainBuff buffInstance) 
+  demonicPowerMap.put(this, buffInstance)
+
+
+public class DemonicPowerMainBuff extends NormalBuff
+  static constant RANGE_BUFFER = 32
+
+  var bonusStr = 0.
+  
+  constant affected = CreateGroup()
+  constant inRangeTrig = CreateTrigger()..setDemonicPowerBuff(this)
+  
+  construct(real bonusStr)
+    super(99999, buffTuple)
+
+    this.bonusStr = bonusStr
+
+  function onInRange(unit u)
+    if u.isAlive() and u.isEnemyOf(target) and not affected.has(u)
+      affected.add(u)
+
+      var localStrBonus = bonusStr
+      if u.isBoss()
+        localStrBonus *= DEMONIC_POWER_STR_BOSS_MULT
+
+      let b = new DemonicPowerSubBuff(localStrBonus)..apply(target)
+
+      let id = u.getIndex()
+      affectedUnitBuffs[id] = b
+  
+  override function onApply()
+    inRangeTrig..registerUnitInRange(target, DEMONIC_POWER_AOE, null)
+    ..addAction(() -> GetTriggeringTrigger().getDemonicPowerBuff().onInRange(GetTriggerUnit()))
+
+    forUnitsInRange(target.getPos(), DEMONIC_POWER_AOE) (unit u) ->
+      onInRange(u)
+  
+  override function onEnd()
+    demonicPowerMap.remove(inRangeTrig)
+    target.removeBuffById(DemonicPowerSubBuff.typeId)
+    inRangeTrig.destr()
+    affected.destr()
+
+  override function update()
+    super.update()
+
+    for u in affected
+      // Adding additional range for buff AOE, so its squared value will be higher than squared distance.
+      if u.getPos().distanceToSq(target.getPos()) > (DEMONIC_POWER_AOE + RANGE_BUFFER).squared() or not u.isAlive()
+        let id = u.getIndex()
+        affectedUnitBuffs[id].terminate()
+        affectedUnitBuffs[id] = null
+        affected.remove(u)
+
+
+class DemonicPowerSubBuff extends StackingBuff
+  var bonusStr = 0.
+  unit affectedUnit
+
+  construct(real bonusStr)
+    super(99999, buffTuple)
+
+    this.bonusStr = bonusStr
+
+  override function onApply()
+    target.addBonus(Bonus.STRENGTH, bonusStr)
+  
+  override function onEnd()
+    target.addBonus(Bonus.STRENGTH, -bonusStr)

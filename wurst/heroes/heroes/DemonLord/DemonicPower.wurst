@@ -1,27 +1,50 @@
 package DemonicPower
 import AbilityTooltipGenerator
 import GameConstants
-import ClosureEvents
 import DemonLordIds
 import PassiveAbilityPreset
 import AbilityDefinitionExtension
-
-constant IntLevelClosure STR_BONUS = lvl -> 8 * lvl
+import ClosureEvents
+import ClosureTimers
+import DemonicPowerBuff
+import Buff
 
 init
   EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
-    let u = GetTriggerUnit()
+    let u = EventData.getTriggerUnit()
 
     if EventData.getLearnedSkill() == DEMONIC_POWER_ID
-      u.addStr(STR_BONUS.run(1))
+      let lvl = u.getAbilityLevel(DEMONIC_POWER_ID)
+      let bonusStr = DEMONIC_POWER_STR_BONUS.run(lvl)
+
+      if not u.hasBuff(DemonicPowerMainBuff.typeId)
+        new DemonicPowerMainBuff(bonusStr).apply(u)
+      else
+        u.removeBuffById(DemonicPowerMainBuff.typeId)
+
+        // After buff main buff is destroyed we are waiting for minor buff to expire to be sure onEnd()
+        // it have used old buff values.
+        doAfter(BUFF_ANIM_PERIOD) ->
+          new DemonicPowerMainBuff(bonusStr).apply(u)
+
+  EventListener.add(EVENT_PLAYER_HERO_REVIVE_FINISH) ->
+    let u = EventData.getTriggerUnit()
+
+    if u.hasAbility(DEMONIC_POWER_ID)
+      let lvl = u.getAbilityLevel(DEMONIC_POWER_ID)
+      let bonusStr = DEMONIC_POWER_STR_BONUS.run(lvl)
+
+      new DemonicPowerMainBuff(bonusStr).apply(u)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Passively increases base strength.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Increases strength for each enemy nearby. Bosses gives more strength.")
   new PassiveAbilityPreset(DEMONIC_POWER_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..makeEAbility()
   ..presetIcon(Icons.pASBTNCleavingAttack)
 
   ..tooltipStartListen()
   ..setName("Demonic Power")
-  ..addTooltipProperty("Bonus Strength", STR_BONUS)
+  ..addTooltipProperty("Bonus Strength per Enemy", lvl -> DEMONIC_POWER_STR_BONUS.run(lvl).round())
+  ..addTooltipProperty("Boss Strength Multiplier", lvl -> DEMONIC_POWER_STR_BOSS_MULT)
+  ..presetAreaofEffect(lvl -> DEMONIC_POWER_AOE)
   ..tooltipStopListen()
