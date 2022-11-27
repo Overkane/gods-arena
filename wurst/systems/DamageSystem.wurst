@@ -96,11 +96,10 @@ init
 
 
   DamageEvent.addUnreducedListener(DamageEvents.CRIT castTo int) ->
-    let damageType = DamageEvent.getType()
     let sunit = DamageEvent.getSource()
     var damage = 0.
 
-    if damageType == DamageType.ATTACK and sunit.hasStat(CustomUnitStats.ATTACK_CRIT_CHANCE) and sunit.hasStat(CustomUnitStats.ATTACK_CRIT_POWER)
+    if isPhysicalDamage() and sunit.hasStat(CustomUnitStats.ATTACK_CRIT_CHANCE) and sunit.hasStat(CustomUnitStats.ATTACK_CRIT_POWER)
       let attackCritChance = sunit.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE)
       
       if attackCritChance > GetRandomReal(0, 1)
