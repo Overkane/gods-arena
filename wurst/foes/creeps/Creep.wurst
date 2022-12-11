@@ -44,8 +44,9 @@ public class Creep extends UnitEntity
     end)
     
   override function update()
-    physicsUpdate(this)
     super.update()
+    if not done
+      physicsUpdate(this)
 
   override function onEscapeGround()
     actor.setPropWindow(0 .fromDeg())

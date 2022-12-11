@@ -29,5 +29,6 @@ public class SummonEntity extends UnitEntity
       actor.addBonus(Bonus.MANA, bonusMP)
 
   override function update()
-    physicsUpdate(this)
     super.update()
+    if not done
+      physicsUpdate(this)

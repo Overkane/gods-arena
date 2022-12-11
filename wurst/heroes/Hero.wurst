@@ -19,8 +19,9 @@ public class Hero extends UnitEntity
     registerInnateAbilityUpgradeEvent(innateAbilId)
 
   override function update()
-    physicsUpdate(this)
     super.update()
+    if not done
+      physicsUpdate(this)
   
   function addXp(int toAdd, boolean showEyeCandy)
     AddHeroXP(this.actor, toAdd, showEyeCandy)
