@@ -4,7 +4,7 @@ import Boss
 import AbilityTooltipGenerator
 import ClosureTimers
 import OrderIds
-import BonusHandler
+import DamageSystem
 import ClosureForGroups
 import Assets
 import SoundUtils
@@ -13,7 +13,13 @@ import HelmOfTheGod
 import Hero
 import InstantDummyCaster
 import DummyCaster
+import DamageEvent
 import MapModels
+import Heightmap
+import Weather
+import Lightning
+import Reference
+import Creep
 
 constant GOD_OF_WATER_ID = compiletime(UNIT_ID_GEN.next())
 
@@ -24,19 +30,32 @@ constant WAVES_ID = compiletime(ABIL_ID_GEN.next())
 
 constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.doom)
 
+constant ULT_PROJECTILE_SPAWN_SOUND = new SoundDefinition(Sounds.waterElementalMissile3)
+constant ULT_PROJECTILE_IMPACT_SOUND = new SoundDefinition(Sounds.waterElementalMissile1)
+
+constant ULT_ORB_POWERUP_SOUND = new SoundDefinition(Sounds.siphonMana)
+constant ULT_ORB_POWERUP_SOUND_LOOP = new SoundDefinition(Sounds.siphonManaLoop, true)
+
+constant ULT_RAINING_SOUND_LOOP = new SoundDefinition(Sounds.waterWavesLoop1, true)
+
 public class GodOfWater extends Boss
-  let castQueue = new LinkedList<int>
+  private constant castQueue = new LinkedList<int>
+  private CallbackPeriodic waterDamageCb
+
+  private var isPhase1 = false
+  private var wasOnPhase1 = false
+  private var isPhase2 = false
+  private var wasOnPhase2 = false
 
   construct(vec3 pos, angle ang)
     super(GOD_OF_WATER_ID, pos, ang)
+
     actor.addItemById(HELM_OF_THE_GOD_ITEM.getNewId())
+
     BOSS_MUSIC_THEME.play()
     new SoundDefinition(Sounds.nagaRoyalGuardReady1).play()
-    doPeriodically(6) cb ->
-      if actor.isAlive()
-        castBossSpell()
-      else
-        destroy cb
+
+    spellCycle()
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
       forUnitsAll() (unit u) ->
@@ -44,46 +63,318 @@ public class GodOfWater extends Boss
           u.kill()
       BOSS_MUSIC_THEME.play(0, 0)
 
-  function castBossSpell()
-    if castQueue.isEmpty()
-      for i = 0 to 2
-        castQueue.add(i)
-      castQueue.shuffle()
-    actor.setAnimation("cast")
-    let rand = castQueue.pop()
-    switch rand
-      case 0
-        waterTentacles()
-      case 1
-        summonWaves()
-      case 2
-        waterEmpower()
+    DamageEvent.addListener() ->
+      let tunit = DamageEvent.getTarget()
 
-  function waterEmpower()
-    actor.addBonus(Bonus.ATTACKSPEED, 15)
+      if tunit == actor 
+        if tunit.getHPRatio() <= 0.99 and not wasOnPhase1
+          isPhase1 = true
+          wasOnPhase1 = true
+        else if tunit.getHPRatio() <= 0.4 and not wasOnPhase2
+          isPhase2 = true
+          wasOnPhase2 = true
 
-  function summonWaves()
+  function spellCycle()
+    let spellCd = wasOnPhase2 ? 7. : 9.
+    doAfter(spellCd) ->
+      if actor.isAlive()
+        if isPhase1
+          isPhase1 = false
+          castUltimateSpell()
+        else if isPhase2
+          isPhase2 = false
+          castUltimateSpell()
+        else
+          if castQueue.isEmpty()
+            for i = 0 to 2
+              castQueue.add(i)
+            castQueue.shuffle()
+          actor.setAnimation("cast")
+          let rand = castQueue.pop()
+          switch rand
+            case 0
+              castWaves()
+            case 1
+              castTentacles()
+            case 2
+              castTorrent()
+          spellCycle()
+          
+  function castTorrent()
+    actor.pause()
+
+    let torrentAmount = wasOnPhase1 ? 32 : 24
+    let baseAngles = (360 / 8).toInt()
+    let torrentSpawnAngleList = new LinkedList<int>
+    
+    for i = 1 to torrentAmount
+      let spawnAngle = baseAngles * i
+      torrentSpawnAngleList.add(spawnAngle)
+
+    doPeriodicallyCounted(1.5, 3) (CallbackCounted cb) ->
+      let internalTorrentSpawnAngleList = torrentSpawnAngleList.copy()..shuffle()
+      
+      actor.setAnimation("spell slam")
+
+      for i = 1 to torrentAmount
+        let currentangle = internalTorrentSpawnAngleList.dequeue()
+        let currentTorrentSpawnAngle = (currentangle + GetRandomReal(-currentangle/4, currentangle/4)).asAngleDegrees()
+        let projectilePos = actor.getPos().polarOffset(currentTorrentSpawnAngle, GetRandomReal(50, 900))
+        
+        let groundEffect = addEffect(MapModels.spellMarkerRed, projectilePos)..setScale(1.5)
+
+        doAfter(1.75) -> 
+          groundEffect.destr()
+          flashEffect(Objects.nagaDeath, projectilePos)
+          forUnitsInRange(projectilePos, 150) (unit u) ->
+            if u.isAlive() and u.isEnemyOf(actor)
+              actor.dealMagicalDamage(u, 300)
+      
+      destroy internalTorrentSpawnAngleList
+      
+      if cb.isLast()
+        doAfter(1.5) -> 
+          actor.unpause()
+        destroy torrentSpawnAngleList
+
+  function castWaves()
+    actor.pause()
+    actor.setAnimation("spell chain")
+    doAfter(1) -> 
+      actor.unpause()
+
     new DummyCaster()
     ..owner(ENEMY_PLAYER)
     ..origin(actor.getPos())
-    ..castPoint(WAVES_ID, 1, OrderIds.stampede, actor.getPos().polarOffset(actor.getFacingAngle(), 10))
+    ..castPoint(WAVES_ID, 1, OrderIds.stampede, actor.getPos().polarOffset(GetRandomReal(1, 360).asAngleDegrees(), 10))
 
-  function waterTentacles()
-    let aliveHeroes = heroUnitList.filter((unit t) -> t.isAlive())..shuffle()
+  function castTentacles()
+    actor.pause()
 
-    if aliveHeroes.size() > 0
-      for i = 0 to aliveHeroes.size()
-        InstantDummyCaster.castPoint(ENEMY_PLAYER, SUMMON_WATER_TENTACLE_ID, 1, OrderIds.ward, aliveHeroes.get(i).getPos())
+    let baseCircleAOE = 150
+    let radiusAOE = 600 + GetRandomInt(0, 400)
+    let circleNumber = (PI / Asin(baseCircleAOE / radiusAOE)).round()
+    let circleAngles = 360 / circleNumber
+  
+    for i = 1 to circleNumber
+      let currentAngle = circleAngles * i
+      let circlePos = actor.getPos().polarOffset(currentAngle.asAngleDegrees(), radiusAOE.toReal())
+      let groundEffect = addEffect(MapModels.spellMarkerRed, circlePos)
 
-    destroy aliveHeroes
+      doAfter(1.3) ->
+        actor.setAnimation("spell throw")
+        doAfter(1) -> 
+          actor.unpause()
 
-init 
-  EventListener.add(EVENT_PLAYER_UNIT_DEATH) ->
-    let dunit = EventData.getDyingUnit()
+        groundEffect.destr()
+        flashEffect(Objects.nagaDeath, circlePos, 0.5)
+        new Creep(WATER_TENTACLE_ID, circlePos.withHeightMap(), circlePos.angleTo(actor.getPos())).actor.setTimedLife(12)
 
-    if dunit.getTypeId() == WATER_TENTACLE_ID
-      bossList.getFirst().addBonus(Bonus.DAMAGE, 5)
-    
+  function castUltimateSpell()
+    let tpEffect = actor
+    ..pause()
+    .addEffect(Abilities.massTeleportCaster, AttachmentPoints.origin)
+
+    doAfter(2) ->
+      tpEffect.destr() 
+      actor
+      ..setInvulnerable(true)
+      ..setPos(gg_rct_ArenaPond.getCenter())
+      ..setFacing((270).asAngleDegrees())
+
+      doAfter(4) -> 
+        waterDamageCb = doPeriodically(0.5) (CallbackPeriodic cb) ->
+        forUnitsAll() (unit u) ->
+          if u.isEnemyOf(actor) and u.getPos().getTerrainZ() <= -50
+            actor.dealMagicalDamage(u, 50)
+        
+      // Part 1
+      let rainEffect = addWeather(gg_rct_ArenaPond, WeatherEffects.ashenvaleRainHeavy)..enable()
+      let rainingLoop = ULT_RAINING_SOUND_LOOP.play()
+
+      doAfter(6) -> 
+        rainingLoop.snd.stop(false, true)
+
+      let effectList = new LinkedList<effect>
+
+      let iniPos = vec2(-2000, -2280)
+      for i = 1 to 23
+        for j = 1 to 10
+          let effPos = vec2(iniPos.x + (j - 1) * 510, iniPos.y - (i - 1) * 260)
+          effectList.add(addEffect(Doodads.risingWaterWIDEDoodad, effPos.withZ(-200))
+          ..setYaw((90.).asAngleDegrees())
+          ..setAlpha(160))
+      doAfter(6) -> 
+        rainEffect.disable()
+        doAfter(2) -> 
+          rainEffect.remove()
+
+      doAfter(5) -> 
+        // Part 2
+        let aliveHeroUnits = heroUnitList.filter((unit u) -> u.isAlive())
+        
+        let projectileDelay = wasOnPhase2 ? 1.1 : 1.6
+        let numberOfProj = wasOnPhase2 ? 16 : 10
+
+        doPeriodicallyCounted(projectileDelay, numberOfProj) (CallbackCounted cb) ->
+          let target = aliveHeroUnits..shuffle().peek()
+          let angleToTarget = actor.getPos().angleTo(target.getPos())
+          actor.setFacing(angleToTarget)
+
+          doAfter(0.2) ->
+            ULT_PROJECTILE_SPAWN_SOUND.play() 
+            let bossProjectile = new WaterBossKnockbackProjectile(actor.getPos().withHeightMap(), 128., owner, angleToTarget, MapModels.orbWaterX)
+            ..setSpeed(16.)
+            ..setRanged(1800)
+            
+            bossProjectile.getFx().eff.setScale(2.)
+            bossProjectile.onHit() (unit target) ->
+              if target.isEnemyOf(actor) and target.isAlive()
+                flashEffect(Abilities.crushingWaveDamage, bossProjectile.getPos())
+                actor.dealMagicalDamage(target, 400)
+                target.getEntity().addVel(ZERO3.polarProject(1000 * ANIMATION_PERIOD, bossProjectile.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
+                bossProjectile.terminate()
+
+          if cb.isLast()
+            destroy aliveHeroUnits
+            
+            doAfter(1) -> 
+              let waterOrbUlt = addEffect(MapModels.orbWaterX, actor.getPos().withHeightMap(725))
+
+              let waterOrbPowerUpLightnings = new LinkedList<lightning>
+              let baseAngle = 360 / 8
+
+              ULT_ORB_POWERUP_SOUND.play()
+              let powerUpSoundLoop = ULT_ORB_POWERUP_SOUND_LOOP.play()
+
+              doAfter(6) -> 
+                powerUpSoundLoop.snd.stop(false, true)
+
+              for i = 1 to 8
+                waterOrbPowerUpLightnings.add(
+                  addLightning(LIGHTNING_DRAIN_MANA, false, actor.getPos().withHeightMap(870), actor.getPos().polarOffset((baseAngle * i).asAngleDegrees(), 2000.).withHeightMap())
+                )
+
+              let numberOfSlowWaves = wasOnPhase2 ? 9 : 6
+
+              doPeriodicallyCounted(1.5, numberOfSlowWaves) (CallbackCounted cb) ->
+                waterOrbUlt.setScale(waterOrbUlt.getScale() + 0.6)
+
+                for eff in effectList
+                  eff.setZ(eff.getPos3().z - 15)
+
+                if cb.isLast()
+                  for eff in effectList
+                    eff.destr()
+
+                  destroy effectList
+
+                  for lightn in waterOrbPowerUpLightnings
+                    lightn.destr()
+
+                  destroy waterOrbPowerUpLightnings
+
+                  destroy waterDamageCb
+
+                  let numberOfFastWaves = wasOnPhase2 ? 5 : 3
+
+                  doAfter(2) ->
+                    doPeriodicallyCounted(1.1, numberOfSlowWaves) (CallbackCounted cb) ->
+                      flashEffect(Objects.nagaDeath, actor.getPos().withHeightMap(725))
+                      waterOrbUlt.setScale(waterOrbUlt.getScale() - 0.6)
+                      ULT_PROJECTILE_SPAWN_SOUND.play()
+
+                      if not cb.isLast() 
+                        for i = 1 to 24
+                          let projectileOrb = new Projectile(actor.getPos().withHeightMap(), 64, owner, GetRandomReal(1, 360).asAngleDegrees(), MapModels.orbWaterX)
+                          ..setSpeed(28.)
+                          ..setRanged(2800)
+
+                          projectileOrb
+                          ..onHit() (unit target) ->
+                            if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+                              flashEffect(Abilities.crushingWaveDamage, projectileOrb.getPos())
+                              bossList.peek().dealMagicalDamage(target, 250)
+                              target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
+                              projectileOrb.terminate()
+                      else
+                        waterOrbUlt.destr()
+
+                        doPeriodicallyCounted(0.4, numberOfFastWaves) (CallbackCounted cb) ->
+                          ULT_PROJECTILE_SPAWN_SOUND.play() 
+                          for i = 1 to 24 
+                            let projectileOrb = new Projectile(actor.getPos().withHeightMap(), 64, owner, GetRandomReal(1, 360).asAngleDegrees(), MapModels.orbWaterX)
+                            ..setSpeed(28.)
+                            ..setRanged(2800)
+
+                            projectileOrb
+                            ..onHit() (unit target) ->
+                              if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+                                flashEffect(Abilities.crushingWaveDamage, projectileOrb.getPos())
+                                bossList.peek().dealMagicalDamage(target, 250)
+                                target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
+                                projectileOrb.terminate()
+                        
+                        doAfter(2) -> 
+                          actor
+                          ..setInvulnerable(false)
+                          ..unpause()
+
+                          spellCycle()
+
+
+class WaterBossKnockbackProjectile extends Projectile
+  static constant DISTANCE_NEEDED_FOR_EFFECT = 300
+  var distanceTravelled = 0.
+
+  construct(vec3 pos, real radius, player owner, angle xyAngle, string fxpath)
+    super(pos, radius, owner, xyAngle, fxpath)
+
+  override function update()
+    let oldPos = pos
+    super.update()
+    let newPos = pos
+
+    distanceTravelled += oldPos.distanceTo(newPos)
+
+    if distanceTravelled >= DISTANCE_NEEDED_FOR_EFFECT and not done
+      distanceTravelled -= DISTANCE_NEEDED_FOR_EFFECT
+
+      // Effect trigger
+      let projectileOrb1 = new Projectile(pos, 64, owner, getXYAngle() + (90.).asAngleDegrees(), MapModels.orbWaterX)
+      ..setSpeed(15.)
+      ..setRanged(1000)
+
+      projectileOrb1
+      ..onHit() (unit target) ->
+        if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+          flashEffect(Abilities.crushingWaveDamage, projectileOrb1.getPos())
+          bossList.peek().dealMagicalDamage(target, 250)
+          target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb1.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
+          projectileOrb1.terminate()
+
+      let projectileOrb2 = new Projectile(pos, 64, owner, getXYAngle() - (90.).asAngleDegrees(), MapModels.orbWaterX)
+      ..setSpeed(15.)
+      ..setRanged(1000)
+
+      projectileOrb2
+      ..onHit() (unit target) ->
+        if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+          flashEffect(Abilities.crushingWaveDamage, projectileOrb2.getPos())
+          bossList.peek().dealMagicalDamage(target, 250)
+          target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb2.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
+          projectileOrb2.terminate()
+
+init
+  DamageEvent.addListener(99) -> 
+    let tunit = DamageEvent.getTarget()
+
+    if tunit.getTypeId() == WATER_TENTACLE_ID
+      if DamageEvent.getType() == DamageType.ATTACK
+        DamageEvent.setAmount(1)
+      else
+        DamageEvent.setAmount(0)
+
 
 @compiletime function genAbility()
   new UnitDefinition(GOD_OF_WATER_ID, UnitIds.waterelemental3)
@@ -91,47 +382,40 @@ init
   ..setName("God of Water")
   ..setModelFile(MapModels.waterElemental)
   ..setAttack1ProjectileArt(Abilities.crushingWaveDamage)
-  ..setAttack1CooldownTime(1.75)
-  ..setAttack1DamageBase(575)
+  ..setAttack1CooldownTime(1.1)
+  ..setAttack1DamageBase(275)
   ..setAttack1Range(650)
   ..setDefenseBase(25)
+  ..setHitPointsMaximumBase(100000)
   ..setSpeedBase(330)
   ..setNormalAbilities(commaList(AbilityIds.inventory))
-  ..setHitPointsMaximumBase(100000)
   ..setScalingValue(2.8)
   ..setArmorType(ArmorType.Divine)
   ..setAttack1AttackType(AttackType.Chaos)
 
   new UnitDefinition(WATER_TENTACLE_ID, UnitIds.tentacle)
   ..setName("Water Tentacle")
-  ..setAttack1DamageBase(399)
+  ..setAttack1DamageBase(199)
   ..setAttack1Range(188)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(1)
   ..setModelFile(MapModels.waterTentacle)
-  ..setHitPointsMaximumBase(4500)
-  ..setArmorType(ArmorType.Medium)
-  ..setDefenseBase(5)
-  ..setTargetedAs(TargetsAllowed.ground)
+  ..setHitPointsMaximumBase(2)
+  ..setDefenseBase(0)
+  ..setTargetedAs(commaList(TargetsAllowed.ground, TargetsAllowed.ward))
   ..setNormalAbilities("")
   ..setArmorType(ArmorType.Small)
   ..setAttack1AttackType(AttackType.Siege)
 
-  new AbilityDefinitionShadowHunterSerpentWard(SUMMON_WATER_TENTACLE_ID)
-  ..setLevels(1)
-  ..setDummyAbility()
-  ..setSummonedUnitType(1, WATER_TENTACLE_ID.toRawCode())
-  ..setDurationNormal(1, 60)
-
   new AbilityDefinitionBeastMasterStampede(WAVES_ID)
   ..setLevels(1)
   ..setDummyAbility()
-  ..setBeastsPerSecond(1, 20)
+  ..setBeastsPerSecond(1, 16)
   ..setBeastCollisionRadius(1, 64)
   ..setDamageAmount(1, 250)
   ..setMissileArt(Abilities.waterElementalMissile)
   ..setDurationNormal(1, 7)
-  ..setAreaofEffect(1, 1200)
+  ..setAreaofEffect(1, 1800)
   ..setEffectSound("")
   ..setEffectSoundLooping(Sounds.monsoonRainLoop)
   ..setArtSpecial("")

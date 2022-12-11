@@ -14,3 +14,4 @@ public class MapModels
   static constant waterTentacle = "Models/Water Tentacle.mdx" // Champara Bros
   static constant waterElemental = "Models/WaterElemental.mdx" // icewolf055
   static constant ruins_shells4x5 = "Models/ruins_shells4x5.mdx" // Overkane
+  static constant orbWaterX = "Models/OrbWaterX.mdx" // General Frank

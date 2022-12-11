@@ -1,9 +1,11 @@
 package SummonEntity
-import Entity
 import BonusHandler
 import CustomStatSystem
+import PhysicsEntity
 
 public class SummonEntity extends UnitEntity
+  use PhysicsModule
+
   construct(unit summoner, int typId, vec3 pos, angle ang)
     super(createUnit(summoner.getOwner(), typId, pos.toVec2(), ang))
     actor
@@ -25,3 +27,7 @@ public class SummonEntity extends UnitEntity
     if actor.getMaxMana() != 0
       let bonusMP = actor.getMaxMana() * casterSP
       actor.addBonus(Bonus.MANA, bonusMP)
+
+  override function update()
+    physicsUpdate(this)
+    super.update()

@@ -1,13 +1,15 @@
 package Hero
-import Entity
 import HashMap
 import CurrentArena
 import HeroDefinitionPresets
+import PhysicsEntity
 
 public constant heroUnitMap = new IterableMap<unit, Hero>
 public constant heroUnitList = new LinkedList<unit>
 
 public class Hero extends UnitEntity
+  use PhysicsModule
+
   construct(player p, int typId, vec3 pos, angle ang)
     super(createUnit(p, typId, pos.toVec2(), ang))
     heroUnitMap.put(this.actor, this)
@@ -16,6 +18,10 @@ public class Hero extends UnitEntity
     let innateAbilId = heroInnateSkills.loadInt(typId, typId)
     registerInnateAbilityUpgradeEvent(innateAbilId)
 
+  override function update()
+    physicsUpdate(this)
+    super.update()
+  
   function addXp(int toAdd, boolean showEyeCandy)
     AddHeroXP(this.actor, toAdd, showEyeCandy)
 
