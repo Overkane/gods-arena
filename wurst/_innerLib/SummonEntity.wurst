@@ -30,5 +30,4 @@ public class SummonEntity extends UnitEntity
 
   override function update()
     super.update()
-    if not done
-      physicsUpdate(this)
+    physicsUpdate(this)

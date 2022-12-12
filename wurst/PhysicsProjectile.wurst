@@ -13,10 +13,9 @@ public class PhysicsProjectile extends Projectile
 		
 	override function update()
 		super.update()
-		if not done
-			physicsUpdate(this)
-			setXYAngle(pos.angleTo2d(pos+vel))
-			setZAngle(getSlopeAngle(pos.z, pos.z + vel.z, 2))
+		physicsUpdate(this)
+		setXYAngle(pos.angleTo2d(pos+vel))
+		setZAngle(getSlopeAngle(pos.z, pos.z + vel.z, 2))
 		
 
 public class Shrapnel extends PhysicsProjectile

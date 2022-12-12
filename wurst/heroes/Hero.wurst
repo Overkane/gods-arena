@@ -20,8 +20,7 @@ public class Hero extends UnitEntity
 
   override function update()
     super.update()
-    if not done
-      physicsUpdate(this)
+    physicsUpdate(this)
   
   function addXp(int toAdd, boolean showEyeCandy)
     AddHeroXP(this.actor, toAdd, showEyeCandy)
