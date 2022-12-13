@@ -33,12 +33,11 @@ init
                 attacker.triggerEntangleEffect(DamageEvent.getTarget(), lvl)
 
 public function unit.triggerEntangleEffect(unit target, int lvl)
-    if not target.isBoss()
-        new DummyStatCaster()
-        ..caster(this)
-        ..castTarget(ENTANGLE_ID, lvl, OrderIds.entanglingroots, target)
+    new DummyStatCaster()
+    ..caster(this)
+    ..castTarget(ENTANGLE_ID, lvl, OrderIds.entanglingroots, target)
 
-        target.removeBuffById(TagBuff.typeId)
+    target.removeBuffById(TagBuff.typeId)
 
 
 @compiletime function genAbility()
