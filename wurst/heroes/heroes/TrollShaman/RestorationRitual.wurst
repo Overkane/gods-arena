@@ -8,6 +8,7 @@ import RestorationRitualBuff
 import TooltipFactory
 import Abilities
 import LinkedList
+import GeneralFunctions
 import AbilityDefinitionExtension
 
 public constant RESTORATION_RITUAL_ID = compiletime(ABIL_ID_GEN.next())
@@ -33,7 +34,7 @@ init
     doPeriodicallyTimed(BUFF_ANIM_PERIOD, duration) (CallbackCounted cb) ->
       if castingUnits.has(caster)
         forUnitsInRange(caster.getPos(), aoe) (unit u) ->
-          if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive() and u != caster
+          if u.isValidPlayerTarget() and u != caster
             new RestorationRitualBuff(caster, BUFF_ANIM_PERIOD, hpPercRestore, mpPercRestore).apply(u)
       else 
         cb.stop()

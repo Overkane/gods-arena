@@ -12,7 +12,7 @@ import Buff
 public constant CRAB_DEFENSE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure SPAWN_CHANCE = lvl -> 0.1 + 0.05 * lvl
-public constant RealLevelClosure STRENGTH_DAMAGE = lvl -> 0.05  + 0.15 * lvl
+public constant RealLevelClosure STRENGTH_DAMAGE = lvl -> 0.4 * lvl
 
 init
   DamageEvent.addListener() -> 

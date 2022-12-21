@@ -432,6 +432,8 @@ init
   ..setAttack1Range(650)
   ..setDefenseBase(25)
   ..setHitPointsMaximumBase(75000)
+  ..setManaMaximum(2000)
+  ..setManaInitialAmount(2000)
   ..setSpeedBase(330)
   ..setNormalAbilities(commaList(AbilityIds.inventory))
   ..setScalingValue(2.8)

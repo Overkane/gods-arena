@@ -9,7 +9,6 @@ import PassiveAbilityPreset
 import DummyStatCaster
 import TooltipFactory
 import AbilityDefinitionExtension
-import Boss
 
 public constant CRIT_ARROW_ID = compiletime(ABIL_ID_GEN.next())
 

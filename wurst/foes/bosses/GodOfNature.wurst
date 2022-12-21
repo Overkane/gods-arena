@@ -18,6 +18,7 @@ import DamageSystem
 import CustomHeal
 import MapModels
 import ProjectileRepeater
+import GeneralFunctions
 
 constant ROOTS_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -133,7 +134,7 @@ public class GodOfNature extends Boss
             new ProjectileRepeater(affectedUnitPos.withHeightMap(), 168, ENEMY_PLAYER, angle(0), Units.plagueCloud, 20) // Deals damage each 0.6 second
             ..setTimed(15)
             ..onHit() (unit target) ->
-              if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+              if target.isValidPlayerTarget()
                 actor.dealMagicalDamage(target, 75)
                 POISON_SOUND.playForPlayer(target.getOwner())
 
@@ -178,7 +179,7 @@ public class GodOfNature extends Boss
           groundEffect.destr()
           flashEffect(Abilities.entanglingRootsTarget, circlePos)
           forUnitsInRange(circlePos, 100) (unit u) ->
-            if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive()
+            if u.isValidPlayerTarget()
               InstantDummyCaster.castTarget(ENEMY_PLAYER, ROOTS_ID, 1, OrderIds.entanglingroots, u)
               doPeriodicallyTimed(1, 3) (CallbackCounted cb) ->
                 actor.dealMagicalDamage(u, 125)
@@ -253,7 +254,7 @@ public class GodOfNature extends Boss
 
         flashEffect(Abilities.warStompCaster, projectilePos)
         forUnitsInRange(projectilePos, 200) (unit u) ->
-          if u.isEnemyOf(ENEMY_PLAYER) and u.isAlive()
+          if u.isValidPlayerTarget()
             actor.dealMagicalDamage(u, 250)
 
         let movingProjectile = new Projectile(projectilePos.withHeightMap(), 64, 
@@ -276,7 +277,7 @@ public class GodOfNature extends Boss
 
               movingProjectile.terminate()
           else
-            if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+            if target.isValidPlayerTarget()
               flashEffect(Abilities.fireLordDeathExplode, target, AttachmentPoints.origin)
               actor.dealMagicalDamage(target, 300)
 
@@ -298,6 +299,8 @@ public class GodOfNature extends Boss
   ..setAttack1CooldownTime(1.2)
   ..setDefenseBase(7)
   ..setHitPointsMaximumBase(42500)
+  ..setManaMaximum(1000)
+  ..setManaInitialAmount(1000)
   ..setScalingValue(2.6)
   ..setArmorType(ArmorType.Divine)
   ..setAttack1AttackType(AttackType.Chaos)
