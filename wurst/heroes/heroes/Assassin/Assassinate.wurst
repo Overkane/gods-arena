@@ -2,22 +2,21 @@ package Assassinate
 import AbilityTooltipGenerator
 import ClosureEvents
 import ClosureForGroups
-import LinkedList
 import DamageSystem
-import Buff
 import TooltipFactory
-import GeneralFunctions
 import GameConstants
 import AbilityDefinitionExtension
 import Reference
+import CustomHeal
 
 public constant ASSASSINATE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure BASE_DAMAGE = lvl -> 100.
 constant RealLevelClosure DAMAGE_PER_LEVEL = lvl -> 25. + 25 * lvl
 constant RealLevelClosure BONUS_DAMAGE = lvl -> 0.25 * lvl
-constant RealLevelClosure COOLDOWN = lvl -> 30
-constant AOE_CHECK = 250.
+constant DAMAGE_HEAL_PERC = 0.25
+constant RealLevelClosure COOLDOWN = lvl -> 100
+constant AOE_CHECK = 200.
 
 init 
   EventListener.onTargetCast(ASSASSINATE_ID) (unit caster, unit target) ->
@@ -29,18 +28,29 @@ init
     var targetHasAlliesNearby = new Reference(false) 
 
     forUnitsInRange(target.getPos(), AOE_CHECK) (unit u) ->
-      if u.isAlive() and u.isAllyOf(target)
+      if u.isAlive() and u.isAllyOf(target) and u != target
         targetHasAlliesNearby.val = true
 
     if not targetHasAlliesNearby.into()
       let bonusDamage = BONUS_DAMAGE.run(lvl)
-      finalDamage += finalDamage * bonusDamage 
+      finalDamage += finalDamage * bonusDamage
+      let healValue = DAMAGE_HEAL_PERC * finalDamage
+      neutralHeal(caster, healValue) 
 
     caster.dealPhysicalDamage(target, finalDamage)
 
+  DamageEvent.addListener(99) -> 
+    let sunit = DamageEvent.getSource()
+
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(ASSASSINATE_ID)
+
+      let abilCd = sunit.getAbilityCooldownRemaining(ASSASSINATE_ID)
+      sunit.startAbilityCooldown(ASSASSINATE_ID, abilCd - 1)
+
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Deals high damage to a single target. Damage depends on hero level. "
-    + "If target has no allies in bonus damage radius check, then final damage will be increased by bonus damage value.")
+    + "If target has no allies in bonus damage radius check, then final damage will be increased by bonus damage value and heal."
+    + "Each attack decreases ability cooldown by 1 second.")
   new ChannelAbilityPreset(ASSASSINATE_ID, INNATE_SPELL_LEVELS, true, tooltip)
   ..makeDAbility()
   ..presetIcon(Icons.bTNSacrifice)
@@ -53,6 +63,7 @@ init
   ..addTooltipProperty("Damage", lvl -> "{0} + {1} * level".format(BASE_DAMAGE.run(lvl).toString(0), DAMAGE_PER_LEVEL.run(lvl).toString(0)))
   ..addTooltipProperty("Bonus Damage", lvl -> (BONUS_DAMAGE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Bonus Damage Radius Check", lvl -> AOE_CHECK.round())
+  ..addTooltipProperty("Healing", lvl -> (DAMAGE_HEAL_PERC * 100).percRound())
   ..presetCastRange(lvl -> 100)
   ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..presetCooldown(COOLDOWN)
