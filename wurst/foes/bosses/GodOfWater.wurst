@@ -11,22 +11,20 @@ import SoundUtils
 import Projectile
 import HelmOfTheGod
 import Hero
-import InstantDummyCaster
 import DummyCaster
-import DamageEvent
+import GeneralFunctions
 import MapModels
 import Heightmap
-import Weather
-import Lightning
-import Reference
+import PresetBuffs
 import Creep
+import TooltipFactory
 
 constant GOD_OF_WATER_ID = compiletime(UNIT_ID_GEN.next())
 
 constant WATER_TENTACLE_ID = compiletime(UNIT_ID_GEN.next())
-constant SUMMON_WATER_TENTACLE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant WAVES_ID = compiletime(ABIL_ID_GEN.next())
+constant WAVES_SOUND_ID = new SoundDefinition(Sounds.stampedeCaster1)
 
 constant BOSS_MUSIC_THEME = new SoundDefinition(Sounds.doom)
 
@@ -40,7 +38,6 @@ constant ULT_RAINING_SOUND_LOOP = new SoundDefinition(Sounds.waterWavesLoop1, tr
 
 public class GodOfWater extends Boss
   private constant castQueue = new LinkedList<int>
-  private CallbackPeriodic waterDamageCb
 
   private var isPhase1 = false
   private var wasOnPhase1 = false
@@ -59,7 +56,7 @@ public class GodOfWater extends Boss
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
       forUnitsAll() (unit u) ->
-        if u.getTypeId() == WATER_TENTACLE_ID or u.getTypeId() == WAVES_ID
+        if u.getTypeId() == WATER_TENTACLE_ID
           u.kill()
       BOSS_MUSIC_THEME.play(0, 0)
 
@@ -67,7 +64,7 @@ public class GodOfWater extends Boss
       let tunit = DamageEvent.getTarget()
 
       if tunit == actor 
-        if tunit.getHPRatio() <= 0.99 and not wasOnPhase1
+        if tunit.getHPRatio() <= 0.7 and not wasOnPhase1
           isPhase1 = true
           wasOnPhase1 = true
         else if tunit.getHPRatio() <= 0.4 and not wasOnPhase2
@@ -123,7 +120,7 @@ public class GodOfWater extends Boss
         
         let groundEffect = addEffect(MapModels.spellMarkerRed, projectilePos)..setScale(1.5)
 
-        doAfter(1.75) -> 
+        doAfter(1.55) -> 
           groundEffect.destr()
           flashEffect(Objects.nagaDeath, projectilePos)
           forUnitsInRange(projectilePos, 150) (unit u) ->
@@ -138,6 +135,8 @@ public class GodOfWater extends Boss
         destroy torrentSpawnAngleList
 
   function castWaves()
+    WAVES_SOUND_ID.play()
+
     actor.pause()
     actor.setAnimation("spell chain")
     doAfter(1) -> 
@@ -151,7 +150,7 @@ public class GodOfWater extends Boss
   function castTentacles()
     actor.pause()
 
-    let baseCircleAOE = 150
+    let baseCircleAOE = wasOnPhase1 ? 100 : 175
     let radiusAOE = 600 + GetRandomInt(0, 400)
     let circleNumber = (PI / Asin(baseCircleAOE / radiusAOE)).round()
     let circleAngles = 360 / circleNumber
@@ -168,7 +167,11 @@ public class GodOfWater extends Boss
 
         groundEffect.destr()
         flashEffect(Objects.nagaDeath, circlePos, 0.5)
-        new Creep(WATER_TENTACLE_ID, circlePos.withHeightMap(), circlePos.angleTo(actor.getPos())).actor.setTimedLife(12)
+        new Creep(WATER_TENTACLE_ID, circlePos.withHeightMap(), circlePos.angleTo(actor.getPos()))
+        .actor
+        ..setTimedLife(12)
+        ..setAnimation("birth")
+        ..queueAnimation("stand")
 
   function castUltimateSpell()
     let tpEffect = actor
@@ -181,12 +184,6 @@ public class GodOfWater extends Boss
       ..setInvulnerable(true)
       ..setPos(gg_rct_ArenaPond.getCenter())
       ..setFacing((270).asAngleDegrees())
-
-      doAfter(4) -> 
-        waterDamageCb = doPeriodically(0.5) (CallbackPeriodic cb) ->
-        forUnitsAll() (unit u) ->
-          if u.isEnemyOf(actor) and u.getPos().getTerrainZ() <= -50
-            actor.dealMagicalDamage(u, 50)
         
       // Part 1
       let rainEffect = addWeather(gg_rct_ArenaPond, WeatherEffects.ashenvaleRainHeavy)..enable()
@@ -201,7 +198,7 @@ public class GodOfWater extends Boss
       for i = 1 to 23
         for j = 1 to 10
           let effPos = vec2(iniPos.x + (j - 1) * 510, iniPos.y - (i - 1) * 260)
-          effectList.add(addEffect(Doodads.risingWaterWIDEDoodad, effPos.withZ(-200))
+          effectList.add(addEffect(Doodads.risingWaterWIDEDoodad, effPos.withZ(-90))
           ..setYaw((90.).asAngleDegrees())
           ..setAlpha(160))
       doAfter(6) -> 
@@ -209,27 +206,56 @@ public class GodOfWater extends Boss
         doAfter(2) -> 
           rainEffect.remove()
 
+      let breatheRegion = CreateRegion()
+      ..addRect(gg_rct_ArenaPondBreathArea)
+
+      let drownEnterTrig = CreateTrigger()
+      ..registerEnterRegion(breatheRegion, null)
+      ..disable()
+      ..addAction(() -> begin
+        let u = EventData.getTriggerUnit()
+        if u.hasBuff(DrowningBuff.typeId)
+          u.removeBuffById(DrowningBuff.typeId)
+      end)
+
+      let drownLeaveTrig = CreateTrigger()
+      ..registerLeaveRegion(breatheRegion, null)
+      ..disable()
+      ..addAction(() -> begin
+        let u = EventData.getTriggerUnit()
+        if u.isValidPlayerTarget()
+          new DrowningBuff()..apply(u)
+      end)
+
+      doAfter(4) ->
+        drownEnterTrig.enable()
+        drownLeaveTrig.enable()
+
+        forUnitsAll() (unit u) ->
+          if u.isValidPlayerTarget() and not u.isInRegion(breatheRegion)
+            new DrowningBuff()..apply(u)
+
       doAfter(5) -> 
         // Part 2
         let aliveHeroUnits = heroUnitList.filter((unit u) -> u.isAlive())
         
         let projectileDelay = wasOnPhase2 ? 1.1 : 1.6
-        let numberOfProj = wasOnPhase2 ? 16 : 10
+        let numberOfProj = wasOnPhase2 ? 13 : 9
 
         doPeriodicallyCounted(projectileDelay, numberOfProj) (CallbackCounted cb) ->
           let target = aliveHeroUnits..shuffle().peek()
           let angleToTarget = actor.getPos().angleTo(target.getPos())
           actor.setFacing(angleToTarget)
 
-          doAfter(0.2) ->
+          doAfter(0.1) ->
             ULT_PROJECTILE_SPAWN_SOUND.play() 
             let bossProjectile = new WaterBossKnockbackProjectile(actor.getPos().withHeightMap(), 128., owner, angleToTarget, MapModels.orbWaterX)
-            ..setSpeed(16.)
+            ..setSpeed(15.)
             ..setRanged(1800)
             
             bossProjectile.getFx().eff.setScale(2.)
             bossProjectile.onHit() (unit target) ->
-              if target.isEnemyOf(actor) and target.isAlive()
+              if target.isValidPlayerTarget()
                 flashEffect(Abilities.crushingWaveDamage, bossProjectile.getPos())
                 actor.dealMagicalDamage(target, 400)
                 target.getEntity().addVel(ZERO3.polarProject(1000 * ANIMATION_PERIOD, bossProjectile.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
@@ -238,6 +264,7 @@ public class GodOfWater extends Boss
           if cb.isLast()
             destroy aliveHeroUnits
             
+            // Part 3
             doAfter(1) -> 
               let waterOrbUlt = addEffect(MapModels.orbWaterX, actor.getPos().withHeightMap(725))
 
@@ -252,16 +279,16 @@ public class GodOfWater extends Boss
 
               for i = 1 to 8
                 waterOrbPowerUpLightnings.add(
-                  addLightning(LIGHTNING_DRAIN_MANA, false, actor.getPos().withHeightMap(870), actor.getPos().polarOffset((baseAngle * i).asAngleDegrees(), 2000.).withHeightMap())
+                  addLightning(LIGHTNING_DRAIN_MANA, false, actor.getPos().withHeightMap(870), actor.getPos().polarOffset((baseAngle * i).asAngleDegrees(), 2100.).withHeightMap())
                 )
 
               let numberOfSlowWaves = wasOnPhase2 ? 9 : 6
 
-              doPeriodicallyCounted(1.5, numberOfSlowWaves) (CallbackCounted cb) ->
+              doPeriodicallyCounted(0.8, numberOfSlowWaves) (CallbackCounted cb) ->
                 waterOrbUlt.setScale(waterOrbUlt.getScale() + 0.6)
 
                 for eff in effectList
-                  eff.setZ(eff.getPos3().z - 15)
+                  eff.setZ(eff.getPos3().z - 35)
 
                 if cb.isLast()
                   for eff in effectList
@@ -274,7 +301,13 @@ public class GodOfWater extends Boss
 
                   destroy waterOrbPowerUpLightnings
 
-                  destroy waterDamageCb
+                  breatheRegion.destr()
+                  drownEnterTrig.destr()
+                  drownLeaveTrig.destr()
+
+                  forUnitsAll() (unit u) ->
+                    if u.hasBuff(DrowningBuff.typeId)
+                      u.removeBuffById(DrowningBuff.typeId)
 
                   let numberOfFastWaves = wasOnPhase2 ? 5 : 3
 
@@ -292,7 +325,7 @@ public class GodOfWater extends Boss
 
                           projectileOrb
                           ..onHit() (unit target) ->
-                            if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+                            if target.isValidPlayerTarget()
                               flashEffect(Abilities.crushingWaveDamage, projectileOrb.getPos())
                               bossList.peek().dealMagicalDamage(target, 250)
                               target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
@@ -309,7 +342,7 @@ public class GodOfWater extends Boss
 
                             projectileOrb
                             ..onHit() (unit target) ->
-                              if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+                              if target.isValidPlayerTarget()
                                 flashEffect(Abilities.crushingWaveDamage, projectileOrb.getPos())
                                 bossList.peek().dealMagicalDamage(target, 250)
                                 target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
@@ -343,11 +376,11 @@ class WaterBossKnockbackProjectile extends Projectile
       // Effect trigger
       let projectileOrb1 = new Projectile(pos, 64, owner, getXYAngle() + (90.).asAngleDegrees(), MapModels.orbWaterX)
       ..setSpeed(15.)
-      ..setRanged(1000)
+      ..setRanged(800)
 
       projectileOrb1
       ..onHit() (unit target) ->
-        if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+        if target.isValidPlayerTarget()
           flashEffect(Abilities.crushingWaveDamage, projectileOrb1.getPos())
           bossList.peek().dealMagicalDamage(target, 250)
           target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb1.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
@@ -355,15 +388,27 @@ class WaterBossKnockbackProjectile extends Projectile
 
       let projectileOrb2 = new Projectile(pos, 64, owner, getXYAngle() - (90.).asAngleDegrees(), MapModels.orbWaterX)
       ..setSpeed(15.)
-      ..setRanged(1000)
+      ..setRanged(800)
 
       projectileOrb2
       ..onHit() (unit target) ->
-        if target.isEnemyOf(ENEMY_PLAYER) and target.isAlive()
+        if target.isValidPlayerTarget()
           flashEffect(Abilities.crushingWaveDamage, projectileOrb2.getPos())
           bossList.peek().dealMagicalDamage(target, 250)
           target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb2.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
           projectileOrb2.terminate()
+
+
+public constant buffTuple = compiletime(createDummyBuffObject("Drowning".color(POSITIVE_COLOR), "Deals damage over times",  Icons.bTNAbsorbMagic))
+
+class DrowningBuff extends NormalBuff
+  construct()
+    super(99999, buffTuple)
+
+  override function update()
+    super.update()
+    bossList.peek().dealMagicalDamage(target, 250 *  BUFF_ANIM_PERIOD) // TODO attacker unit
+
 
 init
   DamageEvent.addListener(99) -> 
@@ -382,11 +427,11 @@ init
   ..setName("God of Water")
   ..setModelFile(MapModels.waterElemental)
   ..setAttack1ProjectileArt(Abilities.crushingWaveDamage)
-  ..setAttack1CooldownTime(1.1)
-  ..setAttack1DamageBase(275)
+  ..setAttack1CooldownTime(1.3)
+  ..setAttack1DamageBase(200)
   ..setAttack1Range(650)
   ..setDefenseBase(25)
-  ..setHitPointsMaximumBase(100000)
+  ..setHitPointsMaximumBase(75000)
   ..setSpeedBase(330)
   ..setNormalAbilities(commaList(AbilityIds.inventory))
   ..setScalingValue(2.8)
@@ -394,13 +439,16 @@ init
   ..setAttack1AttackType(AttackType.Chaos)
 
   new UnitDefinition(WATER_TENTACLE_ID, UnitIds.tentacle)
+  ..setAcquisitionRange(99999)
   ..setName("Water Tentacle")
+  ..setAttack1CooldownTime(1)
   ..setAttack1DamageBase(199)
   ..setAttack1Range(188)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(1)
   ..setModelFile(MapModels.waterTentacle)
   ..setHitPointsMaximumBase(2)
+  ..setHitPointsRegenerationRate(0)
   ..setDefenseBase(0)
   ..setTargetedAs(commaList(TargetsAllowed.ground, TargetsAllowed.ward))
   ..setNormalAbilities("")
@@ -415,7 +463,7 @@ init
   ..setDamageAmount(1, 250)
   ..setMissileArt(Abilities.waterElementalMissile)
   ..setDurationNormal(1, 7)
-  ..setAreaofEffect(1, 1800)
+  ..setAreaofEffect(1, 2000)
   ..setEffectSound("")
   ..setEffectSoundLooping(Sounds.monsoonRainLoop)
   ..setArtSpecial("")

@@ -3,6 +3,15 @@ import FText
 import TerrainUtils
 import Heightmap
 import GameConstants
+import initlater HonorShop
+import initlater Backpack
+
+public function unit.isValidCreepTarget() returns bool
+  return this.isAlive() and this.isAllyOf(ENEMY_PLAYER)
+
+public function unit.isValidPlayerTarget() returns bool
+  return this.isAlive() and this.isEnemyOf(ENEMY_PLAYER) 
+    and not honorShopUnits.has(this) and not backpackUnits.has(this)
 
 public function setHandicap(int playerCount)
   SetPlayerHandicap(ENEMY_PLAYER, 0.15 + 0.85 * (playerCount / 8.))
