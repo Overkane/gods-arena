@@ -35,14 +35,14 @@ init
 
                     // Spell would be too OP for strong units like bosses, so we reduce damage a bit for it to be balanced.
                     if target.isStrong()
-                        caster.dealMagicalDamage(target, damage / 2)
+                        caster.dealMagicalDamage(target, damage / 3)
                     else
                         caster.dealMagicalDamage(target, damage)
 
 @compiletime
 function genAbil()
     new ChannelAbilityPreset(TIME_CHAMBER_ABIL_ID, ULTIMATE_SPELL_LEVELS, true, 
-      new AbilityTooltipGenerator("Slows and damages all enemies in the target area by the means of time travel. Deals two times less damage to strong units like bosses."))
+      new AbilityTooltipGenerator("Slows and damages all enemies in the target area by the means of time travel. Deals three times less damage to strong units like bosses."))
     ..makeRAbility()
     ..presetIcon(Icons.bTNArcaneVault)
     ..presetOption(Option.TARGETIMAGE, true)
