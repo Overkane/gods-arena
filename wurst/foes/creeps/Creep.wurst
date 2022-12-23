@@ -2,6 +2,7 @@ package Creep
 import GameConstants
 import PhysicsEntity
 import CurrentArena
+import ClosureTimers
 import GeneralFunctions
 
 interface AllCreepsDead
@@ -39,8 +40,11 @@ public class Creep extends UnitEntity
 
     EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH, () -> begin
       activeCreeps.remove(this)
-      if activeCreeps.isEmpty()
-        onAllCreepsDead.execute()
+
+      // Delay after death, so can spawn other creeps on death an wave won't be considered finished.
+      doAfter(0.1) -> 
+        if activeCreeps.isEmpty()
+          onAllCreepsDead.execute()
     end)
     
   override function update()
