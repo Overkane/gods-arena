@@ -77,6 +77,6 @@ init
   ..presetAreaofEffect(lvl -> 500)
   ..presetCastRange(lvl -> 600)
   ..presetManaCost(lvl -> 50 + 15 * lvl)
-  ..presetCooldown(lvl -> 11)
+  ..presetCooldown(lvl -> 15)
   ..tooltipStopListen()
   
