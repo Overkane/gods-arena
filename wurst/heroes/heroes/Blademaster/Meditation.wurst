@@ -59,13 +59,13 @@ init
   DamageEvent.addListener() -> 
     let tunit = DamageEvent.getTarget()
 
-    if tunit.hasBuff(MeditationBuff.typeId) and DamageEvent.getAmount() > 0
+    if tunit.hasBuff(MeditationBuff.typeId) and DamageEvent.getType() == DamageType.ATTACK and DamageEvent.getAmount() > 0
       tunit.issueImmediateOrderById(OrderIds.stop)
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Restores hp and mp over time. "
-    + "Any received damage during meditation interrupts it. If meditation was fully completed, gives attack damage buff.")
+  let tooltip = new AbilityTooltipGenerator("Restores hp and mp over time. If meditation was fully completed, gives attack damage buff."
+    + "\nBeing attacked during meditation interrupts it.".color(IMPORTANT_COLOR))
   new ChannelAbilityPreset(MEDITATION_ID, NORMAL_SPELL_LEVELS, false, tooltip)
   ..makeWAbility()
   ..presetIcon(Icons.bTNSleep)
