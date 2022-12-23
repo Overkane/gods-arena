@@ -4,6 +4,8 @@ import Wave
 import DamageSystem
 import UnitIndexer
 import PassiveAbilityPreset
+import ClosureEvents
+import Creep
 
 public constant pondWaves = new LinkedList<Wave>
 ..add(compiletime(murguls()))
@@ -24,6 +26,10 @@ constant MURGUL_COMMAND_AURA = compiletime(ABIL_ID_GEN.next())
 constant HYDRA_POISON_ATTACK = compiletime(ABIL_ID_GEN.next())
 constant HYDRA_STOMP = compiletime(ABIL_ID_GEN.next())
 constant HYDRA_FAERIE_FIRE = compiletime(ABIL_ID_GEN.next())
+constant HYDRA_SPAWN = compiletime(ABIL_ID_GEN.next())
+constant HYDRA1_ID = compiletime(UNIT_ID_GEN.next())
+constant HYDRA2_ID = compiletime(UNIT_ID_GEN.next())
+constant HYDRA3_ID = compiletime(UNIT_ID_GEN.next())
 
 constant SEA_TURTLE_MAGIC_DAMAGE_RETURN = compiletime(ABIL_ID_GEN.next())
 constant SEA_TURTLE_PHYSICAL_DAMAGE_RETURN = compiletime(ABIL_ID_GEN.next())
@@ -118,37 +124,13 @@ function hydras() returns Wave
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
 
-  ..creep(UnitIds.hydrahatchling)
-  ..hp(3000)
-  ..armor(4)
-  ..damage(65)
-  ..amount(15)
-  ..abilities(commaList(HYDRA_POISON_ATTACK))
-
-  ..creep(UnitIds.hydra)
-  ..hp(4000)
-  ..armor(6)
-  ..damage(75)
-  ..amount(6)
-  ..abilities(commaList(HYDRA_POISON_ATTACK))
-
-  ..wait(20)
-
-  ..creep(UnitIds.elderhydra)
-  ..hp(6500)
-  ..armor(8)
-  ..mana(400)
-  ..damage(89)
-  ..amount(4)
-  ..abilities(commaList(HYDRA_POISON_ATTACK, HYDRA_FAERIE_FIRE))
-
   ..elite(UnitIds.ancienthydra)
   ..hp(12000)
   ..armor(10)
   ..mana(600)
   ..damage(135)
   ..amount(1)
-  ..abilities(commaList(HYDRA_POISON_ATTACK, HYDRA_STOMP))
+  ..abilities(commaList(HYDRA_POISON_ATTACK, HYDRA_STOMP, HYDRA_SPAWN))
 
   .build()
 
@@ -190,7 +172,7 @@ function seaTurtles() returns Wave
   ..wait(35)
 
   ..creep(UnitIds.giantseaturtle)
-  ..hp(9000)
+  ..hp(6500)
   ..armor(10)
   ..damage(120)
   ..amount(4)
@@ -213,16 +195,16 @@ function seaGiants() returns Wave
   ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.seagiant)
-  ..hp(8000)
+  ..hp(6000)
   ..armor(7)
-  ..damage(100)
+  ..damage(85)
   ..amount(12)
   ..abilities(commaList(SEA_GIANT_PULVERIZE))
 
   ..creep(UnitIds.seagianthunter)
   ..hp(12000)
   ..armor(9)
-  ..damage(150)
+  ..damage(125)
   ..amount(4)
   ..abilities(commaList(SEA_GIANT_PULVERIZE))
 
@@ -243,22 +225,22 @@ function lobstrokks() returns Wave
   ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.lobstrokkprawn)
-  ..hp(8000)
+  ..hp(4000)
   ..armor(5)
-  ..damage(90)
+  ..damage(60)
   ..amount(15)
   ..abilities("")
 
   ..creep(UnitIds.lobstrokktidecaller)
-  ..hp(7500)
+  ..hp(5500)
   ..armor(2)
   ..mana(600)
-  ..damage(80)
+  ..damage(70)
   ..amount(4)
   ..abilities(commaList(LOBSTROKK_HEALING_WAVE))
   
   ..creep(UnitIds.lobstrokkpooldweller)
-  ..hp(12000)
+  ..hp(9000)
   ..armor(8)
   ..damage(120)
   ..amount(4)
@@ -270,14 +252,14 @@ function lobstrokks() returns Wave
   ..hp(14000)
   ..armor(10)
   ..mana(1000)
-  ..damage(200)
+  ..damage(160)
   ..amount(1)
   ..abilities(commaList(LOBSTROKK_HEALING_WAVE, LOBSTROKK_NATURE_WRATH))
 
   ..elite(UnitIds.lobstrokksnapper)
   ..hp(16000)
   ..armor(15)
-  ..damage(260)
+  ..damage(240)
   ..attackrate(0.8)
   ..amount(1)
   ..abilities(commaList(LOBSTROKK_CLEAVE))
@@ -285,7 +267,8 @@ function lobstrokks() returns Wave
   ..elite(UnitIds.lobstrokktidallord)
   ..hp(20000)
   ..armor(20)
-  ..damage(220)
+  ..damage(350)
+  ..attackrate(1.7)
   ..amount(1)
   ..abilities(commaList(LOBSTROKK_DEVOTION_AURA, LOBSTROKK_ENDURANCE_AURA))
   
@@ -297,16 +280,16 @@ function jungleStalkers() returns Wave
   ..goldBounty(waveGoldList.dequeue())
   
   ..creep(UnitIds.junglestalker)
-  ..hp(10000)
+  ..hp(8000)
   ..armor(8)
-  ..damage(180)
+  ..damage(115)
   ..amount(10)
   ..abilities("")
   
   ..creep(UnitIds.elderjunglestalker)
-  ..hp(15000)
+  ..hp(14000)
   ..armor(11)
-  ..damage(250)
+  ..damage(225)
   ..attackrate(0.85)
   ..amount(2)
   ..abilities(commaList(JUNGLE_STALKER_PULVERIZE))
@@ -328,7 +311,7 @@ function seaRevenants() returns Wave
   ..goldBounty(waveGoldList.dequeue())
 
   ..creep(UnitIds.revenantofthetides)
-  ..hp(12000)
+  ..hp(7000)
   ..armor(5)
   ..mana(2000)
   ..damage(150)
@@ -336,7 +319,7 @@ function seaRevenants() returns Wave
   ..abilities(commaList(SEA_REVENANT_MANA_SHIELD))
   
   ..creep(UnitIds.revenantoftheseas)
-  ..hp(15000)
+  ..hp(12000)
   ..armor(7)
   ..mana(4000)
   ..damage(200)
@@ -346,7 +329,7 @@ function seaRevenants() returns Wave
   ..wait(20)
 
   ..creep(UnitIds.revenantofthedepths)
-  ..hp(18000)
+  ..hp(15000)
   ..armor(14)
   ..mana(6000)
   ..damage(280)
@@ -428,6 +411,37 @@ function godOfWater() returns Wave
   ..setDurationNormal(1, 3)
   ..setDurationHero(1, 3)
 
+  new PassiveAbilityPreset(HYDRA_SPAWN, 1)
+
+  new UnitDefinition(HYDRA1_ID, UnitIds.elderhydra)
+  ..setNormalAbilities(commaList(HYDRA_POISON_ATTACK, HYDRA_FAERIE_FIRE, HYDRA_SPAWN))
+  ..setAcquisitionRange(99999)
+  ..setAttack1DamageBase(79)
+  ..setDefenseBase(8)
+  ..setHitPointsMaximumBase(6500)
+  ..setManaMaximum(400)
+  ..setManaInitialAmount(400)
+  ..setArmorType(ArmorType.Small)
+  ..setAttack1AttackType(AttackType.Siege)
+  
+  new UnitDefinition(HYDRA2_ID, UnitIds.hydra)
+  ..setNormalAbilities(commaList(HYDRA_POISON_ATTACK, HYDRA_SPAWN))
+  ..setAcquisitionRange(99999)
+  ..setAttack1DamageBase(69)
+  ..setDefenseBase(6)
+  ..setHitPointsMaximumBase(4000)
+  ..setArmorType(ArmorType.Small)
+  ..setAttack1AttackType(AttackType.Siege)
+
+  new UnitDefinition(HYDRA3_ID, UnitIds.hydrahatchling)
+  ..setNormalAbilities(commaList(HYDRA_POISON_ATTACK))
+  ..setAcquisitionRange(99999)
+  ..setAttack1DamageBase(59)
+  ..setDefenseBase(4)
+  ..setHitPointsMaximumBase(2500)
+  ..setArmorType(ArmorType.Small)
+  ..setAttack1AttackType(AttackType.Siege)
+
 
   new PassiveAbilityPreset(SEA_TURTLE_PHYSICAL_DAMAGE_RETURN, 1)
   new PassiveAbilityPreset(SEA_TURTLE_MAGIC_DAMAGE_RETURN, 1)
@@ -493,13 +507,13 @@ function godOfWater() returns Wave
   ..setDamage(1, 200)
   ..setMaxDamage(1, 1000)
   ..setManaCost(1, 100)
-  ..setCooldown(1, 12)
+  ..setCooldown(1, 16)
 
   new AbilityDefinitionCrushingWave(SEA_REVENANT_CRUSHING_WAVE_STRONG)
-  ..setDamage(1, 200)
+  ..setDamage(1, 400)
   ..setMaxDamage(1, 1000)
   ..setManaCost(1, 100)
-  ..setCooldown(1, 12)
+  ..setCooldown(1, 16)
 
   new AbilityDefinitionManaShieldCreep(SEA_REVENANT_MANA_SHIELD)
   ..setDamageAbsorbed(1, 2)
@@ -515,6 +529,21 @@ function godOfWater() returns Wave
 
 
 init
+  EventListener.add(EVENT_PLAYER_UNIT_DEATH) -> 
+    let deadUnit = EventData.getTriggerUnit()
+
+    if deadUnit.hasAbility(HYDRA_SPAWN)
+      if deadUnit.getTypeId() == HYDRA1_ID
+        for i = 0 to 2
+          new Creep(HYDRA2_ID, deadUnit.getPos().withTerrainZ(), GetRandomReal(1, 360).asAngleDegrees())
+      else if deadUnit.getTypeId() == HYDRA2_ID
+        for i = 0 to 4
+          new Creep(HYDRA3_ID, deadUnit.getPos().withTerrainZ(), GetRandomReal(1, 360).asAngleDegrees())
+      else // Original Hydra
+        for i = 0 to 2
+          new Creep(HYDRA1_ID, deadUnit.getPos().withTerrainZ(), GetRandomReal(1, 360).asAngleDegrees())
+    
+
   DamageEvent.addListener() -> 
     let sunit = DamageEvent.getSource()
     let tunit = DamageEvent.getTarget()

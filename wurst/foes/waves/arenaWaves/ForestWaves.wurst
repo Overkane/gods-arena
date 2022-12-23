@@ -120,6 +120,7 @@ function forestTrolls() returns Wave
   ..hp(700)
   ..armor(1)
   ..damage(16)
+  ..attackrate(1)
   ..amount(2)
   ..abilities(FOREST_TROLL_BERSERKER.toRawCode())
 
@@ -135,6 +136,7 @@ function forestTrolls() returns Wave
   ..hp(2500)
   ..armor(2)
   ..damage(35)
+  ..attackrate(0.9)
   ..amount(1)
   ..scale(1.4)
   ..hpReg(14)
@@ -151,7 +153,7 @@ function furbolgs() returns Wave
   ..armor(1)
   ..hp(650)
   ..damage(12)
-  ..amount(6)
+  ..amount(10)
 
   ..creep(UnitIds.furbolgtracker)
   ..armor(2)
@@ -175,7 +177,7 @@ function furbolgs() returns Wave
   ..armor(3)
   ..mana(125)
   ..damage(24)
-  ..amount(2)
+  ..amount(3)
   ..abilities(commaList(FURBOLG_CLAP))
 
   ..creep(UnitIds.furbolgeldershaman)
@@ -260,6 +262,7 @@ function gnolls() returns Wave
   ..armor(4)
   ..damage(60)
   ..amount(1)
+  ..attackrate(1.1)
   ..scale(1.5)
   ..abilities(commaList(ELITE_FOREST_MELEE_SPLASH, GNOLL_GREATER_BASH))
 
