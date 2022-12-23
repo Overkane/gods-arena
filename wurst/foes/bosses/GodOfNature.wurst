@@ -32,6 +32,8 @@ constant POISON_SOUND = new SoundDefinition(Sounds.corrosiveBreathMissileTarget1
 public class GodOfNature extends Boss
   private constant castQueue = new LinkedList<int>
 
+  private constant poisonCloudProjList = new LinkedList<ProjectileRepeater>
+
   private var isPhase1 = false
   private var wasOnPhase1 = false
   private var isPhase2 = false
@@ -51,6 +53,10 @@ public class GodOfNature extends Boss
       forUnitsAll() (unit u) ->
         if u.getTypeId() == TREANT_ID
           u.kill()
+
+      poisonCloudProjList.forEach() (ProjectileRepeater projectile) ->
+        projectile.terminate()
+        
       BOSS_MUSIC_THEME.play(0, 0)
 
     DamageEvent.addListener() ->
@@ -131,12 +137,18 @@ public class GodOfNature extends Boss
           ..onEnd() ->
             groundEffect.destr()
             
-            new ProjectileRepeater(affectedUnitPos.withHeightMap(), 168, ENEMY_PLAYER, angle(0), Units.plagueCloud, 20) // Deals damage each 0.6 second
+            let poisonCloudProj = new ProjectileRepeater(affectedUnitPos.withHeightMap(), 168, ENEMY_PLAYER, angle(0), Units.plagueCloud, 20) // Deals damage each 0.6 second
             ..setTimed(15)
             ..onHit() (unit target) ->
               if target.isValidPlayerTarget()
                 actor.dealMagicalDamage(target, 75)
                 POISON_SOUND.playForPlayer(target.getOwner())
+
+            poisonCloudProjList.add(poisonCloudProj)
+
+            poisonCloudProj.onEnd() ->
+              if poisonCloudProjList.has(poisonCloudProj) 
+                poisonCloudProjList.remove(poisonCloudProj)
 
           if wasOnPhase2 and not isSecondCall
             doAfter(1) -> 
@@ -213,7 +225,7 @@ public class GodOfNature extends Boss
 
           if cb.isLast()
             // TODO unpause when last wisp projectile is terminated
-            doAfter(12) -> 
+            doAfter(10.5) -> 
               actor
               ..setInvulnerable(false)
               ..unpause()
