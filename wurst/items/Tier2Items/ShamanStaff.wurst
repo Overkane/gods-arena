@@ -49,7 +49,7 @@ public constant SHAMAN_STAFF_RECIPE = new ItemRecipe()
   ..setCooldown(1, COOLDOWN.toReal())
 
   new UnitDefinition(HEALING_WARD_UNIT_ID, UnitIds.healingward)
-  ..setNormalAbilities(HEALING_WARD_AURA_ID.toRawCode())
+  ..setNormalAbilities(commaList(HEALING_WARD_AURA_ID, AbilityIds.invulnerable))
 
   new AbilityDefinitionAuraRegenerationHealingWard(HEALING_WARD_AURA_ID)
   ..setAmountofHitPointsRegenerated(1, HEALING_WARD_PERC_HEAL/100)
