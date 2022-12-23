@@ -47,7 +47,7 @@ public function createGameStatsUI()
   let trig = CreateTrigger()
   ..addAction() ->
     let clicker = GetTriggerPlayer()
-    baseframe.setVisible(baseframe.isVisible(clicker) ? false : true)
+    baseframe.setVisible(clicker, baseframe.isVisible(clicker) ? false : true)
 
   pData.forEach() (player p, PlayerData pData) ->
     BlzTriggerRegisterPlayerKeyEvent(trig, p, OSKEY_F4, 0, false)
