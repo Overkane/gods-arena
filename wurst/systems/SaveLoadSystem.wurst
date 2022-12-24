@@ -4,6 +4,7 @@ import PlayerData
 import SaveLoadData
 import SLCrypto
 import HashMap
+import TooltipFactory
 
 constant FILE_NAME = "Gods' Arena/{0}/PlayerData"
 
@@ -58,6 +59,8 @@ public function savePlayerData()
             earnedHonorPoints == 1 ? "point" : "points"
         ), 5)
         ..saveData(fileName, sl_encrypt(earnedHonorPoints.toString()))
+        
+        p.print("Due to current Warcraft 3 bug introduced in the version 1.33 you need to restart the game for correct honor points loading.".color(IMPORTANT_COLOR), 5)
 
     else 
       p.print("You don't have honor points to save.", 5)
