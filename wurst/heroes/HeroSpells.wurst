@@ -1,0 +1,19 @@
+package HeroSpells
+import LinkedList
+import HashMap
+import Heroes
+import DemonLordIds
+
+public constant heroSpells = new IterableMap<int, LinkedList<int>>
+..put(CRUSADER_ID, CRUSADER_SPELLS)
+..put(DEMON_LORD_ID, DEMON_LORD_SPELLS)
+..put(CRAB_ID, CRAB_SPELLS)
+
+..put(ASSASSIN_ID, ASSASSIN_SPELLS)
+..put(ARCHER_ID, ARCHER_SPELLS)
+..put(BLADEMASTER_ID, BLADEMASTER_SPELLS)
+
+..put(STORMBEARER_ID, STORMBEARER_SPELLS)
+..put(HYDROMANCER_ID, HYDROMANCER_SPELLS)
+..put(TROLL_SHAMAN_ID, TROLL_SHAMAN_SPELLS)
+..put(ELEMENTOR_ID, ELEMENTOR_SPELLS)

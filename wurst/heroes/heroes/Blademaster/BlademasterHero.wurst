@@ -7,11 +7,15 @@ import SwiftSlash
 import Meditation
 import Whirlwind
 import BattleTrance
+import LinkedList
 
 public constant BLADEMASTER_ID = compiletime(HERO_ID_GEN.next())
+public constant BLADEMASTER_SPELLS = new LinkedList<int>..add(ARMOR_CUT_ID, SWIFT_SLASH_ID, MEDITATION_ID, WHIRLWIND_ID, BATTLE_TRANCE_ID)
+public constant BLADEMASTER_NAME = "Blademaster"
+public constant BLADEMASTER_DESCRIPTION = "Blademaster honed his sword mastery to the limits. Good at dealing physical damage and decreasing armor."
 
 @compiletime function genHero()
-  new AgiHeroPreset(BLADEMASTER_ID, UnitIds.blademaster, "Blademaster")
+  new AgiHeroPreset(BLADEMASTER_ID, UnitIds.blademaster, BLADEMASTER_NAME)
   ..addProperName("Futsunushi")
   ..addHeroAbility(SWIFT_SLASH_ID)
   ..addHeroAbility(MEDITATION_ID)

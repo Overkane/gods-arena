@@ -2,9 +2,14 @@ package DemonLordHero
 import UnitIds
 import HeroDefinitionPresets
 import DemonLordIds
+import LinkedList
+
+public constant DEMON_LORD_SPELLS = new LinkedList<int>..add(OBLITERATOR_ID, FIRE_STORM_ID, HOWL_OF_TERROR_ID, DEMONIC_POWER_ID, HELL_FIRE_ID)
+public constant DEMON_LORD_NAME = "Demon Lord"
+public constant DEMON_LORD_DESCRIPTION = "Demon Lord is good at getting a lot of strength. So he is quite tanky and deals good magical damage based on his hp."
 
 @compiletime function genHero()
-  new StrHeroPreset(DEMON_LORD_ID, UnitIds.pitlord, "Demon Lord")
+  new StrHeroPreset(DEMON_LORD_ID, UnitIds.pitlord, DEMON_LORD_NAME)
   ..addProperName("Legion")
   ..addHeroAbility(FIRE_STORM_ID)
   ..addHeroAbility(HOWL_OF_TERROR_ID)

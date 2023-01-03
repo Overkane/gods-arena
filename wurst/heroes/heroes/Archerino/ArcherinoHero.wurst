@@ -7,11 +7,15 @@ import PierceShot
 import Tagwalk
 import CriticalArrow
 import ArrowVolley
+import LinkedList
 
 public constant ARCHER_ID = compiletime(HERO_ID_GEN.next())
+public constant ARCHER_SPELLS = new LinkedList<int>..add(EXPLOSIVE_SHOT_ID, PIERCESHOT_ID, TAGWALK_ID, CRIT_ARROW_ID, ARROW_VOLLEY_ID)
+public constant ARCHER_NAME = "Archerino"
+public constant ARCHER_DESCRIPTION = "Shoots pointy sticks and is in tune with nature."
 
 @compiletime function genHero()
-  new AgiHeroPreset(ARCHER_ID, UnitIds.sylvanuswindrunner, "Archerino")
+  new AgiHeroPreset(ARCHER_ID, UnitIds.sylvanuswindrunner, ARCHER_NAME)
   ..addProperName("Garth")
   ..addHeroAbility(PIERCESHOT_ID)
   ..addHeroAbility(TAGWALK_ID)

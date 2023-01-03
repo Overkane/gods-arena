@@ -1,7 +1,6 @@
 package HeroPickMenu
 import Icons
 import FramehandleNames
-import ClosureFrames
 import HashMap
 import Heroes
 import PlayerData
@@ -18,10 +17,13 @@ import ObjectIdGenerator
 import Reference
 import CustomStatsUI
 import TooltipFactory
+import TableLayout
+import HeroSpells
+import HeroDescription
 
 public HeroPickUI heroPickUI
 
-constant BONUS_GOLD_FOR_RANDOM = 20
+constant BONUS_GOLD_FOR_RANDOM = 30
 
 constant playerSelection = new IterableMap<player, HeroIcon>
 constant heroPool = new LinkedList<int>
@@ -49,7 +51,7 @@ public abstract class OnHeroPick
     for listener in listenerList
       listener.fire(hero)
 
-constant RANDOM_ID = compiletime(HERO_ID_GEN.next())
+constant RANDOM_HERO_ID = compiletime(HERO_ID_GEN.next())
 
 public function initHeroPickMenu()
   heroPickUI = new HeroPickUI()
@@ -63,7 +65,11 @@ public function createRandomHeroes()
 
 function createRandomHero(player owner)
   createHero(heroPool.pop(), owner, true)
-  owner.addGold(BONUS_GOLD_FOR_RANDOM)
+  owner
+  ..addGold(BONUS_GOLD_FOR_RANDOM)
+  ..print("You have got " 
+    + "{0} gold".format(BONUS_GOLD_FOR_RANDOM.toString()).color(COLOR_GOLD)
+    + " for picking random hero.", 5)
 
 function createHero(int heroId, player owner, bool isRandom)
   // Removing hero from hero pool so it can't be get by random after.
@@ -103,39 +109,20 @@ function createHero(int heroId, player owner, bool isRandom)
 
 function addHeroIcons()
   heroPickUI
-  ..addHeroIcon(
-    new HeroIcon(HYDROMANCER_ID, Icons.bTNJaina, Icons.dISBTNJaina)
-    ..addTooltip("Hydromancer", "Drinks cool water. Summons elementals. Crushing."))
-  ..addHeroIcon(
-    new HeroIcon(TROLL_SHAMAN_ID, Icons.bTNShadowHunter, Icons.dISBTNShadowHunter)
-    ..addTooltip("Troll Shaman", "Creates memes (not in game though)."))
-  ..addHeroIcon(
-    new HeroIcon(STORMBEARER_ID, Icons.bTNHeroMountainKing, Icons.dISBTNHeroMountainKing)
-    ..addTooltip("Stormbearer", "Mighty lord of storms, good at cleaning groups of weak enemies, but lacks reliable single target damage."))
-  ..addHeroIcon(
-    new HeroIcon(BLADEMASTER_ID, Icons.bTNHeroBlademaster, Icons.dISBTNHeroBlademaster)
-    ..addTooltip("Blademaster", "Flesh cutter. Can't go wrong with some illusions."))
-  ..addHeroIcon(
-    new HeroIcon(CRUSADER_ID, Icons.bTNArthas, Icons.dISBTNArthas)
-    ..addTooltip("Crusader", "Holy warrior, can heal and buff allies, but also has strong buff for himself and his attacks are quite strong."))
-  ..addHeroIcon(
-    new HeroIcon(ASSASSIN_ID, Icons.bTNHeroWarden, Icons.dISBTNHeroWarden)
-    ..addTooltip("Assassin", "Stealthy killer, good versus single targets."))
-  ..addHeroIcon(
-    new HeroIcon(DEMON_LORD_ID, Icons.bTNPitLord, Icons.dISBTNPitLord)
-    ..addTooltip("Demon Lord", "Loves destruction. And Donuts."))
-  ..addHeroIcon(
-    new HeroIcon(ARCHER_ID, Icons.bTNSylvanusWindRunner, Icons.dISBTNSylvanusWindRunner)
-    ..addTooltip("Archerino", "Shoots pointy sticks and is in tune with nature."))
-  ..addHeroIcon(
-    new HeroIcon(CRAB_ID, Icons.bTNLobstrokkBlue, Icons.dISBTNLobstrokkBlue)
-    ..addTooltip("Crab", "Why do things keep evolving into crabs?"))
-  ..addHeroIcon(
-    new HeroIcon(ELEMENTOR_ID, Icons.bTNBLoodMage2, Icons.dISBTNBLoodMage2)
-    ..addTooltip("Elementor", "Shapes the elements to his will, unleahing fearsome magic on his enemies."))
-  ..addHeroIcon(
-    new HeroIcon(RANDOM_ID, Icons.bTNSelectHeroOn, Icons.dISBTNSelectHeroOn)
-    ..addTooltip("Random", "Get a random hero and a small gold bonus."))
+  ..addHeroIcon(new HeroIcon(CRUSADER_ID))
+  ..addHeroIcon(new HeroIcon(DEMON_LORD_ID))
+  ..addHeroIcon(new HeroIcon(CRAB_ID))
+
+  ..addHeroIcon(new HeroIcon(ASSASSIN_ID))
+  ..addHeroIcon(new HeroIcon(ARCHER_ID))
+  ..addHeroIcon(new HeroIcon(BLADEMASTER_ID))
+
+  ..addHeroIcon(new HeroIcon(STORMBEARER_ID))
+  ..addHeroIcon(new HeroIcon(HYDROMANCER_ID))
+  ..addHeroIcon(new HeroIcon(TROLL_SHAMAN_ID))
+  ..addHeroIcon(new HeroIcon(ELEMENTOR_ID))
+
+  ..addHeroIcon(new HeroIcon(RANDOM_HERO_ID))
 
 class HeroPickUI
   private var heroIconCounter = 0
@@ -178,7 +165,7 @@ class HeroPickUI
 
         heroPickFrame.hide(p)
 
-        if pickedIcon.heroId == RANDOM_ID
+        if pickedIcon.heroId == RANDOM_HERO_ID
           createRandomHero(p)
           
           let pickedIconRef = new Reference(pickedIcon)
@@ -219,11 +206,13 @@ class HeroIcon
   private framehandle heroIconButton = null
   private framehandle heroIcon = null
 
-  construct(int heroId, string activeIcon, string disabledIcon)
+  private HeroCard heroCard
+
+  construct(int heroId)
     heroIconIdMap.put(heroId, this)
     this.heroId = heroId
-    this.activeIcon = activeIcon
-    this.disabledIcon = disabledIcon
+    this.activeIcon = heroId != RANDOM_HERO_ID ? getUnitIcon(heroId) : Icons.bTNSelectHeroOn
+    this.disabledIcon = activeIcon.toggleButtonString()
     this.iconContext = globalIconContext
     globalIconContext++
 
@@ -235,10 +224,13 @@ class HeroIcon
     ..onClick() ->
       let p = GetTriggerPlayer()
       playerSelection.put(p, this)
+      heroCard.showHeroCard(p)
 
     heroIcon
     ..setAllPoints(heroIconButton)
     ..setTexture(activeIcon, 0, true)
+
+    heroCard = new HeroCard(heroId)
 
   function addTooltip(string tooltipTitle, string tooltipDescription)
     let tooltip = createFrame("BoxedText", heroIconButton, 0, iconContext)
@@ -255,3 +247,125 @@ class HeroIcon
 
   function setIconPosition(vec2 iconPosition)
     heroIconButton.setPoint(FRAMEPOINT_TOPLEFT, heroPickUI.heroPickFrame, FRAMEPOINT_TOPLEFT, iconPosition)
+
+class HeroCard
+  private static constant heroCardList = new LinkedList<HeroCard>
+
+  private framehandle heroCardFrame = null
+
+  construct(int heroId)
+    heroCardList.add(this)
+
+    heroCardFrame = createFrame("FRAME", "", heroPickUI.heroPickFrame, "", 0)
+    ..setPoint(FRAMEPOINT_TOPLEFT, heroPickUI.heroPickFrame, FRAMEPOINT_TOPRIGHT)
+    ..hide()
+    
+    createFrame("HeroPickMenuBackdrop", heroCardFrame, 0, 0).setAllPoints(heroCardFrame)
+
+    let heroCardLayout = new TableLayout(0.2, 0.2)
+
+    if heroId != RANDOM_HERO_ID
+      let heroDescription = heroDescriptionMap.get(heroId)
+
+      let heroDescriptionFrame = createFrame(FramehandleTypeNames.text, "", heroCardFrame, "", 0)
+      ..setText((heroDescription.getHeroDescription()))
+      ..setSize(0.16, 0)
+
+      heroCardLayout
+      ..row()
+      ..add(img(getUnitIcon(heroId))..setSize(0.03, 0.03))..padRight(0.005)
+      ..add(h5(heroDescription.getHeroName())..setHeight(0.03)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))..padBot(0.005)
+      ..row()
+      ..add(heroDescriptionFrame)..padBot(0.005)
+      ..row()..center()
+      ..add(p("D")..setWidth(0.03))
+      ..add(p("Q")..setWidth(0.03))
+      ..add(p("W")..setWidth(0.03))
+      ..add(p("E")..setWidth(0.03))
+      ..add(p("R")..setWidth(0.03))
+      ..row()..center()
+
+      let selectedHeroSpells = heroSpells.get(heroId)
+      for spell in selectedHeroSpells
+        heroCardLayout
+        ..add(baseIconFrame(getAbilityIcon(spell), GetAbilityName(spell), getAbilityExtendedTooltip(spell, 0))..setWidth(0.03))
+    else
+      let heroDescriptionFrame = createFrame(FramehandleTypeNames.text, "", heroCardFrame, "", 0)
+      ..setText("Picking random hero gives you " + "{0} bonus gold.".color(COLOR_GOLD).format(BONUS_GOLD_FOR_RANDOM.toString()))
+      ..setSize(0.16, 0)
+
+      heroCardLayout
+      ..row()
+      ..add(img(Icons.bTNSelectHeroOn)..setSize(0.03, 0.03))..padRight(0.005)
+      ..add(h5("Random Hero")..setHeight(0.03)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))..padBot(0.005)
+      ..row()
+      ..add(heroDescriptionFrame)..padBot(0.005)
+      ..row()..center()
+      ..add(p("D")..setWidth(0.03))
+      ..add(p("Q")..setWidth(0.03))
+      ..add(p("W")..setWidth(0.03))
+      ..add(p("E")..setWidth(0.03))
+      ..add(p("R")..setWidth(0.03))
+      ..row()..center()
+
+      for i = 1 to 5
+        heroCardLayout
+        ..add(baseIconFrame(Icons.bTNSelectHeroOn))
+
+    heroCardLayout.applyTo(heroCardFrame)
+
+  function showHeroCard(player p)
+    for card in heroCardList
+      card.getHeroCard().hide(p)
+
+    getHeroCard().show(p)
+
+  private function getHeroCard() returns framehandle
+    return heroCardFrame
+
+function string.toggleButtonString() returns string
+  var s = this
+
+  if s.contains("BTN")
+    s = s.replace("BTN", "DISBTN").replace("CommandButtons", "CommandButtonsDisabled")
+  else
+    s = s.replace("DISBTN", "BTN").replace("CommandButtonsDisabled", "CommandButtons")
+
+  return s
+
+function baseIconFrame(string iconPath, string title, string description) returns framehandle
+  let iconFrame = imgBtn(iconPath)
+  ..setSize(0.03, 0.03)
+
+  let tooltip = createFrame("BoxedText", iconFrame, 0, 0)
+
+  let tooltipTitle = getFrame("BoxedTextTitle", 0)
+  ..setText(title.color(COLOR_GOLD_STR))
+  ..setSize(0.295, 0)
+  ..setPoint(FRAMEPOINT_RIGHT, iconFrame, FRAMEPOINT_LEFT, vec2(-0.01, 0))
+  
+  let tooltipDescription = getFrame("BoxedTextValue", 0)
+  ..setText(description)
+  ..setSize(0.295, 0)
+  ..setPoint(FRAMEPOINT_TOP, tooltipTitle, FRAMEPOINT_BOTTOM, vec2(0, -0.005))
+
+  tooltip
+  ..setPoint(FRAMEPOINT_TOPLEFT, tooltipTitle, FRAMEPOINT_TOPLEFT, -0.005, 0.005)
+  ..setPoint(FRAMEPOINT_BOTTOMRIGHT, tooltipDescription, FRAMEPOINT_BOTTOMRIGHT, 0.005, -0.005)
+
+  iconFrame
+  ..setTooltip(tooltip)
+  ..onClick() -> 
+    iconFrame.unfocus()
+  
+  return iconFrame
+
+function baseIconFrame(string iconPath) returns framehandle
+  let iconFrame = imgBtn(iconPath)
+  ..setSize(0.03, 0.03)
+
+  iconFrame
+  ..onClick() -> 
+    iconFrame.unfocus()
+  
+  return iconFrame

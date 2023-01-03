@@ -7,11 +7,15 @@ import SacredGrounds
 import DivineShield
 import HolySmite
 import TheEmpyrean
+import LinkedList
 
 public constant CRUSADER_ID = compiletime(HERO_ID_GEN.next())
+public constant CRUSADER_SPELLS = new LinkedList<int>..add(PRAY_ID, SACRED_GROUNDS_ID, DIVINE_SHIELD_ID, HOLY_SMITE_ID, THE_EMPYREAN_ID)
+public constant CRUSADER_NAME = "Crusader"
+public constant CRUSADER_DESCRIPTION = "Versatile holy warrior, which can support his team with heal and buffs, but also deals good physical damage."
 
 @compiletime function genHero()
-  new StrHeroPreset(CRUSADER_ID, UnitIds.arthas, "Crusader")
+  new StrHeroPreset(CRUSADER_ID, UnitIds.arthas, CRUSADER_NAME)
   ..addProperName("William")
   ..addHeroAbility(SACRED_GROUNDS_ID)
   ..addHeroAbility(DIVINE_SHIELD_ID)

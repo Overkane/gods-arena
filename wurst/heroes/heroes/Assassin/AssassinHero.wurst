@@ -7,11 +7,15 @@ import BlinkStrike
 import KillerReflexes
 import CoupDeGrace
 import Assassinate
+import LinkedList
 
 public constant ASSASSIN_ID = compiletime(HERO_ID_GEN.next())
+public constant ASSASSIN_SPELLS = new LinkedList<int>..add(ASSASSINATE_ID, BLINK_CUT_ID, BLINK_STRIKE_ID, KILLER_REFLEXES_ID, COUP_DE_GRACE_ID)
+public constant ASSASSIN_NAME = "Assassin"
+public constant ASSASSIN_DESCRIPTION = "Stealthy killer, who is able to deal massive physical damage to solo targets."
 
 @compiletime function genHero()
-  new AgiHeroPreset(ASSASSIN_ID, UnitIds.warden, "Assassin")
+  new AgiHeroPreset(ASSASSIN_ID, UnitIds.warden, ASSASSIN_NAME)
   ..addProperName("Persephone")
   ..addHeroAbility(BLINK_CUT_ID)
   ..addHeroAbility(BLINK_STRIKE_ID)

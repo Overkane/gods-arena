@@ -7,30 +7,32 @@ import MeteorSpell
 import BlackholeSpell
 import TimeChamber
 import TimeSiphon
+import LinkedList
 
 public constant ELEMENTOR_ID = compiletime(HERO_ID_GEN.next())
+public constant ELEMENTOR_SPELLS = new LinkedList<int>..add(ELEMENTAL_MISSILE_ID, METEOR_ABIL_ID, BLACKHOLE_ABILITY_ID, SIPHON_ABIL_ID, TIME_CHAMBER_ABIL_ID)
+public constant ELEMENTOR_NAME = "Elementor"
+public constant ELEMENTOR_DESCRIPTION = "Shapes the elements to his will, unleahing fearsome magic on his enemies."
 
-@compiletime
-function genHero()
-
-    new IntHeroPreset(ELEMENTOR_ID, UnitIds.bloodmage, "Elementor")
-    ..addProperName("Alex")
-    ..addHeroAbility(METEOR_ABIL_ID)
-    ..addHeroAbility(BLACKHOLE_ABILITY_ID)
-    ..addHeroAbility(SIPHON_ABIL_ID)
-    ..addHeroAbility(TIME_CHAMBER_ABIL_ID)
-    ..addInnateHeroAbility(ELEMENTAL_MISSILE_ID)
-    ..setStartingStrength(16)
-    ..setStrengthPerLevel(1.6)
-    ..setStartingAgility(15)
-    ..setAgilityPerLevel(1.4)
-    ..setStartingIntelligence(21)
-    ..setIntelligencePerLevel(2.8)
-    ..setAttack1CooldownTime(2.13)
-    ..setAttack1DamageNumberofDice(1)
-    ..setAttack1DamageSidesperDie(4)
-    ..setAttack1Range(500)
-    ..setTintingColorBlue(175)
-    ..setTintingColorGreen(175)
-    ..setTintingColorRed(175)
-    ..buildHero()
+@compiletime function genHero()
+  new IntHeroPreset(ELEMENTOR_ID, UnitIds.bloodmage, ELEMENTOR_NAME)
+  ..addProperName("Alex")
+  ..addHeroAbility(METEOR_ABIL_ID)
+  ..addHeroAbility(BLACKHOLE_ABILITY_ID)
+  ..addHeroAbility(SIPHON_ABIL_ID)
+  ..addHeroAbility(TIME_CHAMBER_ABIL_ID)
+  ..addInnateHeroAbility(ELEMENTAL_MISSILE_ID)
+  ..setStartingStrength(16)
+  ..setStrengthPerLevel(1.6)
+  ..setStartingAgility(15)
+  ..setAgilityPerLevel(1.4)
+  ..setStartingIntelligence(21)
+  ..setIntelligencePerLevel(2.8)
+  ..setAttack1CooldownTime(2.13)
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(4)
+  ..setAttack1Range(500)
+  ..setTintingColorBlue(175)
+  ..setTintingColorGreen(175)
+  ..setTintingColorRed(175)
+  ..buildHero()

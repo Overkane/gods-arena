@@ -10,6 +10,7 @@ import ChatCommands
 import GameSetupDialog
 import CheatPanel
 import GeneralFunctions
+import HeroDescription
 
 function initFrames()
   let loadingResult = BlzLoadTOCFile("MyFiles.toc")
@@ -22,6 +23,7 @@ function initEnemyVision()
 init
   nullTimer() ->
     SetMapFlag(MAP_LOCK_RESOURCE_TRADING, true)
+    initHeroDescriptions()
     initFrames()
     initPlayers()
     initEnemyVision()

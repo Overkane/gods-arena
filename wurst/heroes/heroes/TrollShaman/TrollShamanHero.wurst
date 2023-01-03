@@ -7,11 +7,15 @@ import StasisTotem
 import ShamanCurse
 import SerpentWard
 import RestorationRitual
+import LinkedList
 
 public constant TROLL_SHAMAN_ID = compiletime(HERO_ID_GEN.next())
+public constant TROLL_SHAMAN_SPELLS = new LinkedList<int>..add(SHAMAN_CURSE_ID, HEALING_WAVE_ID, STASIS_TOTEM_ID, SERPENT_WARD_ID, RESTORATION_RITUAL_ID)
+public constant TROLL_SHAMAN_NAME = "Troll Shaman"
+public constant TROLL_SHAMAN_DESCRIPTION = "Troll Shaman can support his allies with heal and crowd control."
 
 @compiletime function genHero()
-  new IntHeroPreset(TROLL_SHAMAN_ID, UnitIds.shadowhunter, "Troll Shaman")
+  new IntHeroPreset(TROLL_SHAMAN_ID, UnitIds.shadowhunter, TROLL_SHAMAN_NAME)
   ..addProperName("Trall")
   ..addHeroAbility(HEALING_WAVE_ID)
   ..addHeroAbility(STASIS_TOTEM_ID)

@@ -1,0 +1,38 @@
+package HeroDescription
+import HashMap
+import Heroes
+import DemonLordIds
+
+public constant heroDescriptionMap = new HashMap<int, HeroDescription>
+
+public function initHeroDescriptions()
+  new HeroDescription(CRUSADER_ID, CRUSADER_NAME, CRUSADER_DESCRIPTION)
+  new HeroDescription(DEMON_LORD_ID, DEMON_LORD_NAME, DEMON_LORD_DESCRIPTION)
+  new HeroDescription(CRAB_ID, CRAB_NAME, CRAB_DESCRIPTION)
+  
+  new HeroDescription(ASSASSIN_ID, ASSASSIN_NAME, ASSASSIN_DESCRIPTION)
+  new HeroDescription(ARCHER_ID, ARCHER_NAME, ARCHER_DESCRIPTION)
+  new HeroDescription(BLADEMASTER_ID, BLADEMASTER_NAME, BLADEMASTER_DESCRIPTION)
+  
+  new HeroDescription(STORMBEARER_ID, STORMBEARER_NAME, STORMBEARER_DESCRIPTION)
+  new HeroDescription(HYDROMANCER_ID, HYDROMANCER_NAME, HYDROMANCER_DESCRIPTION)
+  new HeroDescription(TROLL_SHAMAN_ID, TROLL_SHAMAN_NAME, TROLL_SHAMAN_DESCRIPTION)
+  new HeroDescription(ELEMENTOR_ID, ELEMENTOR_NAME, ELEMENTOR_DESCRIPTION)
+
+class HeroDescription
+  private var heroId = 0
+  private var heroName = ""
+  private var heroDescription = ""
+
+  construct(int heroId, string heroName, string heroDescription)
+    this.heroId = heroId
+    this.heroName = heroName
+    this.heroDescription = heroDescription
+
+    heroDescriptionMap.put(heroId, this)
+
+  function getHeroName() returns string
+    return heroName
+
+  function getHeroDescription() returns string
+    return heroDescription

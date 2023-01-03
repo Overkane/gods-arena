@@ -8,11 +8,15 @@ import ThunderStrike
 import Tempest
 import Overcharge
 import AbilityIds
+import LinkedList
 
 public constant STORMBEARER_ID = compiletime(HERO_ID_GEN.next())
+public constant STORMBEARER_SPELLS = new LinkedList<int>..add(OVERCHARGE_ID, STORM_HAMMER_ID, FORKED_LIGHTNING_ID, THUNDER_STRIKE_ID, TEMPEST_ID)
+public constant STORMBEARER_NAME = "Stormbearer"
+public constant STORMBEARER_DESCRIPTION = "Mighty lord of storms who deals overwhelming magical damage."
 
 @compiletime function genHero()
-  new IntHeroPreset(STORMBEARER_ID, UnitIds.mountainking, "Stormbearer")
+  new IntHeroPreset(STORMBEARER_ID, UnitIds.mountainking, STORMBEARER_NAME)
   ..addProperName("Thor")
   ..addHeroAbility(STORM_HAMMER_ID)
   ..addHeroAbility(FORKED_LIGHTNING_ID)
