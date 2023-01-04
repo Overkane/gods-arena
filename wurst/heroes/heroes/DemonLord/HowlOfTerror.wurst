@@ -46,10 +46,9 @@ init
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(
     Targettype.NONE,
-    "Lets loose a terrifying howl that causes nearby enemy units to shiver in fear. "
+    "Lets loose a terrifying howl that {0} nearby enemy units. ".format("taunts".color(TAUNT_COLOR))
     + "Feared units have reduced attack damage. "
-    + "If a feared unit is killed, the Demon Lord recovers part of his HP.\n"
-    + "Also {0} enemies in AOE.".format("taunts".color(TAUNT_COLOR))
+    + "If a feared unit is killed, the Demon Lord recovers part of his max HP."
   )
   new AbilityDefinitionPitLordHowlofTerror(HOWL_OF_TERROR_ID)
   ..registerTooltipGenerator(tooltip)
@@ -61,8 +60,8 @@ init
   ..setName("Howl of Terror")
   ..addTooltipProperty("Damage Decrease", lvl -> (DAMAGE_DECREASE.run(lvl) * 100).percRound())
   ..addTooltipProperty("HP Recovered", lvl -> (HP_RECOVERY.run(lvl) * 100).percRound())
-  ..presetAreaofEffect(lvl -> AOE)
   ..addTooltipProperty("Duration", DURATION)
+  ..presetAreaofEffect(lvl -> AOE)
   ..presetManaCost(lvl -> 65 + 20 * (lvl-1))
   ..presetCooldown(lvl -> 20)
   ..tooltipStopListen()

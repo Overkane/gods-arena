@@ -11,10 +11,10 @@ import DamageSystem
 import BonusHandler
 import AbilityDefinitionExtension
 
-RealLevelClosure DAMAGE = lvl -> 110. + 95 * (lvl-1)
-IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 3 * lvl
-RealLevelClosure BONUS_DURATION = lvl -> 5. + lvl
-RealLevelClosure COOLDOWN = lvl -> 14.
+constant RealLevelClosure DAMAGE = lvl -> 85. + 95 * (lvl-1)
+constant IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 3 * lvl
+constant RealLevelClosure BONUS_DURATION = lvl -> 5. + lvl
+constant RealLevelClosure COOLDOWN = lvl -> 14.
 
 constant RADIUS = 250.
 
@@ -61,11 +61,9 @@ init
   ..setLevels(NORMAL_SPELL_LEVELS)
   ..setName("Fire Storm")
   ..addTooltipProperty("Damage", DAMAGE)
-  ..addTooltipProperty("Radius", lvl -> RADIUS)
   ..addTooltipProperty("Bonus strength per foe struck", BONUS_STR_PER_FOE_STRUCK)
   ..addTooltipProperty("Bonus strength duration", BONUS_DURATION)
-  ..presetAreaofEffect(lvl -> 250)
-  ..presetCastRange(lvl -> 600)
+  ..presetAreaofEffect(lvl -> RADIUS)
   ..presetManaCost(lvl -> 90 + 25 * (lvl-1))
   ..presetCooldown(COOLDOWN)
   ..tooltipStopListen()

@@ -8,7 +8,7 @@ import AbilityTooltipGenerator
 import Boss
 import UnitIndexer
 
-public constant buffTuple = compiletime(createDummyBuffObject("Demonic Power".color(POSITIVE_COLOR), "Strength is increased",  Icons.pASBTNCleavingAttack))
+public constant buffTuple = compiletime(createDummyBuffObject("Demonic Power".color(POSITIVE_COLOR), "Strength is increased.",  Icons.pASBTNCleavingAttack))
 
 public constant RealLevelClosure DEMONIC_POWER_STR_BONUS = lvl -> 1. * lvl
 public constant DEMONIC_POWER_STR_BOSS_MULT = 8

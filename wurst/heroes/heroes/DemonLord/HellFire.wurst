@@ -47,7 +47,8 @@ init
       ..hideAbility(HELL_FIRE_ID, false)
 
 @compiletime function genAbility()
-  var tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation burns enemies nearby based on max HP.\nCan be deactivated.\nThe ability damage is fatal for the caster.")
+  var tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation deals periodic damage to enemies nearby based on the Demon Lord max HP. "
+    + "Can be deactivated anytime. {0}.".format("Damage, done by ability to caster, is lethal".color(IMPORTANT_COLOR)))
   new ChannelAbilityPreset(HELL_FIRE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
   ..makeRAbility()
   ..presetIcon(Icons.bTNImmolationOn)
@@ -61,7 +62,8 @@ init
   ..presetManaCost(lvl -> 90)
   ..tooltipStopListen()
 
-  tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation burns enemies nearby based on max HP.\nCan be deactivated.\nThe ability damage is fatal for the caster.")
+  tooltip = new AbilityTooltipGenerator(Targettype.NONE, "On activation deals periodic damage to enemies nearby based on the Demon Lord max HP. "
+    + "Can be deactivated anytime. {0}.".format("Damage, done by ability to caster, is lethal".color(IMPORTANT_COLOR)))
   new ChannelAbilityPreset(HELL_FIRE_TURN_OFF_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
   ..makeRAbility()
   ..presetIcon(Icons.bTNImmolationOff)
