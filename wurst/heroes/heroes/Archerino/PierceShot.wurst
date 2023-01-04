@@ -24,7 +24,7 @@ constant IntLevelClosure SUMMON_TYPE = lvl -> SUMMON_LIST.get(lvl-1)
 constant IntLevelClosure SUMMON_BASE_DAMAGE = lvl -> 5 + 20 * lvl
 constant IntLevelClosure SUMMON_BASE_HP = lvl -> 145 * lvl
 
-constant RealLevelClosure SPELL_DAMAGE = lvl -> 55. + 75 * lvl
+constant RealLevelClosure SPELL_DAMAGE = lvl -> 35. + 85 * lvl
 
 
 init
