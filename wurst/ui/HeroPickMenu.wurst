@@ -274,7 +274,7 @@ class HeroCard
       heroCardLayout
       ..row()
       ..add(img(getUnitIcon(heroId))..setSize(0.03, 0.03))..padRight(0.005)
-      ..add(h5(heroDescription.getHeroName())..setHeight(0.03)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))..padBot(0.005)
+      ..add(h5(heroDescription.getHeroName())..setSize(0.125, 0.03)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_LEFT))..padBot(0.005)
       ..row()
       ..add(heroDescriptionFrame)..padBot(0.005)
       ..row()..center()
