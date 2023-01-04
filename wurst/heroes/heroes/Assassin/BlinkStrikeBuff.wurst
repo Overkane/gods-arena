@@ -4,7 +4,7 @@ import TooltipFactory
 import BonusHandler
 import LimitedStackingBuff
 
-constant buffTupleBuff = compiletime(createDummyBuffObject("Blink Strike".color(POSITIVE_COLOR), "Unit's agility is increased.",  Icons.bTNShadowMeld))
+constant buffTupleBuff = compiletime(createDummyBuffObject("Blink Strike".color(POSITIVE_COLOR), "Agility is increased.",  Icons.bTNShadowMeld))
 
 public class BlinkStrikeBuff extends LimitedStackingBuff
   var bonusAgi = 0.
@@ -23,7 +23,7 @@ public class BlinkStrikeBuff extends LimitedStackingBuff
     target.addBonus(Bonus.AGILITY, -addedAgi)
 
 
-constant buffTupleDebuff = compiletime(createDummyBuffObject("Blink Strike Debuff", "Unit's the target of Blink Strike.",  Icons.bTNShadowMeld))
+constant buffTupleDebuff = compiletime(createDummyBuffObject("Blink Strike Target", "Target of Blink Strike.",  Icons.bTNShadowMeld))
 
 public class BlinkStrikeDebuff extends NormalBuff
   construct(real dur)

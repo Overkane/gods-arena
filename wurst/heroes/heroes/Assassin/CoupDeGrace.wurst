@@ -12,7 +12,7 @@ import AbilityDefinitionExtension
 public constant COUP_DE_GRACE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant RealLevelClosure ATTACK_CRIT_CHANCE = lvl -> 0.05 + 0.05 * (lvl-1)
-constant RealLevelClosure ATTACK_CRIT_POWER = lvl -> 1.25 + 0.5 * (lvl-1)
+constant RealLevelClosure ATTACK_CRIT_POWER = lvl -> 1. + 0.5 * (lvl-1)
 constant RealLevelClosure BACKSTAB_MULT = lvl -> 2.
 
 constant CONE_ANGLE = 90.
@@ -57,7 +57,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "After long years Assassin honed her ability to find enemy weak points and deal deadly strikes."
-    + " Increases Attack Crit Chance and Attack Crit Power. Attack Crit Chance is doubled, if target is attacked from behind.")
+    + " Increases Attack Crit Chance and Attack Crit Power. Attack Crit Chance bonus, given by this ability, is doubled, if target is attacked from behind.")
   new PassiveAbilityPreset(COUP_DE_GRACE_ID, ULTIMATE_SPELL_LEVELS, tooltip)
   ..makeRAbility()
   ..presetIcon(MapIcons.pASBTNBackstab)

@@ -49,7 +49,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Deals high damage to a single target. Damage depends on hero level. "
-    + "If target has no allies in bonus damage radius check, then final damage will be increased by bonus damage value and heal."
+    + "If target has no allies in bonus damage radius check, then final damage will be increased by bonus damage value and heal. "
     + "Each attack decreases ability cooldown by 1 second.")
   new ChannelAbilityPreset(ASSASSINATE_ID, INNATE_SPELL_LEVELS, true, tooltip)
   ..makeDAbility()
