@@ -8,7 +8,7 @@ import HashMap
 import TooltipFactory
 import initlater SeaAura
 
-public constant buffTuple = compiletime(createDummyBuffObject("Sea Aura".color(POSITIVE_COLOR), "Increases mana regeneration and magic resistance",  Icons.bTNBrilliance))
+public constant buffTuple = compiletime(createDummyBuffObject("Sea Aura".color(POSITIVE_COLOR), "Increased mana regeneration and magic resistance",  Icons.bTNBrilliance))
 
 constant buffMap = new HashMap<trigger, SeaAuraMainBuff>
 

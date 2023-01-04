@@ -7,7 +7,7 @@ import BonusHandler
 import TooltipFactory
 import CustomHeal
 
-constant buffTuple = compiletime(createDummyBuffObject("Bubble Shield".color(POSITIVE_COLOR), "Increases unit's hp regeneration and can block small amount of damage",  Icons.bTNNeutralManaShield, Abilities.manaShieldCaster))
+constant buffTuple = compiletime(createDummyBuffObject("Bubble Shield".color(POSITIVE_COLOR), "Unit has increased HP regeneration and can block small amount of damage.",  Icons.bTNNeutralManaShield, Abilities.manaShieldCaster))
 
 public class BubbleShieldBuff extends ShieldBuff
   real healAmount

@@ -46,7 +46,7 @@ class WaterElemental extends SummonEntity
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Summons a Water Elemental. Max amount depends on ability level. If max amount is reached, then on spell cast the oldest one will be killed. Water Elementals scale with Spell Power.")
+  let tooltip = new AbilityTooltipGenerator("Summons a |cff3640b5water elemental|r. Max amount depends on ability level. If max amount of elementals is reached, then on next spell cast the oldest one will be killed.")
   new ChannelAbilityPreset(WATER_ELEMENTAL_ID, INNATE_SPELL_LEVELS, true, tooltip)
   ..makeDAbility()
   ..presetIcon(Icons.bTNSummonWaterElemental)

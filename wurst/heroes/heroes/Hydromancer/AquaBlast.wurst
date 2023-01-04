@@ -38,7 +38,7 @@ init
         caster.healTarget(u, spellDamage)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius and slows them. Heals and speeds up sea elementals instead.")
+  let tooltip = new AbilityTooltipGenerator("Deals damage to enemies in small radius and slows them. Heals and speeds up |cff3640b5water elementals|r instead.")
   new ChannelAbilityPreset(AQUA_BLAST_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeQAbility()
   ..presetIcon(Icons.bTNOrbOfFrost)

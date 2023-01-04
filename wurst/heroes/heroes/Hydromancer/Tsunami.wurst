@@ -44,6 +44,6 @@ init
   ..addTooltipProperty("Damage per tick", DAMAGE)
   ..addTooltipProperty("Tick Interval", lvl -> (ANIMATION_PERIOD * damageInterval).toString(2))
   ..presetCastRange(lvl -> 800)
-  ..presetManaCost(lvl -> 145 + 75 * lvl)
+  ..presetManaCost(lvl -> 220 * lvl)
   ..presetCooldown(lvl -> 60)
   ..tooltipStopListen()

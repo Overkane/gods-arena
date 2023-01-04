@@ -4,7 +4,7 @@ import Assets
 import BonusHandler
 import MapModels
 
-constant buffTuple = compiletime(createDummyBuffObject("Wet", "Unit's attack and movement speed is slowed",  Icons.bTNOrbOfFrost, MapModels.bubbles, AttachmentPoints.foot))
+constant buffTuple = compiletime(createDummyBuffObject("Wet", "Attack speed and movespeed are slowed.",  Icons.bTNOrbOfFrost, MapModels.bubbles, AttachmentPoints.foot))
 
 public class AquaBlastBuff extends NormalBuff
   real slow

@@ -11,11 +11,11 @@ import TooltipFactory
 
 public constant SEA_AURA_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure MANA_REGENERATION = lvl -> 0.5 * lvl
+constant RealLevelClosure MANA_REGENERATION = lvl -> 0.75 * lvl
 constant RealLevelClosure MAGIC_RESISTANCE = lvl -> 0.04 * lvl
 constant CASTER_MULT = 2.
 
-public constant SEA_AURA_AOE = 800.
+public constant SEA_AURA_AOE = 900.
 
 
 init 
@@ -37,7 +37,8 @@ init
 
     
 @compiletime function gen()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Increases Mana Regeneration and Magic Resistance. Mana Regeneration effect is twice as effective for the ability owner.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Increases mana regeneration and {}. Mana Regeneration effect is twice as effective for the ability owner."
+  .format("Magic Resistance".color(UTILITY_COLOR)))
   new PassiveAbilityPreset(SEA_AURA_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..makeEAbility()
   ..presetIcon(Icons.pASBTNBrilliance)
