@@ -32,7 +32,8 @@ init
 function gen()
     new ChannelAbilityPreset(PROTECTIVE_SHELL_ID, NORMAL_SPELL_LEVELS, true, 
       new AbilityTooltipGenerator("The Crab has enough of this shit and hides in its pocket shell. " 
-        + "Increases defense, life regen and chance to spawn |cffce951acrabling|r, but |cffb93939taunts|r nearby enemies."))
+        + "Increases defense, life regen and chance to spawn |cffce951acrabling|r but {0} nearby enemies."
+        .format("taunts".color(TAUNT_COLOR))))
     ..makeQAbility()
     ..presetIcon(Icons.bTNShimmerWeed)
 

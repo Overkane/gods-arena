@@ -7,7 +7,7 @@ import TooltipFactory
 import CreepAggro
 import MapModels
 
-constant buffTuple1 = compiletime(createDummyBuffObject("Protective Shell".color(POSITIVE_COLOR), "Unit has increased armor and liferegen.",  Icons.bTNShimmerWeed))
+constant buffTuple1 = compiletime(createDummyBuffObject("Protective Shell".color(POSITIVE_COLOR), "Increased armor and liferegen.",  Icons.bTNShimmerWeed))
 
 public class ProtectiveShellBuff extends NormalBuff
   effect shellEffect

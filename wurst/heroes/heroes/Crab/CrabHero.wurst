@@ -12,7 +12,7 @@ import LinkedList
 public constant CRAB_ID = compiletime(HERO_ID_GEN.next())
 public constant CRAB_SPELLS = new LinkedList<int>..add(CRAB_DEFENSE_ID, PROTECTIVE_SHELL_ID, CRAB_OVERLORD_ID, CRAB_HEAL_ID, CRAB_STAMPEDE_ID)
 public constant CRAB_NAME = "Giant Ally Crab"
-public constant CRAB_DESCRIPTION = "Crab's shell allows him to sustain a lot of damage and his loyal crablings help him to crush his enemies."
+public constant CRAB_DESCRIPTION = "Crab's shell allows him to sustain a lot of damage and his loyal |cffce951acrablings|r help him to crush his enemies."
 
 @compiletime function gen()
   new StrHeroPreset(CRAB_ID, UnitIds.lobstrokkdeepseer, CRAB_NAME)

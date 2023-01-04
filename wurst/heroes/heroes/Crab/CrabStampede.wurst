@@ -7,7 +7,9 @@ import AbilityDefinitionExtension
 
 public constant CRAB_STAMPEDE_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DURATION = lvl -> 5. + lvl * 3
+constant RealLevelClosure DAMAGE_PER_CRAWFISH = lvl -> 100. * lvl
+constant IntLevelClosure CRAWFISH_PER_SECOND = lvl -> 2 + 2 * lvl
+constant RealLevelClosure DURATION = lvl -> 5. + lvl * 3
 
 @compiletime function gen()
     let tooltip = new AbilityTooltipGenerator(Targettype.POINT, "Nearby crawfish heath the call of the Crab and crush everything in their path.")
@@ -26,13 +28,15 @@ RealLevelClosure DURATION = lvl -> 5. + lvl * 3
     ..setLevels(ULTIMATE_SPELL_LEVELS)
     ..setName("Crab Stampede")
     ..addTooltipProperty("Channeling", lvl -> "")
-    ..presetDamageAmount(lvl -> 40. + 45. * lvl)
-    ..presetBeastsPerSecond(lvl -> 2 + 2 * lvl)
+    ..addTooltipProperty("Damage per crawfish", DAMAGE_PER_CRAWFISH)
+    ..addTooltipProperty("Crawfish per second", CRAWFISH_PER_SECOND)
     ..addTooltipProperty("Duration", DURATION)
     ..presetCastRange(lvl -> 1000.)
     ..presetManaCost(lvl -> 90 + 40 * lvl)
     ..presetCooldown(lvl -> 85)
     ..tooltipStopListen()
   
+    ..presetDamageAmount(DAMAGE_PER_CRAWFISH)
+    ..presetBeastsPerSecond(CRAWFISH_PER_SECOND)
     ..presetDurationNormal(DURATION)
     ..presetDurationHero(DURATION)
