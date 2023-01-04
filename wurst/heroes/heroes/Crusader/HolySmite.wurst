@@ -15,9 +15,9 @@ import AbilityDefinitionExtension
 public constant HOLY_SMITE_ID = compiletime(ABIL_ID_GEN.next())
 public constant HOLY_SMITE_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure CHANCE = lvl -> 16. + lvl
+constant RealLevelClosure CHANCE = lvl -> 13. + 2 * lvl
 constant RealLevelClosure DAMAGE = lvl -> 60. * lvl
-constant RealLevelClosure BONUS_STR_DAMAGE = lvl -> 0.5 * lvl
+constant RealLevelClosure BONUS_ATTACK_DAMAGE = lvl -> 0.3 * lvl
 constant RealLevelClosure RADIUS = lvl -> 225
 constant RealLevelClosure STUN_DURATION = lvl -> 0.3
 
@@ -37,15 +37,15 @@ init
 
       if spellChance >= GetRandomInt(1, 100)
         let tunit = DamageEvent.getTarget()
-        let bonusStrDamage = BONUS_STR_DAMAGE.run(lvl)
-        let spellDamage = DAMAGE.run(lvl) + bonusStrDamage * sunit.getStr(true)
+        let bonusAttackDamage = BONUS_ATTACK_DAMAGE.run(lvl)
+        let spellDamage = DAMAGE.run(lvl) + DamageEvent.getAmount() * bonusAttackDamage
         let spellRadius = RADIUS.run(lvl)
 
         flashEffect(Abilities.thunderclapCaster, tunit.getPos())
 
         let dummyCaster = new DummyStatCaster()
-          ..delay(1.)
-          ..caster(sunit)
+        ..delay(1.)
+        ..caster(sunit)
 
         forUnitsInRange(tunit.getPos(), spellRadius) target ->
           if target.isEnemyOf(sunit) and target.isAlive()
@@ -56,7 +56,9 @@ init
             
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives chance on attack to land a heavy strike, which deals fixed damage and stuns enemies in small area.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Gives a chance on attack to land a heavy strike, "
+    + "which deals fixed damage plus part of the hero's attack damage and stuns enemies in small area. "
+    + "Bonus damage, based on hero's attack damage, is calculated after resists were applied.".color(IMPORTANT_COLOR))
   new PassiveAbilityPreset(HOLY_SMITE_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..makeEAbility()
   ..presetIcon(Icons.pASBTNFeedBack)
@@ -66,9 +68,9 @@ init
   ..setName("Holy Smite")
   ..addTooltipProperty("Chance", lvl -> CHANCE.run(lvl).percRound())
   ..addTooltipProperty("Damage", DAMAGE)
-  ..addTooltipProperty("Bonus Strength Damage", lvl -> (BONUS_STR_DAMAGE.run(lvl) * 100).percRound())
-  ..presetAreaofEffect(RADIUS)
+  ..addTooltipProperty("Bonus Attack Damage", lvl -> (BONUS_ATTACK_DAMAGE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Stun Duration", STUN_DURATION)
+  ..presetAreaofEffect(RADIUS)
   ..tooltipStopListen()
 
   new StunAbilityPreset(HOLY_SMITE_STUN_ID, NORMAL_SPELL_LEVELS)

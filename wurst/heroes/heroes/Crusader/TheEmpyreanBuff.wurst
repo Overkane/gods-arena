@@ -5,7 +5,8 @@ import BonusHandler
 import SoundUtils
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("The Empyrean".color(POSITIVE_COLOR), "Enchance hero",  Icons.bTNCharm))
+constant buffTuple = compiletime(createDummyBuffObject("The Empyrean".color(POSITIVE_COLOR), 
+  "Bonus attack damage but slower attackspeed. Hero abilities are improved.",  Icons.bTNCharm))
 
 public class TheEmpyreanBuff extends NormalBuff
   private real bonusDamage

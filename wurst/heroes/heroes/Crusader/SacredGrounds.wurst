@@ -14,7 +14,7 @@ import AbilityDefinitionExtension
 
 public constant SACRED_GROUNDS_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DAMAGE_PER_SEC = lvl -> 15. * lvl
+constant RealLevelClosure DAMAGE_PER_SEC = lvl -> 20. * lvl
 constant RealLevelClosure BONUS_STR_DAMAGE = lvl -> 0.4 * lvl
 constant RealLevelClosure HEAL_PER_SEC = lvl -> 10. * lvl
 constant RealLevelClosure BONUS_INT_HEALING = lvl -> 0.25 * lvl
@@ -55,7 +55,8 @@ init
         sacredGrounds.destr()
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Creates sacred grounds in the target area. Enemies in the area are damaged every second and allies are healed.")
+  let tooltip = new AbilityTooltipGenerator("Creates a magical seal in the target area, "
+    + "where each second enemies are being damaged and allies are being healed.")
   new ChannelAbilityPreset(SACRED_GROUNDS_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeQAbility()
   ..presetIcon(Icons.bTNInnerFire)
@@ -70,8 +71,8 @@ init
   ..addTooltipProperty("Healing per sec", HEAL_PER_SEC)
   ..addTooltipProperty("Bonus Int Healing", lvl -> (BONUS_INT_HEALING.run(lvl) * 100).percRound())
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..presetAreaofEffect(AOE)
   ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 50 + 25 * lvl)
   ..presetCooldown(lvl -> 24. - lvl)
   ..tooltipStopListen()

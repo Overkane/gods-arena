@@ -38,7 +38,7 @@ init
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Applies shield to target, which reduces a part of incoming damage.")
+  let tooltip = new AbilityTooltipGenerator("Applies divine shield to the target, which blocks a part of incoming damage.")
   new ChannelAbilityPreset(DIVINE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeWAbility()
   ..presetIcon(Icons.bTNDivineIntervention)

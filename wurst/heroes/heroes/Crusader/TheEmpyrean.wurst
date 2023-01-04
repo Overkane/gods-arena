@@ -8,7 +8,7 @@ import AbilityDefinitionExtension
 
 public constant THE_EMPYREAN_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DAMAGE = lvl -> 50. + 50. * (lvl-1)
+constant RealLevelClosure DAMAGE = lvl -> 100. * lvl
 constant RealLevelClosure ATTACK_SPEED_SLOW = lvl -> 60
 constant RealLevelClosure DURATION = lvl -> 30.
 
@@ -26,7 +26,7 @@ init
     new TheEmpyreanBuff(spellDuration, bonusDamage, attackSpeedSlow, lvl).apply(caster)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Enhances all abilities and gives attack damage bonus, but reduces attack speed.")
+  let tooltip = new AbilityTooltipGenerator("Temporarily enhances all abilities and gives bonus attack damage, but reduces attack speed.")
   new ChannelAbilityPreset(THE_EMPYREAN_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
   ..makeRAbility()
   ..presetIcon(Icons.bTNCharm)

@@ -102,9 +102,9 @@ function updateBuff(PrayBuffTypes prayBuffType)
       new PrayMainBuff().apply(h.actor)
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero prays to the forgotten Gods and gain a portion of their power, " +
-    "strengthen himself and his allies. Each pray makes the buff stronger. {0}.".format(
-      "Can be used only once per two waves".color(IMPORTANT_COLOR)))
+  let tooltip = new AbilityTooltipGenerator("Hero prays to the forgotten Gods and gains a portion of their power, " +
+    "blessing himself and allies near him with one of the buffs: bonus damage/attack speed/armor/life regeneration or attributes. {0}. {1}."
+    .format("Buff stacks".color(POSITIVE_COLOR), "Can be used only once per two waves".color(IMPORTANT_COLOR)))
   new ChannelAbilityPreset(PRAY_ID, INNATE_SPELL_LEVELS, true, tooltip)
   ..makeDAbility()
   ..presetIcon(Icons.bTNResurrection)
