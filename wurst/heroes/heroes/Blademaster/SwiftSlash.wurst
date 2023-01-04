@@ -81,7 +81,8 @@ init
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all enemies on the way. Affected enemies receive current level of Armor Cut debuff.")
+  let tooltip = new AbilityTooltipGenerator("Hero travels short distance attacking all enemies on the way. Affected enemies receive current level of {0} debuff."
+  .format("Armor Cut".color(COLOR_GOLD)))
   new ChannelAbilityPreset(SWIFT_SLASH_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeQAbility()
   ..presetIcon(Icons.bTNWindWalkOn)

@@ -4,11 +4,12 @@ import GameConstants
 import BattleTranceBuff
 import ClosureEvents
 import AbilityDefinitionExtension
+import TooltipFactory
 
 public constant BATTLE_TRANCE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DURATION = lvl -> 12.
-constant RealLevelClosure BONUS_AS = lvl -> 40. * lvl
+constant RealLevelClosure DURATION = lvl -> 15.
+constant RealLevelClosure BONUS_AS = lvl -> 60. * lvl
 constant RealLevelClosure BONUS_MS = lvl -> 30. * lvl
 constant RealLevelClosure ATTACK_COOLDOWN_TIME = lvl -> 1.7 - 0.1 * lvl
 
@@ -25,16 +26,15 @@ init
     
     
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "After a delay gives bonus to attackspeed, movement speed and decreases base attack cooldown. " +
-    "After buff ends hero gets reversed buff for a half of original buff duration.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.NONE, "Gives bonus to attack speed, movement speed and decreases base attack cooldown. " +
+    "After buff ends hero gets reversed buff for a half of original buff duration.".color(IMPORTANT_COLOR))
   new ChannelAbilityPreset(BATTLE_TRANCE_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
   ..makeRAbility()
   ..presetIcon(Icons.bTNMirrorImage)
-  ..presetCastingTime(lvl -> 1)
 
   ..tooltipStartListen()
   ..setName("Battle Trance")
-  ..addTooltipProperty("Bonus Attackspeed", BONUS_AS)
+  ..addTooltipProperty("Bonus Attack Speed", BONUS_AS)
   ..addTooltipProperty("Bonus Movespeed", BONUS_MS)
   ..addTooltipProperty("Base Attack Cooldown", lvl -> ATTACK_COOLDOWN_TIME.run(lvl).toString(1))
   ..addTooltipProperty("Duration", DURATION)

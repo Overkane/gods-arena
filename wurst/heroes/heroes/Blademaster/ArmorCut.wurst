@@ -33,7 +33,8 @@ init
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Cuts enemy armor, reducing their armor for a duration. Stacks.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Cuts enemy armor, temporarily reducing their armor. {0}."
+  .format("Stacks".color(POSITIVE_COLOR)))
   new PassiveAbilityPreset(ARMOR_CUT_ID, INNATE_SPELL_LEVELS, tooltip)
   ..registerTooltipGenerator(tooltip)
   ..makeDAbility()

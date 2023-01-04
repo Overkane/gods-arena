@@ -3,7 +3,7 @@ import LimitedStackingBuff
 import Assets
 import BonusHandler
 
-constant buffTuple = compiletime(createDummyBuffObject("Armor Cut", "Unit's armor is decreased.",  Icons.pASBTNCriticalStrike))
+constant buffTuple = compiletime(createDummyBuffObject("Armor Cut", "Armor is decreased.",  Icons.pASBTNCriticalStrike))
 
 public class ArmorCutBuff extends LimitedStackingBuff
   private var armorReduction = 0.

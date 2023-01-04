@@ -64,8 +64,8 @@ init
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Restores hp and mp over time. If meditation was fully completed, gives attack damage buff."
-    + "\nBeing attacked during meditation interrupts it.".color(IMPORTANT_COLOR))
+  let tooltip = new AbilityTooltipGenerator("Restores HP and MP over time. If meditation was fully completed, gives attack damage buff. "
+    + "Being attacked during meditation interrupts it.".color(IMPORTANT_COLOR))
   new ChannelAbilityPreset(MEDITATION_ID, NORMAL_SPELL_LEVELS, false, tooltip)
   ..makeWAbility()
   ..presetIcon(Icons.bTNSleep)
@@ -85,10 +85,10 @@ init
   ..addTooltipProperty("Meditation Duration", MEDITATION_DURATION)
   ..addTooltipProperty("Additional Damage", lvl -> DAMAGE_BUFF.run(lvl).percRound())
   ..addTooltipProperty("Damage Buff Duration", DAMAGE_DURATION)
-  ..presetManaCost(lvl -> 0)
   ..presetCooldown(lvl -> 60)
   ..tooltipStopListen()
 
+  ..presetManaCost(lvl -> 0)
   ..presetDurationNormal(MEDITATION_DURATION)
   ..presetDurationHero(MEDITATION_DURATION)
 
