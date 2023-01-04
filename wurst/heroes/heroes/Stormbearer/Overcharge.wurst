@@ -8,8 +8,8 @@ import AbilityDefinitionExtension
 
 public constant OVERCHARGE_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure BONUS_SP = lvl -> 0.2 * lvl
-RealLevelClosure DURATION = lvl -> 8
+constant RealLevelClosure BONUS_SP = lvl -> 0.2 * lvl
+constant RealLevelClosure DURATION = lvl -> 8
 
 
 init 
@@ -22,7 +22,8 @@ init
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Hero overcharges himself to gain additional magic damage. After overcharge duration ends, hero gets the inverse debuff for same duration.")
+  let tooltip = new AbilityTooltipGenerator("Hero overcharges himself to gain additional Spell Power. "
+    + "After overcharge duration ends, hero is stunned for a small duration.".color(IMPORTANT_COLOR))
   new ChannelAbilityPreset(OVERCHARGE_ID, INNATE_SPELL_LEVELS, true, tooltip)
   ..makeDAbility()
   ..presetIcon(Icons.bTNControlMagic)
@@ -32,7 +33,8 @@ init
   ..setName("Overcharge")
   ..addTooltipProperty("Magic Damage Multiplier", lvl -> (BONUS_SP.run(lvl)*100).percRound())
   ..addTooltipProperty("Overcharge Duration", DURATION)
-  ..presetManaCost(lvl -> 75 * lvl)
+  ..addTooltipProperty("Stun Duration", lvl -> OVERCHARGE_STUN_DURATION.run(lvl).round())
+  ..presetManaCost(lvl -> 25 + 25 * lvl)
   ..presetCooldown(lvl -> 35.)
   ..tooltipStopListen()
 

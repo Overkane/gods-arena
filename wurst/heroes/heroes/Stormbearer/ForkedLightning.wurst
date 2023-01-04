@@ -6,8 +6,8 @@ import AbilityDefinitionExtension
 
 public constant FORKED_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE_PER_TARGET = lvl -> 115. + 115. * (lvl-1)
-IntLevelClosure NUMBER_OF_TARGETS = lvl -> 3 + 2 * lvl
+constant RealLevelClosure DAMAGE_PER_TARGET = lvl -> 115. + 115. * (lvl-1)
+constant IntLevelClosure NUMBER_OF_TARGETS = lvl -> 3 + 2 * lvl
 
 
 @compiletime function genAbility()

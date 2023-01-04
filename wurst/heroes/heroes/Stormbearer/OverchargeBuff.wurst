@@ -4,13 +4,20 @@ import Assets
 import SoundUtils
 import CustomStatSystem
 import TooltipFactory
+import DummyCaster
+import StunAbilityPreset
+import ObjectIdGenerator
+import AbilityObjEditing
+import OrderIds
 
-constant buffTuple1 = compiletime(createDummyBuffObject("Overcharge Buff".color(POSITIVE_COLOR), "Hero deals increased magic damage",  Icons.bTNControlMagic))
-constant buffTuple2 = compiletime(createDummyBuffObject("Overcharge Debuff", "Hero deals decreased magic damage and slowed",  Icons.bTNControlMagic))
+constant buffTuple1 = compiletime(createDummyBuffObject("Overcharge".color(POSITIVE_COLOR), "Spell Power is increased.",  Icons.bTNControlMagic))
 
+public constant RealLevelClosure OVERCHARGE_STUN_DURATION = lvl -> 3.
+constant OVERCHARGE_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
 public class OverchargeBuff extends NormalBuff
   constant ON_APPLY_SOUND = new SoundDefinition(Sounds.purgeTarget1)
+  constant ON_END_SOUND = new SoundDefinition(Sounds.slowTarget1)
   constant bonusSP = 0.
   constant duration = 0.
 
@@ -25,22 +32,10 @@ public class OverchargeBuff extends NormalBuff
 
   override function onEnd()
     target.addStat(CustomUnitStats.SPELL_POWER, -bonusSP)
-    new OverchargeDebuff(duration, bonusSP).apply(target)
-
-
-class OverchargeDebuff extends NormalBuff
-  constant ON_APPLY_SOUND = new SoundDefinition(Sounds.slowTarget1)
-  constant ON_END_SOUND = new SoundDefinition(Sounds.sorceressCastAttack1)
-  constant bonusSP = 0.
-
-  construct(real dur, real bonusSP)
-    super(dur, buffTuple2)
-    this.bonusSP = bonusSP
-
-  override function onApply()
-    target.addStat(CustomUnitStats.SPELL_POWER, -bonusSP)
-    ON_APPLY_SOUND.playForPlayer(target.getOwner())
-
-  override function onEnd()
-    target.addStat(CustomUnitStats.SPELL_POWER, bonusSP)
+    new DummyCaster().castTarget(OVERCHARGE_STUN_ID, 1, OrderIds.thunderbolt, target)
     ON_END_SOUND.playForPlayer(target.getOwner())
+
+@compiletime function genAbility()
+  new StunAbilityPreset(OVERCHARGE_STUN_ID, 1)
+  ..presetDurationNormal(OVERCHARGE_STUN_DURATION)
+  ..presetDurationHero(OVERCHARGE_STUN_DURATION)

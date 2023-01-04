@@ -7,9 +7,9 @@ import TooltipFactory
 
 public constant THUNDER_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure CHANCE_TO_BASH = lvl -> 20. + 2 * lvl
-RealLevelClosure DAMAGE_BONUS = lvl -> 25. + 25. * (lvl-1)
-RealLevelClosure STUN_DURATION = lvl -> 0.3
+constant RealLevelClosure CHANCE_TO_BASH = lvl -> 18. + lvl
+constant RealLevelClosure DAMAGE_BONUS = lvl -> 65. * lvl
+constant RealLevelClosure STUN_DURATION = lvl -> 0.3
 
 
 @compiletime function genAbility()

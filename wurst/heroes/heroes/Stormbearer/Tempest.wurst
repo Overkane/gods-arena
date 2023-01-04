@@ -6,10 +6,10 @@ import AbilityDefinitionExtension
 
 public constant TEMPEST_ID = compiletime(ABIL_ID_GEN.next())
 
-RealLevelClosure DAMAGE = lvl -> 50. + 60. * (lvl-1)
-RealLevelClosure DAMAGE_INTERVAL = lvl -> 1
-RealLevelClosure AOE = lvl -> 350. + 75. * (lvl-1)
-RealLevelClosure DURATION = lvl -> 10.
+constant RealLevelClosure DAMAGE = lvl -> 50. * lvl
+constant RealLevelClosure DAMAGE_INTERVAL = lvl -> 0.5
+constant RealLevelClosure AOE = lvl -> 300. + 100. * lvl
+constant RealLevelClosure DURATION = lvl -> 10.
 
 
 @compiletime function genAbility()
@@ -28,7 +28,7 @@ RealLevelClosure DURATION = lvl -> 10.
   ..presetDamageInterval(DAMAGE_INTERVAL)
   ..presetAreaofEffect(AOE)
   ..addTooltipProperty("Duration", DURATION)
-  ..presetManaCost(lvl -> 125 + 50 * lvl)
+  ..presetManaCost(lvl -> 200 * lvl)
   ..presetCooldown(lvl -> 75)
   ..tooltipStopListen()
   
