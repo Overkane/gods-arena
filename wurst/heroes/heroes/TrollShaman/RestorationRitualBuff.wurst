@@ -4,7 +4,7 @@ import Assets
 import CustomHeal
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Restoration Ritual".color(POSITIVE_COLOR), "Restores hp and mp",  Icons.bTNBigBadVoodooSpell, Abilities.voodooAuraTarget, AttachmentPoints.overhead))
+constant buffTuple = compiletime(createDummyBuffObject("Restoration Ritual".color(POSITIVE_COLOR), "Restoring HP and MP.",  Icons.bTNBigBadVoodooSpell, Abilities.voodooAuraTarget, AttachmentPoints.overhead))
 
 public class RestorationRitualBuff extends NormalBuff
   private real hpPercReg

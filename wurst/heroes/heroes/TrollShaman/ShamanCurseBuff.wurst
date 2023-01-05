@@ -3,7 +3,7 @@ import LimitedStackingBuff
 import Assets
 import BonusHandler
 
-constant buffTuple = compiletime(createDummyBuffObject("Shaman Curse", "Unit's armor is decreased.",  Icons.pASBTNExhumeCorpses))
+constant buffTuple = compiletime(createDummyBuffObject("Shaman Curse", "Armor is decreased.",  Icons.pASBTNExhumeCorpses))
 
 public class ShamanCurseBuff extends LimitedStackingBuff
   private var armorReduction = 0.

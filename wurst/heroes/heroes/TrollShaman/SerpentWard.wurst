@@ -20,7 +20,7 @@ constant IntLevelClosure SUMMON_TYPE = lvl -> SUMMON_LIST.get(lvl-1)
 
 constant IntLevelClosure BASE_DAMAGE = lvl -> 30 * lvl
 constant RealLevelClosure ATTACK_COOLDOWN = lvl -> 1.7
-constant IntLevelClosure ATTACK_RANGE = lvl -> 400
+constant IntLevelClosure ATTACK_RANGE = lvl -> 600
 constant IntLevelClosure DURATION = lvl -> 20
 
 init
@@ -58,7 +58,7 @@ class SerpentWard extends SummonEntity
   ..addTooltipProperty("Attack Range", ATTACK_RANGE)
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 400)
-  ..presetManaCost(lvl -> 50 + 25 * lvl)
+  ..presetManaCost(lvl -> 60 + 15 * lvl)
   ..presetCooldown(lvl -> 7)
   ..tooltipStopListen()
   

@@ -45,7 +45,7 @@ init
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Performs a ritual to restore allies hp and mp over time.")
+  let tooltip = new AbilityTooltipGenerator("Performs a ritual to restore HP and MP of allies over time.")
   new ChannelAbilityPreset(RESTORATION_RITUAL_ID, ULTIMATE_SPELL_LEVELS, false, tooltip)
   ..makeRAbility()
   ..presetIcon(Icons.bTNBigBadVoodooSpell)
@@ -63,8 +63,8 @@ init
   ..addTooltipProperty("MP% Restore per sec", lvl -> PERC_MP.run(lvl).percRound())
   ..addTooltipProperty("Duration", DURATION)
   ..presetAreaofEffect(AOE)
-  ..presetManaCost(lvl -> 150 + 50 * lvl)
-  ..presetCooldown(lvl -> 100)
+  ..presetManaCost(lvl -> 150 * lvl)
+  ..presetCooldown(lvl -> 80)
   ..tooltipStopListen()
   
   ..presetDurationNormal(DURATION)

@@ -17,7 +17,7 @@ public constant SHAMAN_CURSE_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure ARMOR_REDUCTION = lvl -> 1. * lvl
 constant ARMOR_REDUCTION_DURATION = 25
 constant MAX_STACK_AMOUNT = 7
-constant AOE = 800.
+constant AOE = 900.
 
 init
   ShamanCurseBuff.setMaxBuffAmount(MAX_STACK_AMOUNT)
@@ -42,9 +42,9 @@ init
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Each casted {0} temporarily reduces armor of enemies nearby. {1}"
+  let tooltip = new AbilityTooltipGenerator(Targettype.UNIT, "Each casted {0} temporarily reduces armor of enemies nearby. {1}."
     .format("hero ability".color(IMPORTANT_COLOR), 
-      "Stacks.".color(IMPORTANT_COLOR)))
+      "Stacks".color(POSITIVE_COLOR)))
   new PassiveAbilityPreset(SHAMAN_CURSE_ID, INNATE_SPELL_LEVELS, tooltip)
   ..makeDAbility()
   ..presetIcon(Icons.pASBTNExhumeCorpses)
@@ -54,5 +54,5 @@ init
   ..addTooltipProperty("Armor Reduction", lvl -> ARMOR_REDUCTION.run(lvl).round())
   ..addTooltipProperty("Duration", lvl -> ARMOR_REDUCTION_DURATION)
   ..addTooltipProperty("Max Stacks", lvl -> MAX_STACK_AMOUNT)
-  ..presetCastRange(lvl -> AOE)
+  ..presetAreaofEffect(lvl -> AOE)
   ..tooltipStopListen()
