@@ -5,7 +5,7 @@ import Abilities
 import MapIcons
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Nourish".color(POSITIVE_COLOR), "Unit is can't move, but its hp regeneration is greatly increased",  MapIcons.bTNNatureArmor, Abilities.entanglingRootsTarget))
+constant buffTuple = compiletime(createDummyBuffObject("Nourish".color(POSITIVE_COLOR), "Unit can't move, but its life regeneration is increased.",  MapIcons.bTNNatureArmor, Abilities.entanglingRootsTarget))
 
 public class NatureArmorBuff extends NormalBuff
   constant hpRegIncrease = 0.

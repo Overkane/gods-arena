@@ -13,7 +13,7 @@ import LinkedList
 public constant HYDROMANCER_ID = compiletime(HERO_ID_GEN.next())
 public constant HYDROMANCER_SPELLS = new LinkedList<int>..add(WATER_ELEMENTAL_ID, AQUA_BLAST_ID, BUBBLE_SHIELD_ID, SEA_AURA_ID, TSUNAMI_ID)
 public constant HYDROMANCER_NAME = "Hydromancer"
-public constant HYDROMANCER_DESCRIPTION = "Hydromancer relies on her |cff3640b5water elementals|r, which she can empower with her other abilities. But overall she deal decent magical damage and can heal allies."
+public constant HYDROMANCER_DESCRIPTION = "Hydromancer relies on her |cff636cd0water elementals|r, which she can empower with her other abilities. But overall she deal decent magical damage and can heal allies."
 
 @compiletime function genHero()
   new IntHeroPreset(HYDROMANCER_ID, UnitIds.jaina, HYDROMANCER_NAME)

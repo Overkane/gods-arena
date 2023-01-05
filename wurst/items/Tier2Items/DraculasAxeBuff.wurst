@@ -5,7 +5,7 @@ import SoundUtils
 import MapIcons
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Draculas Axe".color(POSITIVE_COLOR), "Unit physical lifesteal is grealy increased",  MapIcons.bTNDraculasAxe))
+constant buffTuple = compiletime(createDummyBuffObject("Draculas Axe".color(POSITIVE_COLOR), "Physical lifesteal is increased.",  MapIcons.bTNDraculasAxe))
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.berserkerCaster)
 
 public class DraculasAxeBuff extends NormalBuff

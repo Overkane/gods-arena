@@ -4,7 +4,7 @@ import Assets
 import SoundUtils
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Mana Shield".color(POSITIVE_COLOR), "Increases unit's hp regeneration and can block small amount of damage",  Icons.bTNNeutralManaShield, Abilities.manaShieldCaster))
+constant buffTuple = compiletime(createDummyBuffObject("Mana Shield".color(POSITIVE_COLOR), "Recieved damage is absorbed.",  Icons.bTNNeutralManaShield, Abilities.manaShieldCaster))
 
 public class ManaShieldBuff extends ShieldBuff
   private constant ON_APPLY_SOUND = new SoundDefinition(Sounds.manaShieldCaster1)

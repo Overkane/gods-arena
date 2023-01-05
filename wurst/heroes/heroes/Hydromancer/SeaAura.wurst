@@ -37,7 +37,7 @@ init
 
     
 @compiletime function gen()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Increases mana regeneration and {}. Mana Regeneration effect is twice as effective for the ability owner."
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Increases mana regeneration and {0}. Mana Regeneration effect is twice as effective for the ability owner."
   .format("Magic Resistance".color(UTILITY_COLOR)))
   new PassiveAbilityPreset(SEA_AURA_ID, NORMAL_SPELL_LEVELS, tooltip)
   ..makeEAbility()

@@ -5,7 +5,7 @@ import SoundUtils
 import Icons
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Stat Boost".color(POSITIVE_COLOR), "Unit highest stat is increased",  Icons.bTN3M3))
+constant buffTuple = compiletime(createDummyBuffObject("Stat Boost".color(POSITIVE_COLOR), "Highest stat is increased.",  Icons.bTN3M3))
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.disenchant)
 
 enum HeroStats

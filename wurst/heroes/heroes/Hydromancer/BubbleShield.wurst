@@ -22,7 +22,7 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Applies a bubble shield to the target, which heals it and blocks some amount of damage. "
-  + "The effect ends when the shield is destroyed or the duration exceeded. If applied on |cff3640b5water elemental|r then doubles its base damage.")
+  + "The effect ends when the shield is destroyed or the duration exceeded. If applied on |cff636cd0water elemental|r then doubles its base damage.")
   new ChannelAbilityPreset(BUBBLE_SHIELD_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeWAbility()
   ..presetIcon(Icons.bTNNeutralManaShield)

@@ -5,7 +5,7 @@ import BonusHandler
 import TooltipFactory
 import AdvancedNormalBuff
 
-constant buffTuple = compiletime(createDummyBuffObject("Fury".color(POSITIVE_COLOR), "Unit attack speed is increased",  Icons.bTNAdvancedUnholyStrength))
+constant buffTuple = compiletime(createDummyBuffObject("Fury".color(POSITIVE_COLOR), "Attack speed is increased",  Icons.bTNAdvancedUnholyStrength))
 
 public class FuryBuff extends AdvancedNormalBuff
   static private real array buffArray

@@ -4,7 +4,7 @@ import Assets
 import DamageSystem
 import MapIcons
 
-constant buffTuple = compiletime(createDummyBuffObject("Poisoned", "Unit loses hp over time", MapIcons.bTNsacrificialdagger, Abilities.poisonStingTarget))
+constant buffTuple = compiletime(createDummyBuffObject("Poisoned", "Periodic damage.", MapIcons.bTNsacrificialdagger, Abilities.poisonStingTarget))
 
 public class PoisonDaggerBuff extends StackingBuff
   unit source

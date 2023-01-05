@@ -399,7 +399,7 @@ class WaterBossKnockbackProjectile extends Projectile
           projectileOrb2.terminate()
 
 
-public constant buffTuple = compiletime(createDummyBuffObject("Drowning".color(POSITIVE_COLOR), "Deals damage over times",  Icons.bTNAbsorbMagic))
+public constant buffTuple = compiletime(createDummyBuffObject("Drowning", "Periodic damage.",  Icons.bTNAbsorbMagic))
 
 class DrowningBuff extends NormalBuff
   construct()

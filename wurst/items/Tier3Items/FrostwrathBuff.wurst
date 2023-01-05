@@ -3,7 +3,7 @@ import PresetBuffs
 import Assets
 import DamageSystem
 
-constant buffTuple = compiletime(createDummyBuffObject("Frostbite", "Unit lose hp over time",  Icons.bTNFrostMourne, Abilities.frostDamage))
+constant buffTuple = compiletime(createDummyBuffObject("Frostbite", "Periodic damage.",  Icons.bTNFrostMourne, Abilities.frostDamage))
 
 public class FrostwrathBuff extends StackingBuff
   unit source

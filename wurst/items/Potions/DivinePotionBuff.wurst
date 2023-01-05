@@ -5,7 +5,7 @@ import SoundUtils
 import BonusHandler
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Divinity".color(POSITIVE_COLOR), "All unit stats are increased",  Icons.bTNPotionOfRestoration))
+constant buffTuple = compiletime(createDummyBuffObject("Divinity".color(POSITIVE_COLOR), "All stats are increased.",  Icons.bTNPotionOfRestoration))
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.divineShield)
 
 public class DivinePotionBuff extends NormalBuff

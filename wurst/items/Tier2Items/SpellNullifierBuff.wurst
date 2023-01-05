@@ -5,7 +5,7 @@ import TooltipFactory
 import AbilityObjEditing
 import ObjectIdGenerator
 
-constant buffTuple = compiletime(createDummyBuffObject("Spell Nullifier".color(POSITIVE_COLOR), "Unit is immune to spells",  Icons.bTNNagaArmorUp3, Abilities.antiMagicShell, AttachmentPoints.origin))
+constant buffTuple = compiletime(createDummyBuffObject("Spell Nullifier".color(POSITIVE_COLOR), "Unit is immune to magical spells.",  Icons.bTNNagaArmorUp3, Abilities.antiMagicShell, AttachmentPoints.origin))
 
 constant ANTI_MAGIC_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 

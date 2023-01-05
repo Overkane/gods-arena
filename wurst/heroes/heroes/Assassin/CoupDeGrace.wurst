@@ -57,7 +57,8 @@ init
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "After long years Assassin honed her ability to find enemy weak points and deal deadly strikes."
-    + " Increases Attack Crit Chance and Attack Crit Power. Attack Crit Chance bonus, given by this ability, is doubled, if target is attacked from behind.")
+    + " Increases {0} and {1}. {0} bonus, given by this ability, is doubled, if target is attacked from behind."
+    .format("Attack Crit Chance".color(PHYSICAL_COLOR), "Attack Crit Power".color(PHYSICAL_COLOR)))
   new PassiveAbilityPreset(COUP_DE_GRACE_ID, ULTIMATE_SPELL_LEVELS, tooltip)
   ..makeRAbility()
   ..presetIcon(MapIcons.pASBTNBackstab)

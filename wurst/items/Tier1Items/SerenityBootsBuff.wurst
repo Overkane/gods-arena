@@ -4,7 +4,7 @@ import BonusHandler
 import MapIcons
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Serenity".color(POSITIVE_COLOR), "Unit life regeneration is increased.",  MapIcons.bTNBarbedTrapv3))
+constant buffTuple = compiletime(createDummyBuffObject("Serenity".color(POSITIVE_COLOR), "Life regeneration is increased.",  MapIcons.bTNBarbedTrapv3))
 
 public class SerenityBootsBuff extends NormalBuff
   constant hpRegIncrease = 0.

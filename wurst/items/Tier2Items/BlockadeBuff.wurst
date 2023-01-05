@@ -5,7 +5,7 @@ import SoundUtils
 import MapIcons
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Blockade".color(POSITIVE_COLOR), "Unit armor is increased",  MapIcons.bTNAdvancedReinforcedHides))
+constant buffTuple = compiletime(createDummyBuffObject("Blockade".color(POSITIVE_COLOR), "Armor is increased.",  MapIcons.bTNAdvancedReinforcedHides))
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.defendCaster1)
 
 public class BlockadeBuff extends NormalBuff
