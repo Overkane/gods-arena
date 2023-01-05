@@ -101,7 +101,7 @@ init
   ..setName("Elemental Missile")
   ..addTooltipProperty("Int as Damage", lvl -> (INT_AS_DAMAGE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Elemental Reaction Chance", lvl -> ELEMENTAL_REACTION_CHANCE.run(lvl).toString() + "%")
-  ..presetManaCost(lvl -> 15 + 15 * lvl)
+  ..presetManaCost(lvl -> 15 + 20 * (lvl-1))
   ..tooltipStopListen()
 
   ..presetBuffs(lvl -> ELEMENTAL_DISCHARGE_ID.toRawCode())

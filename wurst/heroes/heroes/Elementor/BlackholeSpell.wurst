@@ -15,6 +15,7 @@ public constant BLACKHOLE_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 15. * lvl
 constant RealLevelClosure SPELL_AOE = lvl -> 290. + lvl * 32
 constant SPELL_FX = MapModels.blackhole
+constant DAMAGE_INTERVAL = 0.6
 constant SPELL_DURATION = 7.
 
 init
@@ -31,7 +32,7 @@ init
             eff.setScale(eff.getScale().lerp(aoe / 200, 0.5))
 
         doAfter(0.3) ->
-            doPeriodicallyCounted(0.6, (SPELL_DURATION / 0.6).toInt()) (CallbackCounted cb) ->
+            doPeriodicallyCounted(DAMAGE_INTERVAL, (SPELL_DURATION / 0.6).toInt()) (CallbackCounted cb) ->
                 forUnitsInRange(spellTarget, aoe) (target) ->
                     let entity = target.getEntity()
                     if target.isEnemyOf(caster.getOwner()) and target.isAlive() and entity != null and not entity.done and not entity.flying
@@ -58,10 +59,11 @@ function genAbility()
     ..presetTargetTypes(Targettype.POINT)
     ..setName("Black Hole")
     ..addTooltipProperty("Damage", SPELL_DMG)
+    ..addTooltipProperty("Damage Inverval", lvl -> DAMAGE_INTERVAL.round())
     ..addTooltipProperty("Duration", lvl -> SPELL_DURATION)
-    ..presetManaCost(lvl -> 110 + 45 * (lvl-1))
     ..presetAreaofEffect(SPELL_AOE)
-    ..presetCooldown(lvl -> 25. - lvl)
+    ..presetManaCost(lvl -> 110 + 45 * (lvl-1))
+    ..presetCooldown(lvl -> 22.)
     ..tooltipStopListen()
 
 @test

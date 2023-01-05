@@ -1,4 +1,4 @@
-package MeteorSpell
+package ChaosMeteor
 import Assets
 import ClosureTimers
 import ClosureForGroups
@@ -10,13 +10,13 @@ import PhysicsProjectile
 import Heightmap
 import AbilityDefinitionExtension
 
-public constant METEOR_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+public constant CHAOS_METEOR_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure SPELL_DMG = lvl -> 30. + 125. * lvl
 constant RealLevelClosure SPELL_AOE = lvl -> 250. + 25 * lvl
 
 init
-    EventListener.onPointCast(METEOR_ABIL_ID) (caster, spellTarget) ->
-        let lvl = caster.getAbilityLevel(METEOR_ABIL_ID)
+    EventListener.onPointCast(CHAOS_METEOR_ID) (caster, spellTarget) ->
+        let lvl = caster.getAbilityLevel(CHAOS_METEOR_ID)
         let aoe = SPELL_AOE.run(lvl)
         flashEffect(Units.infernalBirth, spellTarget)
         doAfter(0.9) ->
@@ -37,7 +37,7 @@ init
 
 @compiletime
 function genAbility()
-    new ChannelAbilityPreset(METEOR_ABIL_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A chunky meteor from the sky which crushes your enmies in a big area with over 9000° Celsius."))
+    new ChannelAbilityPreset(CHAOS_METEOR_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A chunky meteor from the sky which crushes your enemies in a big area with over 9000° Celsius."))
     ..makeQAbility()
     ..presetIcon(Icons.bTNInfernal)
     ..presetOption(Option.TARGETIMAGE, true)
@@ -47,7 +47,7 @@ function genAbility()
     ..presetTargetTypes(Targettype.POINT)
     ..setName("Chaos Meteor")
     ..addTooltipProperty("Damage", SPELL_DMG)
-    ..presetManaCost(lvl -> 155 + 55 * (lvl-1))
     ..presetAreaofEffect(SPELL_AOE)
-    ..presetCooldown(lvl -> 28. - lvl)
+    ..presetManaCost(lvl -> 115 + 35 * (lvl-1))
+    ..presetCooldown(lvl -> 28. - 2 * lvl)
     ..tooltipStopListen()
