@@ -31,7 +31,6 @@ public constant CRAB_DESCRIPTION = "Crab's shell allows him to sustain a lot of 
   ..setStartingIntelligence(11)
   ..setIntelligencePerLevel(1.8)
   ..setAttack1CooldownTime(1.8)
-  ..setAttack1DamageBase(3)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(8)
   ..buildHero()

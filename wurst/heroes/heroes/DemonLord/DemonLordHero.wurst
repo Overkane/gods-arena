@@ -23,6 +23,7 @@ public constant DEMON_LORD_DESCRIPTION = "Demon Lord is good at getting a lot of
   ..setStartingIntelligence(15)
   ..setIntelligencePerLevel(1.8)
   ..setAttack1CooldownTime(2.05)
+  ..setAttack1DamageBase(50)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(8)
   ..setTintingColorBlue(125)

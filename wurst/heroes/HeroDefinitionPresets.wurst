@@ -61,6 +61,7 @@ class BasePreset extends HeroPreset
     setHitPointsRegenerationRate(0)
     setManaRegeneration(0)
     setAttack1AttackType(AttackType.Hero)
+    setAttack1DamageBase(20)
     setArmorType(ArmorType.Hero)
     addHeroAbility(STAT_UP_ID)
 

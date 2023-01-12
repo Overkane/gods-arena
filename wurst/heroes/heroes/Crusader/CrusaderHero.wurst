@@ -29,6 +29,7 @@ public constant CRUSADER_DESCRIPTION = "Versatile holy warrior, which can suppor
   ..setStartingIntelligence(18)
   ..setIntelligencePerLevel(1.8)
   ..setAttack1CooldownTime(2.2)
+  ..setAttack1DamageBase(25)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(6)
   ..buildHero()

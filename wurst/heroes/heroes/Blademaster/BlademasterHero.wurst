@@ -29,6 +29,7 @@ public constant BLADEMASTER_DESCRIPTION = "Blademaster honed his sword mastery t
   ..setStartingIntelligence(15)
   ..setIntelligencePerLevel(1.8)
   ..setAttack1CooldownTime(1.7)
+  ..setAttack1DamageBase(30)
   ..setAttack1DamageNumberofDice(2)
   ..setAttack1DamageSidesperDie(5)
   ..buildHero()
