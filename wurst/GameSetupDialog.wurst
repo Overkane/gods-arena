@@ -7,6 +7,7 @@ import GameConstants
 import HeroPickMenu
 import Arenas
 import TimerUtils
+import WaveRewards
 
 constant PREGAME_MAX_DURATION = 30
 
@@ -108,22 +109,29 @@ public class GameSetupDialog
         case 0
           printTimed("    Difficulty: |cffaabbccNormal", 7.5)
           gameDifficulty = Difficulties.NORMAL
-          gold = 180
+          gold = 1440
         case 1
           printTimed("    Difficulty: |cffca4410Hard", 7.5)
           gameDifficulty = Difficulties.HARD
-          gold = 200
+          gold = 1440
           pData.forEach() (player p, PlayerData value) ->
             SetPlayerHandicap(p, 0.9)
         case 2
           printTimed("    Difficulty: |cff8f0808Insane", 7.5)
           gameDifficulty = Difficulties.INSANE
-          gold = 220
+          gold = 1440
           pData.forEach() (player p, PlayerData value) ->
             SetPlayerHandicap(p, 0.8)
+      
+      // Initial gold pool is considered for 8 players. So if player count is less than 8, then
+      // players will get more starting gold.
+      let startingGold = gold / 8 + (gold / 8 * (8 - pData.size()) / 7)
+      
+      goldCompensationOnPlayerLeave += ((gold / 8) / 7).round()
 
       pData.forEach() (player p, PlayerData playerData) ->
-        p.setGold(gold)
+        p.setGold(startingGold.round())
+
 
       if isAllRandom
         printTimed("    All Random", 7.5)  
