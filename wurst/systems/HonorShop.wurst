@@ -15,7 +15,7 @@ constant HONOR_SHOP_UPGRADE_LEVELS = 11
 constant ABIL_MIGHT = compiletime(ABIL_ID_GEN.next())
 constant MIGHT_STR = 1.
 constant MIGHT_AD = 2.
-constant MIGHT_ACP = 0.5
+constant MIGHT_ACP = 1
 
 constant ABIL_ENDURANCE = compiletime(ABIL_ID_GEN.next())
 constant END_HP = 30.
@@ -29,13 +29,12 @@ constant DEX_EV = 0.5
 
 constant ABIL_QUICKNESS = compiletime(ABIL_ID_GEN.next())
 constant QUICK_AS = 2.5
-constant QUICK_MS = 2.5
 constant QUIKC_LS = 0.5
 
 constant ABIL_MIND = compiletime(ABIL_ID_GEN.next())
 constant MIND_INT = 1.
 constant MIND_SP = 1.
-constant MIND_SCP = 0.5
+constant MIND_SCP = 1
 
 constant ABIL_WISDOM = compiletime(ABIL_ID_GEN.next())
 constant WISD_MANA = 17.
@@ -43,9 +42,12 @@ constant WISD_MANAREG = 0.2
 constant WISD_SL = 0.5
 
 constant ABIL_LUCK = compiletime(ABIL_ID_GEN.next())
-constant LUCK_ACC = 1.
-constant LUCK_SCC = 1.
+constant LUCK_ACC = 0.5
+constant LUCK_SCC = 0.5
 constant LUCK_EV = 0.5
+
+constant ABIL_GREED = compiletime(ABIL_ID_GEN.next())
+constant GREED_GOLD = 10
 
 public constant honorShopUnits = new LinkedList<unit>
 
@@ -108,7 +110,6 @@ init
             p.addLumber(-1)
 
             heroUnit.addBonus(Bonus.ATTACKSPEED, QUICK_AS)
-            heroUnit.setMoveSpeed(heroUnit.getMoveSpeed() + QUICK_MS)
             heroUnit.addStat(CustomUnitStats.LIFESTEAL, QUIKC_LS/100)
 
             caster.incAbilityLevel(spellId)
@@ -157,6 +158,18 @@ init
             if caster.getAbilityLevel(spellId) == 11
               caster.disableAbility(spellId, true, false)
 
+        else if spellId == ABIL_GREED
+          if p.getLumber() < 1
+            printTimedToPlayer("You don't have enough honor points.", 2, EventData.getTriggerPlayer())  
+          else
+            p
+            ..addLumber(-1)
+            ..addGold(GREED_GOLD)
+
+            caster.incAbilityLevel(spellId)
+            if caster.getAbilityLevel(spellId) == 11
+              caster.disableAbility(spellId, true, false)
+
   doPeriodically(1) (CallbackPeriodic cb) ->
     updateHonorShopPos()
 
@@ -192,6 +205,7 @@ public class HonorShop extends UnitEntity
   ..addNormalAbility(ABIL_MIND)
   ..addNormalAbility(ABIL_WISDOM)
   ..addNormalAbility(ABIL_LUCK)
+  ..addNormalAbility(ABIL_GREED)
   ..setArmorType(ArmorType.Hero)
   ..setModelFile("")
   ..setScalingValue(0.)
@@ -249,7 +263,6 @@ public class HonorShop extends UnitEntity
   ..tooltipStopListen()
 
   tooltip = new AbilityTooltipGenerator("Increases " + "Attack Speed (AS)".color(COLOR_GOLD_STR) + " by " + QUICK_AS.color(COLOR_GOLD_STR) + ".\n" +
-    "Increases " + "Movement Speed (MS)".color(COLOR_GOLD_STR) + " by " + QUICK_MS.color(COLOR_GOLD_STR) + ".\n" +
     "Increases " + "Lifesteal".color(COLOR_GOLD_STR) + " by " + QUIKC_LS.colorPerc(COLOR_GOLD_STR) + ".")
   new ChannelAbilityPreset(ABIL_QUICKNESS, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
   ..presetButtonPosNormal(1, 1)
@@ -259,7 +272,6 @@ public class HonorShop extends UnitEntity
   ..setName("Quickness")
   ..addTooltipProperty("Honor Points Cost", lvl -> "1")
   ..addTooltipProperty("Bonus AS", lvl -> QUICK_AS * (lvl-1))
-  ..addTooltipProperty("Bonus MS", lvl -> QUICK_MS * (lvl-1))
   ..addTooltipProperty("Bonus Lifesteal (%)", lvl -> QUIKC_LS * (lvl-1))
   ..tooltipStopListen()
 
@@ -306,4 +318,15 @@ public class HonorShop extends UnitEntity
   ..addTooltipProperty("Bonus ACC (%)", lvl -> LUCK_ACC * (lvl-1))
   ..addTooltipProperty("Bonus SCC (%)", lvl -> LUCK_SCC * (lvl-1))
   ..addTooltipProperty("Bonus Evasion (%)", lvl -> LUCK_EV * (lvl-1))
+  ..tooltipStopListen()
+
+  tooltip = new AbilityTooltipGenerator("Gives " + GREED_GOLD.color(COLOR_GOLD_STR) + " bonus " + "gold".color(COLOR_GOLD_STR) + ".")
+  new ChannelAbilityPreset(ABIL_GREED, HONOR_SHOP_UPGRADE_LEVELS, true, tooltip)
+  ..presetButtonPosNormal(3, 0)
+  ..presetHotkey("F")
+  ..presetIcon(Icons.bTNChestOfGold)
+  ..tooltipStartListen()
+  ..setName("Greed")
+  ..addTooltipProperty("Honor Points Cost", lvl -> "1")
+  ..addTooltipProperty("Bonus Gold", lvl -> GREED_GOLD * (lvl-1))
   ..tooltipStopListen()
