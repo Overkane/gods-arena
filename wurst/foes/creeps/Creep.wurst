@@ -49,7 +49,9 @@ public class Creep extends UnitEntity
     
   override function update()
     super.update()
-    physicsUpdate(this)
+    // Object can be destroyed in super call, so need to check if it is not
+    if not done
+      physicsUpdate(this)
 
   override function onEscapeGround()
     actor.setPropWindow(0 .fromDeg())
