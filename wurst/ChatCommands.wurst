@@ -46,6 +46,6 @@ public function initChatCommands()
         ..print("Spell Lifesteal: " + h.actor.getStat(CustomUnitStats.SPELL_LIFESTEAL).toString(), 10)
         ..print("Evasion: " + h.actor.getStat(CustomUnitStats.EVASION).toString(), 10)
       
-    else if message == "-clear"
+    else if message == "-clear" or message == "-c"
       if localPlayer == p
         ClearTextMessages()

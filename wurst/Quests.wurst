@@ -57,6 +57,6 @@ init
   ..setDescription(
     "-kick [player number] - kicks player with given number (available only for red player)\n" + 
     "-stats - shows hero custom stats\n" + 
-    "-clear - clears messages\n" + 
-    "-z [number] - sets camera distance\n"
+    "-clear/-c - clears messages\n" + 
+    "-z [number] - sets camera distance between 1500 and 2500\n"
   )
