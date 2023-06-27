@@ -1,17 +1,18 @@
-package Arena4Waves
+package VolcanoWaves
 import UnitIds
 import Wave
 
-public constant ARENA4_WAVE_1 = compiletime(wave_1())
-public constant ARENA4_WAVE_2 = compiletime(wave_2())
-public constant ARENA4_WAVE_3 = compiletime(wave_3())
-public constant ARENA4_WAVE_4 = compiletime(wave_4())
-public constant ARENA4_WAVE_5 = compiletime(wave_5())
-public constant ARENA4_WAVE_6 = compiletime(wave_6())
-public constant ARENA4_WAVE_7 = compiletime(wave_7())
-public constant ARENA4_BOSS_WAVE = compiletime(boss_wave())
+public constant volcanoWaves = new LinkedList<Wave>
+..add(compiletime(felguards()))
+..add(compiletime(felstalkers()))
+..add(compiletime(infernalMachines()))
+..add(compiletime(salamanders()))
+..add(compiletime(demons()))
+..add(compiletime(succubuses()))
+..add(compiletime(voidWalkers()))
+..add(compiletime(godOfFire()))
 
-function wave_1() returns Wave
+function felguards() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
@@ -33,7 +34,7 @@ function wave_1() returns Wave
 
   .build()
 
-function wave_2() returns Wave
+function felstalkers() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
@@ -62,7 +63,7 @@ function wave_2() returns Wave
 
   .build()
 
-function wave_3() returns Wave
+function infernalMachines() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
@@ -94,7 +95,7 @@ function wave_3() returns Wave
 
   .build()
 
-function wave_4() returns Wave
+function salamanders() returns Wave
   return new WaveBuilder()
 
   ..creep(UnitIds.salamanderhatchling)
@@ -131,7 +132,7 @@ function wave_4() returns Wave
 
   .build()
   
-function wave_5() returns Wave
+function demons() returns Wave
   return new WaveBuilder()
 
   ..creep(UnitIds.infernal)
@@ -152,7 +153,7 @@ function wave_5() returns Wave
 
   .build()
 
-function wave_6() returns Wave
+function succubuses() returns Wave
   return new WaveBuilder()
 
   ..creep(UnitIds.succubus)
@@ -197,7 +198,7 @@ function wave_6() returns Wave
 
   .build()
 
-function wave_7() returns Wave
+function voidWalkers() returns Wave
   return new WaveBuilder()
 
   ..creep(UnitIds.voidwalker)
@@ -234,7 +235,7 @@ function wave_7() returns Wave
 
   .build()
 
-function boss_wave() returns Wave
+function godOfFire() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())

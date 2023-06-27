@@ -1,17 +1,18 @@
-package Arena3Waves
+package BarrensWaves
 import UnitIds
 import Wave
 
-public constant ARENA3_WAVE_1 = compiletime(wave_1())
-public constant ARENA3_WAVE_2 = compiletime(wave_2())
-public constant ARENA3_WAVE_3 = compiletime(wave_3())
-public constant ARENA3_WAVE_4 = compiletime(wave_4())
-public constant ARENA3_WAVE_5 = compiletime(wave_5())
-public constant ARENA3_WAVE_6 = compiletime(wave_6())
-public constant ARENA3_WAVE_7 = compiletime(wave_7())
-public constant ARENA3_BOSS_WAVE = compiletime(boss_wave())
+public constant barrensWaves = new LinkedList<Wave>
+..add(compiletime(ogres()))
+..add(compiletime(centaurs()))
+..add(compiletime(arachnathids()))
+..add(compiletime(kobolds()))
+..add(compiletime(quillbeasts()))
+..add(compiletime(harpies()))
+..add(compiletime(draenies()))
+..add(compiletime(godOfEarth()))
 
-function wave_1() returns Wave
+function ogres() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
@@ -58,7 +59,7 @@ function wave_1() returns Wave
 
   .build()
 
-function wave_2() returns Wave
+function centaurs() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
@@ -101,7 +102,7 @@ function wave_2() returns Wave
 
   .build()
 
-function wave_3() returns Wave
+function arachnathids() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
@@ -152,52 +153,7 @@ function wave_3() returns Wave
 
   .build()
 
-function wave_4() returns Wave
-  return new WaveBuilder()
-
-  ..creep(UnitIds.bluedragonspawnapprentice)
-  ..hp(75000)
-  ..damage(1500)
-  ..attackrate(0.25)
-  ..amount(4)
-  ..scale(2.45)
-  ..movespeed(350)
-
-  ..creep(UnitIds.bluedragonspawnmeddler)
-  ..hp(75000)
-  ..damage(1500)
-  ..attackrate(0.25)
-  ..amount(4)
-  ..scale(2.45)
-  ..movespeed(350)
-
-  ..creep(UnitIds.bluedragonspawnoverseer)
-  ..hp(75000)
-  ..damage(1500)
-  ..attackrate(0.25)
-  ..amount(4)
-  ..scale(2.45)
-  ..movespeed(350)
-
-  ..creep(UnitIds.bluedragonspawnsorceror)
-  ..hp(75000)
-  ..damage(1500)
-  ..attackrate(0.25)
-  ..amount(4)
-  ..scale(2.45)
-  ..movespeed(350)
-
-  ..creep(UnitIds.bluedragonspawnwarrior)
-  ..hp(75000)
-  ..damage(1500)
-  ..attackrate(0.25)
-  ..amount(4)
-  ..scale(2.45)
-  ..movespeed(350)
-
-  .build()
-
-function wave_5() returns Wave
+function kobolds() returns Wave
   return new WaveBuilder()
 
   ..creep(UnitIds.kobold)
@@ -234,7 +190,7 @@ function wave_5() returns Wave
 
   .build()
 
-function wave_6() returns Wave
+function quillbeasts() returns Wave
   return new WaveBuilder()
 
   ..creep(UnitIds.quillbeast1)
@@ -287,7 +243,7 @@ function wave_6() returns Wave
 
   .build()
 
-function wave_7() returns Wave
+function harpies() returns Wave
   return new WaveBuilder()
 
   ..creep(UnitIds.harpyhag)
@@ -332,7 +288,124 @@ function wave_7() returns Wave
 
   .build()
 
-function boss_wave() returns Wave
+function draenies() returns Wave
+  return new WaveBuilder()
+
+  ..creep(UnitIds.draeneidarkslayer)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneidisciple)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneiguardian)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneiharbinger)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneihaven)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneilaborer)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneiprotector)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneisalamander)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneiseer)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneiseerden)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneistalker)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneivindicator)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneiwarriorshall)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  ..creep(UnitIds.draeneiwatcher)
+  ..hp(75000)
+  ..damage(1500)
+  ..attackrate(0.25)
+  ..amount(4)
+  ..scale(2.45)
+  ..movespeed(350)
+
+  .build()
+
+function godOfEarth() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
   ..goldBounty(waveGoldList.dequeue())
