@@ -34,7 +34,8 @@ class WaterElemental extends SummonEntity
   static constant SUMMON_GROUP = new LinkedList<unit>
 
   static function destroyExcessElemental()
-    SUMMON_GROUP.dequeue().kill()
+    SUMMON_GROUP..sortWith((unit u1, unit u2) -> (u1.getHP() - u2.getHP()).toInt())
+    .dequeue().kill()
 
   construct(unit summoner, int typId, vec3 pos, angle ang)
     super(summoner, typId, pos, ang)
@@ -46,7 +47,7 @@ class WaterElemental extends SummonEntity
 
 
 @compiletime function genAbility()
-  let tooltip = new AbilityTooltipGenerator("Summons a |cff636cd0water elemental|r. Max amount depends on ability level. If max amount of elementals is reached, then on next spell cast the oldest one will be killed.")
+  let tooltip = new AbilityTooltipGenerator("Summons a |cff636cd0water elemental|r. Max amount depends on ability level. If max amount of elementals is reached, then on next spell cast the one with lowest HP will be killed.")
   new ChannelAbilityPreset(WATER_ELEMENTAL_ID, INNATE_SPELL_LEVELS, true, tooltip)
   ..makeDAbility()
   ..presetIcon(Icons.bTNSummonWaterElemental)
