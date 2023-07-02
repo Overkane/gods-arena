@@ -4,35 +4,26 @@ import GameConstants
 import PassiveAbilityPreset
 import TooltipFactory
 import AbilityDefinitionExtension
-import ClosureEvents
-import UnitIndexer
 import ClosureForGroups
 import DamageSystem
 import Tagwalk
 import Abilities
+import GeneralFunctions
 
 public constant EXPLOSIVE_SHOT_ID = compiletime(ABIL_ID_GEN.next())
-
-constant ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
 constant RealLevelClosure EXPLOSION_DAMAGE = lvl -> 0.25 * lvl
 constant RealLevelClosure EXPLOSION_AOE = lvl -> 150. + 25 * lvl
 
-bool array noCdOnAttackMap
-
 
 init
-  EventListener.add(EVENT_PLAYER_UNIT_ATTACKED) ->
-    let u = EventData.getAttackerUnit()
-    if u.hasAbility(EXPLOSIVE_SHOT_ID)
-      noCdOnAttackMap[u.getIndex()] = u.getAbilityCooldownRemaining(EXPLOSIVE_SHOT_ID) == 0
-
   DamageEvent.addListener() -> 
     let sunit = DamageEvent.getSource()
     let tunit = DamageEvent.getTarget()
     
     // Spell must be triggered only if there was no cooldown on spell, when attack started.
-    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(EXPLOSIVE_SHOT_ID) and noCdOnAttackMap[sunit.getIndex()]
-      and tunit.isEnemyOf(sunit) and tunit.isAlive()
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(EXPLOSIVE_SHOT_ID) 
+      and sunit.getAbilityCooldownRemaining(EXPLOSIVE_SHOT_ID) == 0
+      and tunit.isValidCreepTarget()
 
       let lvl = sunit.getAbilityLevel(EXPLOSIVE_SHOT_ID)
       let explosionDamage = DamageEvent.getAmount() * EXPLOSION_DAMAGE.run(lvl)
