@@ -38,11 +38,9 @@ init
         if u.getOwner() == ENEMY_PLAYER and u.isAlive()
           InstantDummyCaster.castTarget(caster.getOwner(), STASIS_TOTEM_STUN_ID, 1, OrderIds.thunderbolt, u)
           caster.dealMagicalDamage(u, totemDamage)
+      if cb.isLast()
+        totem.destr()
         
-    doAfter(totemDuration) -> 
-      totem.destr()
-
-
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator("Places a totem, which stuns enemies around it and damages them.")
   new ChannelAbilityPreset(STASIS_TOTEM_ID, NORMAL_SPELL_LEVELS, true, tooltip)
