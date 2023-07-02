@@ -138,7 +138,7 @@ public class GodOfNature extends Boss
             groundEffect.destr()
             
             let poisonCloudProj = new ProjectileRepeater(affectedUnitPos.withHeightMap(), 168, ENEMY_PLAYER, angle(0), Units.plagueCloud, 20) // Deals damage each 0.6 second
-            ..setTimed(15)
+            ..setTimed(18)
             ..onHit() (unit target) ->
               if target.isValidPlayerTarget()
                 actor.dealMagicalDamage(target, 75)
@@ -176,9 +176,10 @@ public class GodOfNature extends Boss
   function castRoots(int variation)
     let baseCircleAOE = 100
     let radiusAOE = 200 * variation
+    let numberOfCircles = 4
     
-    doPeriodicallyCounted(0.2, 3) (CallbackCounted cb) ->
-      let currentRadiusAOE = radiusAOE + 300 * (3 - cb.getCount())
+    doPeriodicallyCounted(0.2, numberOfCircles) (CallbackCounted cb) ->
+      let currentRadiusAOE = radiusAOE + 300 * (numberOfCircles - cb.getCount())
       let circleNumber = (PI / Asin(baseCircleAOE / currentRadiusAOE)).round()
       let circleAngles = 360 / circleNumber
     
