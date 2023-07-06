@@ -22,7 +22,7 @@ init
         flashEffect(Abilities.purificationTarget, caster.getPos())
         var count = new Reference<int>(0)
         forUnitsOfPlayer(owner) (unit u) ->
-            if u.getTypeId() == CRABLING_ID
+            if u.getTypeId() == CRABLING_ID and u.isAlive()
                 flashEffect(Abilities.waterElementalMissile, u.getPos())
                 u.kill()
                 count.val++
