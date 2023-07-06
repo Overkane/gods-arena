@@ -274,7 +274,7 @@ public class GodOfNature extends Boss
           ENEMY_PLAYER, (0).asAngleDegrees(), projectileModel)
 
         movingProjectile
-        ..setTarget(actor.getPos().withHeightMap(), 4. + GetRandomReal(2, 4))
+        ..setTarget(actor.getPos().withHeightMap(), 5. + GetRandomReal(3, 4))
         ..setRanged(distance)
         ..onHit() (unit target) ->
           if isHealingWisp
