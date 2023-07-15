@@ -7,7 +7,7 @@ import AbilityDefinitionExtension
 
 public constant CRAB_STAMPEDE_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure DAMAGE_PER_CRAWFISH = lvl -> 100. * lvl
+constant RealLevelClosure DAMAGE_PER_CRAWFISH = lvl -> 125. * lvl
 constant IntLevelClosure CRAWFISH_PER_SECOND = lvl -> 2 + 2 * lvl
 constant RealLevelClosure DURATION = lvl -> 5. + lvl * 3
 
