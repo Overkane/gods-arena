@@ -12,11 +12,17 @@ public class SummonEntity extends UnitEntity
     ..setAnimation("birth")
     ..queueAnimation("stand")
 
-    let casterSP = summoner.getStat(CustomUnitStats.SPELL_POWER)
-    let bonusDamage = actor.getBaseDamage(0) * casterSP
-    let bonusAS = 2 * (1 + casterSP) / actor.getAttackCooldown(0)
-    let bonusHP = actor.getMaxHP() * casterSP
-    let bonusArmor = actor.getArmor() * casterSP
+    var casterPower = summoner.getStat(CustomUnitStats.SPELL_POWER)
+    
+    if summoner.hasStat(CustomUnitStats.SPELL_CRIT_CHANCE) and summoner.hasStat(CustomUnitStats.SPELL_CRIT_POWER)
+      let spellCritChance = summoner.getStat(CustomUnitStats.SPELL_CRIT_CHANCE)
+      if spellCritChance > GetRandomReal(0, 1)
+        casterPower = casterPower + casterPower * summoner.getStat(CustomUnitStats.SPELL_CRIT_POWER)
+    
+    let bonusDamage = actor.getBaseDamage(0) * casterPower
+    let bonusAS = 2 * (1 + casterPower) / actor.getAttackCooldown(0)
+    let bonusHP = actor.getMaxHP() * casterPower
+    let bonusArmor = actor.getArmor() * casterPower
 
     actor
     ..addBonus(Bonus.DAMAGE, bonusDamage)
@@ -25,7 +31,7 @@ public class SummonEntity extends UnitEntity
     ..addBonus(Bonus.ARMOR, bonusArmor)
 
     if actor.getMaxMana() != 0
-      let bonusMP = actor.getMaxMana() * casterSP
+      let bonusMP = actor.getMaxMana() * casterPower
       actor.addBonus(Bonus.MANA, bonusMP)
 
   override function update()

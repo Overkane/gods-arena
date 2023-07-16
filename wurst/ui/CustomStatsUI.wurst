@@ -75,10 +75,10 @@ public function createCustomStatsUI(player p)
   ..add(baseIconFrame(Icons.bTNScourgeBuild, "Spell Power", "Your {0} abilities will deal bonus damage, based on the original value multiplied by this value. Affects {1} spells. Improves stats most of the summons.".format(MAGICAL_DAMAGE_STRING, HEALING_STRING)))..padTop(0.002)
   ..add(customStatFrames.get(CustomUnitStats.SPELL_POWER))..padTop(0.002)
   
-  ..add(baseIconFrame(Icons.bTNWispSplode, "Spell Crit Power", "How much additional damage you will deal with {0} crit. Affects {1} spells.".format(MAGICAL_DAMAGE_STRING, HEALING_STRING)))..padTop(0.002)
+  ..add(baseIconFrame(Icons.bTNWispSplode, "Spell Crit Power", "How much additional damage you will deal with {0} crit. Affects {1} spells. Also affects how much more stats will summon gain on critical summoning based on spell power.".format(MAGICAL_DAMAGE_STRING, HEALING_STRING)))..padTop(0.002)
   ..add(customStatFrames.get(CustomUnitStats.SPELL_CRIT_POWER))..padTop(0.002)
   
-  ..add(baseIconFrame(Icons.bTNPriestMaster, "Spell Crit Chance", "Chance to deal critical damage with {0} abilities. Affects {1} spells.".format(MAGICAL_DAMAGE_STRING, HEALING_STRING)))..padTop(0.002)
+  ..add(baseIconFrame(Icons.bTNPriestMaster, "Spell Crit Chance", "Chance to deal critical damage with {0} abilities. Affects {1} spells. Also chance for critical summoning.".format(MAGICAL_DAMAGE_STRING, HEALING_STRING)))..padTop(0.002)
   ..add(customStatFrames.get(CustomUnitStats.SPELL_CRIT_CHANCE))..padTop(0.002)
   
   ..add(baseIconFrame(Icons.bTNWellSpring, "Spell Lifesteal", "Which portion of {0} damage you will restore as health.".format(MAGICAL_DAMAGE_STRING)))..padTop(0.002)
