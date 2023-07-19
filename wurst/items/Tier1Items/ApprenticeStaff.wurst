@@ -9,13 +9,12 @@ import TooltipFactory
 import MapIcons
 import CustomStatSystem
 import ObjectIds
-import CooldownGroups
 
 constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
 constant FIREBOLT_DAMAGE = 200
 constant FIREBOLT_STUN = 1.
 constant SPELL_POWER = 10.
-constant MANA_COST = 75
+constant MANA_COST = 90
 constant COOLDOWN = 16
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
@@ -32,7 +31,7 @@ public constant APPRENTICE_STAFF_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.MANAREGEN, 0.75)
 ..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
 ..setAbilities(commaList(FIREBOLT_ID))
-..setCooldownGroup(FIREBOLT_COOLDOWN_GROUP_ID.toRawCode())
+..setCooldownGroup(FIREBOLT_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 

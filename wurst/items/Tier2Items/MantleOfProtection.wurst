@@ -1,7 +1,7 @@
 package MantleOfProtection
 import RecipeItem
 import RobeOfTheMage
-import SimpleArmor
+import RingOfProtection
 import TooltipFactory
 import CooldownGroups
 import ChannelAbilityPreset
@@ -11,12 +11,12 @@ import ManaShieldBuff
 constant MANA_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
 constant MANA_SHIELD_ABSORB_PER_MANA = 1
 constant MANA_SHIELD_DURATION = 15
-constant MANA_COST = 250
-constant COOLDOWN = 30
+constant MANA_COST = 175
+constant COOLDOWN = 60
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Shield", 
-  "applies a mana shield on caster, which durability is equal to caster's current mana before mana cost substraction * {0}. ".format(MANA_SHIELD_ABSORB_PER_MANA.toString())
+  "applies a mana shield on caster, which durability is equal to caster's current mana before mana cost substraction * {0}. ".format(MANA_SHIELD_ABSORB_PER_MANA.color(COLOR_GOLD_STR))
     + getDurationString(MANA_SHIELD_DURATION),
     COOLDOWN, MANA_COST)
 
@@ -24,19 +24,17 @@ public constant MANTLE_OF_PROTECTION_ITEM = compiletime(new RecipeItem()
 ..setName("Mantle of Protection")
 ..setInterfaceIcon(Icons.bTNMantleOfIntelligence)
 ..setActivelyUsed(true)
-..addBonus(Bonus.LIFE, 250)
-..addBonus(Bonus.LIFEREGEN, 3)
 ..addBonus(Bonus.ARMOR, 3)
-..addBonus(Bonus.MANA, 250)
-..addBonus(Bonus.MANAREGEN, 1.2)
+..addBonus(Bonus.MANA, 400)
+..addBonus(Bonus.MANAREGEN, 2)
 ..setAbilities(commaList(MANA_SHIELD_ID))
 ..setCooldownGroup(MANA_SHIELD_COOLDOWN_GROUP_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant MANTLE_OF_PROTECTION_RECIPE = new ItemRecipe()
-..gold(200)
-..setRequiredItems(ROBE_OF_THE_MAGE_ITEM, SIMPLE_ARMOR_ITEM)
+..gold(480)
+..setRequiredItems(ROBE_OF_THE_MAGE_ITEM, RING_OF_PROTECTION_ITEM)
 ..setResultItem(MANTLE_OF_PROTECTION_ITEM)
 
 init

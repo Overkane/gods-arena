@@ -15,6 +15,6 @@ public constant SIMPLE_ARMOR_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant SIMPLE_ARMOR_RECIPE= new ItemRecipe()
-..gold(80)
+..gold(90)
 ..setRequiredItems(VITALITY_STONE_ITEM, RING_OF_REGENERATION_ITEM, RING_OF_PROTECTION_ITEM)
 ..setResultItem(SIMPLE_ARMOR_ITEM)

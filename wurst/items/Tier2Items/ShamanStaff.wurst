@@ -9,11 +9,12 @@ import ApprenticeStaff
 import ShamanClaws
 import TooltipFactory
 import ItemDefinitionExtension
+import CustomStatSystem
 
 constant HEALING_WARD_ID = compiletime(ABIL_ID_GEN.next())
 constant HEALING_WARD_UNIT_ID = compiletime(UNIT_ID_GEN.next())
 constant HEALING_WARD_AURA_ID = compiletime(UNIT_ID_GEN.next())
-constant HEALING_WARD_PERC_HEAL = 1
+constant HEALING_WARD_PERC_HEAL = 3
 constant HEALING_WARD_DURATION = 15
 constant MANA_COST = 125
 constant COOLDOWN = 65
@@ -32,12 +33,13 @@ public constant SHAMAN_STAFF_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.ATTACKSPEED, 10)
 ..addBonus(Bonus.INTELLIGENCE, 15)
 ..addBonus(Bonus.MANAREGEN, 1.5)
+..addCustomStat(CustomUnitStats.SPELL_POWER, 15.)
 ..setAbilityWithCooldownGroup(HEALING_WARD_ID)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant SHAMAN_STAFF_RECIPE = new ItemRecipe()
-..gold(230)
+..gold(615)
 ..setRequiredItems(APPRENTICE_STAFF_ITEM, SHAMAN_CLAWS_ITEM)
 ..setResultItem(SHAMAN_STAFF_ITEM)
 

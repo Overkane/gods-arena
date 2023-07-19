@@ -5,17 +5,19 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ObjectIds
 import TooltipFactory
-import CustomStatSystem
 import NinjaCloak
-import PhaseBoots
-
-constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
-constant MS_BONUS = 55
+import GlovesOfHaste
+import IronSword
+import DamageSystem
+import CustomHeal
 
 constant PHASE_STEP_ID = compiletime(ABIL_ID_GEN.next())
 constant PHASE_STEP_DURATION = 5
 constant MANA_COST = 25
 constant COOLDOWN = 18
+
+constant EVASION_HEALING_ID = compiletime(ABIL_ID_GEN.next())
+constant EVASION_HEALING = 0.25
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Phase Step", 
@@ -23,29 +25,39 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
     + getDurationString(PHASE_STEP_DURATION),
     COOLDOWN, MANA_COST)
 
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Evasion Healing", 
+  "evasion heals {0} of damage evaded.".format((EVASION_HEALING * 100).percRound().color(COLOR_GOLD_STR))
+    + " Doesn't stack.".color(IMPORTANT_COLOR))
+
 public constant CLOAK_OF_SHADOWS_ITEM = compiletime(new RecipeItem()
 ..setName("Cloak of Shadows")
 ..setInterfaceIcon(MapIcons.bTNCloakOfShadows)
 ..setActivelyUsed(true)
 ..addBonus(Bonus.DAMAGE, 15)
 ..addBonus(Bonus.ATTACKSPEED, 10)
-..addBonus(Bonus.LIFE, 300)
+..addBonus(Bonus.LIFE, 400)
 ..addBonus(Bonus.AGILITY, 15)
 ..addCustomStat(CustomUnitStats.EVASION, 15)
-..setAbilities(commaList(PHASE_STEP_ID, BONUS_SPEED_ID))
+..setAbilities(commaList(PHASE_STEP_ID))
 ..setCooldownGroup(PHASE_STEP_ID.toRawCode())
-..generateTooltip(ABIL_TOOLTIP)
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant CLOAK_OF_SHADOWS_RECIPE = new ItemRecipe()
-..gold(425)
-..setRequiredItems(NINJA_CLOAK_ITEM, PHASE_BOOTS_ITEM)
+..gold(545)
+..setRequiredItems(IRON_SWORD_ITEM, GLOVES_OF_HASTE_ITEM, NINJA_CLOAK_ITEM)
 ..setResultItem(CLOAK_OF_SHADOWS_ITEM)
 
-@compiletime function genItemAbils()
-  new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
-  ..setMovementSpeedBonus(1, MS_BONUS)
+init
+  OnEvade.add() (unit u, real damageEvaded) ->
+    if u.hasItemById(CLOAK_OF_SHADOWS_ITEM.getNewId())
+      let healingAmount = damageEvaded * EVASION_HEALING
 
+      if healingAmount > 1
+        neutralHeal(u, healingAmount)
+
+@compiletime function genItemAbils()
   new AbilityDefinitionWindWalk(PHASE_STEP_ID)
   ..setTransitionTime(1, 5)
   ..setMovementSpeedIncrease(1, 0)

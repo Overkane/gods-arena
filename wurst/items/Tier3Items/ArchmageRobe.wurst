@@ -20,7 +20,7 @@ constant SPELL_LIFESTEAL_VALUE = 20.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Mana Shield", 
-  "applies a mana shield on target, which durability is equal to caster's current mana before mana cost substraction * {0}. ".format(MANA_SHIELD_ABSORB_PER_MANA.toString())
+  "applies a mana shield on target, which durability is equal to caster's current mana before mana cost substraction * {0}. ".format(MANA_SHIELD_ABSORB_PER_MANA.color(COLOR_GOLD_STR))
     + getDurationString(MANA_SHIELD_DURATION),
     COOLDOWN, MANA_COST)
 
@@ -28,12 +28,10 @@ public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
 ..setName("Archmage Robe")
 ..setInterfaceIcon(MapIcons.bTNSuperiorMageRobe)
 ..setActivelyUsed(true)
-..addBonus(Bonus.LIFE, 350)
-..addBonus(Bonus.LIFEREGEN, 4)
 ..addBonus(Bonus.ARMOR, 6)
-..addBonus(Bonus.MANA, 350)
-..addBonus(Bonus.MANAREGEN, 2)
-..addBonus(Bonus.INTELLIGENCE, 15)
+..addBonus(Bonus.MANA, 650)
+..addBonus(Bonus.MANAREGEN, 3.5)
+..addBonus(Bonus.INTELLIGENCE, 20)
 ..addCustomStat(CustomUnitStats.SPELL_LIFESTEAL, SPELL_LIFESTEAL_VALUE)
 ..setAbilities(commaList(MANA_SHIELD_ID))
 ..setCooldownGroup(MANA_SHIELD_COOLDOWN_GROUP_ID.toRawCode())
@@ -41,8 +39,8 @@ public constant ARCHMAGE_ROBE_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant ARCHMAGE_ROBE_RECIPE = new ItemRecipe()
-..gold(390)
-..setRequiredItems(MANTLE_OF_PROTECTION_ITEM, RING_OF_SPELL_LIFESTEAL_ITEM)
+..gold(935)
+..setRequiredItems(RING_OF_SPELL_LIFESTEAL_ITEM, MANTLE_OF_PROTECTION_ITEM)
 ..setResultItem(ARCHMAGE_ROBE_ITEM)
 
 init

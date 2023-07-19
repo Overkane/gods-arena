@@ -1,0 +1,31 @@
+package LeechBuff
+import public PresetBuffs
+import DamageSystem
+import MapIcons
+import CustomHeal
+
+constant buffTuple = compiletime(createDummyBuffObject("Leech", "Periodic damage.", MapIcons.bTNsacrificialdagger))
+
+public class LeechBuff extends NormalBuff
+  unit source
+  real damagePerSec
+  lightning lightEffect
+
+  construct(real dur, unit source, real damagePerSec)
+    super(dur, buffTuple)
+    this.source = source
+    this.damagePerSec = damagePerSec
+
+  override function onApply()
+    lightEffect = addLightning(LIGHTNING_DRAIN_LIFE, false, source.getPos(), target.getPos())
+
+  override function onEnd()
+    lightEffect.destr()
+
+  override function update()
+    super.update()
+    source
+    ..dealMagicalDamage(target, damagePerSec)
+    .healTarget(source, damagePerSec)
+
+    lightEffect.move(false, source.getPos(), target.getPos())

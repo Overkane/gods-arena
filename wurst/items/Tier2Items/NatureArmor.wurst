@@ -4,50 +4,70 @@ import TooltipFactory
 import MapIcons
 import ChannelAbilityPreset
 import ClosureEvents
-import NatureArmorBuff
+import DummyStatCaster
+import ClosureForGroups
+import OrderIds
+import GameConstants
+import GeneralFunctions
+import CustomStatSystem
 import HeartAmulet
 import RingOfRecovery
-import SerenityBoots
+import FoliantOfWizardry
+import BeltOfStrength
 
-constant BONUS_SPEED_ID = compiletime(ABIL_ID_GEN.next())
-constant MS_BONUS = 30
+constant MASS_ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
+constant MASS_ENTANGLE_DAMAGE_PER_SEC = 150.
+constant MASS_ENTANGLE_DURATION = 3.
+constant MASS_ENTANGLE_AOE = 300.
+constant MASS_ENTANGLE_MANA_COST = 125
+constant MASS_ENTANGLE_COOLDOWN = 70
 
-constant NOURISH_ID = compiletime(ABIL_ID_GEN.next())
-constant NOURISH_LIFEREGEN = 80.
-constant ROOT_DURATION = 6.
-constant MANA_COST = 50
-constant COOLDOWN = 40
+constant ENTANGLE_ID = compiletime(ABIL_ID_GEN.next())
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
-  "Nourish", 
-  "on activation roots the caster to the ground and increases their hp regeneration by " + NOURISH_LIFEREGEN.round().color(COLOR_GOLD_STR) + ". "
-    + getDurationString(ROOT_DURATION.round()),
-    COOLDOWN, MANA_COST)
+  "Mass Entangle", 
+  "entangles all enemies in {0} radius from the owner, dealing {1} damage per second. ".format(
+      MASS_ENTANGLE_AOE.round().color(COLOR_GOLD_STR), MASS_ENTANGLE_DAMAGE_PER_SEC.color(COLOR_GOLD_STR)
+    )
+    + getDurationString(MASS_ENTANGLE_DURATION.round()),
+    MASS_ENTANGLE_COOLDOWN, MASS_ENTANGLE_MANA_COST)
 
 public constant NATURE_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Nature Armor")
 ..setInterfaceIcon(MapIcons.bTNNatureArmor)
 ..setActivelyUsed(true)
+..addBonus(Bonus.STRENGTH, 15)
+..addBonus(Bonus.INTELLIGENCE, 15)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, 15)
+..addCustomStat(CustomUnitStats.SPELL_POWER, 15)
 ..addBonus(Bonus.LIFE, 1000)
 ..addBonus(Bonus.LIFEREGEN, 15)
-..setAbilities(commaList(NOURISH_ID, BONUS_SPEED_ID))
-..setCooldownGroup(NOURISH_ID.toRawCode())
-..generateTooltip(("+" + MS_BONUS.toString()).color(COLOR_GOLD_STR) + " Movespeed".color(UTILITY_COLOR_STRING) + "\n\n" + ABIL_TOOLTIP)
+..setAbilities(commaList(MASS_ENTANGLE_ID))
+..setCooldownGroup(MASS_ENTANGLE_ID.toRawCode())
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant NATURE_ARMOR_RECIPE = new ItemRecipe()
-..gold(590)
-..setRequiredItems(HEART_AMULET_ITEM, RING_OF_RECOVERY_ITEM, SERENITY_BOOTS_ITEM)
+..gold(1025)
+..setRequiredItems(HEART_AMULET_ITEM, RING_OF_RECOVERY_ITEM, BELT_OF_STRENGTH_ITEM, FOLIANT_OF_WIZ_ITEM)
 ..setResultItem(NATURE_ARMOR_ITEM)
 
 init
-  EventListener.onCast(NOURISH_ID) (unit caster) ->
-    new NatureArmorBuff(ROOT_DURATION, NOURISH_LIFEREGEN).apply(caster)
+  EventListener.onCast(MASS_ENTANGLE_ID) (unit caster) ->
+    forUnitsInRange(caster.getPos(), MASS_ENTANGLE_AOE) (unit u) ->
+      if u.isValidCreepTarget()
+        new DummyStatCaster()
+        ..caster(caster)
+        ..castTarget(ENTANGLE_ID, 1, OrderIds.entanglingroots, u)
 
 @compiletime function gen()
-  new ChannelAbilityPreset(NOURISH_ID, 1, true)
-  ..setManaCost(1, MANA_COST)
-  ..setCooldown(1, COOLDOWN.toReal())
+  new ChannelAbilityPreset(MASS_ENTANGLE_ID, 1, true)
+  ..setManaCost(1, MASS_ENTANGLE_MANA_COST)
+  ..setCooldown(1, MASS_ENTANGLE_COOLDOWN.toReal())
 
-  new AbilityDefinitionMoveSpeedBonus(BONUS_SPEED_ID)
-  ..setMovementSpeedBonus(1, MS_BONUS)
+  new AbilityDefinitionEntanglingRootscreep(ENTANGLE_ID)
+  ..setLevels(1)
+  ..setDummyAbility()
+  ..setDamageperSecond(1, MASS_ENTANGLE_DAMAGE_PER_SEC)
+  ..setDurationNormal(1, MASS_ENTANGLE_DURATION)
+  ..setDurationHero(1, getHeroStunDuration(MASS_ENTANGLE_DURATION))

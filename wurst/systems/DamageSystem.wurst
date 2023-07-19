@@ -7,6 +7,7 @@ import GameConstants
 import CustomHeal
 import ObjEditingNatives
 import TooltipFactory
+import LinkedList
 
 public class DamageTypeTooltips
   static constant StringLevelClosure physical = lvl -> "Physical".color(PHYSICAL_COLOR_STRING)
@@ -22,10 +23,19 @@ public enum DamageEvents
   SHIELD // Damage reduced by shield
   FINAL // Final damage
 
+constant SPLASH_ELEMENT = new DamageElement("Splash", PHYSICAL_COLOR)
+
 // Damage ignores magic immunity, but reduced by armor
 public function unit.dealPhysicalDamage(unit target, real amount)
   if target.isAlive()
     DamageEvent.setNextDamageFromCode()
+    this.damageTarget(target, amount, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
+
+// Damage ignores magic immunity, but reduced by armor
+public function unit.dealSplashPhysicalDamage(unit target, real amount)
+  if target.isAlive()
+    DamageEvent.setNextDamageFromCode()
+    DamageEvent.setNextDamageElement(SPLASH_ELEMENT)
     this.damageTarget(target, amount, false, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
 
 // Damage ignores armor, but reduced by magic resistance
@@ -53,6 +63,17 @@ public function isPureDamage() returns bool
   return DamageEvent.getAttackType() == ATTACK_TYPE_CHAOS and DamageEvent.getDamageType() == DAMAGE_TYPE_UNIVERSAL
     and DamageEvent.getType() == DamageType.CODE
 
+public abstract class OnEvade
+  static constant listenerList = new LinkedList<OnEvade>
+
+  abstract function fire(unit u, real damageEvaded)
+
+  static function add(OnEvade listener)
+    listenerList.add(listener)
+
+  static function execute(unit u, real damageEvaded)
+    for listener in listenerList
+      listener.fire(u, damageEvaded)
 
 init
   DamageEvent.addUnreducedListener(DamageEvents.EVASION castTo int) ->
@@ -65,13 +86,14 @@ init
       if tUnitEvasion > GetRandomReal(0, 1)
         DamageEvent.abortCurrent()
         createMissTextTag(tunit)
+        OnEvade.execute(tunit, DamageEvent.getAmount())
 
 
   DamageEvent.addUnreducedListener(DamageEvents.RELATIVE castTo int) ->
     let sunit = DamageEvent.getSource()
     var damage = 0.
 
-    if isPhysicalDamage() and sunit.hasStat(CustomUnitStats.ATTACK_POWER)
+    if isPhysicalDamage() and sunit.hasStat(CustomUnitStats.ATTACK_POWER) and DamageEvent.getElement() != SPLASH_ELEMENT
       damage = DamageEvent.getAmount() * sunit.getStat(CustomUnitStats.ATTACK_POWER)
 
     else if isMagicalDamage() and sunit.hasStat(CustomUnitStats.SPELL_POWER)
@@ -86,7 +108,7 @@ init
     var damage = 0.
 
     // Bonus attack damage applies only for default attacks.
-    if damageType == DamageType.ATTACK and sunit.hasStat(CustomUnitStats.BONUS_ATTACK_DAMAGE)
+    if damageType == DamageType.ATTACK and sunit.hasStat(CustomUnitStats.BONUS_ATTACK_DAMAGE) and DamageEvent.getElement() != SPLASH_ELEMENT
       damage = sunit.getStat(CustomUnitStats.BONUS_ATTACK_DAMAGE)
 
     else if isMagicalDamage() and sunit.hasStat(CustomUnitStats.BONUS_SPELL_DAMAGE)
@@ -100,6 +122,8 @@ init
     var damage = 0.
 
     if isPhysicalDamage() and sunit.hasStat(CustomUnitStats.ATTACK_CRIT_CHANCE) and sunit.hasStat(CustomUnitStats.ATTACK_CRIT_POWER)
+      and DamageEvent.getElement() != SPLASH_ELEMENT
+      
       let attackCritChance = sunit.getStat(CustomUnitStats.ATTACK_CRIT_CHANCE)
       
       if attackCritChance > GetRandomReal(0, 1)

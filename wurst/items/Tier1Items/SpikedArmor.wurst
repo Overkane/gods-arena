@@ -27,7 +27,7 @@ public constant SPIKED_ARMOR_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant SPIKED_ARMOR_RECIPE = new ItemRecipe()
-..gold(225)
+..gold(230)
 ..setRequiredItems(CLAWS_OF_ATTACK_ITEM, VITALITY_STONE_ITEM, RING_OF_PROTECTION_ITEM)
 ..setResultItem(SPIKED_ARMOR_ITEM)
 

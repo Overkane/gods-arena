@@ -3,10 +3,11 @@ import Icons
 import RecipeItem
 import Emerald
 import VitalityStone
+import TalismanOfEvasion
 import TooltipFactory
 import CustomStatSystem
 
-constant EVASION_CHANCE = 5.
+constant EVASION_CHANCE = 6.
 
 constant ABIL_TOOLTIP = ""
 
@@ -20,6 +21,6 @@ public constant NINJA_CLOAK_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant NINJA_CLOAK_RECIPE = new ItemRecipe()
-..gold(85)
-..setRequiredItems(EMERALD_ITEM, VITALITY_STONE_ITEM)
+..gold(155)
+..setRequiredItems(VITALITY_STONE_ITEM, TALISMA_OF_EVASION_ITEM, EMERALD_ITEM)
 ..setResultItem(NINJA_CLOAK_ITEM)

@@ -1,6 +1,5 @@
 package PlatedGauntlets
 import RecipeItem
-import PowerGloves
 import RubyAxe
 import HelmOfProtection
 import MapIcons
@@ -33,7 +32,7 @@ public constant PLATED_GAUNTLETS_ITEM = compiletime(new RecipeItem()
 
 public constant PLATED_GAUNTLETS_RECIPE = new ItemRecipe()
 ..gold(95)
-..setRequiredItems(POWER_GLOVES_ITEM, HELM_OF_PROTECTION_ITEM, RUBY_AXE_ITEM)
+..setRequiredItems(HELM_OF_PROTECTION_ITEM, RUBY_AXE_ITEM)
 ..setResultItem(PLATED_GAUNTLETS_ITEM)
 
 @compiletime function gen()

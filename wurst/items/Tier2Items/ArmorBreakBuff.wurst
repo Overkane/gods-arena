@@ -1,0 +1,19 @@
+package ArmorBreakBuff
+import public PresetBuffs
+import MapIcons
+import BonusHandler
+
+constant buffTuple = compiletime(createDummyBuffObject("Armor Break", "Armor is decreased.", MapIcons.bTNOrbOfCorruption))
+
+public class ArmorBreakBuff extends NormalBuff
+  real armorDecrease
+
+  construct(real dur, real armorDecrease)
+    super(dur, buffTuple)
+    this.armorDecrease = armorDecrease
+
+  override function onApply()
+    target.addBonus(Bonus.ARMOR, -armorDecrease)
+
+  override function onEnd()
+    target.addBonus(Bonus.ARMOR, armorDecrease)

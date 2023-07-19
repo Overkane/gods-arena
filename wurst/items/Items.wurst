@@ -13,7 +13,6 @@ import public StarPotion
 import public Tomes
 
 // Basic items
-import public BootsOfSpeed
 import public ClawsOfAttack
 import public Emerald
 import public GlovesOfHaste
@@ -33,23 +32,23 @@ import public RingOfRegeneration
 import public Ruby
 import public RunedBracers
 import public Sapphire
+import public Spear
 import public SpiritMask
+import public TalismanOfEvasion
 import public VitalityStone
 import public WoodenStaff
 
 // Tier 1 items
 import public ApprenticeStaff
+import public BeltOfStrength
+import public Bloodsucker
 import public ElementalStone
 import public Fury
-import public ManaBoots
 import public NinjaCloak
-import public PhaseBoots
-import public PoisonDagger
 import public Provoker
 import public RingOfSpellLifesteal
 import public RobeOfTheMage
 import public RubyAxe
-import public SerenityBoots
 import public ShamanClaws
 import public SimpleArmor
 import public SpikedArmor
@@ -61,13 +60,17 @@ import public AdeptStaff
 import public AdvancedArmor
 import public ArcaniteSword
 import public Blockade
+import public BookOfWisdom // TODO
 import public CloakOfShadows
-import public DraculasAxe
+import public Corruptor
+import public HeavyAxe
+import public Leecher
 import public LightningShield
 import public MageKiller
 import public MagesSword
 import public MantleOfProtection
 import public NatureArmor
+import public PaladinsHammer
 import public PlatedGauntlets
 import public ShamanStaff
 import public SpellNullifier
@@ -78,8 +81,8 @@ import public FoliantOfWizardry
 
 // Tier 3 items
 import public ArchmageRobe
+import public DraculasAxe
 import public GoldenArmor
+import public OrbOfTime
 import public Striker
-import public Frostmourne
-import public Frostwrath
 import public WizardStaff

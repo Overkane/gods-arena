@@ -1,0 +1,42 @@
+package OrbOfTime
+import TooltipFactory
+import PassiveAbilityPreset
+import RecipeItem
+import StatBooster
+import ClosureEvents
+import CustomStatSystem
+
+constant COOLDOWN_REDUCTION_VALUE = 30
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Cooldown Reduction", 
+  "decreases ability cooldowns, except item ones, by {0}.".format(
+    COOLDOWN_REDUCTION_VALUE.colorPerc(COLOR_GOLD_STR))
+    + " Doesn't reduce passive ability cooldowns. Doesn't stack.".color(IMPORTANT_COLOR))
+
+public constant ORB_OF_TIME_ITEM = compiletime(new RecipeItem()
+..setName("Orb of Time")
+..setInterfaceIcon(Icons.bTNCrystalBall)
+..addBonus(Bonus.STRENGTH, 20)
+..addBonus(Bonus.AGILITY, 20)
+..addBonus(Bonus.INTELLIGENCE, 20)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, 18)
+..addCustomStat(CustomUnitStats.SPELL_POWER, 18)
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant ORB_OF_TIME_RECIPE = new ItemRecipe()
+..gold(825)
+..setRequiredItems(STAT_BOOSTER_ITEM)
+..setResultItem(ORB_OF_TIME_ITEM)
+
+init
+  EventListener.add(EVENT_PLAYER_UNIT_SPELL_FINISH) ->
+    let caster = EventData.getTriggerUnit()
+
+    if caster.hasItemById(ORB_OF_TIME_ITEM.getNewId())
+      let abilId = EventData.getSpellAbilityId()
+      let abilLvl = caster.getAbilityLevel(abilId)
+      let abilCd = caster.getAbilityCooldown(abilId, abilLvl)
+
+      caster.startAbilityCooldown(abilId, abilCd - abilCd * COOLDOWN_REDUCTION_VALUE / 100)

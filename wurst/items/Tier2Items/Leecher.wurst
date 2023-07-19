@@ -1,0 +1,72 @@
+package Leecher
+import TooltipFactory
+import PassiveAbilityPreset
+import RecipeItem
+import MapIcons
+import Bloodsucker
+import SteelSword
+import LeechBuff
+import CustomHeal
+import CustomStatSystem
+
+constant LIFESTEAL_VALUE_PER_LEVEL = 3
+
+constant LEECH_ID = compiletime(ABIL_ID_GEN.next())
+constant LEECH_DAMAGE_PER_LEVEL = 10
+constant LEECH_DURATION = 6
+constant LEECH_COOLDOWN = 20
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Life Restore", 
+  "successful basic attacks restore {0} hit points.".format(
+    ("[Hero Level] * " + LIFESTEAL_VALUE_PER_LEVEL.toString()).color(COLOR_GOLD))
+    + " Doesn't stack.".color(IMPORTANT_COLOR))
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Leech", 
+  "next successful basic attack establishes life draining connection, which damages the target for {0} damage per second and heals the item owner for the same value.".format(
+    ("[Hero Level] * " + LEECH_DAMAGE_PER_LEVEL.toString()).color(COLOR_GOLD) 
+  ) 
+    + " " + getDurationString(LEECH_DURATION),
+  LEECH_COOLDOWN)
+
+public constant LEECHER_ITEM = compiletime(new RecipeItem()
+..setName("Leecher")
+..setInterfaceIcon(MapIcons.bTNsacrificialdagger)
+..addBonus(Bonus.DAMAGE, 50)
+..addBonus(Bonus.AGILITY, 20)
+..addCustomStat(CustomUnitStats.ATTACK_CRIT_CHANCE, 10)
+..addCustomStat(CustomUnitStats.ATTACK_CRIT_POWER, 50)
+// ..onPickup((unit u) -> u.startAbilityCooldown(LEECH_ID)) // To prevent abuse with item drop-pick up, since cooldown clears.
+..setAbilities(commaList(LEECH_ID))
+..setCooldownGroup(LEECH_ID.toRawCode())
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+)..register()
+
+public constant LEECHER_RECIPE = new ItemRecipe()
+..gold(480)
+..setRequiredItems(STEEL_SWORD_ITEM, BLOODSUCKER_ITEM)
+..setResultItem(LEECHER_ITEM)
+
+init
+  DamageEvent.addListener(99) -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if DamageEvent.getType() == DamageType.ATTACK 
+      and sunit.hasItemById(LEECHER_ITEM.getNewId())
+      and not sunit.isIllusion() and sunit.isEnemyOf(tunit)
+      
+      let healValue = sunit.getLevel() * LIFESTEAL_VALUE_PER_LEVEL
+      neutralHeal(sunit, healValue.toReal())
+
+      if sunit.hasAbility(LEECH_ID) and sunit.getAbilityCooldownRemaining(LEECH_ID) == 0
+        let leechDamage = sunit.getLevel() * LEECH_DAMAGE_PER_LEVEL
+
+        new LeechBuff(LEECH_DURATION.toReal(), sunit, leechDamage * BUFF_ANIM_PERIOD).apply(tunit)
+        sunit.startAbilityCooldown(LEECH_ID)
+
+
+@compiletime function genAbility()
+  new PassiveAbilityPresetWithCD(LEECH_ID, 1)
+  ..presetCooldown(lvl -> LEECH_COOLDOWN.toReal())

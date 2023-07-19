@@ -1,0 +1,75 @@
+package DraculasAxe
+import RecipeItem
+import ClosureEvents
+import RubyAxe
+import DraculasAxeBuff
+import TooltipFactory
+import MaskOfDeath
+import MapIcons
+import ChannelAbilityPreset
+import ItemDefinitionExtension
+import HeavyAxe
+import DamageSystem
+import ClosureForGroups
+
+constant LIFESTEAL_ID = compiletime(ABIL_ID_GEN.next())
+constant BONUS_LIFESTEAL = 40.
+constant DURATION = 8.
+constant MANA_COST = 120
+constant COOLDOWN = 40
+
+constant SPLASH_VALUE = 0.35
+constant SPLASH_AOE = 250
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Bloodthirst", 
+  "Increases physical lifesteal by " + BONUS_LIFESTEAL.round().colorPerc(COLOR_GOLD_STR) + ". " 
+    + getDurationString(DURATION.round()),
+    COOLDOWN, MANA_COST)
+
+constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Cleaving Attack", 
+  "successful basic attacks deal {0} of the damage dealt to the enemies in {1} radius of the target.".format(
+    (SPLASH_VALUE * 100).percRound().color(COLOR_GOLD_STR), SPLASH_AOE.color(COLOR_GOLD_STR)
+  ) + " Lifesteal and any damage modifications don't work with this type of damage.".color(IMPORTANT_COLOR)
+    + " Works on ranged heroes.".color(POSITIVE_COLOR)
+    + " Doesn't stack.".color(IMPORTANT_COLOR))
+
+public constant DRACULAS_AXE_ITEM = compiletime(new RecipeItem()
+..setName("Dracula's Axe")
+..setInterfaceIcon(MapIcons.bTNDraculasAxe)
+..setActivelyUsed(true)
+..addBonus(Bonus.DAMAGE, 90)
+..addBonus(Bonus.STRENGTH, 30)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, 25)
+..addCustomStat(CustomUnitStats.LIFESTEAL, 21)
+..setAbilityWithCooldownGroup(LIFESTEAL_ID)
+..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
+)..register()
+
+public constant DRACULAS_AXE_RECIPE = new ItemRecipe()
+..gold(805)
+..setRequiredItems(MASK_OF_DEATH_ITEM, RUBY_AXE_ITEM, HEAVY_AXE_ITEM)
+..setResultItem(DRACULAS_AXE_ITEM)
+
+init
+  EventListener.onCast(LIFESTEAL_ID) (unit caster) ->
+    new DraculasAxeBuff(DURATION, BONUS_LIFESTEAL/100).apply(caster)
+
+  DamageEvent.addListener(99) -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if DamageEvent.getType() == DamageType.ATTACK 
+      and sunit.hasItemById(DRACULAS_AXE_ITEM.getNewId())
+      and sunit.isEnemyOf(tunit)
+      
+      let splashDamage = DamageEvent.getAmount() * SPLASH_VALUE
+      forUnitsInRange(tunit.getPos(), SPLASH_AOE.toReal()) (unit u) ->
+        if u != tunit
+          sunit.dealSplashPhysicalDamage(u, splashDamage)
+
+@compiletime function genItemAbils()
+  new ChannelAbilityPreset(LIFESTEAL_ID, 1, true)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

@@ -47,7 +47,7 @@ public constant THORNMAIL_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant THORNMAIL_RECIPE = new ItemRecipe()
-..gold(430)
+..gold(435)
 ..setRequiredItems(SPIKED_ARMOR_ITEM, PROVOKER_ITEM)
 ..setResultItem(THORNMAIL_ITEM)
 

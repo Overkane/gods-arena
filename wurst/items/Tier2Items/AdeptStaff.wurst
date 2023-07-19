@@ -8,20 +8,17 @@ import FoliantOfWizardry
 import TooltipFactory
 import CustomStatSystem
 import MapIcons
-import CooldownGroups
 
-constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
-constant FIREBOLT_DAMAGE = 350
-constant FIREBOLT_STUN = 0.5
-constant MANA_COST = 100
-constant COOLDOWN = 16
+constant BREATH_OF_FIRE_ID = compiletime(ABIL_ID_GEN.next())
+constant DAMAGE = 250
+constant MANA_COST = 125
+constant COOLDOWN = 18
 
 constant SPELL_POWER = 25.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
-  "Fire Bolt", 
-  "casts a firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
-    + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD_STR) + " seconds.",
+  "Fire Breathe", 
+  "casts a fire wave which deals " + DAMAGE.color(COLOR_GOLD_STR) + " damage.",
     COOLDOWN, MANA_COST)
 
 public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
@@ -30,21 +27,21 @@ public constant ADEPT_STAFF_ITEM = compiletime(new RecipeItem()
 ..setActivelyUsed(true)
 ..addBonus(Bonus.INTELLIGENCE, 25)
 ..addBonus(Bonus.MANAREGEN, 2)
-..setAbilities(commaList(FIREBOLT_ID))
-..setCooldownGroup(FIREBOLT_COOLDOWN_GROUP_ID.toRawCode())
+..setAbilities(commaList(BREATH_OF_FIRE_ID))
+..setCooldownGroup(BREATH_OF_FIRE_ID.toRawCode())
 ..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant ADEPT_STAFF_RECIPE = new ItemRecipe()
-..gold(265)
+..gold(285)
 ..setRequiredItems(APPRENTICE_STAFF_ITEM, FOLIANT_OF_WIZ_ITEM)
 ..setResultItem(ADEPT_STAFF_ITEM)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionFireBoltcreep(FIREBOLT_ID)
-  ..setDamage(1, FIREBOLT_DAMAGE.toReal())
-  ..setDurationNormal(1, FIREBOLT_STUN)
-  ..setDurationHero(1, FIREBOLT_STUN)
+  new AbilityDefinitionBreathofFireCreep(BREATH_OF_FIRE_ID)
+  ..setDamage(1, DAMAGE.toReal())
+  ..setDamagePerSecond(1, 0)
+  ..setMaxDamage(1, 999999)
   ..setManaCost(1, MANA_COST)
   ..setCooldown(1, COOLDOWN.toReal())

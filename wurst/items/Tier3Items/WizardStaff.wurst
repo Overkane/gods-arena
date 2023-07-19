@@ -8,20 +8,21 @@ import MagesSword
 import TooltipFactory
 import CustomStatSystem
 import MapIcons
-import CooldownGroups
 
-constant FIREBOLT_ID = compiletime(ABIL_ID_GEN.next())
-constant FIREBOLT_DAMAGE = 500
-constant FIREBOLT_STUN = 0.75
-constant MANA_COST = 125
-constant COOLDOWN = 16
+constant FLAME_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
+constant FULL_DAMAGE_PER_SEC = 80
+constant FULL_DAMAGE_PER_SEC_INTERVAL = 0.33
+constant HALF_DAMAGE_PER_SEC = 40
+constant HALF_DAMAGE_PER_SEC_INTERVAL = 1.
+constant MANA_COST = 250
+constant COOLDOWN = 32
 
 constant SPELL_POWER = 35.
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
-  "Fire Bolt", 
-  "fires firebolt which deals " + FIREBOLT_DAMAGE.color(COLOR_GOLD_STR)
-  + " damage and stuns target for " + FIREBOLT_STUN.color(COLOR_GOLD_STR) + " seconds.",
+  "Flame Strike", 
+  "casts flame strike which deals " + FULL_DAMAGE_PER_SEC.color(COLOR_GOLD_STR)
+  + " per second for first 3 seconds and then half of that damage for 6 seconds.",
   COOLDOWN, MANA_COST)
 
 public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
@@ -34,20 +35,23 @@ public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
 ..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
 ..addCustomStat(CustomUnitStats.SPELL_CRIT_CHANCE, 15)
 ..addCustomStat(CustomUnitStats.SPELL_CRIT_POWER, 60)
-..setAbilities(commaList(FIREBOLT_ID))
-..setCooldownGroup(FIREBOLT_COOLDOWN_GROUP_ID.toRawCode())
+..setAbilities(commaList(FLAME_STRIKE_ID))
+..setCooldownGroup(FLAME_STRIKE_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant WIZARD_STAFF_RECIPE = new ItemRecipe()
-..gold(665)
+..gold(465)
 ..setRequiredItems(ADEPT_STAFF_ITEM, MAGES_SWORD_ITEM)
 ..setResultItem(WIZARD_STAFF_ITEM)
 
 @compiletime function genItemAbils()
-  new AbilityDefinitionFireBoltcreep(FIREBOLT_ID)
-  ..setDamage(1, FIREBOLT_DAMAGE.toReal())
-  ..setDurationNormal(1, FIREBOLT_STUN)
-  ..setDurationHero(1, FIREBOLT_STUN)
+  new AbilityDefinitionFlameStrikeCreep(FLAME_STRIKE_ID)
+  ..setFullDamageDealt(1, FULL_DAMAGE_PER_SEC.toReal())
+  ..setFullDamageInterval(1, FULL_DAMAGE_PER_SEC_INTERVAL)
+  ..setHalfDamageDealt(1, HALF_DAMAGE_PER_SEC.toReal())
+  ..setHalfDamageInterval(1, HALF_DAMAGE_PER_SEC_INTERVAL)
+  ..setDurationNormal(1, 3) // TODO check how it works
+  ..setDurationHero(1, 6)
   ..setManaCost(1, MANA_COST)
   ..setCooldown(1, COOLDOWN.toReal())

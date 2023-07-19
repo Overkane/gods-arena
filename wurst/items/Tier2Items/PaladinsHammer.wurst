@@ -1,0 +1,47 @@
+package PaladinsHammer
+import RecipeItem
+import AbilityObjEditing
+import ObjectIdGenerator
+import ObjectIds
+import RubyAxe
+import FoliantOfWizardry
+import TooltipFactory
+import CustomStatSystem
+import MapIcons
+
+constant HOLY_LIGHT_ID = compiletime(ABIL_ID_GEN.next())
+constant HOLY_LIGHT_HEAL = 600
+constant MANA_COST = 175
+constant COOLDOWN = 23
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Holy Light", 
+  "heals alive units or damages undead ones for {0}.".format(HOLY_LIGHT_HEAL.color(COLOR_GOLD_STR)),
+    COOLDOWN, MANA_COST)
+
+public constant PALADINS_HAMMER_ITEM = compiletime(new RecipeItem()
+..setName("Paladin's Hammer")
+..setInterfaceIcon(MapIcons.bTNHammer)
+..setActivelyUsed(true)
+..addBonus(Bonus.DAMAGE, 75)
+..addBonus(Bonus.STRENGTH, 15)
+..addBonus(Bonus.INTELLIGENCE, 15)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, 15.)
+..addCustomStat(CustomUnitStats.SPELL_POWER, 15.)
+..setAbilities(commaList(HOLY_LIGHT_ID))
+..setCooldownGroup(HOLY_LIGHT_ID.toRawCode())
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant PALADINS_HAMMER_RECIPE = new ItemRecipe()
+..gold(920)
+..setRequiredItems(RUBY_AXE_ITEM, FOLIANT_OF_WIZ_ITEM)
+..setResultItem(PALADINS_HAMMER_ITEM)
+
+@compiletime function genItemAbils()
+  new AbilityDefinitionPaladinHolyLight(HOLY_LIGHT_ID)
+  ..setTargetsAllowed(1, commaList(TargetsAllowed.air, TargetsAllowed.ground,
+    TargetsAllowed.vulnerable, TargetsAllowed.organic, TargetsAllowed.self))
+  ..setAmountHealedDamaged(1, HOLY_LIGHT_HEAL.toReal())
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())

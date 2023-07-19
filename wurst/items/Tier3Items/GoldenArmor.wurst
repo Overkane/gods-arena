@@ -3,6 +3,16 @@ import Icons
 import RecipeItem
 import AdvancedArmor
 import ElementalStone
+import TooltipFactory
+import DamageSystem
+
+constant DAMAGE_REDUCTION = 0.2
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Golden Protection", 
+  "decreases all damage taken by {0}. Applies after all resists were calculated.".format(
+    (DAMAGE_REDUCTION * 100).percRound().color(COLOR_GOLD_STR))
+    + " Doesn't stack.".color(IMPORTANT_COLOR))
 
 public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Golden Armor")
@@ -13,10 +23,17 @@ public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
 ..addBonus(Bonus.STRENGTH, 15)
 ..addBonus(Bonus.AGILITY, 15)
 ..addBonus(Bonus.INTELLIGENCE, 15)
-..generateTooltip("")
+..generateTooltip(ABIL_TOOLTIP)
 )..register()
 
 public constant GOLDEN_ARMOR_RECIPE = new ItemRecipe()
-..gold(540)
+..gold(730)
 ..setRequiredItems(ELEMENTAL_STONE_ITEM, ADVANCED_ARMOR_ITEM)
 ..setResultItem(GOLDEN_ARMOR_ITEM)
+
+init
+  DamageEvent.addListener() -> 
+    let tunit = DamageEvent.getTarget()
+
+    if tunit.hasItemById(GOLDEN_ARMOR_ITEM.getNewId())
+      DamageEvent.setAmount(DamageEvent.getAmount() * (1 - DAMAGE_REDUCTION))

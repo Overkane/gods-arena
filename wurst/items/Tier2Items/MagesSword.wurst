@@ -19,6 +19,6 @@ public constant MAGES_SWORD_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant MAGES_SWORD_RECIPE = new ItemRecipe()
-..gold(175)
+..gold(170)
 ..setRequiredItems(SAPPHIRE_ITEM, STEEL_SWORD_ITEM)
 ..setResultItem(MAGES_SWORD_ITEM)

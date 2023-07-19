@@ -1,0 +1,25 @@
+package BeltOfStrength
+import MapIcons
+import RecipeItem
+import TooltipFactory
+import CustomStatSystem
+import WoodenStaff
+import Ruby
+
+constant ATTACK_POWER_VALUE = 15.
+
+constant ABIL_TOOLTIP = ""
+
+public constant BELT_OF_STRENGTH_ITEM = compiletime(new RecipeItem()
+..setName("Belt of Strength")
+..setInterfaceIcon(MapIcons.bTNBelt)
+..addBonus(Bonus.STRENGTH, 10)
+..addCustomStat(CustomUnitStats.ATTACK_POWER, ATTACK_POWER_VALUE)
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant BELT_OF_STRENGTH_RECIPE = new ItemRecipe()
+..gold(310)
+..setRequiredItems(WOODEN_STAFF_ITEM, RUBY_ITEM)
+..setResultItem(BELT_OF_STRENGTH_ITEM)
+

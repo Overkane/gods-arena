@@ -1,0 +1,15 @@
+package TalismanOfEvasion
+import Icons
+import RecipeItem
+import TooltipFactory
+import CustomStatSystem
+
+constant EVASION_CHANCE = 4.
+
+public constant TALISMA_OF_EVASION_ITEM = compiletime(new RecipeItem()
+..setName("Talisman of Evasion")
+..setInterfaceIcon(Icons.bTNTalisman)
+..setGoldCost(80)
+..addCustomStat(CustomUnitStats.EVASION, EVASION_CHANCE)
+..generateTooltip("")
+)..register()

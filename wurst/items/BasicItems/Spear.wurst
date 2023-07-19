@@ -1,0 +1,33 @@
+package Spear
+import TooltipFactory
+import PassiveAbilityPreset
+import RecipeItem
+import ArmorBreakWeakBuff
+
+constant ARMOR_BREAK_VALUE = 2.
+constant ARMOR_BREAK_DURATION = 8.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Weak Armor Break", 
+  "successful basic attacks decrease enemy armor by {0}. ".format(ARMOR_BREAK_VALUE.round().color(COLOR_GOLD_STR))
+    + getDurationString(ARMOR_BREAK_DURATION.round())
+    + " Doesn't stack.".color(IMPORTANT_COLOR))
+
+public constant SPEAR_ITEM = compiletime(new RecipeItem()
+..setName("Spear")
+..setInterfaceIcon(Icons.bTNSteelRanged)
+..setGoldCost(230)
+..addBonus(Bonus.DAMAGE, 17)
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+init
+  DamageEvent.addListener(99) -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if DamageEvent.getType() == DamageType.ATTACK 
+      and sunit.hasItemById(SPEAR_ITEM.getNewId()) and sunit.isEnemyOf(tunit)
+      
+      new ArmorBreakWeakBuff(ARMOR_BREAK_DURATION, ARMOR_BREAK_VALUE).apply(tunit)
+

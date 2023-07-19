@@ -42,7 +42,7 @@ public constant STRIKER_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant STRIKER_RECIPE = new ItemRecipe()
-..gold(640)
+..gold(705)
 ..setRequiredItems(FURY_ITEM, PLATED_GAUNTLETS_ITEM)
 ..setResultItem(STRIKER_ITEM)
 

@@ -1,0 +1,40 @@
+package BookOfWisdomBuff
+import PresetBuffs
+import TooltipFactory
+import Icons
+import CustomStatSystem
+
+constant buffTuple = compiletime(createDummyBuffObject("Book of Wisdom".color(POSITIVE_COLOR), "Spell power is increased.",  Icons.bTNBookOfTheDead))
+
+public constant WISDOM_BONUS_SPELL_POWER = 30.
+
+// init
+//   OnStatChange.add() (unit u, CustomUnitStats stat) ->
+//     if stat == CustomUnitStats.SPELL_POWER and u.hasBuff(BookOfWisdomBuff.typeId)
+//       let b = u.getBuff(BookOfWisdomBuff.typeId) castTo BookOfWisdomBuff
+//       b.updateBonus()
+
+public class BookOfWisdomBuff extends NormalBuff
+  var bonusSpellPower = 0.
+
+  construct()
+    super(999999, buffTuple)
+  
+  // function updateBonus()
+  //   onEnd()
+  //   onApply()
+
+  override function onApply()
+    let currentSpellPower = target.getStat(CustomUnitStats.SPELL_POWER)
+    let bonusSpellPower = currentSpellPower * WISDOM_BONUS_SPELL_POWER
+    
+    target.addStat(CustomUnitStats.SPELL_POWER, bonusSpellPower)
+
+  override function onEnd()
+    target.addStat(CustomUnitStats.SPELL_POWER, -bonusSpellPower)
+
+  override function update()
+    super.update()
+
+    onEnd()
+    onApply()

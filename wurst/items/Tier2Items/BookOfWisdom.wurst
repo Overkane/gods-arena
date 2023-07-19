@@ -1,0 +1,50 @@
+package BookOfWisdom
+import RecipeItem
+import TooltipFactory
+import ChannelAbilityPreset
+import BookOfWisdomBuff
+import Buff
+import ClosureEvents
+import FoliantOfWizardry
+import CustomStatSystem
+
+constant WISDOM_ID = compiletime(ABIL_ID_GEN.next())
+
+constant SPELL_POWER = 25.
+
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
+  "Wisdom", 
+  "increases spell power bonuses by {0} including this item."
+    .format(WISDOM_BONUS_SPELL_POWER.round().color(COLOR_GOLD_STR)))
+
+public constant BOOK_OF_WISDOM_ITEM = compiletime(new RecipeItem()
+..setName("Book of Wisdom")
+..setInterfaceIcon(Icons.bTNBookOfTheDead)
+..addBonus(Bonus.LIFE, 200)
+..addBonus(Bonus.LIFEREGEN, 3)
+..onPickup((unit actor) -> createBuff(actor))
+..onDrop((unit actor) -> destroyBuff(actor))
+..setAbilities(commaList(WISDOM_ID))
+..addCustomStat(CustomUnitStats.SPELL_POWER, SPELL_POWER)
+..generateTooltip(ABIL_TOOLTIP)
+)..register()
+
+public constant BOOK_OF_WISDOM_RECIPE = new ItemRecipe()
+..gold(95)
+..setRequiredItems(FOLIANT_OF_WIZ_ITEM, FOLIANT_OF_WIZ_ITEM)
+..setResultItem(BOOK_OF_WISDOM_ITEM)
+
+init
+  EventListener.add(EVENT_PLAYER_HERO_REVIVE_FINISH) -> 
+    let revivedUnit = EventData.getTriggerUnit()
+    
+    if revivedUnit.hasItemById(BOOK_OF_WISDOM_ITEM.getNewId())
+      createBuff(revivedUnit)
+
+function createBuff(unit u)
+  if not u.hasBuff(BookOfWisdomBuff.typeId)
+    new BookOfWisdomBuff().apply(u)
+
+function destroyBuff(unit u)
+  if u.hasBuff(BookOfWisdomBuff.typeId)
+    u.getBuff(BookOfWisdomBuff.typeId).terminate()

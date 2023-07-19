@@ -1,70 +1,68 @@
 package LightningShield
 import RecipeItem
-import PassiveAbilityPreset
+import CustomStatSystem
 import OrderIds
-import DamageEvent
+import ChannelAbilityPreset
 import IronShield
 import SimpleArmor
+import RingOfSpellLifesteal
 import TooltipFactory
 import DummyStatCaster
+import ClosureEvents
 
 constant BLOCK_ID = compiletime(ABIL_ID_GEN.next())
 constant BLOCK_CHANCE = 75
 constant BLOCK_VALUE = 40
 
 constant LIGHTNING_SHIELD_ID = compiletime(ABIL_ID_GEN.next())
-constant CHAIN_LIGHTNING_ID = compiletime(ABIL_ID_GEN.next())
-constant CHAIN_LIGHTNING_CHANCE = 10
-constant CHAIN_LIGHTNING_DAMAGE = 125
-constant CHAIN_LIGHTNING_NUMBER_OF_UNITS = 3
+constant LIGHTNING_SHIELD_DUMMY_ID = compiletime(ABIL_ID_GEN.next())
+constant DAMAGE_PER_SECOND = 60
+constant DURATION = 10.
+constant MANA_COST = 145
+constant COOLDOWN = 30
 
-constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Block", 
-  BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD_STR) + " damage.")
+constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
+  "Lightning Shield", 
+  "casts lightning shield on self, which deals {0} damage per second. ".format(
+      DAMAGE_PER_SECOND.color(COLOR_GOLD_STR)
+    )
+    + getDurationString(DURATION.round()),
+    COOLDOWN, MANA_COST)
 
 constant ABIL_TOOLTIP2 = itemAbilityTooltip(AbilityType.PASSIVE,
-  "Lightning Shield", 
-  CHAIN_LIGHTNING_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to cast chain lightning on attacker, which deals " 
-    + CHAIN_LIGHTNING_DAMAGE.color(COLOR_GOLD_STR) + " damage and jumps between " + CHAIN_LIGHTNING_NUMBER_OF_UNITS.color(COLOR_GOLD_STR) + " units.")
+  "Block", 
+  BLOCK_CHANCE.colorPerc(COLOR_GOLD_STR) + " chance to block " + BLOCK_VALUE.color(COLOR_GOLD_STR) + " damage.")
 
 public constant LIGHTNING_SHIELD_ITEM = compiletime(new RecipeItem()
 ..setName("Lightning Shield")
 ..setInterfaceIcon(Icons.bTNLightningShield)
-..addBonus(Bonus.LIFE, 300)
+..setActivelyUsed(true)
+..addBonus(Bonus.LIFE, 400)
 ..addBonus(Bonus.ARMOR, 5)
-..setAbilities(commaList(BLOCK_ID, LIGHTNING_SHIELD_ID))
+..addBonus(Bonus.LIFEREGEN, 3)
+..addBonus(Bonus.INTELLIGENCE, 10)
+..addCustomStat(CustomUnitStats.SPELL_LIFESTEAL, 20)
+..setAbilities(commaList(LIGHTNING_SHIELD_ID, BLOCK_ID))
+..setCooldownGroup(LIGHTNING_SHIELD_ID.toRawCode())
 ..generateTooltip(ABIL_TOOLTIP + "\n\n" + ABIL_TOOLTIP2)
 )..register()
 
 public constant LIGHTNING_SHIELD_RECIPE = new ItemRecipe()
-..gold(210)
-..setRequiredItems(SIMPLE_ARMOR_ITEM, IRON_SHIELD_ITEM)
+..gold(405)
+..setRequiredItems(IRON_SHIELD_ITEM, SIMPLE_ARMOR_ITEM, RING_OF_SPELL_LIFESTEAL_ITEM )
 ..setResultItem(LIGHTNING_SHIELD_ITEM)
 
 init 
-  DamageEvent.addListener() -> 
-    let sunit = DamageEvent.getSource()
-    let tunit = DamageEvent.getTarget()
-
-    if tunit.hasItemById(LIGHTNING_SHIELD_ITEM.getNewId()) and not tunit.isIllusion() and DamageEvent.getType() == DamageType.ATTACK and sunit.isEnemyOf(tunit)
-      if CHAIN_LIGHTNING_CHANCE >= GetRandomInt(1, 100)
-        new DummyStatCaster()
-        ..origin(tunit.getPos())
-        ..caster(tunit)
-        ..castTarget(CHAIN_LIGHTNING_ID, 1, OrderIds.chainlightning, sunit)
+  EventListener.onCast(LIGHTNING_SHIELD_ID) (unit caster) ->
+    new DummyStatCaster.castTarget(LIGHTNING_SHIELD_DUMMY_ID, 1, OrderIds.lightningshield, caster)
 
 @compiletime function genAbility()
-  new AbilityDefinitionHardenedSkin(BLOCK_ID)
-  ..setChancetoReduceDamage(1, BLOCK_CHANCE.toReal())
-  ..setIgnoredDamage(1, BLOCK_VALUE.toReal())
-  ..setMinimumDamage(1, 1)
-  ..setCheckDependencies(false)
+  new ChannelAbilityPreset(LIGHTNING_SHIELD_ID, 1, true)
+  ..setManaCost(1, MANA_COST)
+  ..setCooldown(1, COOLDOWN.toReal())
 
-  new PassiveAbilityPreset(LIGHTNING_SHIELD_ID, 1)
-
-  new AbilityDefinitionFarseerChainLightning(CHAIN_LIGHTNING_ID)
+  new AbilityDefinitionLightningShieldcreep(LIGHTNING_SHIELD_DUMMY_ID)
   ..setDummyAbility()
-  ..setDamageperTarget(1, CHAIN_LIGHTNING_DAMAGE.toReal())
-  ..setNumberofTargetsHit(1, CHAIN_LIGHTNING_NUMBER_OF_UNITS)
-  ..presetDamageReductionperTarget(lvl -> 0)
-    
+  ..setDamageperSecond(1, DAMAGE_PER_SECOND.toReal())
+  ..setDurationNormal(1, DURATION)
+  ..setDurationHero(1, DURATION)

@@ -19,6 +19,6 @@ public constant FOLIANT_OF_WIZ_ITEM = compiletime(new RecipeItem()
 )..register()
 
 public constant FOLIANT_OF_WIZ_RECIPE = new ItemRecipe()
-..gold(150)
+..gold(310)
 ..setRequiredItems(WOODEN_STAFF_ITEM, SAPPHIRE_ITEM)
 ..setResultItem(FOLIANT_OF_WIZ_ITEM)
