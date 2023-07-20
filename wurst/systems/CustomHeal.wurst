@@ -33,6 +33,6 @@ public function unit.healTarget(unit target, real amount, boolean showEffect)
     if realAmount > 0
         target.addHP(realAmount)
         if showEffect
-            target.addEffect(Abilities.healTarget, AttachmentPoints.chest)
+            target.addEffect(Abilities.healTarget, AttachmentPoints.origin)
         
         coolTextTag(this, target, realAmount.toInt(), HEALING_COLOR, 7)
