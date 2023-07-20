@@ -10,9 +10,9 @@ import CustomStatSystem
 import MapIcons
 
 constant FLAME_STRIKE_ID = compiletime(ABIL_ID_GEN.next())
-constant FULL_DAMAGE_PER_SEC = 80
+constant FULL_DAMAGE_PER_SEC = 100
 constant FULL_DAMAGE_PER_SEC_INTERVAL = 0.33
-constant HALF_DAMAGE_PER_SEC = 40
+constant HALF_DAMAGE_PER_SEC = 50
 constant HALF_DAMAGE_PER_SEC_INTERVAL = 1.
 constant MANA_COST = 250
 constant COOLDOWN = 32
@@ -47,11 +47,12 @@ public constant WIZARD_STAFF_RECIPE = new ItemRecipe()
 
 @compiletime function genItemAbils()
   new AbilityDefinitionFlameStrikeCreep(FLAME_STRIKE_ID)
-  ..setFullDamageDealt(1, FULL_DAMAGE_PER_SEC.toReal())
+  ..setFullDamageDealt(1, FULL_DAMAGE_PER_SEC * FULL_DAMAGE_PER_SEC_INTERVAL)
   ..setFullDamageInterval(1, FULL_DAMAGE_PER_SEC_INTERVAL)
-  ..setHalfDamageDealt(1, HALF_DAMAGE_PER_SEC.toReal())
+  ..setHalfDamageDealt(1, HALF_DAMAGE_PER_SEC * HALF_DAMAGE_PER_SEC_INTERVAL)
   ..setHalfDamageInterval(1, HALF_DAMAGE_PER_SEC_INTERVAL)
-  ..setDurationNormal(1, 3) // TODO check how it works
-  ..setDurationHero(1, 6)
+  ..setDurationHero(1, 3)
+  ..setDurationNormal(1, 9)
+  ..setMaximumDamage(1, 999999)
   ..setManaCost(1, MANA_COST)
   ..setCooldown(1, COOLDOWN.toReal())
