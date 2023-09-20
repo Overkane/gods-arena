@@ -40,7 +40,7 @@ init
             if hitTarget.getOwner().isEnemyOf(caster.getOwner())
                 flashEffect(Abilities.ballistaImpact, hitTarget.getPos())
                 let dmg = SPELL_DAMAGE.run(lvl)
-                if not hitTarget.isStrong() and hitTarget.getEntity() != null // TODO God of Water summons aren't entities
+                if not hitTarget.isStrong()
                     hitTarget.getEntity().addVel(ZERO3.polarProject((300. + dmg) * ANIMATION_PERIOD, projectile.getXYAngle(), 45 .fromDeg()))
                 caster.dealPhysicalDamage(hitTarget, SPELL_DAMAGE.run(lvl))
 
