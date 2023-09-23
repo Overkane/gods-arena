@@ -15,3 +15,4 @@ public class MapModels
   static constant waterElemental = "Models/WaterElemental.mdx" // icewolf055
   static constant ruins_shells4x5 = "Models/ruins_shells4x5.mdx" // Overkane
   static constant orbWaterX = "Models/OrbWaterX.mdx" // General Frank
+  static constant heroGlow = "Models/GeneralHeroGlow.mdx" // assasin_lord

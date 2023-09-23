@@ -1,0 +1,12 @@
+package HeroGlow
+import AbilityTooltipGenerator
+import MapModels
+
+public constant HERO_GLOW_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function genAbility()
+  new AbilityDefinitionAuraSlow(HERO_GLOW_ID)
+  ..setMovementSpeedFactor(1, 0)
+  ..setAreaofEffect(1, 1)
+  ..setBuffs(1, "")
+  ..setArtTarget(MapModels.heroGlow)

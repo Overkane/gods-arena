@@ -8,6 +8,7 @@ import CrabDefense
 import CrabStampede
 import CrabHeal
 import LinkedList
+import HeroGlow
 
 public constant CRAB_ID = compiletime(HERO_ID_GEN.next())
 public constant CRAB_SPELLS = new LinkedList<int>..add(CRAB_DEFENSE_ID, PROTECTIVE_SHELL_ID, CRAB_OVERLORD_ID, CRAB_HEAL_ID, CRAB_STAMPEDE_ID)
@@ -22,6 +23,7 @@ public constant CRAB_DESCRIPTION = "Crab's shell allows him to sustain a lot of 
   ..addHeroAbility(CRAB_HEAL_ID)
   ..addHeroAbility(CRAB_STAMPEDE_ID)
   ..addInnateHeroAbility(CRAB_DEFENSE_ID)
+  ..addNormalAbility(HERO_GLOW_ID)
   ..setAttack1Range(100)
   ..setAttack1ProjectileArt("")
   ..setStartingStrength(21)
