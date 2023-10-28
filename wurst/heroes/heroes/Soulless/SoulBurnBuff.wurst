@@ -1,0 +1,62 @@
+package SoulBurnBuff
+import public PresetBuffs
+import Assets
+import SoundUtils
+import ClosureForGroups
+import SoulStealer
+import GeneralFunctions
+import DamageSystem
+
+constant buffTuple = compiletime(createDummyBuffObject("Soul Burn", "Deals damage over time.",  Icons.bTNSoulBurn, Abilities.soulBurnbuff, AttachmentPoints.overhead))
+
+/* When applied to a unit that already has the buff, old buff is terminated and soul burn explosion is triggered. */
+public class SoulBurnBuff extends Buff
+  real explosionAOE
+  real damageDealt
+  real damagePerTick
+  unit caster
+
+  private constant ON_APPLY_SOUND = new SoundDefinition(Sounds.soulBurn1)
+  
+  construct(unit caster, real dur, real damagePerTick, real explosionAOE)
+    super(dur, buffTuple)
+    this.explosionAOE = explosionAOE
+    this.damagePerTick = damagePerTick
+    this.caster = caster
+    damageDealt = 0 // Need to reset, because doesn't reset on object class destroy.
+
+  override function apply(unit target)
+    if target.isAlive()
+      this.target = target
+      if target.hasBuffs()
+        for bff in target.getBuffs()
+          if bff.typeId == this.typeId
+            let soulBurnBuff = bff castTo SoulBurnBuff
+            soulBurnBuff..soulBurnExplosion()
+            .terminate()
+      target.addBuff(this)
+      refresh()
+      onApply()
+
+  override function onApply()
+    ON_APPLY_SOUND.playOnPoint(target.getPos3Zero())
+
+  override function onEnd()
+    if not target.isAlive()
+      soulBurnExplosion()
+
+  override function update()
+    super.update()
+    
+    let oldHp = target.getHP()
+    caster.dealMagicalDamage(target, damagePerTick)
+    let newHp = target.getHP()
+    damageDealt += oldHp - newHp
+    
+    caster.calculateSoulFragments(SOUL_FRAGMENTS_PER_ATTACK * BUFF_ANIM_PERIOD)
+
+  function soulBurnExplosion()
+    flashEffect(Abilities.fireLordDeathExplode, target.getPos())
+    forUnitsInRange(target.getPos(), explosionAOE) (unit u) ->
+      if u.isValidCreepTarget()
+        caster.dealMagicalDamage(u, damageDealt)

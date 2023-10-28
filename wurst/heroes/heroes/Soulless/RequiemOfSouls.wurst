@@ -1,0 +1,43 @@
+package RequiemOfSouls
+import AbilityTooltipGenerator
+import ClosureEvents
+import GameConstants
+import TooltipFactory
+import AbilityDefinitionExtension
+import public RequiemOfSoulsBuff
+import SoullessHeroInner
+
+public constant REQUIEM_OF_SOULS_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure DURATION = lvl -> 8. + 2 * lvl 
+constant AOE = 300.
+
+init 
+  EventListener.onCast(REQUIEM_OF_SOULS_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(REQUIEM_OF_SOULS_ID)
+    let duration = DURATION.run(lvl)
+    
+    new RequiemOfSoulsBuff(duration, lvl).apply(caster)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Each 0.5 seconds drains {0} from nearby enemies, also slowing them for some time. Doubles the maximum number of {0} while spell is active."
+  .format("soul fragments".color(COLOR_SOUL_FRAGMENTS_STRING)))
+  new ChannelAbilityPreset(REQUIEM_OF_SOULS_ID, ULTIMATE_SPELL_LEVELS, true, tooltip)
+  ..makeRAbility()
+  ..presetIcon(Icons.bTNAnimateDead)
+  ..presetOption(Option.TARGETIMAGE, true)
+  ..setLevelSkipRequirement(ULTIMATE_LEVEL_SKIP_REQ)
+  ..setRequiredLevel(ULTIMATE_LEVEL_REQ)
+
+  ..tooltipStartListen()
+  ..presetTargetTypes(Targettype.NONE)
+  ..setName("Requiem of Souls")
+  ..addTooltipProperty("Soul Fragments per Enemy", SOUL_FRAGMENTS_PER_ENEMY)
+  ..addTooltipProperty("Debuff Slow", lvl -> (REQUIEM_OF_SOULS_BUFF_SLOW.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Debuff Duration", lvl -> REQUIEM_OF_SOULS_BUFF_DURATION.round())
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetAreaofEffect(lvl -> AOE)
+  ..presetManaCost(lvl -> 175 * lvl)
+  ..presetCooldown(lvl -> 100. - 10 * (lvl-1))
+  ..tooltipStopListen()
+

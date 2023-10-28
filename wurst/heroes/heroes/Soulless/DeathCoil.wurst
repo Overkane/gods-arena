@@ -1,0 +1,64 @@
+package DeathCoil
+import AbilityTooltipGenerator
+import GameConstants
+import CustomHeal
+import AbilityDefinitionExtension
+import DamageSystem
+import HomingProjectile
+import Abilities
+import SoulStealer
+import SoullessHeroInner
+
+public constant DEATH_COIL_ID = compiletime(ABIL_ID_GEN.next())
+
+constant IntLevelClosure DAMAGE = lvl -> 125 * lvl
+constant IntLevelClosure SOUL_FRAGMENTS_RECIEVED = lvl -> (lvl / 2).ceil()
+
+init
+  EventListener.onTargetCast(DEATH_COIL_ID) (unit caster, unit target) ->
+    let lvl = caster.getAbilityLevel(DEATH_COIL_ID)
+    let damage = DAMAGE.run(lvl)
+    let soulsRecieved = SOUL_FRAGMENTS_RECIEVED.run(lvl)
+
+    let homingProjectile = new HomingProjectile(caster.getPos3Real(), 100, caster.getOwner(), angle(0), Abilities.deathCoilMissile)
+    ..setTarget(target.getEntity(), HOMING.attract, 30)
+    homingProjectile.onTargetReached() (Entity targetP) ->
+      if target.isAlive()
+        flashEffect(Abilities.deathCoilSpecialArt, target.getPos())
+
+        let oldHp = target.getHP()
+        caster.dealMagicalDamage(target, damage.toReal())
+        let damageDealt = oldHp - target.getHP()
+
+        let homingProjectileReturn = new HomingProjectile(target.getPos3Real(), 100, caster.getOwner(), angle(0), Abilities.deathCoilMissile)
+        ..setTarget(caster.getEntity(), HOMING.attract, 30)
+        homingProjectileReturn.onTargetReached() (Entity targetP) ->
+          if caster.isAlive()
+            flashEffect(Abilities.deathCoilSpecialArt, caster.getPos())
+            caster.healTarget(caster, damageDealt / 4)
+            caster.calculateSoulFragments(soulsRecieved.toReal())
+      
+          homingProjectileReturn.terminate()
+      
+      homingProjectile.terminate()
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator("Releases orb of dark energy, which deals damage to a single enemy. "
+    + "After enemy hit, orb returns and heals caster for 1/4 of damage dealt and adds {0}."
+  .format("soul fragments".color(COLOR_SOUL_FRAGMENTS_STRING)))
+  new ChannelAbilityPreset(DEATH_COIL_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..makeQAbility()
+  ..presetIcon(Icons.bTNDeathCoil)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies, TargetsAllowed.air, TargetsAllowed.ground))
+  
+  ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
+  ..presetTargetTypes(Targettype.UNIT)
+  ..setName("Death Coil")
+  ..addTooltipProperty("Damage", DAMAGE)
+  ..addTooltipProperty("Soul Fragments Recieved", SOUL_FRAGMENTS_RECIEVED)
+  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 65 + 25 * (lvl-1))
+  ..presetCooldown(lvl -> 10. - lvl)
+  ..tooltipStopListen()
+  

@@ -8,6 +8,7 @@ public constant heroSpells = new IterableMap<int, LinkedList<int>>
 ..put(CRUSADER_ID, CRUSADER_SPELLS)
 ..put(DEMON_LORD_ID, DEMON_LORD_SPELLS)
 ..put(CRAB_ID, CRAB_SPELLS)
+..put(SOULLESS_ID, SOULLESS_SPELLS)
 
 ..put(ASSASSIN_ID, ASSASSIN_SPELLS)
 ..put(ARCHER_ID, ARCHER_SPELLS)

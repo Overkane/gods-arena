@@ -1,0 +1,115 @@
+package SoulStealer
+import AbilityTooltipGenerator
+import ClosureForGroups
+import ClosureTimers
+import DamageSystem
+import GameConstants
+import AbilityDefinitionExtension
+import CustomHeal
+import UpgradeObjEditing
+import GeneralFunctions
+import Abilities
+import HomingProjectile
+import SoullessHeroInner
+import RequiemOfSouls
+
+public constant SOUL_STEALER_ID = compiletime(ABIL_ID_GEN.next())
+
+constant IntLevelClosure MAX_AMOUNT_OF_SOUL_FRAGMENTS = lvl -> 10 * lvl
+constant IntLevelClosure DAMAGE_PER_SOUL_FRAGMENT = lvl -> 50 + 50 * lvl
+constant SOUL_STEALER_AOE = 600.
+constant SOUL_STEALER_MAX_AMOUNT_OF_TARGETS = 3
+constant SOUL_FRAGMENT_RELEASE_INTERVAL = 0.5
+
+public var SOUL_FRAGMENTS_PER_ATTACK = 0.25
+var AMOUNT_OF_SOUL_FRAGMENTS = 0.
+
+public var SOULLESS_UPGRADE = compiletime(UPGD_ID_GEN.next())
+
+init 
+  EventListener.onCast(SOUL_STEALER_ID) (unit caster) ->
+    let lvl = caster.getAbilityLevel(SOUL_STEALER_ID)
+    let damagePerSoulFragment = DAMAGE_PER_SOUL_FRAGMENT.run(lvl)
+
+    doPeriodically(SOUL_FRAGMENT_RELEASE_INTERVAL) (CallbackPeriodic cb) ->
+      // Need at least one soul for the spell to work
+      if AMOUNT_OF_SOUL_FRAGMENTS >= 1
+        let enemiesNearby = new LinkedList<unit>
+        
+        forUnitsInRange(caster.getPos(), SOUL_STEALER_AOE) (unit u) ->
+          if u.isValidCreepTarget()
+            enemiesNearby.add(u)
+
+        if not enemiesNearby.isEmpty()      
+          enemiesNearby.shuffle()
+          for i = 1 to min(SOUL_STEALER_MAX_AMOUNT_OF_TARGETS, AMOUNT_OF_SOUL_FRAGMENTS.toInt())
+            if not enemiesNearby.isEmpty()
+              let enemy = enemiesNearby.pop()
+              let enemyEntity = enemy.getEntity()
+              let homingProjectile = new HomingProjectile(caster.getPos3Real(), 100, caster.getOwner(), angle(0), Abilities.deathCoilMissile)
+              ..setTarget(enemyEntity, HOMING.attract, 30)
+              homingProjectile.onTargetReached() (Entity target) ->
+                if enemy.isAlive()
+                  flashEffect(Abilities.deathCoilSpecialArt, enemy.getPos())
+                  caster.dealMagicalDamage(enemy, damagePerSoulFragment.toReal())
+                homingProjectile.terminate()
+              caster.calculateSoulFragments(-1)
+        else
+          flashEffect(Abilities.deathCoilSpecialArt, caster.getPos())
+          caster.healTarget(caster, damagePerSoulFragment / 2)
+          caster.calculateSoulFragments(-1)
+
+        destroy enemiesNearby
+      else
+        destroy cb
+
+  DamageEvent.addListener(99) -> 
+    let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
+
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(SOUL_STEALER_ID) and tunit.isValidCreepTarget()
+      sunit.calculateSoulFragments(SOUL_FRAGMENTS_PER_ATTACK)
+
+public function unit.calculateSoulFragments(real soulFragmentsChange)
+  var maxAmountOfSoulFragments = MAX_AMOUNT_OF_SOUL_FRAGMENTS.run(this.getAbilityLevel(SOUL_STEALER_ID))
+  
+  if this.hasAbility(REQUIEM_OF_SOULS_ID) and this.hasBuff(RequiemOfSoulsBuff.typeId)
+    maxAmountOfSoulFragments *= 2
+
+  if AMOUNT_OF_SOUL_FRAGMENTS + soulFragmentsChange > maxAmountOfSoulFragments
+    AMOUNT_OF_SOUL_FRAGMENTS = maxAmountOfSoulFragments.toReal()
+  else
+    AMOUNT_OF_SOUL_FRAGMENTS += soulFragmentsChange
+  
+  SetPlayerTechResearched(this.getOwner(), SOULLESS_UPGRADE, AMOUNT_OF_SOUL_FRAGMENTS.toInt())
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(("{0} Soulless steals {2} from the enemy with each hit. Number of total {2} is shown as attack upgrade. "
+    + "Each {4} stored increases attack damage by 2.\n"
+    + "{1} releases accumulated {2} each {3} seconds, which homing to random enemies nearby. Releases up to 3 {2} at once. "
+    + "If there is no enemies nearby, then Soulless get healed by 1/2 damage of {4}, consuming one.")
+  .format(
+    "Passive:".color(COLOR_GOLD_STR),
+    "Active:".color(COLOR_GOLD_STR),
+    "soul fragments".color(COLOR_SOUL_FRAGMENTS_STRING),
+    SOUL_FRAGMENT_RELEASE_INTERVAL.toString(),
+    "soul fragment".color(COLOR_SOUL_FRAGMENTS_STRING)))
+  new ChannelAbilityPreset(SOUL_STEALER_ID, INNATE_SPELL_LEVELS, true, tooltip)
+  ..makeDAbility()
+  ..presetIcon(Icons.bTNDevourMagic)
+
+  ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
+  ..presetTargetTypes(Targettype.NONE)
+  ..setName("Soul Stealer")
+  ..addTooltipProperty("Max Amount of Soul Fragments", MAX_AMOUNT_OF_SOUL_FRAGMENTS)
+  ..addTooltipProperty("Damage per Soul Fragment", DAMAGE_PER_SOUL_FRAGMENT)
+  ..addTooltipProperty("Soul Fragments per Attack", lvl -> SOUL_FRAGMENTS_PER_ATTACK)
+  ..presetManaCost(lvl -> 80 * lvl)
+  ..presetCooldown(lvl -> 25. - 5 * (lvl-1))
+  ..tooltipStopListen()
+  
+  new UpgradeDefinition(SOULLESS_UPGRADE)
+  ..setLevels(MAX_AMOUNT_OF_SOUL_FRAGMENTS.run(INNATE_SPELL_LEVELS))
+  ..addEffectAttackDamageBonus(1, 2)
+  ..setClass(UpgradeClass.Melee)

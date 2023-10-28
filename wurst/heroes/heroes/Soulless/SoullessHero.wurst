@@ -1,0 +1,38 @@
+package SoullessHero
+import UnitIds
+import HeroDefinitionPresets
+import ObjectIdGenerator
+import LinkedList
+import SoulStealer
+import DeathCoil
+import SoulBurn
+import Reaper
+import RequiemOfSouls
+import ObjectIds
+
+public constant SOULLESS_ID = compiletime(HERO_ID_GEN.next())
+public constant SOULLESS_SPELLS = new LinkedList<int>..add(SOUL_STEALER_ID, DEATH_COIL_ID, SOUL_BURN_ID, REAPER_ID, REQUIEM_OF_SOULS_ID)
+public constant SOULLESS_NAME = "Soulless"
+public constant SOULLESS_DESCRIPTION = "Steals the souls of the living, to then unleash its power to the enemies."
+
+@compiletime function genHero()
+  new StrHeroPreset(SOULLESS_ID, UnitIds.deathknight, SOULLESS_NAME)
+  ..addProperName("Viduus")
+  ..addHeroAbility(DEATH_COIL_ID)
+  ..addHeroAbility(SOUL_BURN_ID)
+  ..addHeroAbility(REAPER_ID)
+  ..addHeroAbility(REQUIEM_OF_SOULS_ID)
+  ..addInnateHeroAbility(SOUL_STEALER_ID)
+  ..setStartingStrength(23)
+  ..setStrengthPerLevel(2.3)
+  ..setStartingAgility(14)
+  ..setAgilityPerLevel(1.6)
+  ..setStartingIntelligence(16)
+  ..setIntelligencePerLevel(1.8)
+  ..setAttack1CooldownTime(1.8)
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(4)
+  ..setAttack1Range(100)
+  ..setSpeedBase(290)
+  ..setUpgradesUsed(SOULLESS_UPGRADE.toRawCode())
+  ..buildHero()

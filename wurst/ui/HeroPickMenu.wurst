@@ -112,6 +112,7 @@ function addHeroIcons()
   ..addHeroIcon(new HeroIcon(CRUSADER_ID))
   ..addHeroIcon(new HeroIcon(DEMON_LORD_ID))
   ..addHeroIcon(new HeroIcon(CRAB_ID))
+  ..addHeroIcon(new HeroIcon(SOULLESS_ID))
 
   ..addHeroIcon(new HeroIcon(ASSASSIN_ID))
   ..addHeroIcon(new HeroIcon(ARCHER_ID))

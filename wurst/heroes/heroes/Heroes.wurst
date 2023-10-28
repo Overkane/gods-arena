@@ -4,6 +4,7 @@ package Heroes
 import public CrusaderHero
 import public DemonLordHero
 import public CrabHero
+import public SoullessHero
 
 // Agi heroes
 import public AssassinHero

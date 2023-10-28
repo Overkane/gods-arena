@@ -38,6 +38,7 @@ public class MapIcons extends Icons
   static constant bTNLancelotShield = "ReplaceableTextures/CommandButtons/BTNLancelot_Shield.blp" // JollyD
   // Passive Buttons
   static constant pASBTNBackstab = "ReplaceableTextures/PassiveButtons/PASBackStab.blp"
-  static constant pASBTNWhirlwind = "ReplaceableTextures/PassiveButtons/PASwhirlwind.blp"
+  static constant pASBTNWhirlwind = "ReplaceableTextures/PassiveButtons/PASwhirlwind.blp" // Blizzard
+  static constant pASBTNBonechimes = "ReplaceableTextures/PassiveButtons/PASbonechimes.blp" // Blizzard
   // Autocast Buttons
   static constant aTCBeamShower = "ReplaceableTextures/CommandButtons/ATCBeamShower.blp" // The Panda

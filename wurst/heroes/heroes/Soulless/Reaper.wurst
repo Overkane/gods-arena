@@ -1,0 +1,51 @@
+package Reaper
+import AbilityTooltipGenerator
+import GameConstants
+import ClosureEvents
+import CustomStatSystem
+import PassiveAbilityPreset
+import TooltipFactory
+import AbilityDefinitionExtension
+import SoulStealer
+import MapIcons
+import SoullessHeroInner
+
+public constant REAPER_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure BONUS_SOUL_FRAGMENTS_PER_ATTACK = lvl -> 0.1 * lvl
+constant RealLevelClosure BONUS_LIFESTEAL = lvl -> 5. * lvl
+
+init
+  EventListener.add(EVENT_PLAYER_HERO_SKILL) ->
+    let u = EventData.getTriggerUnit()
+
+    if EventData.getLearnedSkill() == REAPER_ID
+      let lvl = u.getAbilityLevel(REAPER_ID)
+      let soulFragmentsBonus = BONUS_SOUL_FRAGMENTS_PER_ATTACK.run(lvl)
+      let lifestealBonus = BONUS_LIFESTEAL.run(lvl)
+
+      if lvl != 1
+        let soulFragmentsBonusOld = BONUS_SOUL_FRAGMENTS_PER_ATTACK.run(lvl-1)
+        let lifestealBonusOld = BONUS_LIFESTEAL.run(lvl-1)
+
+        SOUL_FRAGMENTS_PER_ATTACK -= soulFragmentsBonusOld
+        u..addStat(CustomUnitStats.LIFESTEAL, -lifestealBonusOld/100)
+        .addStat(CustomUnitStats.SPELL_LIFESTEAL, -lifestealBonusOld/100)
+      
+      SOUL_FRAGMENTS_PER_ATTACK += soulFragmentsBonus
+      u..addStat(CustomUnitStats.LIFESTEAL, lifestealBonus/100)
+      .addStat(CustomUnitStats.SPELL_LIFESTEAL, lifestealBonus/100)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Increases amount of {0} per attack. Also increases magical and physical lifesteal."
+  .format("soul fragments".color(COLOR_SOUL_FRAGMENTS_STRING)))
+  new PassiveAbilityPreset(REAPER_ID, NORMAL_SPELL_LEVELS, tooltip)
+  ..makeEAbility()
+  ..presetIcon(MapIcons.pASBTNBonechimes)
+  
+  ..tooltipStartListen()
+  ..setName("Reaper")
+  ..addTooltipProperty("Soul Fragments Bonus", lvl -> BONUS_SOUL_FRAGMENTS_PER_ATTACK.run(lvl).toString(2))
+  ..addTooltipProperty("Lifesteal Bonus", lvl -> BONUS_LIFESTEAL.run(lvl).percRound())
+  ..tooltipStopListen()
+

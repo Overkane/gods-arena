@@ -1,0 +1,3 @@
+package SoullessHeroInner
+
+public constant COLOR_SOUL_FRAGMENTS_STRING = color(160, 64, 109).toColorString()

@@ -1,0 +1,73 @@
+package RequiemOfSoulsBuff
+import public PresetBuffs
+import Assets
+import SoundUtils
+import TooltipFactory
+import ClosureForGroups
+import MapModels
+import GeneralFunctions
+import AbilityObjEditing
+import ObjectIdGenerator
+import GameConstants
+import OrderIds
+import InstantDummyCaster
+import ObjectIds
+import initlater SoulStealer
+
+constant buffTupleMain = compiletime(createDummyBuffObject("Soul Collector".color(POSITIVE_COLOR), "Collects souls of nearby enemies.",  Icons.bTNAnimateDead, MapModels.voidSkullAura))
+
+constant SLOW_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant SLOW_BUFF_ID = compiletime(BUFF_ID_GEN.next())
+
+public constant RealLevelClosure SOUL_FRAGMENTS_PER_ENEMY = lvl -> 0.1 * lvl 
+public constant RealLevelClosure REQUIEM_OF_SOULS_BUFF_SLOW = lvl -> 0.15 * lvl
+public constant REQUIEM_OF_SOULS_BUFF_DURATION = 5.
+
+public class RequiemOfSoulsBuff extends NormalBuff
+  private static constant subbuffInterval = 0.5
+  private constant ON_APPLY_SOUND = new SoundDefinition(Sounds.darkSummoningLaunch1)
+  
+  private var abilityLevel = 0
+  private var soulFragmentsPerEnemy = 0.
+  private var counter = 0
+
+  construct(real dur, int abilityLevel)
+    super(dur, buffTupleMain)
+    this.abilityLevel = abilityLevel
+    soulFragmentsPerEnemy = SOUL_FRAGMENTS_PER_ENEMY.run(abilityLevel)
+
+  override function onApply()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
+
+  override function update()
+    super.update()
+    counter++
+
+    if counter > subbuffInterval / BUFF_ANIM_PERIOD
+      counter = 0
+
+      forUnitsInRange(target.getPos(), 600) (unit u) ->
+        if u.isValidCreepTarget()
+          InstantDummyCaster.castTarget(target.getOwner(), SLOW_ABIL_ID, abilityLevel, OrderIds.slow, u)
+          target.calculateSoulFragments(soulFragmentsPerEnemy)
+    
+
+@compiletime function genAbility()
+  new AbilityDefinitionSlow(SLOW_ABIL_ID)
+  ..setDummyAbility()
+  ..setLevels(5)
+  ..presetAttackSpeedFactor(REQUIEM_OF_SOULS_BUFF_SLOW)
+  ..presetMovementSpeedFactor(REQUIEM_OF_SOULS_BUFF_SLOW)
+  ..presetBuffs(lvl -> SLOW_BUFF_ID.toRawCode())
+  ..presetDurationNormal(lvl -> REQUIEM_OF_SOULS_BUFF_DURATION)
+  ..presetDurationHero(lvl -> getHeroStunDuration(REQUIEM_OF_SOULS_BUFF_DURATION))
+
+  new BuffDefinition(SLOW_BUFF_ID, BuffIds.devotionAura)
+  ..setIcon(Icons.bTNAnimateDead)
+  ..setTooltipNormal(1, "Soul Weakness")
+  ..setTooltipNormal(2, "Soul Weakness")
+  ..setTooltipNormal(3, "Soul Weakness")
+  ..setTooltipNormalExtended(1, "Attack and movement speed are slowed.")
+  ..setTooltipNormalExtended(2, "Attack and movement speed are slowed.")
+  ..setTooltipNormalExtended(3, "Attack and movement speed are slowed.")
+  ..setArtTarget(Abilities.slowTarget)

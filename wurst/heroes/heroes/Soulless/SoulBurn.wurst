@@ -1,0 +1,47 @@
+package SoulBurn
+import AbilityTooltipGenerator
+import GameConstants
+import ClosureEvents
+import DamageSystem
+import SoulBurnBuff
+import AbilityDefinitionExtension
+import SoullessHeroInner
+
+public constant SOUL_BURN_ID = compiletime(ABIL_ID_GEN.next())
+
+constant RealLevelClosure DAMAGE_PER_SECOND = lvl -> 15. * lvl
+constant EXPLOSION_AOE = 256.
+constant RealLevelClosure DURATION = lvl -> 5. + (lvl / 2).round()
+
+init
+  EventListener.onTargetCast(SOUL_BURN_ID) (unit caster, unit target) ->
+    let lvl = caster.getAbilityLevel(SOUL_BURN_ID)
+    let damagePerTick = DAMAGE_PER_SECOND.run(lvl) * BUFF_ANIM_PERIOD
+    let duration = DURATION.run(lvl)
+    
+    new SoulBurnBuff(caster, duration, damagePerTick, EXPLOSION_AOE).apply(target)
+
+@compiletime function genAbility()
+  let tooltip = new AbilityTooltipGenerator(("Burns the soul of the target enemy, dealing damage over time. "
+    + "Each second of the spell being active adds {0} equal to current soul fragments per attack value. "
+    + "If target dies during the spell duration, enemies nearby will recieve total damage dealt by the spell.")
+  .format("soul fragments".color(COLOR_SOUL_FRAGMENTS_STRING)))
+  new ChannelAbilityPreset(SOUL_BURN_ID, NORMAL_SPELL_LEVELS, true, tooltip)
+  ..makeWAbility()
+  ..presetIcon(Icons.bTNSoulBurn)
+  ..presetDurationHero(DURATION)
+  ..presetDurationNormal(DURATION)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies, TargetsAllowed.air, TargetsAllowed.ground))
+  
+  ..tooltipStartListen()
+  ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
+  ..presetTargetTypes(Targettype.UNIT)
+  ..setName("Soul Burn")
+  ..addTooltipProperty("Damage per Second", DAMAGE_PER_SECOND)
+  ..addTooltipProperty("Duration", DURATION)
+  ..presetAreaofEffect(lvl -> EXPLOSION_AOE)
+  ..presetCastRange(lvl -> 600)
+  ..presetManaCost(lvl -> 85 + 35 * (lvl-1))
+  ..presetCooldown(lvl -> 17. - lvl)
+  ..tooltipStopListen()
+  
