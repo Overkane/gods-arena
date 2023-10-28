@@ -37,6 +37,7 @@ constant heroPool = new LinkedList<int>
 ..add(ARCHER_ID)
 ..add(CRAB_ID)
 ..add(ELEMENTOR_ID)
+..add(SOULLESS_ID)
 ..shuffle()
 
 public abstract class OnHeroPick
