@@ -41,7 +41,7 @@ init
 
     let sacredGrounds = addEffect(MapModels.heavensGateChannel, target)..setScale(effectScale)
     
-    ON_APPLY_SOUND.play()
+    ON_APPLY_SOUND.playOnPoint(target.toVec3())
 
     doPeriodicallyCounted(1., (duration).toInt()) (CallbackCounted cb) ->
       forUnitsInRange(target, aoe) (unit u) ->

@@ -74,7 +74,7 @@ init
           ..setTimeScale(1)
           ..issueImmediateOrderById(OrderIds.stop)
 
-          HIT_SOUNDS..shuffle().getFirst().play()
+          HIT_SOUNDS..shuffle().getFirst().playOnPoint(target.toVec3())
           
           destroy damagedTargets
           destroy cb

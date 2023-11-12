@@ -24,13 +24,13 @@ public class TheEmpyreanBuff extends NormalBuff
     this.lvl = lvl
     
   override function onApply()
-    ON_APPLY_SOUND.play()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
     target..addBonus(Bonus.DAMAGE, bonusDamage)
     ..addBonus(Bonus.ATTACKSPEED, -attackSpeedSlow)
     ..setScale(1.75)
 
   override function onEnd()
-    ON_END_SOUND.play()
+    ON_END_SOUND.playForPlayer(target.getOwner())
     target..addBonus(Bonus.DAMAGE, -bonusDamage)
     ..addBonus(Bonus.ATTACKSPEED, attackSpeedSlow)
     ..setScale(1)

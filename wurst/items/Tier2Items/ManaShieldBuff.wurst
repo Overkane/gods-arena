@@ -13,4 +13,4 @@ public class ManaShieldBuff extends ShieldBuff
     super(dur, buffTuple, shieldDurabiblity)
 
   override function onApply()
-    ON_APPLY_SOUND.play()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())

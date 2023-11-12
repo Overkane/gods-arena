@@ -13,4 +13,4 @@ public class StormHammerBuff extends NormalBuff
     super(dur, buffTuple)
     
   override function onApply()
-    ON_APPLY_SOUND.play()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())

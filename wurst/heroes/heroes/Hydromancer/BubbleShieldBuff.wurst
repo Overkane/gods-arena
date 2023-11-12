@@ -25,7 +25,7 @@ public class BubbleShieldBuff extends ShieldBuff
     if ELEM_LIST.has(target.getTypeId())
       bonusDamage = target.getBaseDamage(0).toReal()
       target.addBonus(Bonus.DAMAGE, bonusDamage)
-    ON_APPLY_SOUND.play()
+    ON_APPLY_SOUND.playOnPoint(target.getPos3Zero())
 
   override function onEnd()
     if bonusDamage != 0

@@ -31,7 +31,7 @@ public class BattleTranceBuff extends NormalBuff
     this.duration = dur
     
   override function onApply()
-    ON_APPLY_SOUND.play()
+    ON_APPLY_SOUND.playForPlayer(target.getOwner())
     target
     ..addBonus(Bonus.ATTACKSPEED, bonusAS)
     ..setMoveSpeed(target.getDefaultMovespeed() + bonusMS)

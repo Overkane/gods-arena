@@ -28,7 +28,7 @@ init
     let buffSlow = SLOW.run(lvl)
     let buffDuration = SLOW_DURATION.run(lvl)
 
-    SOUND.play(1, 40)
+    SOUND.playOnPoint(target.toVec3())
     forUnitsInRange(target, spellAOE) (unit u) ->
       if u.isAlive() and not u.isAllyOf(caster.getOwner())
         new AquaBlastBuff(buffDuration, buffSlow).apply(u)
