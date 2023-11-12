@@ -90,7 +90,7 @@ function CreateRegions takes nothing returns nothing
     set gg_rct_ArenaVolcanoDecor = Rect( 11520.0, -12064.0, 13088.0, -10496.0 )
     set we = AddWeatherEffect( gg_rct_ArenaVolcanoDecor, 'FDrh' )
     call EnableWeatherEffect( we, true )
-    set gg_rct_ArenaPondBreathArea = Rect( -1248.0, -6208.0, 1152.0, -3456.0 )
+    set gg_rct_ArenaPondBreathArea = Rect( -1248.0, -6208.0, 1280.0, -3456.0 )
 endfunction
 
 //***************************************************************************
