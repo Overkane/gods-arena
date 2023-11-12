@@ -400,61 +400,6 @@ function sasquatches() returns Wave
 
   .build()
 
-// TODO Maybe will be useful later
-// function wave_9() returns Wave
-//   return new WaveBuilder()
-//   ..expBounty(waveExpList.dequeue())
-//   ..goldBounty(waveGoldList.dequeue())
-
-//   ..creep(UnitIds.druidoftheclaw)
-//   ..hp(1800)
-//   ..damage(65)
-//   ..amount(4)
-
-//   ..creep(UnitIds.mountaingiant)
-//   ..hp(8000)
-//   ..damage(200)
-  
-//   ..attackrate(1.90)
-//   ..amount(2)
-
-//   ..creep(UnitIds.archer)
-//   ..hp(2150)
-//   ..damage(75)
-//   ..amount(12)
-
-//   ..creep(UnitIds.dryad)
-//   ..hp(2800)
-//   ..damage(75)
-//   ..amount(2)
-
-//   ..wait(15)
-
-//   ..creep(UnitIds.huntress)
-//   ..hp(3500)
-//   ..damage(100)
-//   ..attackrate(1.0)
-//   ..amount(2)
-//   ..scale(2)
-
-//   ..wait(30)
-
-//   ..creep(UnitIds.druidoftheclawmorphed)
-//   ..hp(3500)
-//   ..damage(75)
-//   ..attackrate(0.25)
-//   ..amount(6)
-//   ..scale(2)
-
-//   ..creep(UnitIds.druidoftheclaw)
-//   ..hp(4500)
-//   ..damage(90)
-//   ..attackrate(0.85)
-//   ..amount(8)
-//   ..scale(1.65)
-
-//   .build()
-
 function godOfNature() returns Wave
   return new WaveBuilder()
   ..expBounty(waveExpList.dequeue())
