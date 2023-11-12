@@ -92,7 +92,7 @@ init
   ..makeDAbility()
   ..setIconNormal(MapIcons.aTCBeamShower)
   ..setIconTurnOff(MapIcons.aTCBeamShower)
-  ..presetTargetsAllowed(lvl -> TargetsAllowed.enemies)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies, TargetsAllowed.air, TargetsAllowed.ground))
   ..setMissileArt(MapModels.missilePurple)
 
   ..tooltipStartListen()

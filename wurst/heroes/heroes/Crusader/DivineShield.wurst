@@ -44,7 +44,7 @@ init
   ..presetIcon(Icons.bTNDivineIntervention)
   ..presetDurationHero(DURATION)
   ..presetDurationNormal(DURATION)
-  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.allies, TargetsAllowed.self, TargetsAllowed.friend))
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.friend, TargetsAllowed.self))
   
   ..tooltipStartListen()
   ..presetTargetTypes(Targettype.UNIT)

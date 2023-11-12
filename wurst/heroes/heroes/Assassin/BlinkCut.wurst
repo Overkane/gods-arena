@@ -68,7 +68,7 @@ init
   new ChannelAbilityPreset(BLINK_CUT_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeQAbility()
   ..presetIcon(Icons.bTNBlink)
-  ..presetTargetsAllowed(lvl -> TargetsAllowed.enemies)
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies, TargetsAllowed.air, TargetsAllowed.ground))
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)

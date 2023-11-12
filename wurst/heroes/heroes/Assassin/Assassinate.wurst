@@ -8,6 +8,7 @@ import GameConstants
 import AbilityDefinitionExtension
 import Reference
 import CustomHeal
+import GeneralFunctions
 
 public constant ASSASSINATE_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -41,8 +42,9 @@ init
 
   DamageEvent.addListener(99) -> 
     let sunit = DamageEvent.getSource()
+    let tunit = DamageEvent.getTarget()
 
-    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(ASSASSINATE_ID)
+    if DamageEvent.getType() == DamageType.ATTACK and sunit.hasAbility(ASSASSINATE_ID) and tunit.isValidCreepTarget()
 
       let abilCd = sunit.getAbilityCooldownRemaining(ASSASSINATE_ID)
       sunit.startAbilityCooldown(ASSASSINATE_ID, abilCd - 1)
@@ -55,6 +57,7 @@ init
   ..makeDAbility()
   ..presetIcon(Icons.bTNSacrifice)
   ..setAnimationNames("attack")
+  ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies, TargetsAllowed.air, TargetsAllowed.ground))
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.physical)

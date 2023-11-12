@@ -16,6 +16,7 @@ function genAbil()
     ..registerTooltipGenerator(new AbilityTooltipGenerator(Targettype.UNIT, "The Elementor siphons energy from the target to himself, replenishing mana and hitpoints."))
     ..makeEAbility()
     ..presetIcon(Icons.bTNDrain)
+    ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies, TargetsAllowed.air, TargetsAllowed.ground))
     
     ..tooltipStartListen()
     ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
@@ -31,4 +32,3 @@ function genAbil()
 
     ..presetDurationNormal(lvl -> DURATION)
     ..presetDurationHero(lvl -> getHeroStunDuration(DURATION))
-    ..presetTargetsAllowed(lvl -> commaList(TargetsAllowed.enemies))
