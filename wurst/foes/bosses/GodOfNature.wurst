@@ -308,7 +308,7 @@ public class GodOfNature extends Boss
   new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegrove)
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
-  ..setAttack1DamageBase(125)
+  ..setAttack1DamageBase(150)
   ..setAttack1CooldownTime(1.2)
   ..setDefenseBase(7)
   ..setHitPointsMaximumBase(42500)
