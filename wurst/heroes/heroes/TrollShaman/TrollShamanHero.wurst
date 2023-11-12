@@ -31,4 +31,5 @@ public constant TROLL_SHAMAN_DESCRIPTION = "Troll Shaman can support his allies 
   ..setAttack1CooldownTime(2.28)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(5)
+  ..setAttack1Range(600)
   ..buildHero()

@@ -32,4 +32,5 @@ public constant BLADEMASTER_DESCRIPTION = "Blademaster honed his sword mastery t
   ..setAttack1DamageBase(30)
   ..setAttack1DamageNumberofDice(2)
   ..setAttack1DamageSidesperDie(5)
+  ..setAttack1Range(100)
   ..buildHero()

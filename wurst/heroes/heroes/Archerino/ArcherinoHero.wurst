@@ -32,4 +32,5 @@ public constant ARCHER_DESCRIPTION = "Shoots pointy sticks and is in tune with n
   ..setAttack1DamageBase(25)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(8)
+  ..setAttack1Range(600)
   ..buildHero()
