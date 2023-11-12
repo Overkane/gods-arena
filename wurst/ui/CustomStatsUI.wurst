@@ -176,7 +176,7 @@ function baseIconFrame(string iconPath, string title, string description) return
   return iconFrame
 
 function baseTextFrame() returns framehandle
-  let textFrame = p("0")
+  let textFrame = p2("0")
   ..setSize(0.025, 0.015)
   ..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER)
 
