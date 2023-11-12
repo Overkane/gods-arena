@@ -34,7 +34,7 @@ init
   ..presetTargetTypes(Targettype.UNIT)
   ..setName("Bubble Shield")
   ..addTooltipProperty("Heal per sec", HP_HEAL)
-  ..addTooltipProperty("Shield Duratibility", SHIELD_DURABILITY)
+  ..addTooltipProperty("Shield Durability", SHIELD_DURABILITY)
   ..addTooltipProperty("Duration", DURATION)
   ..presetCastRange(lvl -> 600)
   ..presetManaCost(lvl -> 75 + 45 * (lvl-1))

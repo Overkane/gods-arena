@@ -22,7 +22,7 @@ constant SPELL_POWER = 35.
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,
   "Flame Strike", 
   "casts flame strike which deals " + FULL_DAMAGE_PER_SEC.color(COLOR_GOLD_STR)
-  + " per second for first 3 seconds and then half of that damage for 6 seconds.",
+  + " damage per second for first 3 seconds and then half of that damage for 6 seconds.",
   COOLDOWN, MANA_COST)
 
 public constant WIZARD_STAFF_ITEM = compiletime(new RecipeItem()
