@@ -25,7 +25,7 @@ init
     ..setWaves(forestWaves)
 
     new Arena("The Pond", gg_rct_ArenaPond, gg_rct_ArenaPondRespawnPoint)
-    ..setSpawnPoint(() -> gg_rct_ArenaPond.getCenter().polarOffset(GetRandomReal(0, 360).fromDeg(), 1800))
+    ..setSpawnPoint(() -> gg_rct_ArenaPond.getCenter().polarOffset(GetRandomReal(0, 360).fromDeg(), 1700))
     ..setWaves(pondWaves)
 
     new Arena("The Barrens", gg_rct_ArenaBarrens, gg_rct_ArenaBarrensRespawnPoint)
