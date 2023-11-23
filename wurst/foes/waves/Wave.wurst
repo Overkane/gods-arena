@@ -250,12 +250,12 @@ public class Wave
 
         if not heroUnit.isAlive()
           heroUnit.revive(revivePoint.execute(), true)
-          heroUnit.setHP(heroUnit.getMaxHP() * 1)
-          heroUnit.setMana(heroUnit.getMaxMana() * 0.5)
+          heroUnit.setHP(heroUnit.getMaxHP() * 0.5)
+          heroUnit.setMana(heroUnit.getMaxMana() * 0.25)
           p.select(heroUnit)
           p.setCameraPosition(heroUnit.getPos())
         else
           AFTER_WAVE_RESTORATION_SOUND.play(1, 30)
           flashEffect(Abilities.replenishHealthCasterOverhead, heroUnit.getPos())
-          heroUnit.addHP(heroUnit.getMaxHP() * 1)
-          heroUnit.addMana(heroUnit.getMaxMana() * 1)
+          heroUnit.addHP(heroUnit.getMaxHP() * 0.75)
+          heroUnit.addMana(heroUnit.getMaxMana() * 0.5)
