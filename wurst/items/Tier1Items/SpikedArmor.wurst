@@ -13,13 +13,14 @@ constant RETALIATE_VALUE = 4
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
   "Retaliate", 
-  "deals " + ("[Hero Level] * " + RETALIATE_VALUE.toString()).color(COLOR_GOLD_STR) + " " + PURE_DAMAGE_STRING + " damage to the attacker.")
+  "deals " + ("[Hero Level] * " + RETALIATE_VALUE.toString()).color(COLOR_GOLD_STR) + " " + PURE_DAMAGE_STRING + " damage to the attacker."
+  + " Doesn't stack with Thornmail and itself.".color(IMPORTANT_COLOR))
 
 public constant SPIKED_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Spiked Armor")
 ..setInterfaceIcon(Icons.bTNThornyShieldOff)
 ..addBonus(Bonus.DAMAGE, 9)
-..addBonus(Bonus.LIFE, 200)
+..addBonus(Bonus.LIFE, 100)
 ..addBonus(Bonus.ARMOR, 3)
 ..addCustomStat(CustomUnitStats.THREAT_GENERATION, 15)
 ..setAbilities(commaList(RETALIATE_ID))

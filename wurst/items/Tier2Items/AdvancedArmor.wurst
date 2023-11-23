@@ -8,7 +8,7 @@ import SimpleArmor
 public constant ADVANCED_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Advanced Armor")
 ..setInterfaceIcon(Icons.bTNMoonArmor)
-..addBonus(Bonus.LIFE, 500)
+..addBonus(Bonus.LIFE, 250)
 ..addBonus(Bonus.LIFEREGEN, 3)
 ..addBonus(Bonus.ARMOR, 4)
 ..generateTooltip("")

@@ -138,6 +138,7 @@ public class WaveBuilder
     creepStep.creepDef
     ..setArmorType(ArmorType.Large)
     ..setAttack1AttackType(AttackType.Pierce)
+    ..setNormalAbilities("")
     currentStep = creepStep
 
   function boss()

@@ -72,7 +72,7 @@ public class GodOfWater extends Boss
           wasOnPhase2 = true
 
   function spellCycle()
-    let spellCd = wasOnPhase2 ? 7. : 9.
+    let spellCd = wasOnPhase2 ? 6. : 8.
     doAfter(spellCd) ->
       if actor.isAlive()
         if isPhase1
@@ -125,7 +125,7 @@ public class GodOfWater extends Boss
           flashEffect(Objects.nagaDeath, projectilePos)
           forUnitsInRange(projectilePos, 150) (unit u) ->
             if u.isAlive() and u.isEnemyOf(actor)
-              actor.dealMagicalDamage(u, 300)
+              actor.dealMagicalDamage(u, 400)
       
       destroy internalTorrentSpawnAngleList
       
@@ -231,8 +231,8 @@ public class GodOfWater extends Boss
 
       doAfter(5) -> 
         // Part 2. Homing water projectiles.
-        let projectileDelay = wasOnPhase2 ? 1.5 : 2.5
-        let numberOfProj = wasOnPhase2 ? 9 : 7
+        let projectileDelay = wasOnPhase2 ? 1. : 1.5
+        let numberOfProj = wasOnPhase2 ? 10 : 8
 
         doPeriodicallyCounted(projectileDelay, numberOfProj) (CallbackCounted cb) ->
           let aliveHeroUnits = heroUnitList.filter((unit u) -> u.isAlive())
@@ -255,7 +255,7 @@ public class GodOfWater extends Boss
                 if target.isValidPlayerTarget()
                   flashEffect(Abilities.crushingWaveDamage, bossProjectile.getPos())
                   target.getEntity().addVel(ZERO3.polarProject(1000 * ANIMATION_PERIOD, bossProjectile.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
-                  actor.dealMagicalDamage(target, 350)
+                  actor.dealMagicalDamage(target, 500)
                   bossProjectile.terminate()
 
               let projectileTargetChangeListener = EventListener.add(target, EVENT_PLAYER_UNIT_DEATH) () ->
@@ -315,19 +315,36 @@ public class GodOfWater extends Boss
                       if u.hasBuff(DrowningBuff.typeId)
                         u.removeBuffById(DrowningBuff.typeId)
 
-                    doAfter(2) ->
-                      let numberOfFastWaves = wasOnPhase2 ? 5 : 3
-                      doPeriodicallyCounted(1.3, numberOfSlowWaves) (CallbackCounted cb) ->
-                        flashEffect(Objects.nagaDeath, actor.getPos().withHeightMap(725))
-                        waterOrbUlt.setScale(waterOrbUlt.getScale() - 0.6)
-                        ULT_PROJECTILE_SPAWN_SOUND.play()
+                    let numberOfFastWaves = wasOnPhase2 ? 5 : 3
+                    doPeriodicallyCounted(1.3, numberOfSlowWaves) (CallbackCounted cb) ->
+                      flashEffect(Objects.nagaDeath, actor.getPos().withHeightMap(725))
+                      waterOrbUlt.setScale(waterOrbUlt.getScale() - 0.6)
+                      ULT_PROJECTILE_SPAWN_SOUND.play()
 
-                        if not cb.isLast() 
-                          for i = 1 to 8
+                      if not cb.isLast() 
+                        for i = 1 to 8
+                          let projectileOrb = new SmallWaterHomingProjectile(actor.getPos().withHeightMap(), 64, owner, GetRandomReal(1, 360).asAngleDegrees(), MapModels.orbWaterX)
+                          ..setTarget(this, HOMING.none, 0.55)
+                          ..setTimed(6)
+                          ..setSpeed(18)
+
+                          projectileOrb
+                          ..onHit() (unit target) ->
+                            if target.isValidPlayerTarget()
+                              flashEffect(Abilities.crushingWaveDamage, projectileOrb.getPos())
+                              bossList.peek().dealMagicalDamage(target, 250)
+                              target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
+                              projectileOrb.terminate()
+                      else
+                        waterOrbUlt.destr()
+
+                        doPeriodicallyCounted(0.6, numberOfFastWaves) (CallbackCounted cb) ->
+                          ULT_PROJECTILE_SPAWN_SOUND.play() 
+                          for i = 1 to 8 
                             let projectileOrb = new SmallWaterHomingProjectile(actor.getPos().withHeightMap(), 64, owner, GetRandomReal(1, 360).asAngleDegrees(), MapModels.orbWaterX)
                             ..setTarget(this, HOMING.none, 0.55)
                             ..setTimed(6)
-                            ..setSpeed(20)
+                            ..setSpeed(18)
 
                             projectileOrb
                             ..onHit() (unit target) ->
@@ -336,32 +353,14 @@ public class GodOfWater extends Boss
                                 bossList.peek().dealMagicalDamage(target, 250)
                                 target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
                                 projectileOrb.terminate()
-                        else
-                          waterOrbUlt.destr()
+                        
+                        doAfter(2) -> 
+                          actor
+                          ..setInvulnerable(false)
+                          ..unpause()
+                          ..queueAnimation("stand")
 
-                          doPeriodicallyCounted(0.6, numberOfFastWaves) (CallbackCounted cb) ->
-                            ULT_PROJECTILE_SPAWN_SOUND.play() 
-                            for i = 1 to 8 
-                              let projectileOrb = new SmallWaterHomingProjectile(actor.getPos().withHeightMap(), 64, owner, GetRandomReal(1, 360).asAngleDegrees(), MapModels.orbWaterX)
-                              ..setTarget(this, HOMING.none, 0.55)
-                              ..setTimed(6)
-                              ..setSpeed(20)
-
-                              projectileOrb
-                              ..onHit() (unit target) ->
-                                if target.isValidPlayerTarget()
-                                  flashEffect(Abilities.crushingWaveDamage, projectileOrb.getPos())
-                                  bossList.peek().dealMagicalDamage(target, 250)
-                                  target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
-                                  projectileOrb.terminate()
-                          
-                          doAfter(2) -> 
-                            actor
-                            ..setInvulnerable(false)
-                            ..unpause()
-                            ..queueAnimation("stand")
-
-                            spellCycle()
+                          spellCycle()
 
 
 class WaterBossKnockbackProjectile extends HomingProjectile
@@ -390,7 +389,7 @@ class WaterBossKnockbackProjectile extends HomingProjectile
       ..onHit() (unit target) ->
         if target.isValidPlayerTarget()
           flashEffect(Abilities.crushingWaveDamage, projectileOrb1.getPos())
-          bossList.peek().dealMagicalDamage(target, 200)
+          bossList.peek().dealMagicalDamage(target, 250)
           target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb1.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
           projectileOrb1.terminate()
 
@@ -402,7 +401,7 @@ class WaterBossKnockbackProjectile extends HomingProjectile
       ..onHit() (unit target) ->
         if target.isValidPlayerTarget()
           flashEffect(Abilities.crushingWaveDamage, projectileOrb2.getPos())
-          bossList.peek().dealMagicalDamage(target, 200)
+          bossList.peek().dealMagicalDamage(target, 250)
           target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, projectileOrb2.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
           projectileOrb2.terminate()
 
@@ -429,7 +428,8 @@ class SmallWaterHomingProjectile extends HomingProjectile
     super.update()
 
   ondestroy
-    destroy targetDeathListener
+    if targetDeathListener != null
+      destroy targetDeathListener
 
 
 public constant buffTuple = compiletime(createDummyBuffObject("Drowning", "Periodic damage.",  Icons.bTNAbsorbMagic))

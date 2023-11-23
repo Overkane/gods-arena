@@ -17,7 +17,7 @@ constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.PASSIVE,
 public constant GOLDEN_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Golden Armor")
 ..setInterfaceIcon(Icons.bTNHumanArmorUpThree)
-..addBonus(Bonus.LIFE, 750)
+..addBonus(Bonus.LIFE, 375)
 ..addBonus(Bonus.LIFEREGEN, 8)
 ..addBonus(Bonus.ARMOR, 7)
 ..addBonus(Bonus.STRENGTH, 15)

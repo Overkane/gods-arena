@@ -8,7 +8,7 @@ import RingOfRegeneration
 public constant SIMPLE_ARMOR_ITEM = compiletime(new RecipeItem()
 ..setName("Simple Armor")
 ..setInterfaceIcon(Icons.bTNLeatherUpgradeTwo)
-..addBonus(Bonus.LIFE, 200)
+..addBonus(Bonus.LIFE, 100)
 ..addBonus(Bonus.ARMOR, 3)
 ..addBonus(Bonus.LIFEREGEN, 2)
 ..generateTooltip("")

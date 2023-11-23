@@ -18,7 +18,7 @@ init
     let projectile = new ProjectileRepeater(caster.getPos().toVec3(), 225, caster.getOwner(), caster.getPos().angleTo(target), Abilities.crushingWaveMissile, damageInterval)
     let lvl = caster.getAbilityLevel(TSUNAMI_ID)
     projectile
-    ..setRanged(900)
+    ..setRanged(1200)
     ..setTarget(target.toVec3(), 20)
 
     projectile.onHit() hitTarget ->
@@ -43,7 +43,7 @@ init
   ..setName("Tsunami")
   ..addTooltipProperty("Damage per tick", DAMAGE)
   ..addTooltipProperty("Tick Interval", lvl -> (ANIMATION_PERIOD * damageInterval).toString(2))
-  ..presetCastRange(lvl -> 800)
+  ..presetCastRange(lvl -> 1200)
   ..presetManaCost(lvl -> 220 * lvl)
   ..presetCooldown(lvl -> 60)
   ..tooltipStopListen()

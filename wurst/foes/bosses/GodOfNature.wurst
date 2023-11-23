@@ -141,7 +141,7 @@ public class GodOfNature extends Boss
             ..setTimed(18)
             ..onHit() (unit target) ->
               if target.isValidPlayerTarget()
-                actor.dealMagicalDamage(target, 75)
+                actor.dealMagicalDamage(target, 125)
                 POISON_SOUND.playForPlayer(target.getOwner())
 
             poisonCloudProjList.add(poisonCloudProj)
@@ -268,13 +268,13 @@ public class GodOfNature extends Boss
         flashEffect(Abilities.warStompCaster, projectilePos)
         forUnitsInRange(projectilePos, 200) (unit u) ->
           if u.isValidPlayerTarget()
-            actor.dealMagicalDamage(u, 250)
+            actor.dealMagicalDamage(u, 350)
 
         let movingProjectile = new Projectile(projectilePos.withHeightMap(), 64, 
           ENEMY_PLAYER, (0).asAngleDegrees(), projectileModel)
 
         movingProjectile
-        ..setTarget(actor.getPos().withHeightMap(), 5. + GetRandomReal(3, 4))
+        ..setTarget(actor.getPos().withHeightMap(), 6. + GetRandomReal(3, 4))
         ..setRanged(distance)
         ..onHit() (unit target) ->
           if isHealingWisp
@@ -323,7 +323,7 @@ public class GodOfNature extends Boss
   ..setAttack1DamageBase(20)
   ..setDefenseBase(0)
   ..setSpeedBase(350)
-  ..setHitPointsMaximumBase(200)
+  ..setHitPointsMaximumBase(250)
   ..setArmorType(ArmorType.Small)
   ..setAttack1AttackType(AttackType.Siege)
   ..setScalingValue(0.6)

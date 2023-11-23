@@ -16,7 +16,7 @@ constant HEALING_WARD_UNIT_ID = compiletime(UNIT_ID_GEN.next())
 constant HEALING_WARD_AURA_ID = compiletime(UNIT_ID_GEN.next())
 constant HEALING_WARD_PERC_HEAL = 3
 constant HEALING_WARD_DURATION = 15
-constant MANA_COST = 125
+constant MANA_COST = 175
 constant COOLDOWN = 65
 
 constant ABIL_TOOLTIP = itemAbilityTooltip(AbilityType.ACTIVE,

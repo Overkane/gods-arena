@@ -15,7 +15,7 @@ import AbilityDefinitionExtension
 public constant STASIS_TOTEM_ID = compiletime(ABIL_ID_GEN.next())
 public constant STASIS_TOTEM_STUN_ID = compiletime(ABIL_ID_GEN.next())
 
-constant RealLevelClosure TOTEM_DAMAGE = lvl -> 20. * lvl
+constant RealLevelClosure TOTEM_DAMAGE = lvl -> 25. * lvl
 constant RealLevelClosure TOTEM_DURATION = lvl -> 4. + (lvl / 2).floor()
 constant RealLevelClosure STUN_INTERVAL = lvl -> 1
 constant RealLevelClosure STUN_DURATION = lvl -> 0.3 + 0.05 * lvl
