@@ -15,22 +15,22 @@ public enum GameStats
   DAMAGE_TAKEN_OVERALL
   ARENA_POINTS
 
-constant baseframe = createFrame("FRAME", "", GAME_UI, "", 0)
-constant backdrop = createFrame("HeroPickMenuBackdrop", baseframe, 0, 0)
+public constant gameStatsUIFrame = createFrame("FRAME", "", getFrame("ConsoleUIBackdrop", 0), "", 0)
+constant gameStatsUIBackdrop = createFrame("HeroPickMenuBackdrop", gameStatsUIFrame, 0, 0)
 
 constant pGameStatsFrames = new IterableMap<player, IterableMap<GameStats, framehandle>>
 
 public function createGameStatsUI()
 
-  baseframe
+  gameStatsUIFrame
   ..setAbsPoint(FRAMEPOINT_CENTER, vec2(0.4, 0.4))
   ..hide()
 
-  backdrop.setAllPoints(baseframe)
+  gameStatsUIBackdrop.setAllPoints(gameStatsUIFrame)
 
-  let tableLayout = new TableLayout(0.6, 0.2)
+  let tableLayout = new TableLayout(0.6, 0.25)
   ..row()..center()
-  ..add(h1("Game Stats"))
+  ..add(h1("Game Stats"))..padBot(0.008)
 
   ..row()..center()
   ..add(p("Player")..setWidth(0.052)..setTextAlignment(TEXT_JUSTIFY_MIDDLE, TEXT_JUSTIFY_CENTER))
@@ -47,7 +47,7 @@ public function createGameStatsUI()
   let trig = CreateTrigger()
   ..addAction() ->
     let clicker = GetTriggerPlayer()
-    baseframe.setVisible(clicker, baseframe.isVisible(clicker) ? false : true)
+    gameStatsUIFrame.setVisible(clicker, gameStatsUIFrame.isVisible(clicker) ? false : true)
 
   pData.forEach() (player p, PlayerData pData) ->
     BlzTriggerRegisterPlayerKeyEvent(trig, p, OSKEY_F4, 0, false)
@@ -77,9 +77,17 @@ public function createGameStatsUI()
     ..add(gameStatsFrames.get(GameStats.MAGIC_DAMAGE_OVERALL))
     ..add(gameStatsFrames.get(GameStats.DAMAGE_TAKEN_OVERALL))
     ..add(gameStatsFrames.get(GameStats.ARENA_POINTS))
-
-  ..applyTo(baseframe)
-
+  
+  let closeButton = btn("Close")..setWidth(0.1)
+  closeButton..onClick() ->
+    let clicker = GetTriggerPlayer()
+    gameStatsUIFrame.setVisible(clicker, false)
+  
+  tableLayout
+  ..row()..center()
+  ..add(closeButton)..padTop(0.008)
+  ..applyTo(gameStatsUIFrame)
+      
 public function increaseGameStat(GameStats gameStat, player p, int value)
   let frame = pGameStatsFrames.get(p).get(gameStat)
   let currentValue = frame.getText().toInt()

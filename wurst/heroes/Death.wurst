@@ -5,6 +5,7 @@ import Reference
 import SaveLoadSystem
 import PlayerData
 import GameConstants
+import GameStatsUI
 
 var ended = false
 
@@ -20,6 +21,7 @@ init
         print(">> All Heroes died. You lost!".color(COLOR_GOLD_STR))
         print(">> Game will end momentarily.".color(COLOR_GOLD_STR))
         savePlayerData()
+        gameStatsUIFrame.show()
         ended = true
         doAfter(90.) ->
           EndGame(true)
