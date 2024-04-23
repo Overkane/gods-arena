@@ -6,13 +6,16 @@ import Orders
 import TooltipFactory
 import AbilityDefinitionExtension
 import Crabling
+import UpgradeObjEditing
 import ProtectiveShellBuff
 import Buff
 
 public constant CRAB_DEFENSE_ID = compiletime(ABIL_ID_GEN.next())
+public constant CRAB_DEFENSE_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
 
 constant RealLevelClosure SPAWN_CHANCE = lvl -> 0.1 + 0.05 * lvl
 public constant RealLevelClosure STRENGTH_DAMAGE = lvl -> 0.3 * lvl
+public constant RealLevelClosure DURATION = lvl -> 8.
 
 init
   DamageEvent.addListener() -> 
@@ -34,7 +37,7 @@ init
         ..issueTargetOrderById(OrderIds.attack, source)
 
 @compiletime function gen()
-  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Has a chance to spawn a defensive |cffce951acrabling|r when attacked.")
+  let tooltip = new AbilityTooltipGenerator(Targettype.PASSIVE, "Has a chance to spawn a defensive |cffce951acrabling|r when attacked. Number of total |cffce951acrablings|r is shown as armor upgrade")
   new PassiveAbilityPreset(CRAB_DEFENSE_ID, INNATE_SPELL_LEVELS, tooltip)
   ..makeDAbility()
   ..presetIcon(Icons.pASBTNBerserk)
@@ -44,4 +47,9 @@ init
   ..setName("Crab Defense")
   ..addTooltipProperty("Chance to spawn", lvl -> (SPAWN_CHANCE.run(lvl) * 100).percRound())
   ..addTooltipProperty("Crab Str Damage Multiplier", lvl -> (STRENGTH_DAMAGE.run(lvl) * 100).percRound())
+  ..addTooltipProperty("Duration", lvl -> DURATION.run(lvl).round())
   ..tooltipStopListen()
+
+  new UpgradeDefinition(CRAB_DEFENSE_UPGRADE_ID)
+  ..setLevels(999)
+  ..setClass(UpgradeClass.Armor)

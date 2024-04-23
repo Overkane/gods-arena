@@ -18,6 +18,7 @@ public class Crabling extends SummonEntity
 
     let lvl = summoner.getAbilityLevel(CRAB_DEFENSE_ID)
     let strMultiplier = STRENGTH_DAMAGE.run(lvl)
+    let duration = DURATION.run(lvl)
 
     // Since we want to override default summon damage scaling from super class
     actor.clearBonus(Bonus.DAMAGE)
@@ -26,7 +27,7 @@ public class Crabling extends SummonEntity
     ..addBonus(Bonus.DAMAGE, summoner.getStr(true) * strMultiplier * (1 + summoner.getStat(CustomUnitStats.SPELL_POWER)))
     ..addAbility(LOCUST_ID)
     ..setXY(actor.getPos())
-    ..setTimedLife(7.5)
+    ..setTimedLife(duration)
 
     if summoner.hasAbility(CRAB_OVERLORD_ID)
       let lvl2 = summoner.getAbilityLevel(CRAB_OVERLORD_ID)
@@ -37,6 +38,10 @@ public class Crabling extends SummonEntity
       EventListener.add(actor, EVENT_PLAYER_UNIT_DEATH) () ->
         summoner.addBonus(Bonus.STRENGTH, -strPerCrabling)
 
+    SetPlayerTechResearched(actor.getOwner(), CRAB_DEFENSE_UPGRADE_ID, GetPlayerTechCount(actor.getOwner(), CRAB_DEFENSE_UPGRADE_ID, false) + 1)
+
+  ondestroy
+    SetPlayerTechResearched(actor.getOwner(), CRAB_DEFENSE_UPGRADE_ID, GetPlayerTechCount(actor.getOwner(), CRAB_DEFENSE_UPGRADE_ID, false) - 1)
 
 @compiletime function gen()
   new UnitDefinition(CRABLING_ID, UnitIds.spidercrab)
@@ -48,6 +53,7 @@ public class Crabling extends SummonEntity
   ..setAttack1DamageBase(2)
   ..setDeathTimeseconds(0.5)
   ..setCollisionSize(0.)
+  ..setDeathType(0)
   ..setSpeedBase(400)
   ..setAttack1AttackType(AttackType.Hero)
   ..setArmorType(ArmorType.Hero)
