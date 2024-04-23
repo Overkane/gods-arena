@@ -7,10 +7,10 @@ import ClosureForGroups
 import DamageSystem
 import TooltipFactory
 
-constant buffTuple = compiletime(createDummyBuffObject("Hell Fire".color(POSITIVE_COLOR), "Burning enemies nearby.",  Icons.bTNImmolationOn, Abilities.immolationTarget))
+constant buffTuple = compiletime(createDummyBuffObject("Hell Fire".color(POSITIVE_COLOR), "Burns enemies nearby.",  Icons.bTNImmolationOn, Abilities.immolationTarget))
 
 public constant RealLevelClosure HELL_FIRE_HP_DRAIN = lvl -> 0.5 + 0.5 * lvl
-public constant IntLevelClosure HELL_FIRE_DAMAGE_PER_DRAINED_HP = lvl -> 2 * lvl
+public constant IntLevelClosure HELL_FIRE_DAMAGE_PER_DRAINED_HP = lvl -> 1 + 1 * lvl
 public constant HELL_FIRE_AOE = 300.
 
 constant ON_APPLY_SOUND = new SoundDefinition(Sounds.immolationTarget1)
