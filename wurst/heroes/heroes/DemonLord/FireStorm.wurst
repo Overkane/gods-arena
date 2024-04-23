@@ -11,8 +11,8 @@ import DamageSystem
 import BonusHandler
 import AbilityDefinitionExtension
 
-constant RealLevelClosure DAMAGE = lvl -> 85. + 95 * (lvl-1)
-constant IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 3 * lvl
+constant RealLevelClosure DAMAGE = lvl -> 90. + 95 * (lvl-1)
+constant IntLevelClosure BONUS_STR_PER_FOE_STRUCK = lvl -> 2 * lvl
 constant RealLevelClosure BONUS_DURATION = lvl -> 5. + lvl
 constant RealLevelClosure COOLDOWN = lvl -> 14.
 
@@ -26,7 +26,7 @@ init
         flashEffect(
           Abilities.rainOfFireTarget,
           caster.getPos().polarOffset(360 .fromDeg() / 10 * i.toReal(), RADIUS / 2))
-      doAfter(1.) ->
+      doAfter(0.9) ->
         let lvl = caster.getAbilityLevel(FIRE_STORM_ID)
         let str_per_struck = BONUS_STR_PER_FOE_STRUCK.run(lvl)
         let bonus_str = new Reference(0)
@@ -46,15 +46,9 @@ init
     Targettype.NONE,
     "Calls down a wave of fire that damages nearby units. "
     + "The Demon Lord temporarily gains strength based on the number of struck foes.")
-  new AbilityDefinitionBerserk(FIRE_STORM_ID)
-  ..registerTooltipGenerator(tooltip)
+  new ChannelAbilityPreset(FIRE_STORM_ID, NORMAL_SPELL_LEVELS, true, tooltip)
   ..makeQAbility()
-  ..setRequiredLevel(1)
-  ..presetDamageTakenIncrease(lvl -> 0.)
-  ..presetMovementSpeedIncrease(lvl -> 0.)
-  ..presetAttackSpeedIncrease(lvl -> 0)
   ..presetIcon(Icons.bTNFire)
-  ..setLevelSkipRequirement(2)
 
   ..tooltipStartListen()
   ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
