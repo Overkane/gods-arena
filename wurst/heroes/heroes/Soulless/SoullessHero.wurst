@@ -34,5 +34,5 @@ public constant SOULLESS_DESCRIPTION = "Steals the souls of the living, to then 
   ..setAttack1DamageSidesperDie(4)
   ..setAttack1Range(100)
   ..setSpeedBase(290)
-  ..setUpgradesUsed(SOULLESS_UPGRADE.toRawCode())
+  ..setUpgradesUsed(SOULLESS_UPGRADE_ID.toRawCode())
   ..buildHero()

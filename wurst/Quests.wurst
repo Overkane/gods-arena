@@ -18,8 +18,9 @@ init
   ..setTitle("Tips")
   ..setDescription(
     "General:\n" +
-    "- You will revive after each round, but only with portion of your max HP and MP.\n" +
+    "- You will be revived after each round, but only with portion of your max HP and MP.\n" +
     "- After round is completed, you will regain portion of your max HP and MP.\n" +
+    "- Hero innate ability automatically upgrades at levels 10 and 18.\n" +
     "\nShop:\n" +
     "- Use the hotkey 'B' to toggle the shop display.\n" +
     "- You can sell items in your inventory with your hero sell ability (hotkey - 'F') for " + (REFUND_VALUE * 100).percRound() + " of initial price.\n" +
@@ -32,10 +33,10 @@ init
   ..setDescription(
     "Honor Points is a resource which you keep between games.\n" +
     "You can spend it for various upgrades on F3.\n" +
-    "You get 1 honor point for each 500 arena points you earn.\n" +
+    "You get 1 honor point for each 500 arena points (AP) you have earned.\n" +
     "Arena points can be obtained with various ways like kills or finishing waves.\n" +
     "Honor points are saved only if earned amount is more than in your save file.\n" +
-    "Honor points are automatically loaded on game start and saved on any result game end."
+    "Honor points are automatically loaded on game start and saved on game end."
   )
 
   new Quest(false)

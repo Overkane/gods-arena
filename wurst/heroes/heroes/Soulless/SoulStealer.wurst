@@ -24,7 +24,7 @@ constant SOUL_FRAGMENT_RELEASE_INTERVAL = 0.5
 public var SOUL_FRAGMENTS_PER_ATTACK = 0.25
 var AMOUNT_OF_SOUL_FRAGMENTS = 0.
 
-public var SOULLESS_UPGRADE = compiletime(UPGD_ID_GEN.next())
+public var SOULLESS_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
 
 init 
   EventListener.onCast(SOUL_STEALER_ID) (unit caster) ->
@@ -81,7 +81,7 @@ public function unit.calculateSoulFragments(real soulFragmentsChange)
   else
     AMOUNT_OF_SOUL_FRAGMENTS += soulFragmentsChange
   
-  SetPlayerTechResearched(this.getOwner(), SOULLESS_UPGRADE, AMOUNT_OF_SOUL_FRAGMENTS.toInt())
+  SetPlayerTechResearched(this.getOwner(), SOULLESS_UPGRADE_ID, AMOUNT_OF_SOUL_FRAGMENTS.toInt())
 
 @compiletime function genAbility()
   let tooltip = new AbilityTooltipGenerator(("{0} Soulless steals {2} from the enemy with each hit. Number of total {2} is shown as attack upgrade. "
@@ -109,7 +109,7 @@ public function unit.calculateSoulFragments(real soulFragmentsChange)
   ..presetCooldown(lvl -> 25. - 5 * (lvl-1))
   ..tooltipStopListen()
   
-  new UpgradeDefinition(SOULLESS_UPGRADE)
+  new UpgradeDefinition(SOULLESS_UPGRADE_ID)
   ..setLevels(MAX_AMOUNT_OF_SOUL_FRAGMENTS.run(INNATE_SPELL_LEVELS))
   ..addEffectAttackDamageBonus(1, 2)
   ..setClass(UpgradeClass.Melee)
