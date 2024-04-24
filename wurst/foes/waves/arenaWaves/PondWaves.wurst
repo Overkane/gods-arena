@@ -531,7 +531,7 @@ function godOfWater() returns Wave
   ..setDurationHero(1, 3)
   
   new AbilityDefinitionPermanentInvisibility(JUNGLE_STALKER_INVIS)
-  ..setDurationNormal(1, 3)
+  ..setDurationNormal(1, 1.5)
 
 
   new AbilityDefinitionCrushingWave(SEA_REVENANT_CRUSHING_WAVE_WEAK)
