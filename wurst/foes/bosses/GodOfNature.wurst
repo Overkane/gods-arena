@@ -19,6 +19,12 @@ import CustomHeal
 import MapModels
 import ProjectileRepeater
 import GeneralFunctions
+import Reference
+
+enum BossPhases
+  PHASE1
+  PHASE2
+  PHASE3
 
 constant ROOTS_ID = compiletime(ABIL_ID_GEN.next())
 
@@ -34,10 +40,12 @@ public class GodOfNature extends Boss
 
   private constant poisonCloudProjList = new LinkedList<ProjectileRepeater>
 
-  private var isPhase1 = false
-  private var wasOnPhase1 = false
-  private var isPhase2 = false
-  private var wasOnPhase2 = false
+  private var currentPhase = BossPhases.PHASE1 
+  private var needToCastUltimateSpell = false 
+
+  // Effects which boss will have, when casting ultimate spell
+  private effect tranqEf
+  private effect invulEf
 
   construct(vec3 pos, angle ang)
     super(GOD_OF_NATURE_ID, pos, ang)
@@ -63,22 +71,24 @@ public class GodOfNature extends Boss
       let tunit = DamageEvent.getTarget()
 
       if tunit == actor 
-        if tunit.getHPRatio() <= 0.7 and not wasOnPhase1
-          isPhase1 = true
-          wasOnPhase1 = true
-        else if tunit.getHPRatio() <= 0.4 and not wasOnPhase2
-          isPhase2 = true
-          wasOnPhase2 = true
+        if tunit.getHPRatio() <= 0.7 and currentPhase == BossPhases.PHASE1
+          needToCastUltimateSpell = true
+        else if tunit.getHPRatio() <= 0.4 and currentPhase == BossPhases.PHASE2
+          needToCastUltimateSpell = true
 
   function spellCycle()
-    let spellCd = wasOnPhase2 ? 6. : 8.
+    real spellCd
+    switch currentPhase
+      case BossPhases.PHASE1
+        spellCd = 8.        
+      case BossPhases.PHASE2
+        spellCd = 6. 
+      case BossPhases.PHASE3
+        spellCd = 4. 
+
     doAfter(spellCd) ->
       if actor.isAlive()
-        if isPhase1
-          isPhase1 = false
-          ultimateSpell()
-        else if isPhase2
-          isPhase2 = false
+        if needToCastUltimateSpell
           ultimateSpell()
         else
           if castQueue.isEmpty()
@@ -93,7 +103,7 @@ public class GodOfNature extends Boss
             case 1
               poisonClouds(false)
             case 2
-              entangleRoots(false)
+              entangleRoots()
           spellCycle()
 
   function summonTreants()
@@ -102,8 +112,15 @@ public class GodOfNature extends Boss
     let numberOfTreants = max(2, numberOfTreantsBasedOnNumberOfHeroes)
     destroy aliveHeroUnits
     
-    let powerUpInterval = wasOnPhase2 ? 2. : 3.
-    
+    real powerUpInterval
+    switch currentPhase
+      case BossPhases.PHASE1
+        powerUpInterval = 3.        
+      case BossPhases.PHASE2
+        powerUpInterval = 2.25 
+      case BossPhases.PHASE3
+        powerUpInterval = 1.5 
+
     for i = 1 to numberOfTreants
       let u = new Creep(TREANT_ID, gg_rct_ArenaForest.randomPoint().toVec3(), angle(GetRandomReal(0, 359))).actor
       flashEffect(Objects.entBirthTarget, u.getPos())
@@ -137,8 +154,9 @@ public class GodOfNature extends Boss
           ..onEnd() ->
             groundEffect.destr()
             
-            let poisonCloudProj = new ProjectileRepeater(affectedUnitPos.withHeightMap(), 168, ENEMY_PLAYER, angle(0), Units.plagueCloud, 20) // Deals damage each 0.6 second
-            ..setTimed(18)
+            // Deals damage each 0.6 second
+            let poisonCloudProj = new ProjectileRepeater(affectedUnitPos.withHeightMap(), 168, ENEMY_PLAYER, angle(0), Units.plagueCloud, 20)
+            ..setTimed(30)
             ..onHit() (unit target) ->
               if target.isValidPlayerTarget()
                 actor.dealMagicalDamage(target, 125)
@@ -150,13 +168,20 @@ public class GodOfNature extends Boss
               if poisonCloudProjList.has(poisonCloudProj) 
                 poisonCloudProjList.remove(poisonCloudProj)
 
-          if wasOnPhase2 and not isSecondCall
-            doAfter(1) -> 
-              poisonClouds(true)
+        if not isSecondCall
+          switch currentPhase
+            case BossPhases.PHASE1
+              skip        
+            case BossPhases.PHASE2
+              doAfter(2.) -> 
+                poisonClouds(true)
+            case BossPhases.PHASE3
+              doAfter(2.) ->
+                poisonClouds(true) 
 
     destroy aliveHeroUnits
 
-  function entangleRoots(bool isSecondCast)
+  function entangleRoots()
     actor
     ..setAnimation("spell")
     ..pause()
@@ -165,7 +190,7 @@ public class GodOfNature extends Boss
     castRoots(variation)
 
     doAfter(1.5) -> 
-      if wasOnPhase2 and not isSecondCast
+      if currentPhase == BossPhases.PHASE2 or currentPhase == currentPhase.PHASE3
         let reverseVariaton = variation == 1 ? 2 : 1
         castRoots(reverseVariaton)
         doAfter(1.5) -> 
@@ -204,13 +229,26 @@ public class GodOfNature extends Boss
 
     doAfter(2) ->
       tpEffect.destr() 
-      let tranqEf = actor
+      
+      tranqEf = actor
       ..setInvulnerable(true)
       ..setPos(gg_rct_ArenaForest.getCenter())
       ..setFacing((270).asAngleDegrees())
       .addEffect(Abilities.tranquility, AttachmentPoints.origin)
 
-      let wispAmount = wasOnPhase1 ? 24 : 14
+      invulEf = actor.addEffect(Abilities.divineShieldTarget, AttachmentPoints.origin)
+
+      int wispAmount
+      switch currentPhase
+        case BossPhases.PHASE1
+          wispAmount = 16
+        case BossPhases.PHASE2
+          wispAmount = 24
+        // Shouldn't be possible, since ultimate spell is casted only on phase 1 and 2.
+        case BossPhases.PHASE3
+          wispAmount = 0
+          error("Calling ultimate spell on phase 3")
+
       let baseAngles = (360 / (wispAmount / 2)).toInt()
       let wispSpawnAngleList = new LinkedList<int>
       
@@ -218,30 +256,28 @@ public class GodOfNature extends Boss
         let spawnAngle = baseAngles * i
         wispSpawnAngleList.add(spawnAngle)
 
-      doAfter(3.) -> 
-        castWispSpell(wispAmount, wispSpawnAngleList)
+      doAfter(2.) -> 
+        castWispSpell(wispAmount, wispSpawnAngleList, false)
 
-        doPeriodicallyCounted(7, 2) (CallbackCounted cb) ->
-          castWispSpell(wispAmount, wispSpawnAngleList)
+        doPeriodicallyCounted(6, 2) (CallbackCounted cb) ->
+          castWispSpell(wispAmount, wispSpawnAngleList, cb.isLast())
 
           if cb.isLast()
-            // TODO unpause when last wisp projectile is terminated
-            doAfter(10.5) -> 
-              actor
-              ..setInvulnerable(false)
-              ..unpause()
-
-              spellCycle()
-              
-              tranqEf.destr()
+            if currentPhase == BossPhases.PHASE1
+              currentPhase = BossPhases.PHASE2
+            else if currentPhase == BossPhases.PHASE2
+              currentPhase = BossPhases.PHASE3
+            else
+              error("Calling ultimate spell on phase 3")
 
             destroy wispSpawnAngleList
 
-  function castWispSpell(int wispAmount, LinkedList<int> wispSpawnAngleList)
+  function castWispSpell(int wispAmount, LinkedList<int> wispSpawnAngleList, bool lastWispWave)
     let internalWispSpawnAngleList = wispSpawnAngleList.copy()..shuffle()
     let healWispNumber = GetRandomInt(1, wispAmount)
-    int wispNumber = 0
-    
+    var wispNumber = 0
+    let wispsLeft = new Reference(wispAmount)
+
     doPeriodicallyCounted(0.1, wispAmount) (CallbackCounted cb) ->
       wispNumber++
 
@@ -295,12 +331,29 @@ public class GodOfNature extends Boss
               actor.dealMagicalDamage(target, 300)
 
               movingProjectile.terminate()
+        
+        // After last wisp in last wave is dead, need to activate the boss again
+        if lastWispWave
+          movingProjectile.onEnd() ->
+            wispsLeft.val--
+
+            if wispsLeft.val == 0
+              actor
+              ..setInvulnerable(false)
+              ..unpause()
+
+              needToCastUltimateSpell = false
+              spellCycle()
+              
+              tranqEf.destr()
+              invulEf.destr()
 
         if isHealingWisp
           movingProjectile.getFx()
           ..setTint(colorA(0, 255, 0, 255))
 
       if cb.isLast()
+        destroy wispsLeft
         destroy internalWispSpawnAngleList
 
 
@@ -308,7 +361,7 @@ public class GodOfNature extends Boss
   new UnitDefinition(GOD_OF_NATURE_ID, UnitIds.keeperofthegrove)
   ..setAcquisitionRange(99999)
   ..setName("God of Nature")
-  ..setAttack1DamageBase(150)
+  ..setAttack1DamageBase(200)
   ..setAttack1CooldownTime(1.2)
   ..setDefenseBase(7)
   ..setHitPointsMaximumBase(42500)
