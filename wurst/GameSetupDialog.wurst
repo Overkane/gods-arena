@@ -24,7 +24,7 @@ public function initGameSetupDialog()
 
 public class GameSetupDialog
   let owner = players[0]
-  constant dialogFrame = createFrame("FRAME", "multiboardFrame", GAME_UI, "", 0)
+  constant dialogFrame = createFrame("FRAME", "multiboardFrame", getFrame("ConsoleUIBackdrop", 0), "", 0)
   ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.4, 0.515))
   ..setSize(0.25, 0.185)
   ..hide()
