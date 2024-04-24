@@ -139,7 +139,7 @@ class HeroPickUI
 
   private var iconPosition = ITEM_ICON_INITIAL_POSITION
 
-  constant heroPickFrame = createFrame("FRAME", "heroPickFrame", GAME_UI, "", 0)
+  constant heroPickFrame = createFrame("FRAME", "heroPickFrame", getFrame("ConsoleUIBackdrop", 0), "", 0)
   private constant heroPickBackdrop = createFrame("HeroPickMenuBackdrop", heroPickFrame, 0, 0)
   private constant heroPickButton = createFrame("GeneralButton", heroPickFrame, 0, 0)
 

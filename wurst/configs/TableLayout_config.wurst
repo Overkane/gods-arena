@@ -1,0 +1,3 @@
+package TableLayout_config
+
+@config public constant DEFAULT_FRAME_PARENT = getFrame("ConsoleUIBackdrop", 0)

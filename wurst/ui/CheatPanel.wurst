@@ -68,9 +68,9 @@ class CheatPanel
         u
         ..resetAbilityCooldown(spell)
         ..setMana(u.getMaxMana())
-    let isAllRandomTitle = createFrame(FramehandleTypeNames.text, "", GAME_UI, "", 0)
+    let isAllRandomTitle = createFrame(FramehandleTypeNames.text, "", getFrame("ConsoleUIBackdrop", 0), "", 0)
     ..setText("Inf Spells:")
-    let isInfiniteSpellsFlag = createFrame("QuestCheckBox2", GAME_UI, 0, 0)
+    let isInfiniteSpellsFlag = createFrame("QuestCheckBox2", getFrame("ConsoleUIBackdrop", 0), 0, 0)
     ..onCheckboxCheck() -> 
       isInfiniteSpells = true
     isInfiniteSpellsFlag.onCheckboxUncheck() -> 
@@ -81,9 +81,9 @@ class CheatPanel
         print(DamageEvent.getSource().getName() + " dealt " + DamageEvent.getAmount().toString() + " damage to " + DamageEvent.getTarget().getName())
         print("id " + DamageEvent.getId().toString() + "; element " + DamageEvent.getElement().getName() + ".")
         print("OrigAm " + DamageEvent.getOriginalAmount().toString() + "; UnredAm" + DamageEvent.getUnreducedAmount().toString())
-    let isDamageDebugOnTitle = createFrame(FramehandleTypeNames.text, "", GAME_UI, "", 0)
+    let isDamageDebugOnTitle = createFrame(FramehandleTypeNames.text, "", getFrame("ConsoleUIBackdrop", 0), "", 0)
     ..setText("Damage Debug:")
-    let isDamageDebugOnFlag = createFrame("QuestCheckBox2", GAME_UI, 0, 0)
+    let isDamageDebugOnFlag = createFrame("QuestCheckBox2", getFrame("ConsoleUIBackdrop", 0), 0, 0)
     ..onCheckboxCheck() -> 
       isDamageDebugOn = true
     isDamageDebugOnFlag.onCheckboxUncheck() -> 
@@ -101,9 +101,9 @@ class CheatPanel
     EventListener.add(EVENT_PLAYER_UNIT_ISSUED_UNIT_ORDER) ->
       if isOrderStringDebugOn
         print(EventData.getOrderedUnit().getName() + " has been ordered " + OrderId2String(EventData.getIssuedOrderId()))
-    let isOrderStringDebugOnTitle = createFrame(FramehandleTypeNames.text, "", GAME_UI, "", 0)
+    let isOrderStringDebugOnTitle = createFrame(FramehandleTypeNames.text, "", getFrame("ConsoleUIBackdrop", 0), "", 0)
     ..setText("Order String:")
-    let isOrderStringDebugOnFlag = createFrame("QuestCheckBox2", GAME_UI, 0, 0)
+    let isOrderStringDebugOnFlag = createFrame("QuestCheckBox2", getFrame("ConsoleUIBackdrop", 0), 0, 0)
     ..onCheckboxCheck() -> 
       isOrderStringDebugOn = true
     isOrderStringDebugOnFlag.onCheckboxUncheck() -> 

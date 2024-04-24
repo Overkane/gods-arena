@@ -43,7 +43,7 @@ public function createCustomStatsUI(player p)
   pCustomStatFrames.put(p, customStatFrames)
 
 
-  let baseframe = createFrame("FRAME", "", GAME_UI, "", 0)
+  let baseframe = createFrame("FRAME", "", getFrame("ConsoleUIBackdrop", 0), "", 0)
   ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.362, 0.187))
   ..hide()
   ..show(p)
@@ -97,7 +97,7 @@ public function createCustomStatsUI(player p)
 
 
   // TODO use 1 toggle button instead of 1 per each player.
-  let baseFrameForButton = createFrame("FRAME", "", GAME_UI, "", 0)
+  let baseFrameForButton = createFrame("FRAME", "", getFrame("ConsoleUIBackdrop", 0), "", 0)
   ..setAbsPoint(FRAMEPOINT_TOP, vec2(0.169, 0.18))
   ..hide()
   ..show(p)
