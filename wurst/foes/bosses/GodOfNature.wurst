@@ -80,11 +80,11 @@ public class GodOfNature extends Boss
     real spellCd
     switch currentPhase
       case BossPhases.PHASE1
-        spellCd = 8.        
+        spellCd = 9.        
       case BossPhases.PHASE2
-        spellCd = 6. 
+        spellCd = 7. 
       case BossPhases.PHASE3
-        spellCd = 4. 
+        spellCd = 5. 
 
     doAfter(spellCd) ->
       if actor.isAlive()
@@ -367,6 +367,7 @@ public class GodOfNature extends Boss
   ..setHitPointsMaximumBase(42500)
   ..setManaMaximum(1000)
   ..setManaInitialAmount(1000)
+  ..setSpeedBase(350)
   ..setScalingValue(2.6)
   ..setArmorType(ArmorType.Divine)
   ..setAttack1AttackType(AttackType.Chaos)
