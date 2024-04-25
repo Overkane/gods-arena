@@ -19,6 +19,11 @@ import Heightmap
 import PresetBuffs
 import Creep
 
+enum BossPhases
+  PHASE1
+  PHASE2
+  PHASE3
+
 constant GOD_OF_WATER_ID = compiletime(UNIT_ID_GEN.next())
 
 constant SEA_ELEMENTAL_ID = compiletime(UNIT_ID_GEN.next())
@@ -39,10 +44,8 @@ constant ULT_RAINING_SOUND_LOOP = new SoundDefinition(Sounds.waterWavesLoop1, tr
 public class GodOfWater extends Boss
   private constant castQueue = new LinkedList<int>
 
-  private var isPhase1 = false
-  private var wasOnPhase1 = false
-  private var isPhase2 = false
-  private var wasOnPhase2 = false
+  private var currentPhase = BossPhases.PHASE1 
+  private var needToCastUltimateSpell = false 
 
   construct(vec3 pos, angle ang)
     super(GOD_OF_WATER_ID, pos, ang)
@@ -64,22 +67,24 @@ public class GodOfWater extends Boss
       let tunit = DamageEvent.getTarget()
 
       if tunit == actor 
-        if tunit.getHPRatio() <= 0.7 and not wasOnPhase1
-          isPhase1 = true
-          wasOnPhase1 = true
-        else if tunit.getHPRatio() <= 0.4 and not wasOnPhase2
-          isPhase2 = true
-          wasOnPhase2 = true
+        if tunit.getHPRatio() <= 0.7 and currentPhase == BossPhases.PHASE1
+          needToCastUltimateSpell = true
+        else if tunit.getHPRatio() <= 0.4 and currentPhase == BossPhases.PHASE2
+          needToCastUltimateSpell = true
 
   function spellCycle()
-    let spellCd = wasOnPhase2 ? 6. : 8.
+    real spellCd
+    switch currentPhase
+      case BossPhases.PHASE1
+        spellCd = 9.        
+      case BossPhases.PHASE2
+        spellCd = 7. 
+      case BossPhases.PHASE3
+        spellCd = 5.
+    
     doAfter(spellCd) ->
       if actor.isAlive()
-        if isPhase1
-          isPhase1 = false
-          castUltimateSpell()
-        else if isPhase2
-          isPhase2 = false
+        if needToCastUltimateSpell
           castUltimateSpell()
         else
           if castQueue.isEmpty()
@@ -90,7 +95,7 @@ public class GodOfWater extends Boss
           let rand = castQueue.pop()
           switch rand
             case 0
-              castWaves()
+              castWaterExplosions()
             case 1
               castSeaElementals()
             case 2
@@ -100,7 +105,14 @@ public class GodOfWater extends Boss
   function castTorrent()
     actor.pause()
 
-    let torrentAmount = wasOnPhase1 ? 32 : 24
+    int torrentAmount
+    switch currentPhase
+      case BossPhases.PHASE1
+        torrentAmount = 12        
+      case BossPhases.PHASE2
+        torrentAmount = 18 
+      case BossPhases.PHASE3
+        torrentAmount = 24
     let baseAngles = (360 / 8).toInt()
     let torrentSpawnAngleList = new LinkedList<int>
     
@@ -113,10 +125,10 @@ public class GodOfWater extends Boss
       
       actor.setAnimation("spell slam")
 
-      for i = 1 to torrentAmount
+      doPeriodicallyCounted(0.1, torrentAmount) (CallbackCounted cb) ->
         let currentangle = internalTorrentSpawnAngleList.dequeue()
         let currentTorrentSpawnAngle = (currentangle + GetRandomReal(-currentangle/4, currentangle/4)).asAngleDegrees()
-        let projectilePos = actor.getPos().polarOffset(currentTorrentSpawnAngle, GetRandomReal(50, 900))
+        let projectilePos = actor.getPos().polarOffset(currentTorrentSpawnAngle, GetRandomReal(50, 1200))
         
         let groundEffect = addEffect(MapModels.spellMarkerRed, projectilePos)..setScale(1.5)
 
@@ -127,7 +139,8 @@ public class GodOfWater extends Boss
             if u.isAlive() and u.isEnemyOf(actor)
               actor.dealMagicalDamage(u, 400)
       
-      destroy internalTorrentSpawnAngleList
+        if cb.isLast()
+          destroy internalTorrentSpawnAngleList
       
       if cb.isLast()
         doAfter(1.5) -> 
@@ -135,19 +148,51 @@ public class GodOfWater extends Boss
           ..queueAnimation("stand")
         destroy torrentSpawnAngleList
 
-  function castWaves()
-    WAVES_SOUND_ID.play()
-
+  function castWaterExplosions()
     actor.pause()
     actor.setAnimation("spell chain")
     doAfter(1) -> 
       actor..unpause()
       ..queueAnimation("stand")
 
-    new DummyCaster()
-    ..owner(ENEMY_PLAYER)
-    ..origin(actor.getPos())
-    ..castPoint(WAVES_ID, 1, OrderIds.stampede, actor.getPos().polarOffset(GetRandomReal(1, 360).asAngleDegrees(), 10))
+    int numberOfExplosions
+    switch currentPhase
+      case BossPhases.PHASE1
+        numberOfExplosions = 4        
+      case BossPhases.PHASE2
+        numberOfExplosions = 6 
+      case BossPhases.PHASE3
+        numberOfExplosions = 8
+
+    doPeriodicallyCounted(0.33, numberOfExplosions) (CallbackCounted cb) ->
+      let explosionSpawnPoint = gg_rct_ArenaPondBreathArea.randomPoint()
+      
+      let groundEffect = addEffect(MapModels.spellMarkerRed, explosionSpawnPoint)
+      let waterBall = addEffect(MapModels.orbWaterX, explosionSpawnPoint)
+      
+      doPeriodicallyTimed(0.1, 1.5) (CallbackCounted cb) ->
+        waterBall
+        ..setZ(waterBall.getPos3().z + 2.5)
+        ..setScale(waterBall.getScale() + 0.1)
+
+        if cb.isLast()
+          groundEffect.destr()
+          waterBall.destr()
+          flashEffect(Objects.nagaDeath, waterBall.getPos3())
+
+          let baseAngle = 360 / 8
+          for i = 1 to 8
+            let waterProjectile = new Projectile(groundEffect.getPos3(), 64, owner, (baseAngle * i).asAngleDegrees(), MapModels.orbWaterX)
+            ..setSpeed(17.)
+            ..setRanged(3000)
+
+            waterProjectile
+            ..onHit() (unit target) ->
+              if target.isValidPlayerTarget()
+                flashEffect(Abilities.crushingWaveDamage, waterProjectile.getPos())
+                bossList.peek().dealMagicalDamage(target, 250)
+                target.getEntity().addVel(ZERO3.polarProject(300 * ANIMATION_PERIOD, waterProjectile.getPos().angleTo2d(target.getPos()), 90 .fromDeg()))
+                waterProjectile.terminate()
 
   function castSeaElementals()
     let aliveHeroUnits = heroUnitList.filter((unit u) -> u.isAlive())
@@ -156,7 +201,7 @@ public class GodOfWater extends Boss
     destroy aliveHeroUnits
     
     for i = 1 to numberOfSeaElementals
-      let u = new Creep(SEA_ELEMENTAL_ID, gg_rct_ArenaPondBreathArea.randomPoint().toVec3(), angle(GetRandomReal(0, 359))).actor
+      new Creep(SEA_ELEMENTAL_ID, gg_rct_ArenaPondBreathArea.randomPoint().toVec3(), angle(GetRandomReal(0, 359))).actor
       ..setAnimation("birth")
       ..queueAnimation("stand")
 
@@ -171,7 +216,9 @@ public class GodOfWater extends Boss
       ..setInvulnerable(true)
       ..setPos(gg_rct_ArenaPond.getCenter())
       ..setFacing((270).asAngleDegrees())
-        
+
+      let invulEf = actor.addEffect(Abilities.divineShieldTarget, AttachmentPoints.origin)  
+      
       // Part 1. Rain with raising water and drowning zone
       let rainEffect = addWeather(gg_rct_ArenaPond, WeatherEffects.ashenvaleRainHeavy)..enable()
       let rainingLoop = ULT_RAINING_SOUND_LOOP.play()
@@ -231,8 +278,19 @@ public class GodOfWater extends Boss
 
       doAfter(5) -> 
         // Part 2. Homing water projectiles.
-        let projectileDelay = wasOnPhase2 ? 1. : 1.5
-        let numberOfProj = wasOnPhase2 ? 10 : 8
+        real projectileDelay
+        int numberOfProj
+        switch currentPhase
+          case BossPhases.PHASE1
+            projectileDelay = 1.25        
+            numberOfProj = 8        
+          case BossPhases.PHASE2
+            projectileDelay = 0.75 
+            numberOfProj = 11 
+          case BossPhases.PHASE3
+            projectileDelay = 0
+            numberOfProj = 0
+            error("Calling ultimate spell on phase 3")
 
         doPeriodicallyCounted(projectileDelay, numberOfProj) (CallbackCounted cb) ->
           let aliveHeroUnits = heroUnitList.filter((unit u) -> u.isAlive())
@@ -247,8 +305,8 @@ public class GodOfWater extends Boss
               ULT_PROJECTILE_SPAWN_SOUND.play() 
               let bossProjectile = new WaterBossKnockbackProjectile(actor.getPos().withHeightMap(), 64., owner, angleToTarget, MapModels.orbWaterX)
               ..setTimed(5)
-              ..setSpeed(10)
-              ..setTarget(target.getEntity(), HOMING.forced, 0.5)
+              ..setSpeed(17)
+              ..setTarget(target.getEntity(), HOMING.forced, 0.4)
               
               bossProjectile.getFx().eff.setScale(2.)
               bossProjectile.onHit() (unit target) ->
@@ -288,7 +346,19 @@ public class GodOfWater extends Boss
                     addLightning(LIGHTNING_DRAIN_MANA, false, actor.getPos().withHeightMap(870), actor.getPos().polarOffset((baseAngle * i).asAngleDegrees(), 2150.).withHeightMap())
                   )
 
-                let numberOfSlowWaves = wasOnPhase2 ? 9 : 6
+                int numberOfSlowWaves
+                int numberOfFastWaves
+                switch currentPhase
+                  case BossPhases.PHASE1
+                    numberOfSlowWaves = 4
+                    numberOfFastWaves = 2        
+                  case BossPhases.PHASE2
+                    numberOfSlowWaves = 6
+                    numberOfFastWaves = 3 
+                  case BossPhases.PHASE3
+                    numberOfSlowWaves = 0
+                    numberOfFastWaves = 0
+                    error("Calling ultimate spell on phase 3")
 
                 doPeriodicallyCounted(0.8, numberOfSlowWaves) (CallbackCounted cb) ->
                   waterOrbUlt.setScale(waterOrbUlt.getScale() + 0.5)
@@ -314,18 +384,17 @@ public class GodOfWater extends Boss
                     forUnitsAll() (unit u) ->
                       if u.hasBuff(DrowningBuff.typeId)
                         u.removeBuffById(DrowningBuff.typeId)
-
-                    let numberOfFastWaves = wasOnPhase2 ? 5 : 3
+                    
                     doPeriodicallyCounted(1.3, numberOfSlowWaves) (CallbackCounted cb) ->
                       flashEffect(Objects.nagaDeath, actor.getPos().withHeightMap(725))
                       waterOrbUlt.setScale(waterOrbUlt.getScale() - 0.6)
                       ULT_PROJECTILE_SPAWN_SOUND.play()
 
                       if not cb.isLast() 
-                        for i = 1 to 8
+                        for i = 1 to 7
                           let projectileOrb = new SmallWaterHomingProjectile(actor.getPos().withHeightMap(), 64, owner, GetRandomReal(1, 360).asAngleDegrees(), MapModels.orbWaterX)
                           ..setTarget(this, HOMING.none, 0.55)
-                          ..setTimed(6)
+                          ..setTimed(4.5)
                           ..setSpeed(18)
 
                           projectileOrb
@@ -340,10 +409,10 @@ public class GodOfWater extends Boss
 
                         doPeriodicallyCounted(0.6, numberOfFastWaves) (CallbackCounted cb) ->
                           ULT_PROJECTILE_SPAWN_SOUND.play() 
-                          for i = 1 to 8 
+                          for i = 1 to 7 
                             let projectileOrb = new SmallWaterHomingProjectile(actor.getPos().withHeightMap(), 64, owner, GetRandomReal(1, 360).asAngleDegrees(), MapModels.orbWaterX)
                             ..setTarget(this, HOMING.none, 0.55)
-                            ..setTimed(6)
+                            ..setTimed(4.5)
                             ..setSpeed(18)
 
                             projectileOrb
@@ -360,11 +429,20 @@ public class GodOfWater extends Boss
                           ..unpause()
                           ..queueAnimation("stand")
 
+                          invulEf.destr()
+
+                          if currentPhase == BossPhases.PHASE1
+                            currentPhase = BossPhases.PHASE2
+                          else if currentPhase == BossPhases.PHASE2
+                            currentPhase = BossPhases.PHASE3
+                          else
+                            error("Calling ultimate spell on phase 3")
+                          needToCastUltimateSpell = false
                           spellCycle()
 
 
 class WaterBossKnockbackProjectile extends HomingProjectile
-  static constant DISTANCE_NEEDED_FOR_EFFECT = 400
+  static constant DISTANCE_NEEDED_FOR_EFFECT = 500
   var distanceTravelled = 0.
 
   construct(vec3 pos, real radius, player owner, angle xyAngle, string fxpath)
@@ -383,7 +461,7 @@ class WaterBossKnockbackProjectile extends HomingProjectile
       // Effect trigger
       let projectileOrb1 = new Projectile(pos, 64, owner, getXYAngle() + (90.).asAngleDegrees(), MapModels.orbWaterX)
       ..setSpeed(13.)
-      ..setRanged(800)
+      ..setRanged(1000)
 
       projectileOrb1
       ..onHit() (unit target) ->
@@ -395,7 +473,7 @@ class WaterBossKnockbackProjectile extends HomingProjectile
 
       let projectileOrb2 = new Projectile(pos, 64, owner, getXYAngle() - (90.).asAngleDegrees(), MapModels.orbWaterX)
       ..setSpeed(13.)
-      ..setRanged(800)
+      ..setRanged(1000)
 
       projectileOrb2
       ..onHit() (unit target) ->
@@ -410,7 +488,7 @@ class SmallWaterHomingProjectile extends HomingProjectile
   let numberOfUpdatesForHoming = (0.8 / ANIMATION_PERIOD).round()
   var currentUpdate = 0
   var homingWasApplied = false
-  EventListener targetDeathListener
+  EventListener targetDeathListener = null
 
   construct(vec3 pos, real radius, player owner, angle xyAngle, string fxpath)
     super(pos, radius, owner, xyAngle, fxpath)
@@ -421,10 +499,13 @@ class SmallWaterHomingProjectile extends HomingProjectile
     if currentUpdate >= numberOfUpdatesForHoming and not homingWasApplied
       homingWasApplied = true
       forNearestUnit(getPos().toVec2(), 6000, Filter(() -> heroUnitList.has(GetFilterUnit()) and GetFilterUnit().isAlive())) (unit u) ->
-        setTarget(u.getEntity(), HOMING.forced, 0.7)
-        targetDeathListener = EventListener.add(u, EVENT_PLAYER_UNIT_DEATH) -> 
+        if u != null
+          setTarget(u.getEntity(), HOMING.forced, 0.7)
+          targetDeathListener = EventListener.add(u, EVENT_PLAYER_UNIT_DEATH) -> 
+            setTarget(this, HOMING.none, 0.7)
+        else
           setTarget(this, HOMING.none, 0.7)
-
+    
     super.update()
 
   ondestroy
@@ -456,7 +537,7 @@ class DrowningBuff extends NormalBuff
   ..setHitPointsMaximumBase(75000)
   ..setManaMaximum(2000)
   ..setManaInitialAmount(2000)
-  ..setSpeedBase(330)
+  ..setSpeedBase(350)
   ..setNormalAbilities(commaList(AbilityIds.inventory))
   ..setScalingValue(2.8)
   ..setArmorType(ArmorType.Divine)
@@ -470,7 +551,7 @@ class DrowningBuff extends NormalBuff
   ..setAttack1Range(450)
   ..setAttack1DamageNumberofDice(1)
   ..setAttack1DamageSidesperDie(1)
-  ..setHitPointsMaximumBase(6000)
+  ..setHitPointsMaximumBase(5000)
   ..setHitPointsRegenerationRate(0)
   ..setDefenseBase(6)
   ..setNormalAbilities("")
