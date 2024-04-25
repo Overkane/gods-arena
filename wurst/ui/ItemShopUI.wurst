@@ -135,8 +135,10 @@ public function initItemShop()
 
   EventListener.add(EVENT_PLAYER_UNIT_SELECTED) -> 
     let u = EventData.getTriggerUnit()
-    if u.inventorySize() != 0
-      shop.setPlayerTarget(EventData.getTriggerPlayer(), u)
+    let p = EventData.getTriggerPlayer()
+
+    if u.getOwner() == p and u.inventorySize() != 0
+      shop.setPlayerTarget(p, u)
     
 
 @compiletime function genAbility()
