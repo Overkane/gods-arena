@@ -264,6 +264,7 @@ class HeroCard
     
     createFrame("HeroPickMenuBackdrop", heroCardFrame, 0, 0).setAllPoints(heroCardFrame)
 
+    defaultFrameParent = getFrame("ConsoleUIBackdrop", 0)
     let heroCardLayout = new TableLayout(0.2, 0.2)
 
     if heroId != RANDOM_HERO_ID

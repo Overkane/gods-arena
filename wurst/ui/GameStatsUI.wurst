@@ -28,6 +28,7 @@ public function createGameStatsUI()
 
   gameStatsUIBackdrop.setAllPoints(gameStatsUIFrame)
 
+  defaultFrameParent = getFrame("ConsoleUIBackdrop", 0)
   let tableLayout = new TableLayout(0.6, 0.25)
   ..row()..center()
   ..add(h1("Game Stats"))..padBot(0.008)

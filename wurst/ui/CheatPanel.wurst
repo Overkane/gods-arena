@@ -149,7 +149,7 @@ class CheatPanel
           hero.revive(gg_rct_ArenaForestRespawnPoint.getCenter(), true)
       reviveHeroButton.unfocus()
     
-
+    defaultFrameParent = getFrame("ConsoleUIBackdrop", 0)
     cheatPanel = new TableLayout(0.38, 0.2)
     ..row()
     ..add(level1Button)
