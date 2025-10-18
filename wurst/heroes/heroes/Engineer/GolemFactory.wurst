@@ -1,0 +1,54 @@
+package GolemFactory
+import Assets
+import ClosureTimers
+import ClosureForGroups
+import AbilityTooltipGenerator
+import GameConstants
+import Entity
+import DamageSystem
+import PhysicsProjectile
+import Heightmap
+import AbilityDefinitionExtension
+
+public constant GOLEM_FACTORY_ID = compiletime(ABIL_ID_GEN.next())
+constant RealLevelClosure SPELL_DMG = lvl -> 30. + 125. * lvl
+constant RealLevelClosure SPELL_AOE = lvl -> 250. + 25 * lvl
+
+init
+    EventListener.onPointCast(GOLEM_FACTORY_ID) (caster, spellTarget) ->
+        let lvl = caster.getAbilityLevel(GOLEM_FACTORY_ID)
+        let aoe = SPELL_AOE.run(lvl)
+        flashEffect(Units.infernalBirth, spellTarget)
+        doAfter(0.9) ->
+            for i = 0 to 9
+                new Shrapnel(spellTarget.withHeightMap(), Abilities.redDragonMissile)
+
+            forUnitsInRange(spellTarget, aoe) (target) ->
+                let eff = target.addEffect(Abilities.flameStrikeEmbers, AttachmentPoints.origin)
+                doAfter(0.9) ->
+                    eff.destr()
+                if target.isEnemyOf(caster.getOwner()) and target.isAlive()
+                    if not target.isStrong()
+                        let knockBackDistance = 1 - target.getPos().distanceTo(spellTarget) / aoe
+                        target.getEntity().addVel(ZERO3.polarProject(800 * ANIMATION_PERIOD * knockBackDistance, spellTarget.angleTo(target.getPos()), (27).fromDeg()))
+                    caster.dealMagicalDamage(target, SPELL_DMG.run(lvl))
+                    flashEffect(Abilities.incinerateBuff, target, "origin")
+
+
+@compiletime
+function genAbility()
+    new ChannelAbilityPreset(GOLEM_FACTORY_ID, NORMAL_SPELL_LEVELS, true, new AbilityTooltipGenerator("A chunky meteor from the sky which crushes your enemies in a big area with over 9000° Celsius."))
+    ..makeQAbility()
+    ..presetIcon(Icons.bTNInfernal)
+    ..presetOption(Option.TARGETIMAGE, true)
+
+    ..tooltipStartListen()
+    ..addTooltipProperty("Damage Type", DamageTypeTooltips.magical)
+    ..presetTargetTypes(Targettype.POINT)
+    ..setName("Chaos Meteor")
+    ..addTooltipProperty("Damage", SPELL_DMG)
+    ..presetAreaofEffect(SPELL_AOE)
+    ..presetManaCost(lvl -> 115 + 35 * (lvl-1))
+    ..presetCooldown(lvl -> 28. - 2 * lvl)
+    ..tooltipStopListen()
+

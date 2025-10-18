@@ -8,6 +8,7 @@ import ClosureEvents
 import Creep
 
 public constant pondWaves = new LinkedList<Wave>
+..add(compiletime(godOfWater()))
 ..add(compiletime(murguls()))
 ..add(compiletime(hydras()))
 ..add(compiletime(seaTurtles()))
@@ -15,7 +16,6 @@ public constant pondWaves = new LinkedList<Wave>
 ..add(compiletime(lobstrokks()))
 ..add(compiletime(jungleStalkers()))
 ..add(compiletime(seaRevenants()))
-..add(compiletime(godOfWater()))
 
 constant MURGUL_SLOW = compiletime(ABIL_ID_GEN.next())
 constant MURGUL_HEALING_WAVE = compiletime(ABIL_ID_GEN.next())

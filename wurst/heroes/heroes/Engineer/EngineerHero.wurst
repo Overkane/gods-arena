@@ -1,0 +1,36 @@
+package EngineerHero
+import HeroDefinitionPresets
+import Assets
+import ChannelAbilityPreset
+import LinkedList
+import EngineeringUpgrade
+import RocketBarrage
+import FieldTurret
+import GolemFactory
+import MineField
+
+public constant ENGINEER_ID = compiletime(HERO_ID_GEN.next())
+public constant ENGINEER_SPELLS = new LinkedList<int>..add(ENGINEERING_UPGRADE_ID, FIELD_TURRET_ID, FIELD_TURRET_ID, FIELD_TURRET_ID, FIELD_TURRET_ID)
+public constant ENGINEER_NAME = "Engineer"
+public constant ENGINEER_DESCRIPTION = "Master of crafts."
+
+@compiletime function genHero()
+  new IntHeroPreset(ENGINEER_ID, UnitIds.tinker, ENGINEER_NAME)
+  ..addProperName("Enki")
+  // ..addHeroAbility(ROCKET_BARRAGE_ID)
+  ..addHeroAbility(FIELD_TURRET_ID)
+  // ..addHeroAbility(GOLEM_FACTORY_ID)
+  // ..addHeroAbility(MINE_FIELD_ID)
+  ..addInnateHeroAbility(ENGINEERING_UPGRADE_ID)
+  ..setStartingStrength(15)
+  ..setStrengthPerLevel(1.4)
+  ..setStartingAgility(14)
+  ..setAgilityPerLevel(1.3)
+  ..setStartingIntelligence(21)
+  ..setIntelligencePerLevel(2.7)
+  ..setAttack1CooldownTime(2.4)
+  ..setAttack1DamageNumberofDice(1)
+  ..setAttack1DamageSidesperDie(4)
+  ..setAttack1Range(400)
+  ..setAttack1ProjectileArt(Abilities.farseerMissile)
+  ..buildHero()

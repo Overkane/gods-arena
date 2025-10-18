@@ -1,0 +1,118 @@
+package EngineeringUpgrade
+import AbilityTooltipGenerator
+import ClosureEvents
+import Buff
+import DialogBox
+import PlayerData
+// import ENGINEERING_UPGRADEBuff
+import HashMap
+import GameConstants
+import AbilityDefinitionExtension
+import Wave
+import TooltipFactory
+
+public constant ENGINEERING_UPGRADE_ID = compiletime(ABIL_ID_GEN.next())
+
+// constant RealLevelClosure BONUS_DAMAGE = lvl -> 4. * lvl
+// constant RealLevelClosure BONUS_AS = lvl -> 3. * lvl
+// constant RealLevelClosure BONUS_ARMOR = lvl -> 1. * lvl
+// constant RealLevelClosure BONUS_HP_REG = lvl -> 1. * lvl
+// constant RealLevelClosure BONUS_STATS = lvl -> 1. * lvl
+// public constant ENGINEERING_UPGRADE_AOE = 900.
+
+// DialogBox ENGINEERING_UPGRADEDialog
+// unit ENGINEERING_UPGRADECaster
+
+// public enum ENGINEERING_UPGRADEBuffTypes
+//   DAMAGE
+//   ARMOR
+//   ATTACK_SPEED
+//   HP_REG
+//   STATS
+
+// public constant ENGINEERING_UPGRADEBuffMap = new IterableMap<ENGINEERING_UPGRADEBuffTypes, real>
+// ..put(ENGINEERING_UPGRADEBuffTypes.DAMAGE, 0)
+// ..put(ENGINEERING_UPGRADEBuffTypes.ARMOR, 0)
+// ..put(ENGINEERING_UPGRADEBuffTypes.ATTACK_SPEED, 0)
+// ..put(ENGINEERING_UPGRADEBuffTypes.HP_REG, 0)
+// ..put(ENGINEERING_UPGRADEBuffTypes.STATS, 0)
+
+// init 
+//   nullTimer() -> 
+//     ENGINEERING_UPGRADEDialog = new DialogBox("Choose God to ENGINEERING_UPGRADE")
+    
+//     ENGINEERING_UPGRADEDialog.addButton("God of Fire (+{0} Damage * ability level)".format(BONUS_DAMAGE.run(1).round().toString())) -> 
+//       updateBuff(ENGINEERING_UPGRADEBuffTypes.DAMAGE)
+//       ENGINEERING_UPGRADECaster.disableAbility(ENGINEERING_UPGRADE_ID, true, false)
+    
+//     ENGINEERING_UPGRADEDialog.addButton("God of Wind (+{0} Attack Speed * ability level)".format(BONUS_AS.run(1).round().toString())) ->
+//       updateBuff(ENGINEERING_UPGRADEBuffTypes.ATTACK_SPEED)
+//       ENGINEERING_UPGRADECaster.disableAbility(ENGINEERING_UPGRADE_ID, true, false)
+      
+//     ENGINEERING_UPGRADEDialog.addButton("God of Earth (+{0} Armor * ability level)".format(BONUS_ARMOR.run(1).round().toString())) ->
+//       updateBuff(ENGINEERING_UPGRADEBuffTypes.ARMOR)
+//       ENGINEERING_UPGRADECaster.disableAbility(ENGINEERING_UPGRADE_ID, true, false)
+
+//     ENGINEERING_UPGRADEDialog.addButton("God of Nature (+{0} hp reg * ability level)".format(BONUS_HP_REG.run(1).round().toString())) -> 
+//       updateBuff(ENGINEERING_UPGRADEBuffTypes.HP_REG)
+//       ENGINEERING_UPGRADECaster.disableAbility(ENGINEERING_UPGRADE_ID, true, false)
+
+//     ENGINEERING_UPGRADEDialog.addButton("God of Water (+{0} All Stats * ability level)".format(BONUS_STATS.run(1).round().toString())) -> 
+//       updateBuff(ENGINEERING_UPGRADEBuffTypes.STATS)
+//       ENGINEERING_UPGRADECaster.disableAbility(ENGINEERING_UPGRADE_ID, true, false)
+
+//   EventListener.onCast(ENGINEERING_UPGRADE_ID) (unit caster) ->
+//     if ENGINEERING_UPGRADECaster == null
+//       ENGINEERING_UPGRADECaster = caster
+//     ENGINEERING_UPGRADEDialog.display(caster.getOwner(), true)
+
+//   EventListener.add(EVENT_PLAYER_HERO_REVIVE_FINISH) ->
+//     let u = EventData.getTriggerUnit()
+
+//     if u.hasAbility(ENGINEERING_UPGRADE_ID)
+//       // new ENGINEERING_UPGRADEMainBuff().apply(u)
+
+//   OnWaveFinish.add() (Wave wave) ->
+//     if Wave.waveNumber % 2 == 0
+//       ENGINEERING_UPGRADECaster.disableAbility(ENGINEERING_UPGRADE_ID, false, false)
+
+// function updateBuff(ENGINEERING_UPGRADEBuffTypes ENGINEERING_UPGRADEBuffType)
+//   let p = GetTriggerPlayer()
+//   pData.get(p).getHero().ifPresent() (h) ->
+//     if h.actor.hasBuff(ENGINEERING_UPGRADEMainBuff.typeId)
+//       h.actor.removeBuffById(ENGINEERING_UPGRADEMainBuff.typeId)
+    
+//     // After buff main buff is destroyed we are waiting for minor buff to expire to be sure onEnd()
+//     // it have used old buff values.
+//     doAfter(BUFF_ANIM_PERIOD) ->
+//       let lvl = h.actor.getAbilityLevel(ENGINEERING_UPGRADE_ID)
+
+//       switch ENGINEERING_UPGRADEBuffType
+//         case ENGINEERING_UPGRADEBuffTypes.DAMAGE
+//           ENGINEERING_UPGRADEBuffMap.put(ENGINEERING_UPGRADEBuffType, ENGINEERING_UPGRADEBuffMap.get(ENGINEERING_UPGRADEBuffType) + BONUS_DAMAGE.run(lvl))  
+//         case ENGINEERING_UPGRADEBuffTypes.ATTACK_SPEED
+//           ENGINEERING_UPGRADEBuffMap.put(ENGINEERING_UPGRADEBuffType, ENGINEERING_UPGRADEBuffMap.get(ENGINEERING_UPGRADEBuffType) + BONUS_AS.run(lvl))  
+//         case ENGINEERING_UPGRADEBuffTypes.ARMOR
+//           ENGINEERING_UPGRADEBuffMap.put(ENGINEERING_UPGRADEBuffType, ENGINEERING_UPGRADEBuffMap.get(ENGINEERING_UPGRADEBuffType) + BONUS_ARMOR.run(lvl))  
+//         case ENGINEERING_UPGRADEBuffTypes.HP_REG
+//           ENGINEERING_UPGRADEBuffMap.put(ENGINEERING_UPGRADEBuffType, ENGINEERING_UPGRADEBuffMap.get(ENGINEERING_UPGRADEBuffType) + BONUS_HP_REG.run(lvl))  
+//         case ENGINEERING_UPGRADEBuffTypes.STATS
+//           ENGINEERING_UPGRADEBuffMap.put(ENGINEERING_UPGRADEBuffType, ENGINEERING_UPGRADEBuffMap.get(ENGINEERING_UPGRADEBuffType) + BONUS_STATS.run(lvl))  
+      
+//       new ENGINEERING_UPGRADEMainBuff().apply(h.actor)
+
+// @compiletime function genAbility()
+//   let tooltip = new AbilityTooltipGenerator("Hero ENGINEERING_UPGRADEs to the forgotten Gods and gains a portion of their power, " +
+//     "blessing himself and allies near him with one of the buffs: bonus damage/attack speed/armor/life regeneration or attributes. {0}. {1}."
+//     .format("Buff stacks".color(POSITIVE_COLOR), "Can be used only once per two waves".color(IMPORTANT_COLOR)))
+//   new ChannelAbilityPreset(ENGINEERING_UPGRADE_ID, INNATE_SPELL_LEVELS, true, tooltip)
+//   ..makeDAbility()
+//   ..presetIcon(Icons.bTNResurrection)
+
+//   ..tooltipStartListen()
+//   ..presetTargetTypes(Targettype.NONE)
+//   ..setName("ENGINEERING_UPGRADE")
+//   ..presetAreaofEffect(lvl -> ENGINEERING_UPGRADE_AOE)
+//   ..tooltipStopListen()
+
+//   ..presetManaCost(lvl -> 0)
